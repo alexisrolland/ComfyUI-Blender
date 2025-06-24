@@ -12,6 +12,7 @@ class BlenderInputFloat(Float):
         INPUT_TYPES["optional"]["default"] = ("FLOAT", {})
         INPUT_TYPES["optional"]["min"] = ("FLOAT", {})
         INPUT_TYPES["optional"]["max"] = ("FLOAT", {})
+        INPUT_TYPES["optional"]["step"] = ("FLOAT", {"step": 0.01})
         return INPUT_TYPES
     
     def execute(self, value: float, default: float=0, min: float=0, max: float=0) -> tuple[int]:
@@ -29,6 +30,7 @@ class BlenderInputInt(Int):
         INPUT_TYPES["optional"]["default"] = ("INT", {})
         INPUT_TYPES["optional"]["min"] = ("INT", {})
         INPUT_TYPES["optional"]["max"] = ("INT", {})
+        INPUT_TYPES["optional"]["step"] = ("INT", {"step": 1})
         return INPUT_TYPES
     
     def execute(self, value: int, default: int=0, min: int=0, max: int=0) -> tuple[int]:
@@ -38,6 +40,22 @@ class BlenderInputString(String):
     """Node used by ComfyUI Blender Plugin to input a string in a workflow."""
     CATEGORY = "blender plugin/inputs"
 
+    @classmethod
+    def INPUT_TYPES(s):
+        INPUT_TYPES = super().INPUT_TYPES()
+        if "optional" not in INPUT_TYPES:
+            INPUT_TYPES["optional"] = {}
+        INPUT_TYPES["optional"]["default"] = ("STRING", {})
+        return INPUT_TYPES
+
 class BlenderInputStringMultiline(StringMultiline):
     """Node used by ComfyUI Blender Plugin to input a multiline string in a workflow."""
     CATEGORY = "blender plugin/inputs"
+
+    @classmethod
+    def INPUT_TYPES(s):
+        INPUT_TYPES = super().INPUT_TYPES()
+        if "optional" not in INPUT_TYPES:
+            INPUT_TYPES["optional"] = {}
+        INPUT_TYPES["optional"]["default"] = ("STRING", {"multiline": True})
+        return INPUT_TYPES
