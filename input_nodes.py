@@ -1,4 +1,3 @@
-import sys
 from comfy_extras.nodes_primitive import Float, Int, String, StringMultiline
 from comfy.comfy_types.node_typing import IO
 
