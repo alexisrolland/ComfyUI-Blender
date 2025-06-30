@@ -10,7 +10,7 @@ class COMFY_PT_OutputPanel(bpy.types.Panel):
 
     def draw(self, context):
         # Get the server address from addon preferences
-        addon_prefs = context.preferences.addons["comfyui_blender_plugin"].preferences
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         server_address = addon_prefs.server_address.replace("http://", "").replace("https://", "")
         client_id = context.scene.client_id
 

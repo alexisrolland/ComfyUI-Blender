@@ -16,7 +16,7 @@ class COMFY_OT_RunWorkflow(bpy.types.Operator):
             self.report({'ERROR'}, "No workflow selected.")
             return {'CANCELLED'}
 
-        addon_prefs = context.preferences.addons["comfyui_blender_plugin"].preferences
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         workflow_folder = addon_prefs.workflow_folder
         workflow_path = os.path.join(workflow_folder, selected_workflow)
         workflow_name = os.path.splitext(os.path.basename(workflow_path))[0]

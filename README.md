@@ -1,4 +1,4 @@
-# ComfyUI Blender Plugin
+# ComfyUI Blender
 
 Blender plugin to send requests to a ComfyUI server.
 
@@ -6,7 +6,7 @@ Blender plugin to send requests to a ComfyUI server.
 
 ### Install ComfyUI Custom Nodes
 
-Install the custom nodes contained in this repository on your ComfyUI server. Note these nodes do not require any Python dependencies. They are only used to define the inputs and outputs of the workflows to be exposed in the Blender plugin.
+Install the custom nodes contained in this repository on your ComfyUI server. Note these nodes do not require any Python dependency. They are only used to define the inputs and outputs of the workflows to be exposed in the Blender plugin.
 
 ```shell
 cd ./ComfyUI/custom_nodes

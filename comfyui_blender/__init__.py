@@ -10,14 +10,14 @@ from .settings import Settings
 from .utils import get_workflow_list, parse_workflow_for_inputs
 
 bl_info = {
-    "name": "ComfyUI Blender Plugin",
+    "name": "ComfyUI Blender",
     "author": "Alexis ROLLAND",
     "version": (0, 1),
     "blender": (4, 4, 3),
     "location": "View3D > Sidebar > ComfyUI",
     "description": "Blender plugin to send requests to a ComfyUI server.",
     "warning": "",
-    "doc_url": "",
+    "doc_url": "https://github.com/alexisrolland/ComfyUI-Blender",
     "category": "3D View",
 }
 

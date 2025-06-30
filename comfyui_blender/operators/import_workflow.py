@@ -14,7 +14,7 @@ class COMFY_OT_ImportWorkflow(bpy.types.Operator):
     def execute(self, context):
         if self.filepath.endswith(".json"):
             # Get the workflows folder from addon preferences
-            addon_prefs = context.preferences.addons["comfyui_blender_plugin"].preferences
+            addon_prefs = context.preferences.addons["comfyui_blender"].preferences
             workflow_folder = addon_prefs.workflow_folder
 
             # Create the workflows folder if it doesn't exist

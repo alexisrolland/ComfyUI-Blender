@@ -9,7 +9,7 @@ class COMFY_OT_SelectWorkflowFolder(bpy.types.Operator):
     directory: bpy.props.StringProperty(subtype="DIR_PATH")
 
     def execute(self, context):
-        addon_prefs = context.preferences.addons["comfyui_blender_plugin"].preferences
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         addon_prefs.workflow_folder = self.directory
         self.report({'INFO'}, f"Workflow folder set to: {self.directory}")
         return {'FINISHED'}

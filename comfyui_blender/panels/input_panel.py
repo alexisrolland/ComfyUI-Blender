@@ -19,7 +19,7 @@ class COMFY_PT_InputPanel(bpy.types.Panel):
         layout.prop(context.scene, "workflow")
 
         # Parse the selected workflow and add inputs
-        addon_prefs = context.preferences.addons["comfyui_blender_plugin"].preferences
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         workflow_folder = addon_prefs.workflow_folder
         selected_workflow = context.scene.workflow
         workflow_path = os.path.join(workflow_folder, selected_workflow)

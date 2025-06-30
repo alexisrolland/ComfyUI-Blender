@@ -4,7 +4,7 @@ import os
 class Settings(bpy.types.AddonPreferences):
     # The bl_idname must match the addon name ()
     # The addon name is the folder name where this file is located
-    bl_idname = "comfyui_blender_plugin"
+    bl_idname = "comfyui_blender"
 
     server_address: bpy.props.StringProperty(
         name="Server Address",

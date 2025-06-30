@@ -4,7 +4,7 @@ import json
 
 def get_workflow_list(self, context):
     """Return a list of workflows JSON files from the workflows folder."""
-    addon_prefs = context.preferences.addons["comfyui_blender_plugin"].preferences
+    addon_prefs = context.preferences.addons["comfyui_blender"].preferences
     workflow_folder = addon_prefs.workflow_folder
     workflows = []
 
