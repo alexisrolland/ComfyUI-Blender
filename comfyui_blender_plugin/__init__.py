@@ -69,11 +69,12 @@ def unregister():
     # Remove dynamic properties created for workflows inputs
     addon_prefs = bpy.context.preferences.addons[__package__].preferences
     workflow_folder = addon_prefs.workflow_folder
-    for workflow_file in os.listdir(workflow_folder):
-        workflow_path = os.path.join(workflow_folder, workflow_file)
-        inputs = parse_workflow_for_inputs(workflow_path)
-        for key in inputs.keys():
-            delattr(bpy.types.Scene, f"comfy_input_{key}")
+    if os.path.exists(workflow_folder) and os.path.isdir(workflow_folder):
+        for workflow_file in os.listdir(workflow_folder):
+            workflow_path = os.path.join(workflow_folder, workflow_file)
+            inputs = parse_workflow_for_inputs(workflow_path)
+            for key in inputs.keys():
+                delattr(bpy.types.Scene, f"comfy_input_{key}")
 
     # Properties
     del bpy.types.Scene.client_id

@@ -33,7 +33,7 @@ class COMFY_OT_RunWorkflow(bpy.types.Operator):
         for key in workflow_data.keys():
             input = f"wkf_{workflow_name}_{key}"
             if input in context.scene.keys():
-                workflow_data[key]["inputs"]["value"] = context.scene[input]
+                workflow_data[key]["inputs"]["value"] = getattr(bpy.context.scene, input, None)
 
         # Get the server URL from addon preferences
         server_address = addon_prefs.server_address
