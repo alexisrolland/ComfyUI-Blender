@@ -4,7 +4,14 @@ import subprocess
 import sys
 import uuid
 
-from .operators import import_workflow, run_workflow, select_workflow_folder
+from .operators import (
+    connect_to_server,
+    disconnect_from_server,
+    import_workflow,
+    run_workflow,
+    select_output_folder,
+    select_workflow_folder
+)
 from .panels import input_panel, output_panel
 from .settings import Settings
 from .utils import get_workflow_list, parse_workflow_for_inputs
@@ -39,8 +46,11 @@ def register():
     bpy.utils.register_class(Settings)
 
     # Operators
+    connect_to_server.register()
+    disconnect_from_server.register()
     import_workflow.register()
     run_workflow.register()
+    select_output_folder.register()
     select_workflow_folder.register()
 
     # Panels
@@ -74,21 +84,26 @@ def unregister():
             workflow_path = os.path.join(workflow_folder, workflow_file)
             inputs = parse_workflow_for_inputs(workflow_path)
             for key in inputs.keys():
-                delattr(bpy.types.Scene, f"comfy_input_{key}")
+                attribute_name = f"comfy_input_{key}"
+                if hasattr(bpy.types.Scene, attribute_name):
+                    delattr(bpy.types.Scene, attribute_name)
 
-    # Properties
-    del bpy.types.Scene.client_id
-    del bpy.types.Scene.workflow
-    del bpy.types.Scene.prompt_id
+    # Preferences
+    bpy.utils.unregister_class(Settings)
+
+    # Operators
+    connect_to_server.unregister()
+    disconnect_from_server.unregister()
+    import_workflow.unregister()
+    run_workflow.unregister()
+    select_output_folder.unregister()
+    select_workflow_folder.unregister()
 
     # Panels
     input_panel.unregister()
     output_panel.unregister()
 
-    # Operators
-    import_workflow.unregister()
-    run_workflow.unregister()
-    select_workflow_folder.unregister()
-
-    # Preferences
-    bpy.utils.unregister_class(Settings)
+    # Properties
+    del bpy.types.Scene.client_id
+    del bpy.types.Scene.workflow
+    del bpy.types.Scene.prompt_id
