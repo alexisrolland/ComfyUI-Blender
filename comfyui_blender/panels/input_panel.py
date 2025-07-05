@@ -1,4 +1,5 @@
 import bpy
+import json
 import os
 from ..utils import parse_workflow_for_inputs
 
@@ -12,23 +13,19 @@ class COMFY_PT_InputPanel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
-        # Button to import workflows
-        layout.operator("comfy.import_workflow", text="Import Workflow")
-
-        # Dropdown list of workflows
-        layout.prop(context.scene, "workflow")
-
-        # Parse the selected workflow and add inputs
+        # Parse selected workflow and add inputs to panel
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         workflow_folder = addon_prefs.workflow_folder
         selected_workflow = context.scene.workflow
         workflow_path = os.path.join(workflow_folder, selected_workflow)
         if os.path.exists(workflow_path) and os.path.isfile(workflow_path):
-            box = layout.box()
-            workflow_name = os.path.splitext(os.path.basename(workflow_path))[0]
-            inputs = parse_workflow_for_inputs(workflow_path)
+            with open(workflow_path, "r") as f:
+                workflow = json.load(f)
+            inputs = parse_workflow_for_inputs(workflow)
 
             # Create panel properties for each input
+            box = layout.box()
+            workflow_name = os.path.splitext(os.path.basename(workflow_path))[0]
             for key in inputs.keys():
                 box.prop(context.scene, f"wkf_{workflow_name}_{key}")
 

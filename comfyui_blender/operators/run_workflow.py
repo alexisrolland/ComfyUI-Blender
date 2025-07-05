@@ -1,7 +1,9 @@
 import bpy
-import os
 import json
+import os
 import requests
+import threading
+from .. import connection
 
 class COMFY_OT_RunWorkflow(bpy.types.Operator):
     """Operator to update the workflow JSON file and send it to the ComfyUI server."""
@@ -24,33 +26,39 @@ class COMFY_OT_RunWorkflow(bpy.types.Operator):
         # Load the workflow JSON file
         try:
             with open(workflow_path, "r") as f:
-                workflow_data = json.load(f)
+                workflow = json.load(f)
         except Exception as e:
             self.report({'ERROR'}, f"Failed to load workflow: {e}")
             return {'CANCELLED'}
 
-        # Update the workflow with panel values
-        for key in workflow_data.keys():
+        # Update the workflow with values from the panel
+        for key in workflow.keys():
             input = f"wkf_{workflow_name}_{key}"
             if input in context.scene.keys():
-                workflow_data[key]["inputs"]["value"] = getattr(bpy.context.scene, input, None)
+                workflow[key]["inputs"]["value"] = getattr(bpy.context.scene, input, None)
 
-        # Get the server URL from addon preferences
+        # Establish the WebSocket connection
+        self.report({'INFO'}, "Connecting to server...")
+        connection.connect()
+        self.report({'INFO'}, "Connection established.")
+
+        # Send workflow to ComfyUI server
+        client_id = addon_prefs.client_id
+        payload = {"prompt": workflow, "client_id": client_id}
         server_address = addon_prefs.server_address
-        client_id = context.scene.client_id
+        response = requests.post(server_address + "/prompt", json=payload)
 
-        # Send the workflow to the ComfyUI server
-        try:
-            payload = { "prompt": workflow_data, "client_id": client_id }
-            response = requests.post(server_address + "/prompt", json=payload)
-            if response.status_code == 200:
-                self.report({'INFO'}, "Workflow sent successfully.")
-                context.scene.prompt_id = response.json().get("prompt_id", "")
-            else:
-                self.report({'ERROR'}, f"Failed to send workflow: {response.status_code} - {response.text}")
-        except Exception as e:
-            self.report({'ERROR'}, f"Failed to send workflow: {e}")
+        if response.status_code != 200:
+            self.report({'ERROR'}, f"Failed to send workflow: {response.status_code} - {response.text}")
             return {'CANCELLED'}
+        
+        self.report({'INFO'}, "Workflow sent successfully.")
+        prompt_id = response.json().get("prompt_id", "")
+
+        # Start the WebSocket listener in a separate thread
+        listener_thread = threading.Thread(target=connection.listen, args=(workflow, prompt_id), daemon=True)
+        listener_thread.start()
+        self.report({'INFO'}, "WebSocket listener started.")
 
         return {'FINISHED'}
 

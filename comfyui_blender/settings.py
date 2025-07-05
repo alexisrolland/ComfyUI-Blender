@@ -1,19 +1,27 @@
 import bpy
 import os
+import uuid
 
 class Settings(bpy.types.AddonPreferences):
-    # The bl_idname must match the addon name ()
+    # The bl_idname must match the addon name
     # The addon name is the folder name where this file is located
     bl_idname = "comfyui_blender"
+
+    client_id: bpy.props.StringProperty(
+        name="Client Id",
+        description="Unique identifier of your Blender plugin",
+        default=str(uuid.uuid4())
+    )
 
     server_address: bpy.props.StringProperty(
         name="Server Address",
         description="URL of the ComfyUI server",
         default="http://127.0.0.1:8188"
     )
-    server_connection_status: bpy.props.BoolProperty(
+
+    connection_status: bpy.props.BoolProperty(
         name="Connection Status",
-        description="Indicate if the plugin is connected to the ComfyUI server",
+        description="Indicate if the Blender plugin is connected to the ComfyUI server",
         default=False
     )
 
@@ -43,30 +51,20 @@ class Settings(bpy.types.AddonPreferences):
     def draw(self, context):
         layout = self.layout
 
-        # Server address
-        col = layout.column(align=True)
+        # Client Id and server address
+        col = layout.column()
+        col.label(text="Server:")
+        col.prop(self, "client_id", emboss=False)
         col.prop(self, "server_address")
 
-        # Connection status
-        row = col.row(align=True)
-        row.label(text="Server Status:")
-        if self.server_connection_status:
-           row.label(text="Connected", icon="LINKED")
-        else:
-           row.label(text="Disconnected", icon="UNLINKED")
-
-        # Buttons to connect to the server
-        row = layout.row()
-        row.operator("comfy.connect_to_server", text="Connect to Server")
-        row.operator("comfy.disconnect_from_server", text="Disconnect from Server")
-
         # Workflows folder
-        col = layout.column(align=True)
-        row = col.split(factor=0.8, align=True)
+        col = layout.column()
+        col.label(text="Folders:")
+        row = col.split(factor=0.8)
         row.prop(self, "workflow_folder", text="Workflows Folder")
         row.operator("comfy.select_workflow_folder", text="Select")
 
         # Outputs folder
-        row = col.split(factor=0.8, align=True)
+        row = col.split(factor=0.8)
         row.prop(self, "output_folder", text="Outputs Folder")
         row.operator("comfy.select_output_folder", text="Select")

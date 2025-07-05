@@ -1,4 +1,5 @@
 import bpy
+import json
 import os
 import shutil
 from ..utils import parse_workflow_for_inputs, create_dynamic_properties
@@ -38,8 +39,10 @@ class COMFY_OT_ImportWorkflow(bpy.types.Operator):
                 self.report({'ERROR'}, f"Failed to copy workflow: {e}")
             
             # Create dynamic properties for the imported workflow
+            with open(destination, "r") as f:
+                workflow = json.load(f)
+            inputs = parse_workflow_for_inputs(workflow)
             workflow_name = os.path.splitext(base_name)[0]
-            inputs = parse_workflow_for_inputs(destination)
             create_dynamic_properties(workflow_name, inputs)
         else:
             self.report({'ERROR'}, "Selected file is not a JSON file.")
