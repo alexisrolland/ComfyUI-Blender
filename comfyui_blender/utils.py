@@ -18,7 +18,11 @@ def download_image(filename, subfolder, type):
         image_data = response.read()
 
     # Save the image in the output folder
-    filepath = os.path.join(outputs_folder, subfolder, filename)
+    folder = os.path.join(outputs_folder, subfolder)
+    filepath = os.path.join(folder, filename)
+
+     # Create subfolder if it does not exist
+    os.makedirs(folder, exist_ok=True)
     with open(filepath, 'wb') as file:
         file.write(image_data)
 
