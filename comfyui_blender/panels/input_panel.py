@@ -1,39 +1,53 @@
-import bpy
+"""Panel to display a workflow inputs."""
 import json
 import os
-from ..utils import parse_workflow_for_inputs
 
-class COMFY_PT_InputPanel(bpy.types.Panel):
+import bpy
+
+from .. import workflow as w
+
+class ComfyBlenderPanelInput(bpy.types.Panel):
+    """Panel to display a workflow inputs."""
+
     bl_label = "Inputs"
-    bl_idname = "COMFY_PT_InputPanel"
+    bl_idname = "COMFY_PT_Input"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_category = "ComfyUI"
 
     def draw(self, context):
+        """Draw the panel."""
+
         layout = self.layout
+        box = layout.box()
 
-        # Parse selected workflow and add inputs to panel
+        # Get the selected workflow
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        workflow_folder = addon_prefs.workflow_folder
-        selected_workflow = context.scene.workflow
-        workflow_path = os.path.join(workflow_folder, selected_workflow)
+        workflows_folder = str(addon_prefs.workflows_folder)
+        workflow_file = str(addon_prefs.workflow)
+        workflow_path = os.path.join(workflows_folder, workflow_file)
+
+        # Load the workflow JSON file
         if os.path.exists(workflow_path) and os.path.isfile(workflow_path):
-            with open(workflow_path, "r") as f:
+            with open(workflow_path, "r",  encoding="utf-8") as f:
                 workflow = json.load(f)
-            inputs = parse_workflow_for_inputs(workflow)
 
-            # Create panel properties for each input
-            box = layout.box()
-            workflow_name = os.path.splitext(os.path.basename(workflow_path))[0]
-            for key in inputs.keys():
-                box.prop(context.scene, f"wkf_{workflow_name}_{key}")
+            # Get sorted inputs from the workflow
+            inputs = w.parse_workflow_for_inputs(workflow)
 
-            # Button to run the selected workflow
-            box.operator("comfy.run_workflow", text="Run Workflow")
+            # Display workflow input properties
+            if hasattr(context.scene, "current_workflow"):
+                current_workflow = context.scene.current_workflow
+                for key in inputs:
+                    box.prop(current_workflow, f"node_{key}")
+                box.operator("comfy.run_workflow", text="Run Workflow")
 
 def register():
-    bpy.utils.register_class(COMFY_PT_InputPanel)
+    """Register the panel."""
+
+    bpy.utils.register_class(ComfyBlenderPanelInput)
 
 def unregister():
-    bpy.utils.unregister_class(COMFY_PT_InputPanel)
+    """Unregister the panel."""
+
+    bpy.utils.unregister_class(ComfyBlenderPanelInput)

@@ -1,11 +1,16 @@
-import bpy
+"""Functions to manage the WebSocket connection to the ComfyUI server."""
 import json
 import websocket
-from .utils import download_image, parse_workflow_for_outputs
+
+import bpy
+
+from .utils import download_image
+from .workflow import parse_workflow_for_outputs
+
 
 # Global variable to manage the WebSocket connection
-websocket_connection = None
-websocket_listening = False
+WS_CONNECTION = None
+WS_LISTENING = False
 
 def connect():
     """Connect to the WebSocket server."""
@@ -22,24 +27,23 @@ def connect():
         server_address = server_address.replace("https://", "wss://")
     elif "http://" in server_address:
         server_address = server_address.replace("http://", "ws://")
-    
+
     # Establish the WebSocket connection
-    global websocket_connection
-    websocket_connection = websocket.WebSocket()
-    websocket_connection.connect(server_address)
+    global WS_CONNECTION
+    WS_CONNECTION = websocket.WebSocket()
+    WS_CONNECTION.connect(server_address)
 
     # Update connection status
-    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
     addon_prefs.connection_status = True
 
 def disconnect():
     """Disconnect from the WebSocket server."""
 
-    global websocket_connection, websocket_listening
-    websocket_listening = False
-    if websocket_connection:
-        websocket_connection.close()
-        websocket_connection = None
+    global WS_CONNECTION, WS_LISTENING
+    WS_LISTENING = False
+    if WS_CONNECTION:
+        WS_CONNECTION.close()
+        WS_CONNECTION = None
 
     # Update connection status
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
@@ -52,22 +56,25 @@ def listen(workflow, prompt_id):
     outputs = parse_workflow_for_outputs(workflow)
 
     # Get WebSocket connection
-    global websocket_connection, websocket_listening
-    websocket_listening = True
+    global WS_CONNECTION, WS_LISTENING
+    WS_LISTENING = True
+
+    # Get add-on preferences
+    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
 
     # Start listening for messages
-    while websocket_listening:
-        message = websocket_connection.recv()
+    while WS_LISTENING:
+        message = WS_CONNECTION.recv()
 
         # Process the message
         if isinstance(message, str) and message != "":
             message = json.loads(message)
             print(f"Received message: {message}")
 
-            # Check if execution is complete
+            # Check number of workflows in the queue
             if message["type"] == "status":
                 data = message["data"]
-                bpy.context.scene.queue = data["status"]["exec_info"]["queue_remaining"]
+                addon_prefs.queue = data["status"]["exec_info"]["queue_remaining"]
 
             # Check if execution is complete
             if message["type"] == "executing":
@@ -81,9 +88,9 @@ def listen(workflow, prompt_id):
                 data = message["data"]
                 if data["prompt_id"] == prompt_id:
                     key = data["node"]
-                    if key in outputs.keys() and outputs[key]["class_type"] == "BlenderOutputSaveImage":
-                            for output in data["output"]["images"]:
-                                download_image(output["filename"], output["subfolder"], output["type"])
+                    if key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
+                        for output in data["output"]["images"]:
+                            download_image(output["filename"], output["subfolder"], output["type"])
 
     # Close the WebSocket connection
     disconnect()

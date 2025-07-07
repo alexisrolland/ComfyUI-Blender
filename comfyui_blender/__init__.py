@@ -1,22 +1,21 @@
-import bpy
-import json
-import os
+"""ComfyUI Blender Add-on"""
 import subprocess
 import sys
 
 from .operators import (
     import_workflow,
+    open_file_browser,
     run_workflow,
-    select_output_folder,
-    select_workflow_folder
+    select_outputs_folder,
+    select_workflows_folder
 )
 from .panels import (
-    comfyui_panel,
     input_panel,
-    output_panel
+    output_panel,
+    workflow_panel
 )
-from .settings import Settings
-from .utils import get_workflow_list, parse_workflow_for_inputs
+from . import settings
+
 
 bl_info = {
     "name": "ComfyUI Blender",
@@ -30,11 +29,9 @@ bl_info = {
     "category": "3D View",
 }
 
-# Global variable to manage the WebSocket connection
-websocket_connection = None
-
 def install_dependencies():
     """Install required Python dependencies."""
+
     required_packages = ["websocket-client"]
     for package in required_packages:
         try:
@@ -44,72 +41,40 @@ def install_dependencies():
             subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 
 def register():
+    """Register add-on preferences, operators, and panels."""
+
     # Install dependencies
     install_dependencies()
 
     # Preferences
-    bpy.utils.register_class(Settings)
+    settings.register()
 
     # Operators
     import_workflow.register()
+    open_file_browser.register()
     run_workflow.register()
-    select_output_folder.register()
-    select_workflow_folder.register()
+    select_outputs_folder.register()
+    select_workflows_folder.register()
 
     # Panels
-    comfyui_panel.register()
+    workflow_panel.register()
     input_panel.register()
     output_panel.register()
 
-    # Properties
-    bpy.types.Scene.workflow = bpy.props.EnumProperty(
-        name="Workflow",
-        description="Workflow to send to the ComfyUI server",
-        items=get_workflow_list
-    )
-    bpy.types.Scene.queue = bpy.props.IntProperty(
-        name="Queue",
-        description="Number of workflows in the queue",
-        default=0
-    )
-
-    class OutputPropertyGroup(bpy.types.PropertyGroup):
-        """Property group for outputs."""
-        filename: bpy.props.StringProperty(name="filename", description="Filename of the output")
-    bpy.utils.register_class(OutputPropertyGroup)
-    bpy.types.Scene.output = bpy.props.CollectionProperty(type=OutputPropertyGroup)
-
 def unregister():
-    # Remove dynamic properties created for workflows inputs
-    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-    workflow_folder = addon_prefs.workflow_folder
-    if os.path.exists(workflow_folder) and os.path.isdir(workflow_folder):
-        for workflow_file in os.listdir(workflow_folder):
-            workflow_path = os.path.join(workflow_folder, workflow_file)
-            with open(workflow_path, "r") as f:
-                workflow = json.load(f)
-            inputs = parse_workflow_for_inputs(workflow)
-            workflow_name = os.path.splitext(os.path.basename(workflow_path))[0]
-            for key in inputs.keys():
-                attribute_name = f"wkf_{workflow_name}_{key}"
-                if hasattr(bpy.types.Scene, attribute_name):
-                    delattr(bpy.types.Scene, attribute_name)
+    """Unregister add-on preferences, operators, and panels."""
 
     # Preferences
-    bpy.utils.unregister_class(Settings)
+    settings.unregister()
 
     # Operators
     import_workflow.unregister()
+    open_file_browser.unregister()
     run_workflow.unregister()
-    select_output_folder.unregister()
-    select_workflow_folder.unregister()
+    select_outputs_folder.unregister()
+    select_workflows_folder.unregister()
 
     # Panels
-    comfyui_panel.unregister()
+    workflow_panel.unregister()
     input_panel.unregister()
     output_panel.unregister()
-
-    # Properties
-    del bpy.types.Scene.workflow
-    del bpy.types.Scene.queue
-    del bpy.types.Scene.output

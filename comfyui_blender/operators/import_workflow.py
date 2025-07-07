@@ -1,11 +1,13 @@
-import bpy
-import json
+"""Operator to import a workflow JSON file."""
 import os
 import shutil
-from ..utils import parse_workflow_for_inputs, create_dynamic_properties
 
-class COMFY_OT_ImportWorkflow(bpy.types.Operator):
+import bpy
+
+
+class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
     """Operator to import a workflow JSON file."""
+
     bl_idname = "comfy.import_workflow"
     bl_label = "Import Workflow"
     bl_description = "Import a workflow JSON file"
@@ -13,47 +15,50 @@ class COMFY_OT_ImportWorkflow(bpy.types.Operator):
     filepath: bpy.props.StringProperty(subtype="FILE_PATH")
 
     def execute(self, context):
+        """Execute the operator."""
+
         if self.filepath.endswith(".json"):
-            # Get the workflows folder from addon preferences
+            # Get the selected workflow
             addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-            workflow_folder = addon_prefs.workflow_folder
+            workflows_folder = str(addon_prefs.workflows_folder)
+            workflow_file = os.path.basename(self.filepath)
+            workflow_path = os.path.join(workflows_folder, workflow_file)
 
             # Create the workflows folder if it doesn't exist
-            os.makedirs(workflow_folder, exist_ok=True)
-            base_name = os.path.basename(self.filepath)
-            destination = os.path.join(workflow_folder, base_name)
+            os.makedirs(workflows_folder, exist_ok=True)
 
             # Handle file name conflicts by appending an incremental number
-            if os.path.exists(destination):
-                name, ext = os.path.splitext(base_name)
+            if os.path.exists(workflow_path):
+                name, ext = os.path.splitext(workflow_file)
                 counter = 1
-                while os.path.exists(os.path.join(workflow_folder, f"{name}_{counter}{ext}")):
+                while os.path.exists(os.path.join(workflows_folder, f"{name}_{counter}{ext}")):
                     counter += 1
-                destination = os.path.join(workflow_folder, f"{name}_{counter}{ext}")
+                workflow_path = os.path.join(workflows_folder, f"{name}_{counter}{ext}")
 
-            # Copy the file to the workflows directory
             try:
-                shutil.copy(self.filepath, destination)
-                self.report({'INFO'}, f"Workflow copied to: {destination}")
+                # Copy the file to the workflows directory
+                shutil.copy(self.filepath, workflow_path)
+                self.report({'INFO'}, f"Workflow copied to: {workflow_path}")
+
             except Exception as e:
                 self.report({'ERROR'}, f"Failed to copy workflow: {e}")
-            
-            # Create dynamic properties for the imported workflow
-            with open(destination, "r") as f:
-                workflow = json.load(f)
-            inputs = parse_workflow_for_inputs(workflow)
-            workflow_name = os.path.splitext(base_name)[0]
-            create_dynamic_properties(workflow_name, inputs)
+
         else:
             self.report({'ERROR'}, "Selected file is not a JSON file.")
         return {'FINISHED'}
 
     def invoke(self, context, event):
+        """Invoke the file selector for importing a workflow."""
+
         context.window_manager.fileselect_add(self)
         return {'RUNNING_MODAL'}
 
 def register():
-    bpy.utils.register_class(COMFY_OT_ImportWorkflow)
+    """Register the operator."""
+
+    bpy.utils.register_class(ComfyBlenderOperatorImportWorkflow)
 
 def unregister():
-    bpy.utils.unregister_class(COMFY_OT_ImportWorkflow)
+    """Unregister the operator."""
+
+    bpy.utils.unregister_class(ComfyBlenderOperatorImportWorkflow)
