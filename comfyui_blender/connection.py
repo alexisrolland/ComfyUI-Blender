@@ -69,7 +69,7 @@ def listen(workflow, prompt_id):
         # Process the message
         if isinstance(message, str) and message != "":
             message = json.loads(message)
-            print(f"Received message: {message}")
+            # print(f"Received message: {message}") # Debugging
 
             # Check number of workflows in the queue
             if message["type"] == "status":
