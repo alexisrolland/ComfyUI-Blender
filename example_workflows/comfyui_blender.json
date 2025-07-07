@@ -1,8 +1,8 @@
 {
   "id": "460b719e-64bc-4057-b1f8-d34945a6a2b7",
   "revision": 0,
-  "last_node_id": 17,
-  "last_link_id": 22,
+  "last_node_id": 18,
+  "last_link_id": 23,
   "nodes": [
     {
       "id": 4,
@@ -205,79 +205,6 @@
       ],
       "color": "#432",
       "bgcolor": "#653"
-    },
-    {
-      "id": 8,
-      "type": "VAEDecode",
-      "pos": [
-        1130,
-        70
-      ],
-      "size": [
-        210,
-        46
-      ],
-      "flags": {},
-      "order": 13,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "samples",
-          "type": "LATENT",
-          "link": 7
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 8
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "slot_index": 0,
-          "links": [
-            9
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "VAEDecode"
-      },
-      "widgets_values": []
-    },
-    {
-      "id": 9,
-      "type": "SaveImage",
-      "pos": [
-        1370,
-        70
-      ],
-      "size": [
-        210,
-        270
-      ],
-      "flags": {},
-      "order": 14,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 9
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41"
-      },
-      "widgets_values": [
-        "ComfyUI"
-      ]
     },
     {
       "id": 13,
@@ -703,6 +630,83 @@
       ],
       "color": "#432",
       "bgcolor": "#653"
+    },
+    {
+      "id": 8,
+      "type": "VAEDecode",
+      "pos": [
+        1130,
+        70
+      ],
+      "size": [
+        210,
+        46
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 7
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            23
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.41",
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 18,
+      "type": "BlenderOutputSaveImage",
+      "pos": [
+        1360,
+        70
+      ],
+      "size": [
+        272.6714782714844,
+        58
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 23
+        }
+      ],
+      "outputs": [],
+      "title": "Save Image",
+      "properties": {
+        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "ver": "0b0154ee2adc6ce4e722b60de321f5b4d994d346",
+        "Node name for S&R": "BlenderOutputSaveImage"
+      },
+      "widgets_values": [
+        "blender/ComfyUI"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
     }
   ],
   "links": [
@@ -771,14 +775,6 @@
       "VAE"
     ],
     [
-      9,
-      8,
-      0,
-      9,
-      0,
-      "IMAGE"
-    ],
-    [
       10,
       10,
       0,
@@ -841,6 +837,14 @@
       3,
       6,
       "COMBO"
+    ],
+    [
+      23,
+      8,
+      0,
+      18,
+      0,
+      "IMAGE"
     ]
   ],
   "groups": [],
