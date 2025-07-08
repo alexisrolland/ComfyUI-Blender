@@ -12,58 +12,69 @@ from bpy.props import (
 )
 
 
-def create_inputs_properties(inputs):
-    """Create dynamic properties for each input of the workflow."""
+def create_class_properties(dictionary):
+    """Create dynamic properties for each input and output of the workflow."""
 
-    inputs_properties = {}
-    for key, node in inputs.items():
+    properties = {}
+    for key, node in dictionary.items():
         property_name = f"node_{key}"
         property_name = re.sub(r"[^a-zA-Z0-9_]", "_", property_name).lower()        
         metadata = node.get("_meta", {})
         name = metadata.get("title", f"Node {key}")
 
+        # Input properties
         # Combo box
         if node["class_type"] == "BlenderInputCombo":
-            inputs_properties[property_name] = EnumProperty(
+            properties[property_name] = EnumProperty(
                 name=name,
                 default=node["inputs"].get("default", ""),
                 items=[(i, i, "") for i in node["inputs"]["list"].split("\n")]
             )
+            continue
 
         # Float
         if node["class_type"] == "BlenderInputFloat":
-            inputs_properties[property_name] = FloatProperty(
+            properties[property_name] = FloatProperty(
                 name=name,
                 default=node["inputs"].get("default", 0.0),
                 min=node["inputs"].get("min", -1e38),
                 max=node["inputs"].get("max", 1e38),
                 step=node["inputs"].get("step", 0.01)
             )
+            continue
 
         # Integer
         if node["class_type"] == "BlenderInputInt":
-            inputs_properties[property_name] = IntProperty(
+            properties[property_name] = IntProperty(
                 name=name,
                 default=node["inputs"].get("default", 0),
                 min=node["inputs"].get("min", -2147483648),
                 max=node["inputs"].get("max", 2147483647),
                 step=node["inputs"].get("step", 1)
             )
+            continue
 
         # String
         if node["class_type"] == "BlenderInputString":
-            inputs_properties[property_name] = StringProperty(
+            properties[property_name] = StringProperty(
                 name=name,
                 default=node["inputs"].get("default", "")
             )
+            continue
 
-        # String Multiline
+        # String multiline
         elif node["class_type"] == "BlenderInputStringMultiline":
-            inputs_properties[property_name] = StringProperty(
+            properties[property_name] = StringProperty(
                 name=name,
                 default=node["inputs"].get("default", "")
             )
-    return inputs_properties
+            continue
+        
+        # Output properties
+        # Save image
+        if node["class_type"] == "BlenderOutputSaveImage":
+            properties[property_name] = StringProperty(name=name)
+    return properties
 
 def create_workflow_class(workflow_file, inputs_properties):
     """Create a new PropertyGroup class for a workflow."""
@@ -141,11 +152,11 @@ def register_workflow_class(self, context):
         with open(workflow_path, "r",  encoding="utf-8") as f:
             workflow = json.load(f)
 
-        # Get inputs from the workflow
-        # This function filters nodes with 'class_type' starting with 'BlenderInput...'
+        # Get inputs and outputs from the workflow
         inputs = parse_workflow_for_inputs(workflow)
-        inputs_properties = create_inputs_properties(inputs)
-        workflow_class = create_workflow_class(workflow_file, inputs_properties)
+        outputs = parse_workflow_for_outputs(workflow)
+        properties = create_class_properties({**inputs, **outputs}) # Merge dictionaries
+        workflow_class = create_workflow_class(workflow_file, properties)
 
         # Unregister the class if it already exists
         if hasattr(bpy.types, workflow_class.__name__):

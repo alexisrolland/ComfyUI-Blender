@@ -6,6 +6,7 @@ import bpy
 
 from .. import workflow as w
 
+
 class ComfyBlenderPanelInput(bpy.types.Panel):
     """Panel to display a workflow inputs."""
 
@@ -15,11 +16,16 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
     bl_region_type = 'UI'
     bl_category = "ComfyUI"
 
+    def draw_header(self, context):
+        """Draw the panel header."""
+
+        layout = self.layout
+        layout.label(icon="EXPERIMENTAL")
+
     def draw(self, context):
         """Draw the panel."""
 
         layout = self.layout
-        box = layout.box()
 
         # Get the selected workflow
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
@@ -29,6 +35,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
         # Load the workflow JSON file
         if os.path.exists(workflow_path) and os.path.isfile(workflow_path):
+            box = layout.box()
             with open(workflow_path, "r",  encoding="utf-8") as f:
                 workflow = json.load(f)
 

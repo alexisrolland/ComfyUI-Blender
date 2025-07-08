@@ -1,5 +1,6 @@
 """Functions to manage the WebSocket connection to the ComfyUI server."""
 import json
+import os
 import websocket
 
 import bpy
@@ -91,6 +92,9 @@ def listen(workflow, prompt_id):
                     if key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
                         for output in data["output"]["images"]:
                             download_image(output["filename"], output["subfolder"], output["type"])
+                            # Update workflow class and property
+                            filepath = os.path.join(output["subfolder"], output["filename"])
+                            bpy.context.scene.current_workflow[f"node_{key}"] = filepath
 
     # Close the WebSocket connection
     disconnect()
