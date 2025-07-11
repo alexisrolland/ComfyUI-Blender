@@ -1,3 +1,3 @@
 # ComfyUI Blender
 
-This folder contains the source code of the Blender plugin.
+This folder contains the source code of the Blender add-on.

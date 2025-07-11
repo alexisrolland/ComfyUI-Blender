@@ -21,11 +21,11 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
     # The addon name is the folder name where this file is located
     bl_idname = "comfyui_blender"
 
-    # Client Id used to identify the Blender plugin instance
+    # Client Id used to identify the Blender add-on instance
     # This is used when connecting to the ComfyUI server via WebSocket
     client_id: StringProperty(
         name="Client Id",
-        description="Unique identifier of your Blender plugin",
+        description="Unique identifier of your Blender add-on",
         default=str(uuid.uuid4())
     )
 
@@ -37,10 +37,10 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
     )
 
     # Connection status
-    # This is used to indicate if the Blender plugin is connected to the ComfyUI server via WebSocket
+    # This is used to indicate if the Blender add-on is connected to the ComfyUI server via WebSocket
     connection_status: BoolProperty(
         name="Connection Status",
-        description="Indicate if the Blender plugin is connected to the ComfyUI server",
+        description="Indicate if the Blender add-on is connected to the ComfyUI server",
         default=False
     )
 

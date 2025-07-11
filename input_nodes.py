@@ -8,7 +8,7 @@ MAX_FLOAT = 2147483647.00
 MAX_INT = 2147483647
 
 class BlenderInputCombo(String):
-    """Node used by ComfyUI Blender Plugin to input a value from a combo box in a workflow."""
+    """Node used by ComfyUI Blender add-on to input a value from a combo box in a workflow."""
     CATEGORY = "blender/inputs"
     RETURN_TYPES = (IO.ANY,)
 
@@ -24,7 +24,7 @@ class BlenderInputCombo(String):
         return (value,)
 
 class BlenderInputFloat(Float):
-    """Node used by ComfyUI Blender Plugin to input a float in a workflow."""
+    """Node used by ComfyUI Blender add-on to input a float in a workflow."""
     CATEGORY = "blender/inputs"
 
     @classmethod
@@ -42,7 +42,7 @@ class BlenderInputFloat(Float):
         return (value,)
 
 class BlenderInputInt(Int):
-    """Node used by ComfyUI Blender Plugin to input an integer in a workflow."""
+    """Node used by ComfyUI Blender add-on to input an integer in a workflow."""
     CATEGORY = "blender/inputs"
 
     @classmethod
@@ -60,7 +60,7 @@ class BlenderInputInt(Int):
         return (value,)
 
 class BlenderInputString(String):
-    """Node used by ComfyUI Blender Plugin to input a string in a workflow."""
+    """Node used by ComfyUI Blender add-on to input a string in a workflow."""
     CATEGORY = "blender/inputs"
 
     @classmethod
@@ -74,7 +74,7 @@ class BlenderInputString(String):
         return (value,)
 
 class BlenderInputStringMultiline(StringMultiline):
-    """Node used by ComfyUI Blender Plugin to input a multiline string in a workflow."""
+    """Node used by ComfyUI Blender add-on to input a multiline string in a workflow."""
     CATEGORY = "blender/inputs"
 
     @classmethod
