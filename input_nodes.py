@@ -9,7 +9,7 @@ MAX_INT = 2147483647
 
 class BlenderInputCombo(String):
     """Node used by ComfyUI Blender Plugin to input a value from a combo box in a workflow."""
-    CATEGORY = "blender plugin/inputs"
+    CATEGORY = "blender/inputs"
     RETURN_TYPES = (IO.ANY,)
 
     @classmethod
@@ -25,7 +25,7 @@ class BlenderInputCombo(String):
 
 class BlenderInputFloat(Float):
     """Node used by ComfyUI Blender Plugin to input a float in a workflow."""
-    CATEGORY = "blender plugin/inputs"
+    CATEGORY = "blender/inputs"
 
     @classmethod
     def INPUT_TYPES(s):
@@ -43,7 +43,7 @@ class BlenderInputFloat(Float):
 
 class BlenderInputInt(Int):
     """Node used by ComfyUI Blender Plugin to input an integer in a workflow."""
-    CATEGORY = "blender plugin/inputs"
+    CATEGORY = "blender/inputs"
 
     @classmethod
     def INPUT_TYPES(s):
@@ -61,7 +61,7 @@ class BlenderInputInt(Int):
 
 class BlenderInputString(String):
     """Node used by ComfyUI Blender Plugin to input a string in a workflow."""
-    CATEGORY = "blender plugin/inputs"
+    CATEGORY = "blender/inputs"
 
     @classmethod
     def INPUT_TYPES(s):
@@ -75,7 +75,7 @@ class BlenderInputString(String):
 
 class BlenderInputStringMultiline(StringMultiline):
     """Node used by ComfyUI Blender Plugin to input a multiline string in a workflow."""
-    CATEGORY = "blender plugin/inputs"
+    CATEGORY = "blender/inputs"
 
     @classmethod
     def INPUT_TYPES(s):

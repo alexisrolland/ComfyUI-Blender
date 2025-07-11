@@ -12,18 +12,26 @@ class ComfyBlenderOperatorOpenFileBrowser(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
-        # Open area and change it to a file browser
+        # Split the screen to create a new area
         bpy.ops.screen.area_split(direction="VERTICAL", factor=0.25)
-        areas = context.screen.areas
-        areas[-1].type = "FILE_BROWSER"
 
-        # Set the folder path of the file browser to a specific path
-        for space in areas[-1].spaces:
-            if space.type == "FILE_BROWSER":
+        # Get the newly created area (the last one)
+        area = context.screen.areas[-1]
+        area.type = "FILE_BROWSER"
+
+        # Access the file browser space
+        space = area.spaces[0]
+
+        # Set the directory path using a timer to ensure it is initialized
+        def set_directory():
+            if space.params is not None:
                 addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-                outputs_folder = addon_prefs.outputs_folder.encode()
-                space.params.directory = outputs_folder
-        bpy.ops.comfy.set_file_browser_path()
+                space.params.directory = addon_prefs.outputs_folder.encode("utf-8")
+                return None  # Stop the timer
+            return 0.1  # Try again in 0.1 seconds
+
+        # Use a timer to set the directory after initialization
+        bpy.app.timers.register(set_directory, first_interval=0.1)
         return {'FINISHED'}
 
 def register():

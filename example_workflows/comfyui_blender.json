@@ -1,7 +1,7 @@
 {
   "id": "460b719e-64bc-4057-b1f8-d34945a6a2b7",
   "revision": 0,
-  "last_node_id": 18,
+  "last_node_id": 19,
   "last_link_id": 23,
   "nodes": [
     {
@@ -16,7 +16,7 @@
         100
       ],
       "flags": {},
-      "order": 9,
+      "order": 10,
       "mode": 0,
       "inputs": [
         {
@@ -83,7 +83,7 @@
         106
       ],
       "flags": {},
-      "order": 8,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -207,82 +207,6 @@
       "bgcolor": "#653"
     },
     {
-      "id": 13,
-      "type": "BlenderInputStringMultiline",
-      "pos": [
-        300,
-        -10
-      ],
-      "size": [
-        210,
-        166
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            19
-          ]
-        }
-      ],
-      "title": "Prompt",
-      "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
-        "ver": "8d6e3807f38676b5591286c5fbe3725f77feac3b",
-        "Node name for S&R": "BlenderInputStringMultiline"
-      },
-      "widgets_values": [
-        "a school girl in uniform with large fennec ears",
-        4,
-        "a school girl in uniform with large fennec ears"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 14,
-      "type": "BlenderInputString",
-      "pos": [
-        300,
-        220
-      ],
-      "size": [
-        210,
-        106
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            18
-          ]
-        }
-      ],
-      "title": "Negative Prompt",
-      "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
-        "ver": "8d6e3807f38676b5591286c5fbe3725f77feac3b",
-        "Node name for S&R": "BlenderInputString"
-      },
-      "widgets_values": [
-        "",
-        5,
-        ""
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 10,
       "type": "BlenderInputCombo",
       "pos": [
@@ -294,7 +218,7 @@
         160
       ],
       "flags": {},
-      "order": 4,
+      "order": 2,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -322,58 +246,6 @@
       "bgcolor": "#653"
     },
     {
-      "id": 7,
-      "type": "CLIPTextEncode",
-      "pos": [
-        550,
-        220
-      ],
-      "size": [
-        210.29940795898438,
-        88
-      ],
-      "flags": {
-        "collapsed": false
-      },
-      "order": 11,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 5
-        },
-        {
-          "name": "text",
-          "type": "STRING",
-          "widget": {
-            "name": "text"
-          },
-          "link": 18
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "slot_index": 0,
-          "links": [
-            6
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        ""
-      ],
-      "color": "#322",
-      "bgcolor": "#533"
-    },
-    {
       "id": 6,
       "type": "CLIPTextEncode",
       "pos": [
@@ -387,7 +259,7 @@
       "flags": {
         "collapsed": false
       },
-      "order": 10,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
@@ -437,7 +309,7 @@
         262
       ],
       "flags": {},
-      "order": 12,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
@@ -522,7 +394,7 @@
         178
       ],
       "flags": {},
-      "order": 5,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -563,7 +435,7 @@
         178
       ],
       "flags": {},
-      "order": 6,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -593,45 +465,6 @@
       "bgcolor": "#653"
     },
     {
-      "id": 16,
-      "type": "BlenderInputCombo",
-      "pos": [
-        550,
-        1020
-      ],
-      "size": [
-        210,
-        160
-      ],
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "*",
-          "type": "*",
-          "links": [
-            22
-          ]
-        }
-      ],
-      "title": "Sampler",
-      "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
-        "ver": "561909ec9bc07c069b0868b37a9dab6f2284a16f",
-        "Node name for S&R": "BlenderInputCombo"
-      },
-      "widgets_values": [
-        "dpmpp_2m",
-        6,
-        "dpmpp2_m",
-        "dpmpp2_m\neuler"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 8,
       "type": "VAEDecode",
       "pos": [
@@ -643,7 +476,7 @@
         46
       ],
       "flags": {},
-      "order": 13,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {
@@ -686,7 +519,7 @@
         58
       ],
       "flags": {},
-      "order": 14,
+      "order": 15,
       "mode": 0,
       "inputs": [
         {
@@ -704,6 +537,196 @@
       },
       "widgets_values": [
         "blender/ComfyUI"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 14,
+      "type": "BlenderInputString",
+      "pos": [
+        310,
+        220
+      ],
+      "size": [
+        210,
+        106
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            18
+          ]
+        }
+      ],
+      "title": "Negative Prompt",
+      "properties": {
+        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "ver": "8d6e3807f38676b5591286c5fbe3725f77feac3b",
+        "Node name for S&R": "BlenderInputString"
+      },
+      "widgets_values": [
+        "",
+        5,
+        ""
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 16,
+      "type": "BlenderInputCombo",
+      "pos": [
+        550,
+        1030
+      ],
+      "size": [
+        210,
+        160
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "*",
+          "type": "*",
+          "links": [
+            22
+          ]
+        }
+      ],
+      "title": "Sampler",
+      "properties": {
+        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "ver": "561909ec9bc07c069b0868b37a9dab6f2284a16f",
+        "Node name for S&R": "BlenderInputCombo"
+      },
+      "widgets_values": [
+        "dpmpp_2m",
+        6,
+        "dpmpp2_m",
+        "dpmpp2_m\neuler"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 7,
+      "type": "CLIPTextEncode",
+      "pos": [
+        550,
+        220
+      ],
+      "size": [
+        210.29940795898438,
+        88
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 5
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.41",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 13,
+      "type": "BlenderInputStringMultiline",
+      "pos": [
+        310,
+        -10
+      ],
+      "size": [
+        210,
+        166
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            19
+          ]
+        }
+      ],
+      "title": "Prompt",
+      "properties": {
+        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "ver": "8d6e3807f38676b5591286c5fbe3725f77feac3b",
+        "Node name for S&R": "BlenderInputStringMultiline"
+      },
+      "widgets_values": [
+        "a school girl in uniform with large fennec ears",
+        4,
+        "a school girl in uniform with large fennec ears"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 19,
+      "type": "MarkdownNote",
+      "pos": [
+        -120,
+        50
+      ],
+      "size": [
+        350,
+        200
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow\n\nMore info: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -851,10 +874,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.7646251029936846,
+      "scale": 0.7646251029936852,
       "offset": [
-        482.57438135396734,
-        107.38571859222611
+        425.32518270333935,
+        103.05104197835507
       ]
     },
     "frontendVersion": "1.21.7"
