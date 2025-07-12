@@ -3,8 +3,10 @@ import subprocess
 import sys
 
 from .operators import (
+    delete_output,
     import_workflow,
     open_file_browser,
+    open_image_editor,
     run_workflow,
     select_outputs_folder,
     select_workflows_folder
@@ -50,8 +52,10 @@ def register():
     settings.register()
 
     # Operators
+    delete_output.register()
     import_workflow.register()
     open_file_browser.register()
+    open_image_editor.register()
     run_workflow.register()
     select_outputs_folder.register()
     select_workflows_folder.register()
@@ -68,8 +72,10 @@ def unregister():
     settings.unregister()
 
     # Operators
+    delete_output.unregister()
     import_workflow.unregister()
     open_file_browser.unregister()
+    open_image_editor.unregister()
     run_workflow.unregister()
     select_outputs_folder.unregister()
     select_workflows_folder.unregister()

@@ -9,7 +9,7 @@ class ComfyBlenderOperatorSelectWorkflowFolder(bpy.types.Operator):
     bl_label = "Select Workflow Folder"
     bl_description = "Select a folder where workflows are stored"
 
-    directory: bpy.props.StringProperty(subtype="DIR_PATH")
+    directory: bpy.props.StringProperty(name="Directory", subtype="DIR_PATH")
 
     def execute(self, context):
         """Execute the operator."""

@@ -2,7 +2,7 @@
   "id": "460b719e-64bc-4057-b1f8-d34945a6a2b7",
   "revision": 0,
   "last_node_id": 19,
-  "last_link_id": 23,
+  "last_link_id": 24,
   "nodes": [
     {
       "id": 4,
@@ -298,91 +298,6 @@
       "bgcolor": "#353"
     },
     {
-      "id": 3,
-      "type": "KSampler",
-      "pos": [
-        790,
-        70
-      ],
-      "size": [
-        315,
-        262
-      ],
-      "flags": {},
-      "order": 13,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 1
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 4
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 6
-        },
-        {
-          "name": "latent_image",
-          "type": "LATENT",
-          "link": 2
-        },
-        {
-          "name": "steps",
-          "type": "INT",
-          "widget": {
-            "name": "steps"
-          },
-          "link": 20
-        },
-        {
-          "name": "cfg",
-          "type": "FLOAT",
-          "widget": {
-            "name": "cfg"
-          },
-          "link": 21
-        },
-        {
-          "name": "sampler_name",
-          "type": "COMBO",
-          "widget": {
-            "name": "sampler_name"
-          },
-          "link": 22
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "slot_index": 0,
-          "links": [
-            7
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "KSampler"
-      },
-      "widgets_values": [
-        156680208700286,
-        "fixed",
-        30,
-        7,
-        "dpmpp_2m",
-        "normal",
-        1
-      ]
-    },
-    {
       "id": 15,
       "type": "BlenderInputInt",
       "pos": [
@@ -508,40 +423,6 @@
       "widgets_values": []
     },
     {
-      "id": 18,
-      "type": "BlenderOutputSaveImage",
-      "pos": [
-        1360,
-        70
-      ],
-      "size": [
-        272.6714782714844,
-        58
-      ],
-      "flags": {},
-      "order": 15,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 23
-        }
-      ],
-      "outputs": [],
-      "title": "Save Image",
-      "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
-        "ver": "0b0154ee2adc6ce4e722b60de321f5b4d994d346",
-        "Node name for S&R": "BlenderOutputSaveImage"
-      },
-      "widgets_values": [
-        "blender/ComfyUI"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 14,
       "type": "BlenderInputString",
       "pos": [
@@ -575,45 +456,6 @@
         "",
         5,
         ""
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 16,
-      "type": "BlenderInputCombo",
-      "pos": [
-        550,
-        1030
-      ],
-      "size": [
-        210,
-        160
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "*",
-          "type": "*",
-          "links": [
-            22
-          ]
-        }
-      ],
-      "title": "Sampler",
-      "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
-        "ver": "561909ec9bc07c069b0868b37a9dab6f2284a16f",
-        "Node name for S&R": "BlenderInputCombo"
-      },
-      "widgets_values": [
-        "dpmpp_2m",
-        6,
-        "dpmpp2_m",
-        "dpmpp2_m\neuler"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -671,6 +513,29 @@
       "bgcolor": "#533"
     },
     {
+      "id": 19,
+      "type": "MarkdownNote",
+      "pos": [
+        -120,
+        50
+      ],
+      "size": [
+        350,
+        200
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow\n\nMore info: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
       "id": 13,
       "type": "BlenderInputStringMultiline",
       "pos": [
@@ -709,24 +574,159 @@
       "bgcolor": "#653"
     },
     {
-      "id": 19,
-      "type": "MarkdownNote",
+      "id": 3,
+      "type": "KSampler",
       "pos": [
-        -120,
-        50
+        790,
+        70
       ],
       "size": [
-        350,
-        200
+        315,
+        262
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 4
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 6
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 2
+        },
+        {
+          "name": "steps",
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": 20
+        },
+        {
+          "name": "cfg",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cfg"
+          },
+          "link": 21
+        },
+        {
+          "name": "sampler_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "sampler_name"
+          },
+          "link": 24
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "slot_index": 0,
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.41",
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        156680208700286,
+        "fixed",
+        30,
+        7,
+        "dpmpp_2m",
+        "normal",
+        1
+      ]
+    },
+    {
+      "id": 16,
+      "type": "BlenderInputCombo",
+      "pos": [
+        550,
+        1030
+      ],
+      "size": [
+        210,
+        203.23406982421875
       ],
       "flags": {},
       "order": 8,
       "mode": 0,
       "inputs": [],
-      "outputs": [],
-      "properties": {},
+      "outputs": [
+        {
+          "name": "*",
+          "type": "*",
+          "links": [
+            24
+          ]
+        }
+      ],
+      "title": "Sampler",
+      "properties": {
+        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "ver": "561909ec9bc07c069b0868b37a9dab6f2284a16f",
+        "Node name for S&R": "BlenderInputCombo"
+      },
       "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow\n\nMore info: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+        "dpmpp_2m",
+        6,
+        "dpmpp2_m",
+        "euler\neuler_ancestral\ndpm_2\ndpmpp_sde\ndpmpp2_m\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 18,
+      "type": "BlenderOutputSaveImage",
+      "pos": [
+        1360,
+        70
+      ],
+      "size": [
+        272.6714782714844,
+        58
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 23
+        }
+      ],
+      "outputs": [],
+      "title": "Save Image",
+      "properties": {
+        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "ver": "0b0154ee2adc6ce4e722b60de321f5b4d994d346",
+        "Node name for S&R": "BlenderOutputSaveImage"
+      },
+      "widgets_values": [
+        "blender"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -854,30 +854,30 @@
       "FLOAT"
     ],
     [
-      22,
-      16,
-      0,
-      3,
-      6,
-      "COMBO"
-    ],
-    [
       23,
       8,
       0,
       18,
       0,
       "IMAGE"
+    ],
+    [
+      24,
+      16,
+      0,
+      3,
+      6,
+      "COMBO"
     ]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.7646251029936852,
+      "scale": 1.0177160120845952,
       "offset": [
-        425.32518270333935,
-        103.05104197835507
+        -10.066915023234223,
+        -57.695478018576786
       ]
     },
     "frontendVersion": "1.21.7"

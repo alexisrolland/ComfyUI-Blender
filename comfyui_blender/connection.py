@@ -84,17 +84,22 @@ def listen(workflow, prompt_id):
                     if data["node"] is None:
                         break
 
-            # Check if the message is an executed output
+            # Check if the message type is executed with outputs
             if message["type"] == "executed":
                 data = message["data"]
                 if data["prompt_id"] == prompt_id:
                     key = data["node"]
+
+                    # Check class type to retrieve only outputs for the add-on
                     if key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
                         for output in data["output"]["images"]:
                             download_image(output["filename"], output["subfolder"], output["type"])
-                            # Update workflow class and property
-                            filepath = os.path.join(output["subfolder"], output["filename"])
-                            bpy.context.scene.current_workflow[f"node_{key}"] = filepath
+
+                            # Add image to outputs collection
+                            image = addon_prefs.outputs_collection.add()
+                            image.filename = output["filename"]
+                            image.filepath = os.path.join(output["subfolder"], output["filename"])
+                            image.type = "image"
 
     # Close the WebSocket connection
     disconnect()

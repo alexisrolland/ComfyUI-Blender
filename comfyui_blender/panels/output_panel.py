@@ -1,6 +1,5 @@
 """Panel to display generated outputs."""
 import os
-import json
 
 import bpy
 
@@ -27,39 +26,46 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
 
         # Open file browser
         layout = self.layout
-        layout.operator("comfy.open_file_browser", text="Open Outputs Folder")        
+        layout.operator("comfy.open_file_browser", text="Open Outputs Folder")
+        box = layout.box()
 
-        # Get the selected workflow
+        # Get outputs collection
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        workflows_folder = str(addon_prefs.workflows_folder)
-        workflow_file = str(addon_prefs.workflow)
-        workflow_path = os.path.join(workflows_folder, workflow_file)
+        outputs_folder = str(addon_prefs.outputs_folder)
+        for output in addon_prefs.outputs_collection:
+            # Display output of type image
+            if output.type == "image":
+                # Load image in the data block if it does not exist
+                if output.filename not in bpy.data.images:
+                    full_path = os.path.join(outputs_folder, output.filepath)
+                    bpy.data.images.load(full_path, check_existing=True)
 
-        # Load the workflow JSON file
-        if os.path.exists(workflow_path) and os.path.isfile(workflow_path):
-            box = layout.box()
-            with open(workflow_path, "r",  encoding="utf-8") as f:
-                workflow = json.load(f)
+                # Display image
+                if output.filename in bpy.data.images:
+                    bpy.data.images[output.filename].preview_ensure()
 
-            # Get outputs from the workflow
-            outputs = w.parse_workflow_for_outputs(workflow)
-            outputs_folder = str(addon_prefs.outputs_folder)
+                    # Image preview
+                    row = box.row()
+                    col = row.column(align=True)
+                    col.template_icon(icon_value=bpy.data.images[output.filename].preview.icon_id, scale=5)
 
-            # Display workflow output properties
-            if hasattr(context.scene, "current_workflow"):
-                current_workflow = context.scene.current_workflow
-                for key, node in outputs.items():
-                    # Image output
-                    if node["class_type"] == "BlenderOutputSaveImage":
-                        filepath = getattr(current_workflow, f"node_{key}")
-                        filepath = os.path.join(outputs_folder, filepath)
-                        filename = os.path.basename(filepath)
-                        if os.path.exists(filepath):
-                            if filename not in bpy.data.images:
-                                bpy.data.images.load(filepath, check_existing=True)
-                            if filename in bpy.data.images:
-                                bpy.data.images[filename].preview_ensure()
-                                box.template_icon(icon_value=bpy.data.images[filename].preview.icon_id, scale=5)
+                    # Output name with link
+                    output_name = col.operator("comfy.open_image_editor", text=output.filename, emboss=False)
+                    output_name.filename = output.filename
+
+                    # Image editor
+                    col = row.column(align=True)
+                    image_editor = col.operator("comfy.open_image_editor", text="", icon="IMAGE")
+                    image_editor.filename = output.filename
+
+                # Delete output
+                delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
+                delete_output.filename = output.filename
+                delete_output.filepath = output.filepath
+                delete_output.type = output.type
+
+                box.separator(type="LINE")
+
 
 def register():
     """Register the panel."""

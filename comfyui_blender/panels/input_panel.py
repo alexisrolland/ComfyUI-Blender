@@ -47,7 +47,11 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 current_workflow = context.scene.current_workflow
                 for key in inputs:
                     box.prop(current_workflow, f"node_{key}")
-                box.operator("comfy.run_workflow", text="Run Workflow")
+
+                # Add run workflow button
+                col = box.column()
+                col.scale_y = 1.5
+                col.operator("comfy.run_workflow", text="Run Workflow", icon="PLAY")
 
 def register():
     """Register the panel."""

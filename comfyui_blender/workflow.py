@@ -13,7 +13,7 @@ from bpy.props import (
 
 
 def create_class_properties(dictionary):
-    """Create dynamic properties for each input and output of the workflow."""
+    """Create properties for each input and output of the workflow."""
 
     properties = {}
     for key, node in dictionary.items():
@@ -76,7 +76,7 @@ def create_class_properties(dictionary):
             properties[property_name] = StringProperty(name=name)
     return properties
 
-def create_workflow_class(workflow_file, inputs_properties):
+def create_workflow_class(workflow_file, properties):
     """Create a new PropertyGroup class for a workflow."""
 
     # Generate a class name from the workflow file name
@@ -88,16 +88,15 @@ def create_workflow_class(workflow_file, inputs_properties):
     new_class = type(class_name, (bpy.types.PropertyGroup,), {})
 
     # Add properties to the class
-    for prop_name, prop_details in inputs_properties.items():
+    for prop_name, prop_details in properties.items():
         setattr(new_class, prop_name, prop_details)
 
     # Manually add the annotations attribute
-    new_class.__annotations__ = {prop_name: inputs_properties[prop_name] for prop_name in inputs_properties}
-
+    new_class.__annotations__ = {prop_name: properties[prop_name] for prop_name in properties}
     return new_class
 
 def get_workflow_list(self, context):
-    """Return a list of workflows JSON files from the workflows folder."""
+    """Return a list of workflow JSON files from the workflows folder."""
 
     addon_prefs = context.preferences.addons["comfyui_blender"].preferences
     workflows_folder = addon_prefs.workflows_folder

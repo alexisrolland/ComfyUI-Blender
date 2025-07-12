@@ -82,15 +82,30 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
         default=0
     )
 
-    # Outputs
+    # Outputs collection
+    # Declare an output property group used in a collection
     class OutputPropertyGroup(bpy.types.PropertyGroup):
-        """Property group for outputs."""
+        """Property group for outputs collection."""
+
         filename: StringProperty(
-            name="filename",
-            description="Filename of the output"
+            name="File Name",
+            description="File name of the output"
+        )
+        filepath: StringProperty(
+            name="File Path",
+            description="Relative file path of the output"
+        )
+        type: EnumProperty(
+            name="Type",
+            description="Type of the output",
+            items=[("image", "Image", "Image output")]
         )
     bpy.utils.register_class(OutputPropertyGroup)
-    output = CollectionProperty(type=OutputPropertyGroup)
+    outputs_collection: CollectionProperty(
+        name="Outputs Collection",
+        description="Collection of generated outputs",
+        type=OutputPropertyGroup
+    )
 
     def draw(self, context):
         """Draw the panel."""

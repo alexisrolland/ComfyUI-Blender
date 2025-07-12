@@ -12,7 +12,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
     bl_label = "Import Workflow"
     bl_description = "Import a workflow JSON file"
 
-    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    filepath: bpy.props.StringProperty(name="File Path", subtype="FILE_PATH")
 
     def execute(self, context):
         """Execute the operator."""
@@ -33,11 +33,15 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
                 counter = 1
                 while os.path.exists(os.path.join(workflows_folder, f"{name}_{counter}{ext}")):
                     counter += 1
-                workflow_path = os.path.join(workflows_folder, f"{name}_{counter}{ext}")
+                
+                # Rename workflow file
+                workflow_file = f"{name}_{counter}{ext}"
+                workflow_path = os.path.join(workflows_folder, workflow_file)
 
             try:
-                # Copy the file to the workflows directory
+                # Copy the file to the workflows directory and select the workflow
                 shutil.copy(self.filepath, workflow_path)
+                addon_prefs.workflow = workflow_file
                 self.report({'INFO'}, f"Workflow copied to: {workflow_path}")
 
             except Exception as e:
