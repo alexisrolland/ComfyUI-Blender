@@ -48,9 +48,10 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
     blender_version = bpy.app.version
     major, minor, patch = blender_version
     addon_name = __package__
+    base_path = f"C:\\Users\\{os.getlogin()}\\AppData\\Roaming\\Blender Foundation\\Blender\\{major}.{minor}\\scripts\\addons\\{addon_name}"
 
     # Workflows folder
-    default_workflows_folder = f"C:\\Users\\{os.getlogin()}\\AppData\\Roaming\\Blender Foundation\\Blender\\{major}.{minor}\\scripts\\addons\\{addon_name}\\workflows"
+    default_workflows_folder = os.path.join(base_path, "workflows")
     os.makedirs(default_workflows_folder, exist_ok=True)
     workflows_folder: StringProperty(
         name="Workflows Folder",
@@ -58,8 +59,17 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
         default=default_workflows_folder
     )
 
+    # Inputs folder path
+    default_inputs_folder = os.path.join(base_path, "inputs")
+    os.makedirs(default_inputs_folder, exist_ok=True)
+    inputs_folder: StringProperty(
+        name="Inputs Folder",
+        description="Folder where inputs are stored",
+        default=default_inputs_folder
+    )
+
     # Outputs folder path
-    default_outputs_folder = f"C:\\Users\\{os.getlogin()}\\AppData\\Roaming\\Blender Foundation\\Blender\\{major}.{minor}\\scripts\\addons\\{addon_name}\\outputs"
+    default_outputs_folder = os.path.join(base_path, "outputs")
     os.makedirs(default_outputs_folder, exist_ok=True)
     outputs_folder: StringProperty(
         name="Outputs Folder",
@@ -123,12 +133,21 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
         col.label(text="Folders:")
         row = col.split(factor=0.8)
         row.prop(self, "workflows_folder", text="Workflows Folder")
-        row.operator("comfy.select_workflows_folder", text="Select")
+        select_workflows_folder = row.operator("comfy.select_folder", text="Select")
+        select_workflows_folder.target_property = "workflows_folder"
+
+        # Inputs folder
+        row = col.split(factor=0.8)
+        row.prop(self, "inputs_folder", text="Inputs Folder")
+        select_inputs_folder = row.operator("comfy.select_folder", text="Select")
+        select_inputs_folder.target_property = "inputs_folder"
 
         # Outputs folder
         row = col.split(factor=0.8)
         row.prop(self, "outputs_folder", text="Outputs Folder")
-        row.operator("comfy.select_outputs_folder", text="Select")
+        select_outputs_folder = row.operator("comfy.select_folder", text="Select")
+        select_outputs_folder.target_property = "outputs_folder"
+
 
 def register():
     """Register the operator."""

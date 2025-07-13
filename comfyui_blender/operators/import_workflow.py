@@ -4,6 +4,8 @@ import shutil
 
 import bpy
 
+from ..utils import get_filepath
+
 
 class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
     """Operator to import a workflow JSON file."""
@@ -13,42 +15,33 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
     bl_description = "Import a workflow JSON file"
 
     filepath: bpy.props.StringProperty(name="File Path", subtype="FILE_PATH")
+    filter_glob: bpy.props.StringProperty(name="File Filter", default="*.json")
 
     def execute(self, context):
         """Execute the operator."""
 
-        if self.filepath.endswith(".json"):
-            # Get the selected workflow
+        if self.filepath.lower().endswith(".json"):
             addon_prefs = context.preferences.addons["comfyui_blender"].preferences
             workflows_folder = str(addon_prefs.workflows_folder)
-            workflow_file = os.path.basename(self.filepath)
-            workflow_path = os.path.join(workflows_folder, workflow_file)
+            workflow_filename = os.path.basename(self.filepath)
 
             # Create the workflows folder if it doesn't exist
             os.makedirs(workflows_folder, exist_ok=True)
 
-            # Handle file name conflicts by appending an incremental number
-            if os.path.exists(workflow_path):
-                name, ext = os.path.splitext(workflow_file)
-                counter = 1
-                while os.path.exists(os.path.join(workflows_folder, f"{name}_{counter}{ext}")):
-                    counter += 1
-                
-                # Rename workflow file
-                workflow_file = f"{name}_{counter}{ext}"
-                workflow_path = os.path.join(workflows_folder, workflow_file)
+            # Get target file name and path
+            workflow_filename, workflow_path = get_filepath(workflow_filename, workflows_folder)
 
             try:
-                # Copy the file to the workflows directory and select the workflow
+                # Copy the file to the workflows folder and select the workflow
                 shutil.copy(self.filepath, workflow_path)
-                addon_prefs.workflow = workflow_file
+                addon_prefs.workflow = workflow_filename
                 self.report({'INFO'}, f"Workflow copied to: {workflow_path}")
 
             except Exception as e:
-                self.report({'ERROR'}, f"Failed to copy workflow: {e}")
+                self.report({'ERROR'}, f"Failed to copy workflow file: {e}")
 
         else:
-            self.report({'ERROR'}, "Selected file is not a JSON file.")
+            self.report({'ERROR'}, "Selected file is not a *.json.")
         return {'FINISHED'}
 
     def invoke(self, context, event):

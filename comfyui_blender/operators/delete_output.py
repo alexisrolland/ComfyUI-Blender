@@ -20,17 +20,19 @@ class ComfyBlenderOperatorDeleteOutput(bpy.types.Operator):
         addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
         outputs_collection = addon_prefs.outputs_collection
 
-        # Find and delete the item with the matching property value
+        # Find and delete the output from the collection
+        # We use the path to identify the output because the filename may not be unique
+        # Two outputs can have the same name but in different subfolders
         for index, output in enumerate(outputs_collection):
             if output.filepath == self.filepath:
                 outputs_collection.remove(index)
-                self.report({'INFO'}, f"Deleted output from collection, file path: {self.filepath}")
+                self.report({'INFO'}, f"Removed output from collection: {self.filepath}")
 
-        # Remove the output from Blender's data
+        # Remove output from Blender's data
         if self.type == "image":
             image = bpy.data.images.get(self.filename)
             bpy.data.images.remove(image)
-            self.report({'INFO'}, f"Deleted output from Blender data, file name: {self.filename}")
+            self.report({'INFO'}, f"Removed image from Blender data: {self.filename}")
         return {'FINISHED'}
 
     def invoke(self, context, event):

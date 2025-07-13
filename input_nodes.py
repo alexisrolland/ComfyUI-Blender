@@ -1,5 +1,6 @@
 from comfy_extras.nodes_primitive import Float, Int, String, StringMultiline
 from comfy.comfy_types.node_typing import IO
+from nodes import LoadImage
 
 # Enforce min/max int and float according to Blender limitation
 MIN_FLOAT = -2147483648.00
@@ -35,10 +36,11 @@ class BlenderInputFloat(Float):
         INPUT_TYPES["required"]["default"] = (IO.FLOAT, {"default": 0.00, "min": MIN_FLOAT, "max": MAX_FLOAT, "step": 0.01})
         INPUT_TYPES["required"]["min"] = (IO.FLOAT, {"default": MIN_FLOAT, "min": MIN_FLOAT, "max": MAX_FLOAT, "step": 0.01})
         INPUT_TYPES["required"]["max"] = (IO.FLOAT, {"default": MAX_FLOAT, "min": MIN_FLOAT, "max": MAX_FLOAT, "step": 0.01})
-        INPUT_TYPES["required"]["step"] = (IO.FLOAT, {"default": 0.01, "min": 0.01, "max": MAX_FLOAT, "step": 0.01})
+        # Step size is weird in Blender, value of 1 gives a step of 0.1, so I'm deactivating it for now
+        # INPUT_TYPES["required"]["step"] = (IO.FLOAT, {"default": 0.01, "min": 0.01, "max": MAX_FLOAT, "step": 0.01})
         return INPUT_TYPES
 
-    def execute(self, value: float, order: int, default: float, min: float, max: float, step: float) -> tuple[int]:
+    def execute(self, value: float, order: int, default: float, min: float, max: float) -> tuple[int]:
         return (value,)
 
 class BlenderInputInt(Int):
@@ -58,6 +60,21 @@ class BlenderInputInt(Int):
 
     def execute(self, value: int, order: int, default: int, min: int, max: int, step: int) -> tuple[int]:
         return (value,)
+
+class BlenderInputLoadImage(LoadImage):
+    """Node used by ComfyUI Blender add-on to input an image in a workflow."""
+    CATEGORY = "blender/inputs"
+    FUNCTION = "execute"
+
+    @classmethod
+    def INPUT_TYPES(s):
+        INPUT_TYPES = super().INPUT_TYPES()
+        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
+        return INPUT_TYPES
+    
+    def execute(self, image, order):
+        result = super().load_image(image)
+        return result
 
 class BlenderInputString(String):
     """Node used by ComfyUI Blender add-on to input a string in a workflow."""

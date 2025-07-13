@@ -30,28 +30,69 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
         # Get the selected workflow
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         workflows_folder = str(addon_prefs.workflows_folder)
-        workflow_file = str(addon_prefs.workflow)
-        workflow_path = os.path.join(workflows_folder, workflow_file)
+        workflow_filename = str(addon_prefs.workflow)
+        workflow_path = os.path.join(workflows_folder, workflow_filename)
 
         # Load the workflow JSON file
         if os.path.exists(workflow_path) and os.path.isfile(workflow_path):
             box = layout.box()
-            with open(workflow_path, "r",  encoding="utf-8") as f:
-                workflow = json.load(f)
+            with open(workflow_path, "r",  encoding="utf-8") as file:
+                workflow = json.load(file)
 
             # Get sorted inputs from the workflow
             inputs = w.parse_workflow_for_inputs(workflow)
 
             # Display workflow input properties
-            if hasattr(context.scene, "current_workflow"):
-                current_workflow = context.scene.current_workflow
-                for key in inputs:
-                    box.prop(current_workflow, f"node_{key}")
+            current_workflow = context.scene.current_workflow
+            for key, node in inputs.items():
+                property_name = f"node_{key}"
 
-                # Add run workflow button
-                col = box.column()
-                col.scale_y = 1.5
-                col.operator("comfy.run_workflow", text="Run Workflow", icon="PLAY")
+                # Custom handling for image inputs
+                if node["class_type"] == "BlenderInputLoadImage":
+                    # Get the input name from the workflow properties
+                    name = current_workflow.bl_rna.properties[property_name].name  # Node title
+                    box.label(text=name + ":")
+
+                    # Import button
+                    import_input = box.operator("comfy.import_input", text="Import")
+                    import_input.workflow_property = property_name
+
+                    # Get the input file name from the workflow class
+                    input_filepath = getattr(current_workflow, property_name)
+                    input_filename = os.path.basename(input_filepath)
+
+                    # Display imported input image if it exists
+                    if input_filename in bpy.data.images:
+                        bpy.data.images[input_filename].preview_ensure()
+
+                        # Image preview
+                        row = box.row()
+                        col = row.column(align=True)
+                        col.template_icon(icon_value=bpy.data.images[input_filename].preview.icon_id, scale=5)
+
+                        # Input name operator with link
+                        input_name = col.operator("comfy.open_image_editor", text=input_filename, emboss=False)
+                        input_name.filename = input_filename
+
+                        # Image editor button
+                        col = row.column(align=True)
+                        image_editor = col.operator("comfy.open_image_editor", text="", icon="IMAGE")
+                        image_editor.filename = input_filename
+
+                        # Delete input button
+                        delete_input = col.operator("comfy.delete_input", text="", icon="TRASH")
+                        delete_input.filename = input_filename
+                        delete_input.workflow_property = property_name
+                        delete_input.type = "image"
+
+                else:
+                    # Default display for other input types
+                    box.prop(current_workflow, property_name)
+
+            # Add run workflow button
+            col = box.column()
+            col.scale_y = 1.5
+            col.operator("comfy.run_workflow", text="Run Workflow", icon="PLAY")
 
 def register():
     """Register the panel."""

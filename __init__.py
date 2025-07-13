@@ -2,6 +2,7 @@ from .input_nodes import (
     BlenderInputCombo,
     BlenderInputFloat,
     BlenderInputInt,
+    BlenderInputLoadImage,
     BlenderInputString,
     BlenderInputStringMultiline
 )
@@ -15,6 +16,7 @@ NODE_CLASS_MAPPINGS = {
     "BlenderInputCombo": BlenderInputCombo,
     "BlenderInputFloat": BlenderInputFloat,
     "BlenderInputInt": BlenderInputInt,
+    "BlenderInputLoadImage": BlenderInputLoadImage,
     "BlenderInputString": BlenderInputString,
     "BlenderInputStringMultiline": BlenderInputStringMultiline,
     "BlenderOutputSaveImage": BlenderOutputSaveImage
@@ -25,6 +27,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "BlenderInputCombo": "Blender Input Combo",
     "BlenderInputFloat": "Blender Input Float",
     "BlenderInputInt": "Blender Input Integer",
+    "BlenderInputLoadImage": "Blender Input Load Image",
     "BlenderInputString": "Blender Input String",
     "BlenderInputStringMultiline": "Blender Input String Multiline",
     "BlenderOutputSaveImage": "Blender Output Save Image"

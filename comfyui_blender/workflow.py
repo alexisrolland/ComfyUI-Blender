@@ -39,7 +39,10 @@ def create_class_properties(dictionary):
                 default=node["inputs"].get("default", 0.0),
                 min=node["inputs"].get("min", -1e38),
                 max=node["inputs"].get("max", 1e38),
-                step=node["inputs"].get("step", 0.01)
+                # Step size is weird, value of 1 gives a step of 0.1, so I'm deactivating it for now
+                # step=node["inputs"].get("step", 1.0),
+                step=1,
+                precision=2
             )
             continue
 
@@ -52,6 +55,11 @@ def create_class_properties(dictionary):
                 max=node["inputs"].get("max", 2147483647),
                 step=node["inputs"].get("step", 1)
             )
+            continue
+
+        # Load image
+        if node["class_type"] == "BlenderInputLoadImage":
+            properties[property_name] = StringProperty(name=name)
             continue
 
         # String
@@ -74,13 +82,14 @@ def create_class_properties(dictionary):
         # Save image
         if node["class_type"] == "BlenderOutputSaveImage":
             properties[property_name] = StringProperty(name=name)
+            continue
     return properties
 
-def create_workflow_class(workflow_file, properties):
+def create_workflow_class(workflow_filename, properties):
     """Create a new PropertyGroup class for a workflow."""
 
     # Generate a class name from the workflow file name
-    workflow_name = os.path.splitext(workflow_file)[0]
+    workflow_name = os.path.splitext(workflow_filename)[0]
     class_name = f"wkf_{workflow_name}"
     class_name = re.sub(r"[^a-zA-Z0-9_]", "_", class_name).lower()
 
@@ -105,7 +114,8 @@ def get_workflow_list(self, context):
     if os.path.exists(workflows_folder) and os.path.isdir(workflows_folder):
         for file in sorted(os.listdir(workflows_folder)):
             if file.endswith(".json"):
-                workflows.append((file, file, ""))
+                filepath = os.path.join(workflows_folder, file)
+                workflows.append((file, file, filepath))
 
     # Default to empty tuple if there are no workflow
     if not workflows:
@@ -143,19 +153,19 @@ def register_workflow_class(self, context):
 
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
     workflows_folder = str(addon_prefs.workflows_folder)
-    workflow_file = str(self.workflow)
-    workflow_path = os.path.join(workflows_folder, workflow_file)
+    workflow_filename = str(self.workflow)
+    workflow_path = os.path.join(workflows_folder, workflow_filename)
 
     # Load the workflow JSON file
     if os.path.exists(workflow_path) and os.path.isfile(workflow_path):
-        with open(workflow_path, "r",  encoding="utf-8") as f:
-            workflow = json.load(f)
+        with open(workflow_path, "r",  encoding="utf-8") as file:
+            workflow = json.load(file)
 
         # Get inputs and outputs from the workflow
         inputs = parse_workflow_for_inputs(workflow)
         outputs = parse_workflow_for_outputs(workflow)
         properties = create_class_properties({**inputs, **outputs}) # Merge dictionaries
-        workflow_class = create_workflow_class(workflow_file, properties)
+        workflow_class = create_workflow_class(workflow_filename, properties)
 
         # Unregister the class if it already exists
         if hasattr(bpy.types, workflow_class.__name__):

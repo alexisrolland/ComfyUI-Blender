@@ -5,7 +5,7 @@ import websocket
 
 import bpy
 
-from .utils import download_image
+from .utils import download_file
 from .workflow import parse_workflow_for_outputs
 
 
@@ -93,13 +93,19 @@ def listen(workflow, prompt_id):
                     # Check class type to retrieve only outputs for the add-on
                     if key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
                         for output in data["output"]["images"]:
-                            download_image(output["filename"], output["subfolder"], output["type"])
+                            download_file(output["filename"], output["subfolder"])
 
                             # Add image to outputs collection
                             image = addon_prefs.outputs_collection.add()
                             image.filename = output["filename"]
                             image.filepath = os.path.join(output["subfolder"], output["filename"])
                             image.type = "image"
+
+                            # Force redraw of the UI
+                            for screen in bpy.data.screens:  # Iterate through all screens
+                                for area in screen.areas:  # Access areas in each screen
+                                    if area.type == "VIEW_3D":  # Area of the add-on panel
+                                        area.tag_redraw()
 
     # Close the WebSocket connection
     disconnect()

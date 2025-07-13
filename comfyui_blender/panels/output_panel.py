@@ -49,7 +49,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                     col = row.column(align=True)
                     col.template_icon(icon_value=bpy.data.images[output.filename].preview.icon_id, scale=5)
 
-                    # Output name with link
+                    # Output name operator with link
                     output_name = col.operator("comfy.open_image_editor", text=output.filename, emboss=False)
                     output_name.filename = output.filename
 
@@ -58,11 +58,11 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                     image_editor = col.operator("comfy.open_image_editor", text="", icon="IMAGE")
                     image_editor.filename = output.filename
 
-                # Delete output
-                delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
-                delete_output.filename = output.filename
-                delete_output.filepath = output.filepath
-                delete_output.type = output.type
+                    # Delete output
+                    delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
+                    delete_output.filename = output.filename
+                    delete_output.filepath = output.filepath
+                    delete_output.type = output.type
 
                 box.separator(type="LINE")
 

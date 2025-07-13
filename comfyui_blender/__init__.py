@@ -3,13 +3,14 @@ import subprocess
 import sys
 
 from .operators import (
+    delete_input,
     delete_output,
+    import_input,
     import_workflow,
     open_file_browser,
     open_image_editor,
     run_workflow,
-    select_outputs_folder,
-    select_workflows_folder
+    select_folder
 )
 from .panels import (
     input_panel,
@@ -52,13 +53,14 @@ def register():
     settings.register()
 
     # Operators
+    delete_input.register()
     delete_output.register()
+    import_input.register()
     import_workflow.register()
     open_file_browser.register()
     open_image_editor.register()
     run_workflow.register()
-    select_outputs_folder.register()
-    select_workflows_folder.register()
+    select_folder.register()
 
     # Panels
     workflow_panel.register()
@@ -72,13 +74,14 @@ def unregister():
     settings.unregister()
 
     # Operators
+    delete_input.unregister()
     delete_output.unregister()
+    import_input.unregister()
     import_workflow.unregister()
     open_file_browser.unregister()
     open_image_editor.unregister()
     run_workflow.unregister()
-    select_outputs_folder.unregister()
-    select_workflows_folder.unregister()
+    select_folder.unregister()
 
     # Panels
     workflow_panel.unregister()
