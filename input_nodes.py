@@ -1,4 +1,4 @@
-from comfy_extras.nodes_primitive import Float, Int, String, StringMultiline
+from comfy_extras.nodes_primitive import Boolean, Float, Int, String, StringMultiline
 from comfy.comfy_types.node_typing import IO
 from nodes import LoadImage
 
@@ -7,6 +7,20 @@ MIN_FLOAT = -2147483648.00
 MIN_INT = -2147483648
 MAX_FLOAT = 2147483647.00
 MAX_INT = 2147483647
+
+class BlenderInputBoolean(Boolean):
+    """Node used by ComfyUI Blender add-on to input a boolean in a workflow."""
+    CATEGORY = "blender/inputs"
+
+    @classmethod
+    def INPUT_TYPES(s):
+        INPUT_TYPES = super().INPUT_TYPES()
+        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
+        INPUT_TYPES["required"]["default"] = (IO.BOOLEAN, {})
+        return INPUT_TYPES
+
+    def execute(self, value: bool, order: int, default: bool) -> tuple[bool]:
+        return (value,)
 
 class BlenderInputCombo(String):
     """Node used by ComfyUI Blender add-on to input a value from a combo box in a workflow."""

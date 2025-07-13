@@ -1,4 +1,5 @@
 from .input_nodes import (
+    BlenderInputBoolean,
     BlenderInputCombo,
     BlenderInputFloat,
     BlenderInputInt,
@@ -13,6 +14,7 @@ from .output_nodes import (
 # A dictionary that contains all nodes you want to export with their names
 # NOTE: names should be globally unique
 NODE_CLASS_MAPPINGS = {
+    "BlenderInputBoolean": BlenderInputBoolean,
     "BlenderInputCombo": BlenderInputCombo,
     "BlenderInputFloat": BlenderInputFloat,
     "BlenderInputInt": BlenderInputInt,
@@ -24,6 +26,7 @@ NODE_CLASS_MAPPINGS = {
 
 # A dictionary that contains the friendly/humanly readable titles for the nodes
 NODE_DISPLAY_NAME_MAPPINGS = {
+    "BlenderInputBoolean": "Blender Input Boolean",
     "BlenderInputCombo": "Blender Input Combo",
     "BlenderInputFloat": "Blender Input Float",
     "BlenderInputInt": "Blender Input Integer",

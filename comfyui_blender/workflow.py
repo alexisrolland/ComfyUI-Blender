@@ -5,6 +5,7 @@ import re
 
 import bpy
 from bpy.props import (
+    BoolProperty,
     EnumProperty,
     FloatProperty,
     IntProperty,
@@ -23,6 +24,14 @@ def create_class_properties(dictionary):
         name = metadata.get("title", f"Node {key}")
 
         # Input properties
+        # Boolean
+        if node["class_type"] == "BlenderInputBoolean":
+            properties[property_name] = BoolProperty(
+                name=name,
+                default=node["inputs"].get("default", "")
+            )
+            continue
+
         # Combo box
         if node["class_type"] == "BlenderInputCombo":
             properties[property_name] = EnumProperty(
