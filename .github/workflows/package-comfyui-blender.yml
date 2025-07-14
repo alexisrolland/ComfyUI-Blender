@@ -1,0 +1,36 @@
+name: Package ComfyUI Blender Add-on
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Install dependencies (if needed)
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y zip
+
+      # Step 3: Extract tag name
+      - name: Extract tag name
+        id: extract_tag
+        run: echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      # Step 4: Package the comfyui_blender folder
+      - name: Create zip package
+        run: |
+          zip -r comfyui_blender_${TAG_NAME}.zip comfyui_blender
+
+      # Step 5: Upload the zip package as an artifact
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: comfyui_blender_package_${TAG_NAME}
+          path: comfyui_blender_${TAG_NAME}.zip
