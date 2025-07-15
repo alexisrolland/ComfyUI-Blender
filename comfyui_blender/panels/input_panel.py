@@ -51,11 +51,16 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 if node["class_type"] == "BlenderInputLoadImage":
                     # Get the input name from the workflow properties
                     name = current_workflow.bl_rna.properties[property_name].name  # Node title
-                    box.label(text=name + ":")
+                    row = box.row(align=True)
+                    row.label(text=name + ":")
 
-                    # Import button
-                    import_input = box.operator("comfy.import_input", text="Import")
+                    # Import input button
+                    import_input = row.operator("comfy.import_input", text="", icon="IMPORT")
                     import_input.workflow_property = property_name
+
+                    # Render depth map
+                    render_depth = row.operator("comfy.render_depth_map", text="", icon="MATERIAL")
+                    render_depth.workflow_property = property_name
 
                     # Get the input file name from the workflow class
                     input_filepath = getattr(current_workflow, property_name)
