@@ -87,8 +87,17 @@ class BlenderInputLoadImage(LoadImage):
         return INPUT_TYPES
     
     def execute(self, image, order):
-        result = super().load_image(image)
-        return result
+        return super().load_image(image)
+
+    @classmethod
+    def IS_CHANGED(s, image, order):
+        return super().IS_CHANGED(image)
+
+class BlenderInputSeed(BlenderInputInt):
+    """
+    Node used by ComfyUI Blender add-on to input a seed value in a workflow.
+    This node reuses the same parameters as the integer node, but the display is different in Blender.
+    """
 
 class BlenderInputString(String):
     """Node used by ComfyUI Blender add-on to input a string in a workflow."""
