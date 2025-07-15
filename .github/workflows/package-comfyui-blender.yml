@@ -5,6 +5,9 @@ on:
     tags:
       - '*'
 
+permissions:
+  contents: write  # Required to upload to GitHub Releases
+
 jobs:
   package:
     runs-on: ubuntu-latest
