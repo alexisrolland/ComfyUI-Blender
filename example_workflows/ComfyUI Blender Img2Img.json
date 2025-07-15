@@ -1,8 +1,8 @@
 {
   "id": "8e5532a6-dedd-4bda-9f08-3488488bab5f",
   "revision": 0,
-  "last_node_id": 15,
-  "last_link_id": 17,
+  "last_node_id": 16,
+  "last_link_id": 18,
   "nodes": [
     {
       "id": 3,
@@ -30,9 +30,10 @@
       ],
       "title": "Negative Prompt",
       "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "cnr_id": "comfyui-blender",
         "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputString"
+        "Node name for S&R": "BlenderInputString",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
       },
       "widgets_values": [
         "",
@@ -68,9 +69,10 @@
       ],
       "title": "Prompt",
       "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "cnr_id": "comfyui-blender",
         "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputStringMultiline"
+        "Node name for S&R": "BlenderInputStringMultiline",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
       },
       "widgets_values": [
         "a school girl in uniform with large fennec ears",
@@ -92,7 +94,7 @@
         88
       ],
       "flags": {},
-      "order": 7,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -141,7 +143,7 @@
         88
       ],
       "flags": {},
-      "order": 8,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -190,7 +192,7 @@
         46
       ],
       "flags": {},
-      "order": 11,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
@@ -232,7 +234,7 @@
         270
       ],
       "flags": {},
-      "order": 12,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
@@ -244,9 +246,10 @@
       "outputs": [],
       "title": "Save Image",
       "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "cnr_id": "comfyui-blender",
         "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderOutputSaveImage"
+        "Node name for S&R": "BlenderOutputSaveImage",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
       },
       "widgets_values": [
         "blender"
@@ -280,9 +283,10 @@
       ],
       "title": "Model",
       "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "cnr_id": "comfyui-blender",
         "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputCombo"
+        "Node name for S&R": "BlenderInputCombo",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
       },
       "widgets_values": [
         "raymnants_30.safetensors",
@@ -305,7 +309,7 @@
         262
       ],
       "flags": {},
-      "order": 10,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
@@ -327,6 +331,14 @@
           "name": "latent_image",
           "type": "LATENT",
           "link": 15
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": 18
         },
         {
           "name": "denoise",
@@ -373,7 +385,7 @@
         98
       ],
       "flags": {},
-      "order": 6,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -431,7 +443,7 @@
         46
       ],
       "flags": {},
-      "order": 9,
+      "order": 10,
       "mode": 0,
       "inputs": [
         {
@@ -492,54 +504,15 @@
       ],
       "title": "Input Image",
       "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "cnr_id": "comfyui-blender",
         "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputLoadImage"
+        "Node name for S&R": "BlenderInputLoadImage",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
       },
       "widgets_values": [
         "example.png",
         4,
         "image"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 15,
-      "type": "BlenderInputFloat",
-      "pos": [
-        890,
-        820
-      ],
-      "size": [
-        210,
-        154
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "FLOAT",
-          "type": "FLOAT",
-          "links": [
-            17
-          ]
-        }
-      ],
-      "title": "Denoise",
-      "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
-        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputFloat"
-      },
-      "widgets_values": [
-        0.5000000000000001,
-        5,
-        0.5000000000000001,
-        0.10000000000000002,
-        1.0000000000000002
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -556,13 +529,95 @@
         220
       ],
       "flags": {},
-      "order": 5,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [],
       "properties": {},
       "widgets_values": [
         "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 16,
+      "type": "BlenderInputSeed",
+      "pos": [
+        880,
+        800
+      ],
+      "size": [
+        210,
+        190
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            18
+          ]
+        }
+      ],
+      "title": "Seed",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "7efc395eff8bfbe08b5380d81a1dddaaa53eee1a",
+        "Node name for S&R": "BlenderInputSeed"
+      },
+      "widgets_values": [
+        0,
+        0,
+        0,
+        -2147483648,
+        2147483647,
+        1
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 15,
+      "type": "BlenderInputFloat",
+      "pos": [
+        880,
+        1060
+      ],
+      "size": [
+        210,
+        154
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "title": "Denoise",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
+        "Node name for S&R": "BlenderInputFloat",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
+      },
+      "widgets_values": [
+        0.5000000000000001,
+        5,
+        0.5000000000000001,
+        0.10000000000000002,
+        1.0000000000000002
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -686,8 +741,16 @@
       15,
       0,
       9,
-      4,
+      5,
       "FLOAT"
+    ],
+    [
+      18,
+      16,
+      0,
+      9,
+      4,
+      "INT"
     ]
   ],
   "groups": [],
@@ -696,8 +759,8 @@
     "ds": {
       "scale": 0.9090909090909091,
       "offset": [
-        27.17078631935324,
-        -26.22229122238144
+        11.770786319353242,
+        -87.82229122238144
       ]
     },
     "frontendVersion": "1.21.7"

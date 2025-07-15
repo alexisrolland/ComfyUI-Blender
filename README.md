@@ -1,5 +1,7 @@
 # ComfyUI Blender
 
+> Alpha version: This is functional but WORK IN PROGRESS, with a few quirks to be improved over time
+
 Blender add-on to send requests to a ComfyUI server. This respository contains both custom nodes to be installed on the ComfyUI server and the source code of the Blender add-on.
 
 ## Getting Started

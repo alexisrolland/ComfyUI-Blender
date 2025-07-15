@@ -56,7 +56,7 @@ def create_class_properties(dictionary):
             continue
 
         # Integer
-        if node["class_type"] == "BlenderInputInt":
+        if node["class_type"] in ("BlenderInputInt", "BlenderInputSeed"):
             properties[property_name] = IntProperty(
                 name=name,
                 default=node["inputs"].get("default", 0),
@@ -69,6 +69,17 @@ def create_class_properties(dictionary):
         # Load image
         if node["class_type"] == "BlenderInputLoadImage":
             properties[property_name] = StringProperty(name=name)
+            continue
+        
+        # Integer
+        if node["class_type"] == "BlenderInputSeed":
+            properties[property_name] = IntProperty(
+                name=name,
+                default=node["inputs"].get("default", 0),
+                min=node["inputs"].get("min", -2147483648),
+                max=node["inputs"].get("max", 2147483647),
+                step=node["inputs"].get("step", 1)
+            )
             continue
 
         # String

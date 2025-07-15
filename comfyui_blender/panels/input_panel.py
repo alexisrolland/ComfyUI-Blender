@@ -90,6 +90,11 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                         delete_input.workflow_property = property_name
                         delete_input.type = "image"
 
+                # Custom handling for seed inputs
+                elif node["class_type"] == "BlenderInputSeed":
+                    row = box.row(align=True)
+                    row.prop(current_workflow, property_name) # Random seed management to be implemented
+
                 else:
                     # Default display for other input types
                     box.prop(current_workflow, property_name)

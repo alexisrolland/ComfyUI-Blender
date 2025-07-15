@@ -1,8 +1,8 @@
 {
   "id": "8e5532a6-dedd-4bda-9f08-3488488bab5f",
   "revision": 0,
-  "last_node_id": 12,
-  "last_link_id": 13,
+  "last_node_id": 13,
+  "last_link_id": 14,
   "nodes": [
     {
       "id": 5,
@@ -30,9 +30,10 @@
       ],
       "title": "Number of Images",
       "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "cnr_id": "comfyui-blender",
         "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputInt"
+        "Node name for S&R": "BlenderInputInt",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
       },
       "widgets_values": [
         1,
@@ -71,9 +72,10 @@
       ],
       "title": "Negative Prompt",
       "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "cnr_id": "comfyui-blender",
         "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputString"
+        "Node name for S&R": "BlenderInputString",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
       },
       "widgets_values": [
         "",
@@ -109,9 +111,10 @@
       ],
       "title": "Prompt",
       "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "cnr_id": "comfyui-blender",
         "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputStringMultiline"
+        "Node name for S&R": "BlenderInputStringMultiline",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
       },
       "widgets_values": [
         "a school girl in uniform with large fennec ears",
@@ -133,7 +136,7 @@
         88
       ],
       "flags": {},
-      "order": 7,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -182,7 +185,7 @@
         88
       ],
       "flags": {},
-      "order": 8,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -231,7 +234,7 @@
         106
       ],
       "flags": {},
-      "order": 5,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -275,7 +278,7 @@
         46
       ],
       "flags": {},
-      "order": 10,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
@@ -317,7 +320,7 @@
         270
       ],
       "flags": {},
-      "order": 11,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
@@ -329,9 +332,10 @@
       "outputs": [],
       "title": "Save Image",
       "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "cnr_id": "comfyui-blender",
         "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderOutputSaveImage"
+        "Node name for S&R": "BlenderOutputSaveImage",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
       },
       "widgets_values": [
         "blender"
@@ -351,7 +355,7 @@
         98
       ],
       "flags": {},
-      "order": 6,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -422,9 +426,10 @@
       ],
       "title": "Model",
       "properties": {
-        "aux_id": "alexisrolland/ComfyUI-Blender",
+        "cnr_id": "comfyui-blender",
         "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputCombo"
+        "Node name for S&R": "BlenderInputCombo",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
       },
       "widgets_values": [
         "raymnants_30.safetensors",
@@ -447,7 +452,7 @@
         262
       ],
       "flags": {},
-      "order": 9,
+      "order": 10,
       "mode": 0,
       "inputs": [
         {
@@ -469,6 +474,14 @@
           "name": "latent_image",
           "type": "LATENT",
           "link": 10
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": 14
         }
       ],
       "outputs": [
@@ -514,6 +527,47 @@
       "properties": {},
       "widgets_values": [
         "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 13,
+      "type": "BlenderInputSeed",
+      "pos": [
+        890,
+        810
+      ],
+      "size": [
+        210,
+        190
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "title": "Seed",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "7efc395eff8bfbe08b5380d81a1dddaaa53eee1a",
+        "Node name for S&R": "BlenderInputSeed"
+      },
+      "widgets_values": [
+        0,
+        0,
+        0,
+        -2147483648,
+        2147483647,
+        1
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -623,6 +677,14 @@
       11,
       0,
       "IMAGE"
+    ],
+    [
+      14,
+      13,
+      0,
+      9,
+      4,
+      "INT"
     ]
   ],
   "groups": [],
@@ -631,8 +693,8 @@
     "ds": {
       "scale": 0.9090909090909098,
       "offset": [
-        3.4427952599990204,
-        59.92089870999954
+        -5.357204740000972,
+        20.320898709999575
       ]
     },
     "frontendVersion": "1.21.7"
