@@ -1,0 +1,47 @@
+name: Publish to ComfyUI Registry
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write  # Required to modify pyproject.toml
+
+jobs:
+  publish-custom-node:
+    name: Publish custom node
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'alexisrolland' }}
+    steps:
+
+      # Step 1: Check out the repository
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      # Step 2: Update version in pyproject.toml if triggered by tag
+      - name: Update version in pyproject.toml
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          TAG_NAME="${GITHUB_REF##*/}"
+          echo "Updating version in pyproject.toml to $TAG_NAME"
+          sed -i "s/version = \".*\"/version = \"$TAG_NAME\"/" pyproject.toml
+
+      # Step 3: Commit updated pyproject.toml if changed
+      - name: Commit version update
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          if git diff --quiet pyproject.toml; then
+            echo "No changes to commit"
+          else
+            git add pyproject.toml
+            git commit -m "Update version to ${{ github.ref_name }}"
+            git push origin HEAD:main
+          fi
+
+      # Step 4: Publish custom node
+      - name: Publish custom node
+        uses: Comfy-Org/publish-node-action@v1
+        with:
+          personal_access_token: ${{ secrets.COMFYUI_REGISTRY_ACCESS_TOKEN }}

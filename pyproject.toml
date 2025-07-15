@@ -1,0 +1,14 @@
+[project]
+name = "comfyui-blender"
+description = "Blender plugin to send requests to a ComfyUI server."
+version = ""
+license = { text = "GPL-3.0 license" }
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/alexisrolland/ComfyUI-Blender"
+
+[tool.comfy]
+PublisherId = "alexisrolland"
+DisplayName = "ComfyUI-Blender"
+Icon = ""

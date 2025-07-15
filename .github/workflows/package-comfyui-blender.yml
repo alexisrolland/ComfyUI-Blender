@@ -1,5 +1,4 @@
 name: Package ComfyUI Blender Add-on
-
 on:
   push:
     tags:
@@ -9,13 +8,14 @@ permissions:
   contents: write  # Required to upload to GitHub Releases
 
 jobs:
-  package:
+  package-blender-addon:
+    name: Package blender add-on
     runs-on: ubuntu-latest
-
     steps:
+
       # Step 1: Check out the repository
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Step 2: Install dependencies (if needed)
       - name: Install dependencies
@@ -23,15 +23,14 @@ jobs:
 
       # Step 3: Extract tag name
       - name: Extract tag name
-        id: extract_tag
-        run: echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+        run: |
+          TAG_NAME="${GITHUB_REF##*/}"
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
       # Step 4: Package the comfyui_blender folder
       - name: Create zip package
-        run: |
-          zip -r comfyui_blender_$TAG_NAME.zip comfyui_blender
+        run: zip -r comfyui_blender_$TAG_NAME.zip comfyui_blender
 
-      
       # Step 5: Upload zip to GitHub Release
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
