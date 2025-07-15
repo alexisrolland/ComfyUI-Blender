@@ -14,6 +14,12 @@ from bpy.props import (
 from .workflow import get_workflow_list, register_workflow_class
 
 
+def sanitize_server_address(self, context):
+    """Ensure the server address ends with a slash."""
+
+    while self.server_address.endswith("/"):
+        self.server_address = self.server_address.rstrip("/")
+
 class ComfyBlenderSettings(bpy.types.AddonPreferences):
     """ComfyUI Blender Add-on Preferences"""
 
@@ -33,7 +39,8 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
     server_address: StringProperty(
         name="Server Address",
         description="URL of the ComfyUI server",
-        default="http://127.0.0.1:8188"
+        default="http://127.0.0.1:8188",
+        update=sanitize_server_address
     )
 
     # Connection status
