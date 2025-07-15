@@ -32,5 +32,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: comfyui_blender_package_${{ env.TAG_NAME }}
+          name: comfyui_blender_${{ env.TAG_NAME }}
           path: comfyui_blender_${{ env.TAG_NAME }}.zip
