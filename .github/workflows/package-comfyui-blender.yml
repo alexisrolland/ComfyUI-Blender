@@ -26,11 +26,11 @@ jobs:
       # Step 4: Package the comfyui_blender folder
       - name: Create zip package
         run: |
-          zip -r comfyui_blender_${TAG_NAME}.zip comfyui_blender
+          zip -r comfyui_blender_$TAG_NAME.zip comfyui_blender
 
       # Step 5: Upload the zip package as an artifact
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: comfyui_blender_package_${TAG_NAME}
-          path: comfyui_blender_${TAG_NAME}.zip
+          name: comfyui_blender_package_${{ env.TAG_NAME }}
+          path: comfyui_blender_${{ env.TAG_NAME }}.zip
