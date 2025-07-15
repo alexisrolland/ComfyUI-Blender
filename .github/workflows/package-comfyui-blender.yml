@@ -28,9 +28,10 @@ jobs:
         run: |
           zip -r comfyui_blender_$TAG_NAME.zip comfyui_blender
 
-      # Step 5: Upload the zip package as an artifact
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      
+      # Step 5: Upload zip to GitHub Release
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: comfyui_blender_${{ env.TAG_NAME }}
-          path: comfyui_blender_${{ env.TAG_NAME }}.zip
+          tag_name: ${{ github.ref_name }}
+          files: comfyui_blender_package_${{ env.TAG_NAME }}.zip
