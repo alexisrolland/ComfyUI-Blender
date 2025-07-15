@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write  # Required to modify pyproject.toml
+  issues: write
 
 jobs:
   publish-custom-node:
