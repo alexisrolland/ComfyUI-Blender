@@ -38,7 +38,8 @@
       "widgets_values": [
         "",
         3,
-        ""
+        "",
+        null
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -52,7 +53,7 @@
       ],
       "size": [
         270,
-        190
+        166
       ],
       "flags": {},
       "order": 1,
@@ -77,7 +78,8 @@
       "widgets_values": [
         "a school girl in uniform with large fennec ears",
         2,
-        "a school girl in uniform with large fennec ears"
+        "a school girl in uniform with large fennec ears",
+        null
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -126,7 +128,8 @@
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        ""
+        "",
+        null
       ],
       "color": "#232",
       "bgcolor": "#353"
@@ -175,50 +178,11 @@
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        ""
+        "",
+        null
       ],
       "color": "#322",
       "bgcolor": "#533"
-    },
-    {
-      "id": 1,
-      "type": "BlenderInputCombo",
-      "pos": [
-        170,
-        440
-      ],
-      "size": [
-        340,
-        180
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "*",
-          "type": "*",
-          "links": [
-            1
-          ]
-        }
-      ],
-      "title": "Model",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputCombo",
-        "aux_id": "alexisrolland/ComfyUI-Blender"
-      },
-      "widgets_values": [
-        "raymnants_30.safetensors",
-        1,
-        "raymnants_30.safetensors",
-        "raymnants_30.safetensors\nv1-5-pruned-emaonly-fp16.safetensors"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
     },
     {
       "id": 12,
@@ -232,7 +196,7 @@
         220
       ],
       "flags": {},
-      "order": 3,
+      "order": 2,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -294,7 +258,7 @@
       ],
       "size": [
         272.6714782714844,
-        270
+        222
       ],
       "flags": {},
       "order": 16,
@@ -315,7 +279,8 @@
         "aux_id": "alexisrolland/ComfyUI-Blender"
       },
       "widgets_values": [
-        "blender"
+        "blender",
+        null
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -385,7 +350,8 @@
         8,
         "dpmpp_2m",
         "karras",
-        1
+        1,
+        null
       ]
     },
     {
@@ -462,7 +428,8 @@
       "widgets_values": [
         1,
         0,
-        1
+        1,
+        null
       ]
     },
     {
@@ -477,7 +444,7 @@
         58
       ],
       "flags": {},
-      "order": 4,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -495,7 +462,8 @@
         "Node name for S&R": "ControlNetLoader"
       },
       "widgets_values": [
-        "controlnet-union-sdxl-1.0-promax.safetensors"
+        "controlnet-union-sdxl-1.0-promax.safetensors",
+        null
       ]
     },
     {
@@ -510,7 +478,7 @@
         98
       ],
       "flags": {},
-      "order": 9,
+      "order": 10,
       "mode": 0,
       "inputs": [
         {
@@ -553,7 +521,8 @@
         "Node name for S&R": "CheckpointLoaderSimple"
       },
       "widgets_values": [
-        "raymnants_30.safetensors"
+        "raymnants_30.safetensors",
+        null
       ]
     },
     {
@@ -568,7 +537,7 @@
         106
       ],
       "flags": {},
-      "order": 10,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -597,7 +566,8 @@
       "widgets_values": [
         1024,
         1024,
-        1
+        1,
+        null
       ]
     },
     {
@@ -609,10 +579,10 @@
       ],
       "size": [
         210,
-        350
+        338
       ],
       "flags": {},
-      "order": 5,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -639,7 +609,8 @@
       "widgets_values": [
         "example.png",
         5,
-        "image"
+        "image",
+        null
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -656,7 +627,7 @@
         154
       ],
       "flags": {},
-      "order": 6,
+      "order": 5,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -680,7 +651,8 @@
         6,
         1.0000000000000002,
         0,
-        1.0000000000000002
+        1.0000000000000002,
+        null
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -697,7 +669,7 @@
         178
       ],
       "flags": {},
-      "order": 7,
+      "order": 6,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -722,7 +694,8 @@
         1,
         1,
         3,
-        1
+        1,
+        null
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -736,10 +709,10 @@
       ],
       "size": [
         210,
-        190
+        178
       ],
       "flags": {},
-      "order": 8,
+      "order": 7,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -761,9 +734,51 @@
         0,
         0,
         0,
-        -2147483648,
+        0,
         2147483647,
-        1
+        1,
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 1,
+      "type": "BlenderInputCombo",
+      "pos": [
+        170,
+        440
+      ],
+      "size": [
+        340,
+        160
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "*",
+          "type": "*",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "title": "Model",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
+        "Node name for S&R": "BlenderInputCombo",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
+      },
+      "widgets_values": [
+        "visitor01\\raymnants-v3.0.safetensors",
+        1,
+        "visitor01\\raymnants-v3.0.safetensors",
+        "albedobond\\albedobase-xl-v2.1.safetensors\nvisitor01\\raymnants-v3.0.safetensors",
+        null
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -937,11 +952,15 @@
     "ds": {
       "scale": 0.6830134553650705,
       "offset": [
-        399.9798652600018,
-        -29.32754028999969
+        126.19316526000168,
+        -11.758340289999577
       ]
     },
-    "frontendVersion": "1.21.7"
+    "frontendVersion": "1.23.4",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
   },
   "version": 0.4
 }

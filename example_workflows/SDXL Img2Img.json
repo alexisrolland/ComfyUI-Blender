@@ -1,51 +1,9 @@
 {
   "id": "8e5532a6-dedd-4bda-9f08-3488488bab5f",
   "revision": 0,
-  "last_node_id": 13,
-  "last_link_id": 14,
+  "last_node_id": 16,
+  "last_link_id": 18,
   "nodes": [
-    {
-      "id": 5,
-      "type": "BlenderInputInt",
-      "pos": [
-        580,
-        790
-      ],
-      "size": [
-        270,
-        178
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "INT",
-          "type": "INT",
-          "links": [
-            6
-          ]
-        }
-      ],
-      "title": "Number of Images",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputInt",
-        "aux_id": "alexisrolland/ComfyUI-Blender"
-      },
-      "widgets_values": [
-        1,
-        4,
-        1,
-        1,
-        3,
-        1
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
     {
       "id": 3,
       "type": "BlenderInputString",
@@ -58,7 +16,7 @@
         106
       ],
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -80,7 +38,8 @@
       "widgets_values": [
         "",
         3,
-        ""
+        "",
+        null
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -94,10 +53,10 @@
       ],
       "size": [
         270,
-        190
+        166
       ],
       "flags": {},
-      "order": 2,
+      "order": 1,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -119,7 +78,8 @@
       "widgets_values": [
         "a school girl in uniform with large fennec ears",
         2,
-        "a school girl in uniform with large fennec ears"
+        "a school girl in uniform with large fennec ears",
+        null
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -168,7 +128,8 @@
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        ""
+        "",
+        null
       ],
       "color": "#232",
       "bgcolor": "#353"
@@ -217,54 +178,11 @@
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        ""
+        "",
+        null
       ],
       "color": "#322",
       "bgcolor": "#533"
-    },
-    {
-      "id": 8,
-      "type": "EmptyLatentImage",
-      "pos": [
-        890,
-        630
-      ],
-      "size": [
-        210,
-        106
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "batch_size",
-          "type": "INT",
-          "widget": {
-            "name": "batch_size"
-          },
-          "link": 6
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            10
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "EmptyLatentImage"
-      },
-      "widgets_values": [
-        1024,
-        1024,
-        1
-      ]
     },
     {
       "id": 10,
@@ -278,7 +196,7 @@
         46
       ],
       "flags": {},
-      "order": 11,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
@@ -317,10 +235,10 @@
       ],
       "size": [
         272.6714782714844,
-        270
+        246
       ],
       "flags": {},
-      "order": 12,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
@@ -338,10 +256,88 @@
         "aux_id": "alexisrolland/ComfyUI-Blender"
       },
       "widgets_values": [
-        "blender"
+        "blender",
+        null
       ],
       "color": "#432",
       "bgcolor": "#653"
+    },
+    {
+      "id": 9,
+      "type": "KSampler",
+      "pos": [
+        1140,
+        390
+      ],
+      "size": [
+        270,
+        262
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 7
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 8
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 9
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 15
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": 18
+        },
+        {
+          "name": "denoise",
+          "type": "FLOAT",
+          "widget": {
+            "name": "denoise"
+          },
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.41",
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        731468646030968,
+        "randomize",
+        20,
+        8,
+        "dpmpp_2m",
+        "karras",
+        1,
+        null
+      ]
     },
     {
       "id": 4,
@@ -387,7 +383,8 @@
           "name": "VAE",
           "type": "VAE",
           "links": [
-            12
+            12,
+            16
           ]
         }
       ],
@@ -397,8 +394,161 @@
         "Node name for S&R": "CheckpointLoaderSimple"
       },
       "widgets_values": [
-        "raymnants_30.safetensors"
+        "raymnants_30.safetensors",
+        null
       ]
+    },
+    {
+      "id": 14,
+      "type": "VAEEncode",
+      "pos": [
+        950,
+        640
+      ],
+      "size": [
+        140,
+        46
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 14
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            15
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.41",
+        "Node name for S&R": "VAEEncode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 13,
+      "type": "BlenderInputLoadImage",
+      "pos": [
+        580,
+        770
+      ],
+      "size": [
+        270,
+        338
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            14
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "Input Image",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
+        "Node name for S&R": "BlenderInputLoadImage",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
+      },
+      "widgets_values": [
+        "example.png",
+        4,
+        "image",
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 12,
+      "type": "MarkdownNote",
+      "pos": [
+        170,
+        120
+      ],
+      "size": [
+        340,
+        220
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 15,
+      "type": "BlenderInputFloat",
+      "pos": [
+        880,
+        1060
+      ],
+      "size": [
+        210,
+        154
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "title": "Denoise",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
+        "Node name for S&R": "BlenderInputFloat",
+        "aux_id": "alexisrolland/ComfyUI-Blender"
+      },
+      "widgets_values": [
+        0.5000000000000001,
+        5,
+        0.5000000000000001,
+        0.10000000000000002,
+        1.0000000000000002,
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
     },
     {
       "id": 1,
@@ -409,10 +559,10 @@
       ],
       "size": [
         340,
-        180
+        160
       ],
       "flags": {},
-      "order": 3,
+      "order": 5,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -432,118 +582,28 @@
         "aux_id": "alexisrolland/ComfyUI-Blender"
       },
       "widgets_values": [
-        "raymnants_30.safetensors",
+        "visitor01\\raymnants-v3.0.safetensors",
         1,
-        "raymnants_30.safetensors",
-        "raymnants_30.safetensors\nv1-5-pruned-emaonly-fp16.safetensors"
+        "visitor01\\raymnants-v3.0.safetensors",
+        "albedobond\\albedobase-xl-v2.1.safetensors\nvisitor01\\raymnants-v3.0.safetensors",
+        null
       ],
       "color": "#432",
       "bgcolor": "#653"
     },
     {
-      "id": 9,
-      "type": "KSampler",
-      "pos": [
-        1140,
-        390
-      ],
-      "size": [
-        270,
-        262
-      ],
-      "flags": {},
-      "order": 10,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 7
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 8
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 9
-        },
-        {
-          "name": "latent_image",
-          "type": "LATENT",
-          "link": 10
-        },
-        {
-          "name": "seed",
-          "type": "INT",
-          "widget": {
-            "name": "seed"
-          },
-          "link": 14
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            11
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "KSampler"
-      },
-      "widgets_values": [
-        917280561298290,
-        "randomize",
-        20,
-        8,
-        "dpmpp_2m",
-        "karras",
-        1
-      ]
-    },
-    {
-      "id": 12,
-      "type": "MarkdownNote",
-      "pos": [
-        170,
-        120
-      ],
-      "size": [
-        340,
-        220
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 13,
+      "id": 16,
       "type": "BlenderInputSeed",
       "pos": [
-        890,
-        810
+        880,
+        800
       ],
       "size": [
         210,
-        190
+        178
       ],
       "flags": {},
-      "order": 5,
+      "order": 6,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -551,7 +611,7 @@
           "name": "INT",
           "type": "INT",
           "links": [
-            14
+            18
           ]
         }
       ],
@@ -565,9 +625,10 @@
         0,
         0,
         0,
-        -2147483648,
+        0,
         2147483647,
-        1
+        1,
+        null
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -615,14 +676,6 @@
       "CLIP"
     ],
     [
-      6,
-      5,
-      0,
-      8,
-      0,
-      "INT"
-    ],
-    [
       7,
       4,
       0,
@@ -645,14 +698,6 @@
       9,
       2,
       "CONDITIONING"
-    ],
-    [
-      10,
-      8,
-      0,
-      9,
-      3,
-      "LATENT"
     ],
     [
       11,
@@ -682,6 +727,38 @@
       14,
       13,
       0,
+      14,
+      0,
+      "IMAGE"
+    ],
+    [
+      15,
+      14,
+      0,
+      9,
+      3,
+      "LATENT"
+    ],
+    [
+      16,
+      4,
+      2,
+      14,
+      1,
+      "VAE"
+    ],
+    [
+      17,
+      15,
+      0,
+      9,
+      5,
+      "FLOAT"
+    ],
+    [
+      18,
+      16,
+      0,
       9,
       4,
       "INT"
@@ -691,13 +768,17 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.9090909090909098,
+      "scale": 0.9090909090909091,
       "offset": [
-        -5.357204740000972,
-        20.320898709999575
+        56.87078631935325,
+        -52.6222912223814
       ]
     },
-    "frontendVersion": "1.21.7"
+    "frontendVersion": "1.23.4",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
   },
   "version": 0.4
 }

@@ -1,0 +1,945 @@
+{
+  "id": "d2d1faaf-2721-471e-a202-305446a968ee",
+  "revision": 0,
+  "last_node_id": 47,
+  "last_link_id": 82,
+  "nodes": [
+    {
+      "id": 32,
+      "type": "VAELoader",
+      "pos": [
+        130,
+        420
+      ],
+      "size": [
+        270,
+        70
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "slot_index": 0,
+          "links": [
+            60,
+            69
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "VAELoader",
+        "models": [
+          {
+            "name": "ae.safetensors",
+            "url": "https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/ae.safetensors?download=true",
+            "directory": "vae"
+          }
+        ]
+      },
+      "widgets_values": [
+        "ae.safetensors",
+        null
+      ]
+    },
+    {
+      "id": 31,
+      "type": "UNETLoader",
+      "pos": [
+        -580,
+        -40
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": 77
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            74
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "UNETLoader",
+        "models": [
+          {
+            "name": "flux1-dev.safetensors",
+            "url": "https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/flux1-dev.safetensors?download=true",
+            "directory": "diffusion_models"
+          }
+        ]
+      },
+      "widgets_values": [
+        "visitor01\\rayflux-photoplus.safetensors",
+        "default",
+        null
+      ]
+    },
+    {
+      "id": 34,
+      "type": "DualCLIPLoader",
+      "pos": [
+        -231.25802612304688,
+        102.66471862792969
+      ],
+      "size": [
+        315,
+        130
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            62,
+            63
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "DualCLIPLoader",
+        "models": [
+          {
+            "name": "t5xxl_fp16.safetensors",
+            "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors?download=true",
+            "directory": "text_encoders"
+          },
+          {
+            "name": "clip_l.safetensors",
+            "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors?download=true",
+            "directory": "text_encoders"
+          }
+        ]
+      },
+      "widgets_values": [
+        "clip_l.safetensors",
+        "t5xxl_fp16.safetensors",
+        "flux",
+        "default",
+        null
+      ]
+    },
+    {
+      "id": 35,
+      "type": "InstructPixToPixConditioning",
+      "pos": [
+        670,
+        140
+      ],
+      "size": [
+        235.1999969482422,
+        86
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 67
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 68
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 69
+        },
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 78
+        }
+      ],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            64
+          ]
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "slot_index": 1,
+          "links": [
+            65
+          ]
+        },
+        {
+          "name": "latent",
+          "type": "LATENT",
+          "slot_index": 2,
+          "links": [
+            73
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "InstructPixToPixConditioning"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 8,
+      "type": "VAEDecode",
+      "pos": [
+        1320,
+        80
+      ],
+      "size": [
+        210,
+        46
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 7
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 60
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            80
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 23,
+      "type": "CLIPTextEncode",
+      "pos": [
+        130,
+        100
+      ],
+      "size": [
+        263.2095642089844,
+        88
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 62
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 79
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            41
+          ]
+        }
+      ],
+      "title": "CLIP Text Encode (Positive Prompt)",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "",
+        null
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 7,
+      "type": "CLIPTextEncode",
+      "pos": [
+        130,
+        260
+      ],
+      "size": [
+        269.4439392089844,
+        88
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 63
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            68
+          ]
+        }
+      ],
+      "title": "CLIP Text Encode (Negative Prompt)",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "",
+        null
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 44,
+      "type": "BlenderOutputSaveImage",
+      "pos": [
+        1570,
+        80
+      ],
+      "size": [
+        272.6714782714844,
+        270
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 80
+        }
+      ],
+      "outputs": [],
+      "title": "Save Image",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
+        "Node name for S&R": "BlenderOutputSaveImage"
+      },
+      "widgets_values": [
+        "blender",
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 3,
+      "type": "KSampler",
+      "pos": [
+        970,
+        80
+      ],
+      "size": [
+        315,
+        262
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 76
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 64
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 65
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 73
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": 82
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "slot_index": 0,
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        651866252727006,
+        "randomize",
+        20,
+        1,
+        "heun",
+        "beta",
+        1,
+        null
+      ]
+    },
+    {
+      "id": 26,
+      "type": "FluxGuidance",
+      "pos": [
+        420,
+        110
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 41
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            67
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "FluxGuidance"
+      },
+      "widgets_values": [
+        3,
+        null
+      ]
+    },
+    {
+      "id": 37,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        -230,
+        -40
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 74
+        },
+        {
+          "name": "strength_model",
+          "type": "FLOAT",
+          "widget": {
+            "name": "strength_model"
+          },
+          "link": 81
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            76
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "LoraLoaderModelOnly",
+        "models": [
+          {
+            "name": "flux1-depth-dev-lora.safetensors",
+            "url": "https://huggingface.co/black-forest-labs/FLUX.1-Depth-dev-lora/resolve/main/flux1-depth-dev-lora.safetensors?download=true",
+            "directory": "loras"
+          }
+        ]
+      },
+      "widgets_values": [
+        "black-forest-labs\\flux1-depth-dev-lora.safetensors",
+        1,
+        null
+      ]
+    },
+    {
+      "id": 47,
+      "type": "BlenderInputSeed",
+      "pos": [
+        670,
+        290
+      ],
+      "size": [
+        230,
+        178
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            82
+          ]
+        }
+      ],
+      "title": "Seed",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
+        "Node name for S&R": "BlenderInputSeed"
+      },
+      "widgets_values": [
+        0,
+        0,
+        0,
+        0,
+        2147483647,
+        1,
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 41,
+      "type": "BlenderInputCombo",
+      "pos": [
+        -1020,
+        -40
+      ],
+      "size": [
+        400,
+        176
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "*",
+          "type": "*",
+          "links": [
+            77
+          ]
+        }
+      ],
+      "title": "Model",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
+        "Node name for S&R": "BlenderInputCombo"
+      },
+      "widgets_values": [
+        "visitor01\\rayflux-v1.0.safetensors",
+        1,
+        "visitor01\\rayflux-v1.0.safetensors",
+        "visitor01\\rayflux-photoplus.safetensors\nvisitor01\\rayflux-v1.0.safetensors",
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 43,
+      "type": "BlenderInputStringMultiline",
+      "pos": [
+        -230,
+        300
+      ],
+      "size": [
+        310,
+        250
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            79
+          ]
+        }
+      ],
+      "title": "Prompt",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
+        "Node name for S&R": "BlenderInputStringMultiline"
+      },
+      "widgets_values": [
+        "",
+        2,
+        "",
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 46,
+      "type": "BlenderInputFloat",
+      "pos": [
+        -540,
+        110
+      ],
+      "size": [
+        270,
+        154
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": [
+            81
+          ]
+        }
+      ],
+      "title": "Depth Strength",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
+        "Node name for S&R": "BlenderInputFloat"
+      },
+      "widgets_values": [
+        1.0000000000000002,
+        4,
+        1.0000000000000002,
+        0,
+        1.0000000000000002,
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 42,
+      "type": "BlenderInputLoadImage",
+      "pos": [
+        130,
+        550
+      ],
+      "size": [
+        270,
+        338.0000305175781
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            78
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "Depth Image",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
+        "Node name for S&R": "BlenderInputLoadImage"
+      },
+      "widgets_values": [
+        "example.png",
+        3,
+        "image",
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    }
+  ],
+  "links": [
+    [
+      7,
+      3,
+      0,
+      8,
+      0,
+      "LATENT"
+    ],
+    [
+      41,
+      23,
+      0,
+      26,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      60,
+      32,
+      0,
+      8,
+      1,
+      "VAE"
+    ],
+    [
+      62,
+      34,
+      0,
+      23,
+      0,
+      "CLIP"
+    ],
+    [
+      63,
+      34,
+      0,
+      7,
+      0,
+      "CLIP"
+    ],
+    [
+      64,
+      35,
+      0,
+      3,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      65,
+      35,
+      1,
+      3,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      67,
+      26,
+      0,
+      35,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      68,
+      7,
+      0,
+      35,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      69,
+      32,
+      0,
+      35,
+      2,
+      "VAE"
+    ],
+    [
+      73,
+      35,
+      2,
+      3,
+      3,
+      "LATENT"
+    ],
+    [
+      74,
+      31,
+      0,
+      37,
+      0,
+      "MODEL"
+    ],
+    [
+      76,
+      37,
+      0,
+      3,
+      0,
+      "MODEL"
+    ],
+    [
+      77,
+      41,
+      0,
+      31,
+      0,
+      "COMBO"
+    ],
+    [
+      78,
+      42,
+      0,
+      35,
+      3,
+      "IMAGE"
+    ],
+    [
+      79,
+      43,
+      0,
+      23,
+      1,
+      "STRING"
+    ],
+    [
+      80,
+      8,
+      0,
+      44,
+      0,
+      "IMAGE"
+    ],
+    [
+      81,
+      46,
+      0,
+      37,
+      1,
+      "FLOAT"
+    ],
+    [
+      82,
+      47,
+      0,
+      3,
+      4,
+      "INT"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.7150000000000027,
+      "offset": [
+        1045.153774884916,
+        369.0294483498675
+      ]
+    },
+    "frontendVersion": "1.23.4",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}
