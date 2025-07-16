@@ -34,13 +34,9 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          if git diff --quiet pyproject.toml; then
-            echo "No changes to commit"
-          else
-            git add pyproject.toml
-            git commit -m "Update version to ${{ github.ref_name }}"
-            git push origin HEAD:main
-          fi
+          git add pyproject.toml
+          git commit -m "Update version to ${{ github.ref_name }}"
+          git push origin HEAD:main
 
       # Step 4: Publish custom node
       - name: Publish custom node
