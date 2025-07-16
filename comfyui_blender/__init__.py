@@ -19,6 +19,7 @@ install_dependencies()
 from .operators import (
     delete_input,
     delete_output,
+    delete_workflow,
     import_input,
     import_workflow,
     lock_seed,
@@ -57,6 +58,7 @@ def register():
     # Operators
     delete_input.register()
     delete_output.register()
+    delete_workflow.register()
     import_input.register()
     import_workflow.register()
     lock_seed.register()
@@ -80,6 +82,7 @@ def unregister():
     # Operators
     delete_input.unregister()
     delete_output.unregister()
+    delete_workflow.unregister()
     import_input.unregister()
     import_workflow.unregister()
     lock_seed.unregister()

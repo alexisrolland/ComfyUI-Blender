@@ -27,9 +27,13 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
         row.operator("comfy.import_workflow", text="Import Workflow")
         row.operator("preferences.addon_show", icon="PREFERENCES").module = "comfyui_blender"
 
-        # Dropdown list of workflows
+        # Dropdown list of workflows with actions
+        row = layout.row()
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        layout.prop(addon_prefs, "workflow")
+        
+        # Option 1: Standard dropdown with buttons
+        row.prop(addon_prefs, "workflow")
+        row.operator("comfy.delete_workflow", text="", icon="TRASH").filename = addon_prefs.workflow
 
         # Queue status
         queue = addon_prefs.queue

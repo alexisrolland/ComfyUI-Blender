@@ -17,7 +17,7 @@ class ComfyBlenderOperatorDeleteOutput(bpy.types.Operator):
         """Execute the operator."""
 
         # Get outputs collection
-        addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         outputs_collection = addon_prefs.outputs_collection
 
         # Find and delete the output from the collection
@@ -26,7 +26,7 @@ class ComfyBlenderOperatorDeleteOutput(bpy.types.Operator):
         for index, output in enumerate(outputs_collection):
             if output.filepath == self.filepath:
                 outputs_collection.remove(index)
-                self.report({'INFO'}, f"Removed output from collection: {self.filepath}")
+                self.report({'INFO'}, f"Removed output from collection: {self.filename}")
 
         # Remove output from Blender's data
         if self.type == "image":
