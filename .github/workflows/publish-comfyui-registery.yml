@@ -18,13 +18,15 @@ jobs:
       # Step 1: Check out the repository
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
 
       # Step 2: Update version in pyproject.toml if triggered by tag
       - name: Update version in pyproject.toml
         if: startsWith(github.ref, 'refs/tags/')
         run: |
+          git fetch origin main:main
           git checkout main
-          git pull origin main
           TAG_NAME="${GITHUB_REF##*/}"
           echo "Updating version in pyproject.toml to $TAG_NAME"
           sed -i "s/version = \".*\"/version = \"$TAG_NAME\"/" pyproject.toml
