@@ -25,7 +25,7 @@ In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > sel
 
 ## Usage
 
-1. Create a workflow in ComfyUI (you can refer to the workflow examples in this repository).
+1. Create a workflow in ComfyUI (see workflow examples in this repository).
 
 2. Use the Blender nodes to define the inputs and outputs of the workflow to be displayed in the Blender add-on.
 
