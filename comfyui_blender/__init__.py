@@ -2,13 +2,30 @@
 import subprocess
 import sys
 
+def install_dependencies():
+    """Install required Python dependencies."""
+
+    print("hello")
+    required_packages = ["websocket-client"]
+    for package in required_packages:
+        try:
+            __import__(package)
+        except ImportError:
+            print(f"Installing missing package: {package}")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+# Install dependencies before importing modules to avoid errors
+install_dependencies()
+
 from .operators import (
     delete_input,
     delete_output,
     import_input,
     import_workflow,
+    lock_seed,
     open_file_browser,
     open_image_editor,
+    render_depth_map,
     run_workflow,
     select_folder
 )
@@ -32,22 +49,8 @@ bl_info = {
     "category": "3D View",
 }
 
-def install_dependencies():
-    """Install required Python dependencies."""
-
-    required_packages = ["websocket-client"]
-    for package in required_packages:
-        try:
-            __import__(package)
-        except ImportError:
-            print(f"Installing missing package: {package}")
-            subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
 def register():
     """Register add-on preferences, operators, and panels."""
-
-    # Install dependencies
-    install_dependencies()
 
     # Preferences
     settings.register()
@@ -57,8 +60,10 @@ def register():
     delete_output.register()
     import_input.register()
     import_workflow.register()
+    lock_seed.register()
     open_file_browser.register()
     open_image_editor.register()
+    render_depth_map.register()
     run_workflow.register()
     select_folder.register()
 
@@ -78,8 +83,10 @@ def unregister():
     delete_output.unregister()
     import_input.unregister()
     import_workflow.unregister()
+    lock_seed.unregister()
     open_file_browser.unregister()
     open_image_editor.unregister()
+    render_depth_map.unregister()
     run_workflow.unregister()
     select_folder.unregister()
 

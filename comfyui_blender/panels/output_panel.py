@@ -32,7 +32,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
         # Get outputs collection
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         outputs_folder = str(addon_prefs.outputs_folder)
-        for output in addon_prefs.outputs_collection:
+        for output in reversed(addon_prefs.outputs_collection):
             # Display output of type image
             if output.type == "image":
                 # Load image in the data block if it does not exist

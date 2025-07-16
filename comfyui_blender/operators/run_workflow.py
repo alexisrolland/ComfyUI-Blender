@@ -43,10 +43,14 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                 if node["class_type"] == "BlenderInputLoadImage":
                     # Upload image to ComfyUI server
                     image_path = getattr(current_workflow, property_name)
-                    response = upload_file(image_path, type="image")
-
-                    if response.status_code != 200:
-                        self.report({'ERROR'}, f"Failed to upload image: {response.status_code} - {response.text}")
+                    try:
+                        response = upload_file(image_path, type="image")
+                        if response.status_code != 200:
+                            self.report({'ERROR'}, f"Failed to upload image: {response.status_code} - {response.text}")
+                            return {'CANCELLED'}
+                    except Exception as e:
+                        input_name = current_workflow.bl_rna.properties[property_name].name  # Node title
+                        self.report({'ERROR'}, f"Error uploading image for input {input_name}: {str(e)}")
                         return {'CANCELLED'}
 
                     self.report({'INFO'}, "Image uploaded to ComfyUI server.")
