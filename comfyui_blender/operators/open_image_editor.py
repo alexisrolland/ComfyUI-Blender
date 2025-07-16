@@ -14,15 +14,23 @@ class ComfyBlenderOperatorOpenImageEditor(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
-        # Split the screen to create a new area
-        bpy.ops.screen.area_split(direction="VERTICAL", factor=0.25)
+        # Check if there is already an image editor area
+        image_editor_area = None
+        for area in context.screen.areas:
+            if area.type == "IMAGE_EDITOR":
+                image_editor_area = area
+                break
 
-        # Get the newly created area (the last one)
-        area = context.screen.areas[-1]
-        area.type = "IMAGE_EDITOR"
+        # If no image editor area exists, split the screen to create one
+        if image_editor_area is None:
+            bpy.ops.screen.area_split(direction="VERTICAL", factor=0.5)
 
-        # Access the image editor space
-        space = area.spaces[0]
+            # Get the newly created area (the last one)
+            image_editor_area = context.screen.areas[-1]
+            image_editor_area.type = "IMAGE_EDITOR"
+
+        # Access the image editor space and set the image
+        space = image_editor_area.spaces[0]
         space.image = bpy.data.images.get(self.filename)
         return {'FINISHED'}
 
