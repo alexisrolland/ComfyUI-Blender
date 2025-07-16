@@ -94,6 +94,10 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 elif node["class_type"] == "BlenderInputSeed":
                     row = box.row(align=True)
                     row.prop(current_workflow, property_name) # Random seed management to be implemented
+                    if addon_prefs.lock_seed:
+                        row.prop(addon_prefs, "lock_seed", text="", icon="LOCKED")
+                    else:
+                        row.prop(addon_prefs, "lock_seed", text="", icon="UNLOCKED")
 
                 else:
                     # Default display for other input types

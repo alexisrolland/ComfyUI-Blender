@@ -92,6 +92,13 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
         update=register_workflow_class
     )
 
+    # Lock seed
+    lock_seed: BoolProperty(
+        name="Lock Seed",
+        description="Lock the seed value used to initialize generation",
+        default=False
+    )
+
     # Queue
     queue: IntProperty(
         name="Queue",

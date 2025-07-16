@@ -96,8 +96,15 @@ class BlenderInputLoadImage(LoadImage):
 class BlenderInputSeed(BlenderInputInt):
     """
     Node used by ComfyUI Blender add-on to input a seed value in a workflow.
-    This node reuses the same parameters as the integer node, but the display is different in Blender.
+    This node reuses the most parameters from the BlenderInputInt node, but the display is different in Blender.
     """
+    CATEGORY = "blender/inputs"
+
+    @classmethod
+    def INPUT_TYPES(s):
+        INPUT_TYPES = super().INPUT_TYPES()
+        INPUT_TYPES["required"]["min"] = (IO.INT, {"default": 0, "min": 0, "max": MAX_INT, "step": 1})
+        return INPUT_TYPES
 
 class BlenderInputString(String):
     """Node used by ComfyUI Blender add-on to input a string in a workflow."""

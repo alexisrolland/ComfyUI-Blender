@@ -76,12 +76,12 @@ def create_class_properties(dictionary):
             properties[property_name] = StringProperty(name=name)
             continue
         
-        # Integer
+        # Seed
         if node["class_type"] == "BlenderInputSeed":
             properties[property_name] = IntProperty(
                 name=name,
                 default=node["inputs"].get("default", 0),
-                min=node["inputs"].get("min", -2147483648),
+                min=node["inputs"].get("min", 0),
                 max=node["inputs"].get("max", 2147483647),
                 step=node["inputs"].get("step", 1)
             )

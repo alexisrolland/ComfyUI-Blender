@@ -1,8 +1,9 @@
 """Operator to send and execute a workflow on ComfyUI server."""
 import json
 import os
-import urllib.request
+import random
 import threading
+import urllib.request
 
 import bpy
 
@@ -56,6 +57,18 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     self.report({'INFO'}, "Image uploaded to ComfyUI server.")
                     image_filename = response.json()["name"]
                     workflow[key]["inputs"]["image"] = image_filename
+
+                # Custom handling for seed inputs
+                elif node["class_type"] == "BlenderInputSeed":
+                    if addon_prefs.lock_seed:
+                        seed = getattr(current_workflow, property_name)
+                    else:
+                        # If lock seed is not enabled, generate a random seed
+                        min = current_workflow.bl_rna.properties[property_name].hard_min
+                        max = current_workflow.bl_rna.properties[property_name].hard_max
+                        seed = random.randint(min, max)
+                        setattr(current_workflow, property_name, seed)
+                    workflow[key]["inputs"]["value"] = seed
 
                 else:
                     # Default handling for other input types
