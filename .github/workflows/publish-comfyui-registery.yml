@@ -23,7 +23,8 @@ jobs:
       - name: Update version in pyproject.toml
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          git pull origin HEAD:main
+          git checkout main
+          git pull origin main
           TAG_NAME="${GITHUB_REF##*/}"
           echo "Updating version in pyproject.toml to $TAG_NAME"
           sed -i "s/version = \".*\"/version = \"$TAG_NAME\"/" pyproject.toml
@@ -34,9 +35,13 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add pyproject.toml
-          git commit -m "Update version to ${{ github.ref_name }}"
-          git push origin HEAD:main
+          if git diff --quiet pyproject.toml; then
+            echo "No changes to commit"
+          else
+            git add pyproject.toml
+            git commit -m "Update version to ${{ github.ref_name }}"
+            git push origin main
+          fi
 
       # Step 4: Publish custom node
       - name: Publish custom node
