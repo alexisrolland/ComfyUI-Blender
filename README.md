@@ -4,6 +4,8 @@
 
 Blender add-on to send requests to a ComfyUI server. This respository contains both custom nodes to be installed on the ComfyUI server and the source code of the Blender add-on.
 
+![Blender Screenshot](./screenshot_blender.jpg)
+
 ## Getting Started
 
 ### Install ComfyUI Custom Nodes
