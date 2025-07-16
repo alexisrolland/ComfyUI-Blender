@@ -5,7 +5,6 @@ import sys
 def install_dependencies():
     """Install required Python dependencies."""
 
-    print("hello")
     required_packages = ["websocket-client"]
     for package in required_packages:
         try:
