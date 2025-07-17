@@ -1,7 +1,7 @@
 {
   "id": "d2d1faaf-2721-471e-a202-305446a968ee",
   "revision": 0,
-  "last_node_id": 47,
+  "last_node_id": 48,
   "last_link_id": 82,
   "nodes": [
     {
@@ -13,7 +13,7 @@
       ],
       "size": [
         270,
-        70
+        58
       ],
       "flags": {},
       "order": 0,
@@ -44,58 +44,6 @@
       },
       "widgets_values": [
         "ae.safetensors",
-        null
-      ]
-    },
-    {
-      "id": 31,
-      "type": "UNETLoader",
-      "pos": [
-        -580,
-        -40
-      ],
-      "size": [
-        315,
-        82
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "unet_name",
-          "type": "COMBO",
-          "widget": {
-            "name": "unet_name"
-          },
-          "link": 77
-        }
-      ],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "slot_index": 0,
-          "links": [
-            74
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.42",
-        "Node name for S&R": "UNETLoader",
-        "models": [
-          {
-            "name": "flux1-dev.safetensors",
-            "url": "https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/flux1-dev.safetensors?download=true",
-            "directory": "diffusion_models"
-          }
-        ]
-      },
-      "widgets_values": [
-        "visitor01\\rayflux-photoplus.safetensors",
-        "default",
         null
       ]
     },
@@ -161,7 +109,7 @@
         86
       ],
       "flags": {},
-      "order": 12,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
@@ -230,7 +178,7 @@
         46
       ],
       "flags": {},
-      "order": 14,
+      "order": 15,
       "mode": 0,
       "inputs": [
         {
@@ -327,7 +275,7 @@
       "flags": {
         "collapsed": false
       },
-      "order": 7,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -360,41 +308,6 @@
       "bgcolor": "#533"
     },
     {
-      "id": 44,
-      "type": "BlenderOutputSaveImage",
-      "pos": [
-        1570,
-        80
-      ],
-      "size": [
-        272.6714782714844,
-        270
-      ],
-      "flags": {},
-      "order": 15,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 80
-        }
-      ],
-      "outputs": [],
-      "title": "Save Image",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
-        "Node name for S&R": "BlenderOutputSaveImage"
-      },
-      "widgets_values": [
-        "blender",
-        null
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 3,
       "type": "KSampler",
       "pos": [
@@ -406,7 +319,7 @@
         262
       ],
       "flags": {},
-      "order": 13,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {
@@ -454,7 +367,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        651866252727006,
+        300259743227816,
         "randomize",
         20,
         1,
@@ -519,7 +432,7 @@
       "flags": {
         "collapsed": false
       },
-      "order": 10,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
@@ -607,44 +520,56 @@
       "bgcolor": "#653"
     },
     {
-      "id": 41,
-      "type": "BlenderInputCombo",
+      "id": 31,
+      "type": "UNETLoader",
       "pos": [
-        -1020,
+        -540,
         -40
       ],
       "size": [
-        400,
-        176
+        270,
+        82
       ],
       "flags": {},
-      "order": 3,
+      "order": 10,
       "mode": 0,
-      "inputs": [],
+      "inputs": [
+        {
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": 77
+        }
+      ],
       "outputs": [
         {
-          "name": "*",
-          "type": "*",
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
           "links": [
-            77
+            74
           ]
         }
       ],
-      "title": "Model",
       "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
-        "Node name for S&R": "BlenderInputCombo"
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "UNETLoader",
+        "models": [
+          {
+            "name": "flux1-dev.safetensors",
+            "url": "https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/flux1-dev.safetensors?download=true",
+            "directory": "diffusion_models"
+          }
+        ]
       },
       "widgets_values": [
-        "visitor01\\rayflux-v1.0.safetensors",
-        1,
-        "visitor01\\rayflux-v1.0.safetensors",
-        "visitor01\\rayflux-photoplus.safetensors\nvisitor01\\rayflux-v1.0.safetensors",
+        "visitor01\\rayflux-photoplus.safetensors",
+        "default",
         null
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
+      ]
     },
     {
       "id": 43,
@@ -655,10 +580,10 @@
       ],
       "size": [
         310,
-        250
+        190
       ],
       "flags": {},
-      "order": 4,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -677,50 +602,10 @@
         "Node name for S&R": "BlenderInputStringMultiline"
       },
       "widgets_values": [
-        "",
+        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
         2,
         "",
-        null
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 46,
-      "type": "BlenderInputFloat",
-      "pos": [
-        -540,
-        110
-      ],
-      "size": [
-        270,
-        154
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "FLOAT",
-          "type": "FLOAT",
-          "links": [
-            81
-          ]
-        }
-      ],
-      "title": "Depth Strength",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
-        "Node name for S&R": "BlenderInputFloat"
-      },
-      "widgets_values": [
-        1.0000000000000002,
-        4,
-        1.0000000000000002,
-        0,
-        1.0000000000000002,
+        null,
         null
       ],
       "color": "#432",
@@ -735,10 +620,10 @@
       ],
       "size": [
         270,
-        338.0000305175781
+        338
       ],
       "flags": {},
-      "order": 6,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -762,9 +647,149 @@
         "Node name for S&R": "BlenderInputLoadImage"
       },
       "widgets_values": [
-        "example.png",
+        "depth_map.png",
         3,
         "image",
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 41,
+      "type": "BlenderInputCombo",
+      "pos": [
+        -940,
+        -40
+      ],
+      "size": [
+        350,
+        184
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "*",
+          "type": "*",
+          "links": [
+            77
+          ]
+        }
+      ],
+      "title": "Model",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
+        "Node name for S&R": "BlenderInputCombo"
+      },
+      "widgets_values": [
+        "visitor01/rayflux-v1.0.safetensors",
+        1,
+        "",
+        "visitor01\\rayflux-photoplus.safetensors\nvisitor01\\rayflux-v1.0.safetensors",
+        "black-forest-labs/flux1-dev.safetensors\nvisitor01/rayflux-photoplus.safetensors\nvisitor01/rayflux-v1.0.safetensors",
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 48,
+      "type": "MarkdownNote",
+      "pos": [
+        -930,
+        230
+      ],
+      "size": [
+        340,
+        220
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 46,
+      "type": "BlenderInputFloat",
+      "pos": [
+        -540,
+        110
+      ],
+      "size": [
+        270,
+        154
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": [
+            81
+          ]
+        }
+      ],
+      "title": "Depth Strength",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
+        "Node name for S&R": "BlenderInputFloat"
+      },
+      "widgets_values": [
+        0.8000000000000002,
+        4,
+        0.8000000000000002,
+        0,
+        1.0000000000000002,
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 44,
+      "type": "BlenderOutputSaveImage",
+      "pos": [
+        1570,
+        80
+      ],
+      "size": [
+        210,
+        282
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 80
+        }
+      ],
+      "outputs": [],
+      "title": "Save Image",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
+        "Node name for S&R": "BlenderOutputSaveImage"
+      },
+      "widgets_values": [
+        "blender",
         null
       ],
       "color": "#432",
@@ -929,10 +954,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.7150000000000027,
+      "scale": 0.650000000000004,
       "offset": [
-        1045.153774884916,
-        369.0294483498675
+        993.0026491901142,
+        475.84349233323604
       ]
     },
     "frontendVersion": "1.23.4",
