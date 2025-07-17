@@ -1,3 +1,5 @@
+import os
+
 from comfy_extras.nodes_primitive import Boolean, Float, Int, String, StringMultiline
 from comfy.comfy_types.node_typing import IO
 from nodes import LoadImage
@@ -32,10 +34,12 @@ class BlenderInputCombo(String):
         INPUT_TYPES = super().INPUT_TYPES()
         INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
         INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
+        INPUT_TYPES["required"]["format_path"] = (IO.BOOLEAN, {"default": False, "tooltip": "If the string value is a file path, this format it to be compatible with the operating system where ComfyUI is running."})
         INPUT_TYPES["required"]["list"] = (IO.STRING, {"default": "", "multiline": True})
         return INPUT_TYPES
 
-    def execute(self, value: str, order: int, default: str, list: str) -> tuple[str]:
+    def execute(self, value: str, order: int, default: str, format_path: bool, list: str) -> tuple[str]:
+        value = str(os.path.normpath(value)) if format_path else value
         return (value,)
 
 class BlenderInputFloat(Float):
@@ -115,9 +119,11 @@ class BlenderInputString(String):
         INPUT_TYPES = super().INPUT_TYPES()
         INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
         INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
+        INPUT_TYPES["required"]["format_path"] = (IO.BOOLEAN, {"default": False, "tooltip": "If the string value is a file path, this format it to be compatible with the operating system where ComfyUI is running."})
         return INPUT_TYPES
 
-    def execute(self, value: str, order: int, default: str) -> tuple[str]:
+    def execute(self, value: str, order: int, default: str, format_path: bool) -> tuple[str]:
+        value = str(os.path.normpath(value)) if format_path else value
         return (value,)
 
 class BlenderInputStringMultiline(StringMultiline):
@@ -129,7 +135,9 @@ class BlenderInputStringMultiline(StringMultiline):
         INPUT_TYPES = super().INPUT_TYPES()
         INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
         INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": "", "multiline": True})
+        INPUT_TYPES["required"]["format_path"] = (IO.BOOLEAN, {"default": False, "tooltip": "If the string value is a file path, this format it to be compatible with the operating system where ComfyUI is running."})
         return INPUT_TYPES
 
-    def execute(self, value: str, order: int, default: str) -> tuple[str]:
+    def execute(self, value: str, order: int, default: str, format_path: bool) -> tuple[str]:
+        value = str(os.path.normpath(value)) if format_path else value
         return (value,)
