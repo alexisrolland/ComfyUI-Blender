@@ -1,65 +1,15 @@
 {
-  "id": "8e5532a6-dedd-4bda-9f08-3488488bab5f",
+  "id": "e4ae1d2a-76bf-4cd7-bc07-b259704034a9",
   "revision": 0,
-  "last_node_id": 20,
-  "last_link_id": 22,
+  "last_node_id": 16,
+  "last_link_id": 18,
   "nodes": [
     {
-      "id": 6,
-      "type": "CLIPTextEncode",
-      "pos": [
-        890,
-        280
-      ],
-      "size": [
-        210.29940795898438,
-        88
-      ],
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 3
-        },
-        {
-          "name": "text",
-          "type": "STRING",
-          "widget": {
-            "name": "text"
-          },
-          "link": 2
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            8
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        "",
-        null
-      ],
-      "color": "#232",
-      "bgcolor": "#353"
-    },
-    {
-      "id": 10,
+      "id": 12,
       "type": "VAEDecode",
       "pos": [
-        1460,
-        390
+        1780,
+        810
       ],
       "size": [
         140,
@@ -91,53 +41,17 @@
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.41",
+        "ver": "0.3.42",
         "Node name for S&R": "VAEDecode"
       },
       "widgets_values": []
     },
     {
       "id": 11,
-      "type": "BlenderOutputSaveImage",
-      "pos": [
-        1640,
-        390
-      ],
-      "size": [
-        272.6714782714844,
-        270
-      ],
-      "flags": {},
-      "order": 12,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 13
-        }
-      ],
-      "outputs": [],
-      "title": "Save Image",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderOutputSaveImage",
-        "aux_id": "alexisrolland/ComfyUI-Blender"
-      },
-      "widgets_values": [
-        "blender",
-        null
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 9,
       "type": "KSampler",
       "pos": [
-        1140,
-        390
+        1470,
+        810
       ],
       "size": [
         270,
@@ -165,7 +79,7 @@
         {
           "name": "latent_image",
           "type": "LATENT",
-          "link": 21
+          "link": 17
         },
         {
           "name": "seed",
@@ -181,7 +95,7 @@
           "widget": {
             "name": "denoise"
           },
-          "link": 20
+          "link": 18
         }
       ],
       "outputs": [
@@ -195,12 +109,12 @@
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.41",
+        "ver": "0.3.42",
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        649216718275497,
-        "randomize",
+        0,
+        "fixed",
         20,
         8,
         "dpmpp_2m",
@@ -210,15 +124,138 @@
       ]
     },
     {
-      "id": 2,
-      "type": "BlenderInputStringMultiline",
+      "id": 13,
+      "type": "BlenderOutputSaveImage",
       "pos": [
-        580,
-        70
+        1960,
+        810
       ],
       "size": [
-        270,
-        190
+        210,
+        150
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 13
+        }
+      ],
+      "outputs": [],
+      "title": "Save Image",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderOutputSaveImage"
+      },
+      "widgets_values": [
+        "blender",
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 7,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1210,
+        900
+      ],
+      "size": [
+        210.29940795898438,
+        88
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "",
+        null
+      ]
+    },
+    {
+      "id": 6,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1210,
+        740
+      ],
+      "size": [
+        210.29940795898438,
+        88
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 1
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "",
+        null
+      ]
+    },
+    {
+      "id": 5,
+      "type": "BlenderInputCombo",
+      "pos": [
+        450,
+        810
+      ],
+      "size": [
+        340,
+        184
       ],
       "flags": {},
       "order": 0,
@@ -226,40 +263,40 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "STRING",
-          "type": "STRING",
+          "name": "*",
+          "type": "*",
           "links": [
-            2
+            6
           ]
         }
       ],
-      "title": "Prompt",
+      "title": "Model",
       "properties": {
         "cnr_id": "comfyui-blender",
-        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputStringMultiline",
-        "aux_id": "alexisrolland/ComfyUI-Blender"
+        "ver": "fe00f67deb08799bc6a8bad23c863249c11b241d",
+        "Node name for S&R": "BlenderInputCombo"
       },
       "widgets_values": [
-        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
+        "visitor01/raymnants-v3.0.safetensors",
         2,
         "",
-        null,
+        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
+        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
         null
       ],
       "color": "#432",
       "bgcolor": "#653"
     },
     {
-      "id": 12,
+      "id": 4,
       "type": "MarkdownNote",
       "pos": [
-        170,
-        120
+        450,
+        500
       ],
       "size": [
         340,
-        220
+        230
       ],
       "flags": {},
       "order": 1,
@@ -274,97 +311,14 @@
       "bgcolor": "#653"
     },
     {
-      "id": 14,
-      "type": "BlenderInputCombo",
+      "id": 9,
+      "type": "CheckpointLoaderSimple",
       "pos": [
-        200,
-        410
+        830,
+        810
       ],
       "size": [
         340,
-        184
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "*",
-          "type": "*",
-          "links": [
-            15
-          ]
-        }
-      ],
-      "title": "Model",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
-        "Node name for S&R": "BlenderInputCombo"
-      },
-      "widgets_values": [
-        "visitor01/raymnants-v3.0.safetensors",
-        1,
-        "",
-        true,
-        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
-        null
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 20,
-      "type": "BlenderInputFloat",
-      "pos": [
-        880,
-        1000
-      ],
-      "size": [
-        210,
-        154
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "FLOAT",
-          "type": "FLOAT",
-          "links": [
-            20
-          ]
-        }
-      ],
-      "title": "Denoise",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputFloat",
-        "aux_id": "alexisrolland/ComfyUI-Blender"
-      },
-      "widgets_values": [
-        0.5000000000000001,
-        4,
-        0.5000000000000001,
-        0.10000000000000002,
-        1.0000000000000002,
-        null
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 4,
-      "type": "CheckpointLoaderSimple",
-      "pos": [
-        580,
-        390
-      ],
-      "size": [
-        270,
         98
       ],
       "flags": {},
@@ -377,7 +331,7 @@
           "widget": {
             "name": "ckpt_name"
           },
-          "link": 15
+          "link": 6
         }
       ],
       "outputs": [
@@ -392,8 +346,8 @@
           "name": "CLIP",
           "type": "CLIP",
           "links": [
-            3,
-            5
+            1,
+            3
           ]
         },
         {
@@ -401,29 +355,29 @@
           "type": "VAE",
           "links": [
             12,
-            22
+            16
           ]
         }
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.41",
+        "ver": "0.3.42",
         "Node name for S&R": "CheckpointLoaderSimple"
       },
       "widgets_values": [
-        "raymnants_30.safetensors",
+        "albedobond\\albedobase-xl-v2.1.safetensors",
         null
       ]
     },
     {
-      "id": 19,
+      "id": 15,
       "type": "VAEEncode",
       "pos": [
-        890,
-        630
+        1210,
+        1060
       ],
       "size": [
-        200,
+        210,
         46
       ],
       "flags": {},
@@ -433,12 +387,12 @@
         {
           "name": "pixels",
           "type": "IMAGE",
-          "link": 19
+          "link": 15
         },
         {
           "name": "vae",
           "type": "VAE",
-          "link": 22
+          "link": 16
         }
       ],
       "outputs": [
@@ -446,65 +400,107 @@
           "name": "LATENT",
           "type": "LATENT",
           "links": [
-            21
+            17
           ]
         }
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.41",
+        "ver": "0.3.42",
         "Node name for S&R": "VAEEncode"
-      },
-      "widgets_values": []
+      }
     },
     {
-      "id": 7,
-      "type": "CLIPTextEncode",
+      "id": 14,
+      "type": "BlenderInputLoadImage",
       "pos": [
-        890,
-        470
+        960,
+        990
       ],
       "size": [
-        210.29940795898438,
-        88
+        210,
+        350
       ],
       "flags": {},
-      "order": 8,
+      "order": 2,
       "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 5
-        }
-      ],
+      "inputs": [],
       "outputs": [
         {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
+          "name": "IMAGE",
+          "type": "IMAGE",
           "links": [
-            9
+            15
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "Input Image",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputLoadImage"
+      },
+      "widgets_values": [
+        "dargon.png",
+        4,
+        "image",
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 16,
+      "type": "BlenderInputFloat",
+      "pos": [
+        1210,
+        1430
+      ],
+      "size": [
+        210,
+        154
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": [
+            18
           ]
         }
       ],
+      "title": "Denoise",
       "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "CLIPTextEncode"
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputFloat"
       },
       "widgets_values": [
-        "",
+        0.5000000000000001,
+        5,
+        0.5000000000000001,
+        0.10000000000000002,
+        1.0000000000000002,
         null
       ],
-      "color": "#322",
-      "bgcolor": "#533"
+      "color": "#432",
+      "bgcolor": "#653"
     },
     {
-      "id": 13,
+      "id": 10,
       "type": "BlenderInputSeed",
       "pos": [
-        880,
-        750
+        1210,
+        1180
       ],
       "size": [
         210,
@@ -526,12 +522,12 @@
       "title": "Seed",
       "properties": {
         "cnr_id": "comfyui-blender",
-        "ver": "7efc395eff8bfbe08b5380d81a1dddaaa53eee1a",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
         "Node name for S&R": "BlenderInputSeed"
       },
       "widgets_values": [
         0,
-        0,
+        1,
         0,
         0,
         2147483647,
@@ -542,15 +538,15 @@
       "bgcolor": "#653"
     },
     {
-      "id": 18,
-      "type": "BlenderInputLoadImage",
+      "id": 1,
+      "type": "BlenderInputStringMultiline",
       "pos": [
-        580,
-        570
+        830,
+        380
       ],
       "size": [
-        270,
-        126
+        340,
+        350
       ],
       "flags": {},
       "order": 5,
@@ -558,29 +554,24 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "IMAGE",
-          "type": "IMAGE",
+          "name": "STRING",
+          "type": "STRING",
           "links": [
-            19
+            2
           ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
         }
       ],
-      "title": "Input Image",
+      "title": "Prompt",
       "properties": {
         "cnr_id": "comfyui-blender",
-        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputLoadImage",
-        "aux_id": "alexisrolland/ComfyUI-Blender"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputStringMultiline"
       },
       "widgets_values": [
-        "example.png",
+        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
         3,
-        "image",
+        "",
+        false,
         null
       ],
       "color": "#432",
@@ -589,8 +580,16 @@
   ],
   "links": [
     [
+      1,
+      9,
+      1,
+      6,
+      0,
+      "CLIP"
+    ],
+    [
       2,
-      2,
+      1,
       0,
       6,
       1,
@@ -598,25 +597,25 @@
     ],
     [
       3,
-      4,
+      9,
       1,
+      7,
+      0,
+      "CLIP"
+    ],
+    [
       6,
-      0,
-      "CLIP"
-    ],
-    [
       5,
-      4,
-      1,
-      7,
-      0,
-      "CLIP"
-    ],
-    [
-      7,
-      4,
       0,
       9,
+      0,
+      "COMBO"
+    ],
+    [
+      7,
+      9,
+      0,
+      11,
       0,
       "MODEL"
     ],
@@ -624,7 +623,7 @@
       8,
       6,
       0,
-      9,
+      11,
       1,
       "CONDITIONING"
     ],
@@ -632,39 +631,39 @@
       9,
       7,
       0,
-      9,
+      11,
       2,
       "CONDITIONING"
     ],
     [
       11,
-      9,
+      11,
       0,
-      10,
+      12,
       0,
       "LATENT"
     ],
     [
       12,
-      4,
+      9,
       2,
-      10,
+      12,
       1,
       "VAE"
     ],
     [
       13,
-      10,
+      12,
       0,
-      11,
+      13,
       0,
       "IMAGE"
     ],
     [
       14,
-      13,
+      10,
       0,
-      9,
+      11,
       4,
       "INT"
     ],
@@ -672,51 +671,43 @@
       15,
       14,
       0,
-      4,
-      0,
-      "COMBO"
-    ],
-    [
-      19,
-      18,
-      0,
-      19,
+      15,
       0,
       "IMAGE"
     ],
     [
-      20,
-      20,
-      0,
+      16,
       9,
-      5,
-      "FLOAT"
+      2,
+      15,
+      1,
+      "VAE"
     ],
     [
-      21,
-      19,
+      17,
+      15,
       0,
-      9,
+      11,
       3,
       "LATENT"
     ],
     [
-      22,
-      4,
-      2,
-      19,
-      1,
-      "VAE"
+      18,
+      16,
+      0,
+      11,
+      5,
+      "FLOAT"
     ]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.9090909090909091,
+      "scale": 0.7513148009015777,
       "offset": [
-        84.80073734045904,
-        12.924196162975555
+        -12.821567382812502,
+        -279.6354816894532
       ]
     },
     "frontendVersion": "1.23.4",

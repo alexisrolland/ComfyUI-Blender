@@ -1,80 +1,63 @@
 {
-  "id": "8e5532a6-dedd-4bda-9f08-3488488bab5f",
+  "id": "e4ae1d2a-76bf-4cd7-bc07-b259704034a9",
   "revision": 0,
-  "last_node_id": 21,
-  "last_link_id": 25,
+  "last_node_id": 18,
+  "last_link_id": 22,
   "nodes": [
     {
-      "id": 4,
-      "type": "CheckpointLoaderSimple",
+      "id": 5,
+      "type": "BlenderInputCombo",
       "pos": [
-        580,
-        390
-      ],
-      "size": [
-        270,
-        98
-      ],
-      "flags": {},
-      "order": 9,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "ckpt_name",
-          "type": "COMBO",
-          "widget": {
-            "name": "ckpt_name"
-          },
-          "link": 15
-        }
-      ],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            7
-          ]
-        },
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "links": [
-            3,
-            5
-          ]
-        },
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [
-            12
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "CheckpointLoaderSimple"
-      },
-      "widgets_values": [
-        "raymnants_30.safetensors",
-        null
-      ]
-    },
-    {
-      "id": 12,
-      "type": "MarkdownNote",
-      "pos": [
-        170,
-        120
+        450,
+        810
       ],
       "size": [
         340,
-        220
+        184
       ],
       "flags": {},
       "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "*",
+          "type": "*",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "title": "Model",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "fe00f67deb08799bc6a8bad23c863249c11b241d",
+        "Node name for S&R": "BlenderInputCombo"
+      },
+      "widgets_values": [
+        "visitor01/raymnants-v3.0.safetensors",
+        2,
+        "",
+        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
+        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 4,
+      "type": "MarkdownNote",
+      "pos": [
+        450,
+        500
+      ],
+      "size": [
+        340,
+        230
+      ],
+      "flags": {},
+      "order": 1,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -86,41 +69,40 @@
       "bgcolor": "#653"
     },
     {
-      "id": 14,
-      "type": "BlenderInputCombo",
+      "id": 1,
+      "type": "BlenderInputStringMultiline",
       "pos": [
-        200,
-        410
+        830,
+        380
       ],
       "size": [
         340,
-        184
+        326
       ],
       "flags": {},
-      "order": 1,
+      "order": 2,
       "mode": 0,
       "inputs": [],
       "outputs": [
         {
-          "name": "*",
-          "type": "*",
+          "name": "STRING",
+          "type": "STRING",
           "links": [
-            15
+            2
           ]
         }
       ],
-      "title": "Model",
+      "title": "Prompt",
       "properties": {
         "cnr_id": "comfyui-blender",
-        "ver": "2c8a0073f541ebeca092794d0e5187abcf8200ad",
-        "Node name for S&R": "BlenderInputCombo"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputStringMultiline"
       },
       "widgets_values": [
-        "visitor01/raymnants-v3.0.safetensors",
-        1,
+        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
+        3,
         "",
-        true,
-        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
+        false,
         null
       ],
       "color": "#432",
@@ -130,8 +112,8 @@
       "id": 6,
       "type": "CLIPTextEncode",
       "pos": [
-        890,
-        280
+        1210,
+        740
       ],
       "size": [
         210.29940795898438,
@@ -144,7 +126,7 @@
         {
           "name": "clip",
           "type": "CLIP",
-          "link": 3
+          "link": 1
         },
         {
           "name": "text",
@@ -160,97 +142,66 @@
           "name": "CONDITIONING",
           "type": "CONDITIONING",
           "links": [
-            22
+            16
           ]
         }
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.41",
+        "ver": "0.3.42",
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
         "",
         null
-      ],
-      "color": "#232",
-      "bgcolor": "#353"
+      ]
     },
     {
-      "id": 9,
-      "type": "KSampler",
+      "id": 7,
+      "type": "CLIPTextEncode",
       "pos": [
-        1440,
-        280
+        1210,
+        900
       ],
       "size": [
-        270,
-        262
+        210.29940795898438,
+        88
       ],
       "flags": {},
-      "order": 14,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
-          "name": "model",
-          "type": "MODEL",
-          "link": 7
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 23
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 25
-        },
-        {
-          "name": "latent_image",
-          "type": "LATENT",
-          "link": 10
-        },
-        {
-          "name": "seed",
-          "type": "INT",
-          "widget": {
-            "name": "seed"
-          },
-          "link": 14
+          "name": "clip",
+          "type": "CLIP",
+          "link": 3
         }
       ],
       "outputs": [
         {
-          "name": "LATENT",
-          "type": "LATENT",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
           "links": [
-            11
+            17
           ]
         }
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "KSampler"
+        "ver": "0.3.42",
+        "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        1021521390969551,
-        "randomize",
-        20,
-        8,
-        "dpmpp_2m",
-        "karras",
-        1,
+        "",
         null
       ]
     },
     {
-      "id": 10,
+      "id": 12,
       "type": "VAEDecode",
       "pos": [
-        1760,
-        280
+        2090,
+        740
       ],
       "size": [
         140,
@@ -282,20 +233,20 @@
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.41",
+        "ver": "0.3.42",
         "Node name for S&R": "VAEDecode"
       },
       "widgets_values": []
     },
     {
-      "id": 11,
+      "id": 13,
       "type": "BlenderOutputSaveImage",
       "pos": [
-        1940,
-        280
+        2270,
+        740
       ],
       "size": [
-        272.6714782714844,
+        210,
         270
       ],
       "flags": {},
@@ -312,9 +263,8 @@
       "title": "Save Image",
       "properties": {
         "cnr_id": "comfyui-blender",
-        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderOutputSaveImage",
-        "aux_id": "alexisrolland/ComfyUI-Blender"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderOutputSaveImage"
       },
       "widgets_values": [
         "blender",
@@ -324,138 +274,87 @@
       "bgcolor": "#653"
     },
     {
-      "id": 19,
-      "type": "ControlNetApplyAdvanced",
+      "id": 11,
+      "type": "KSampler",
       "pos": [
-        1140,
-        280
+        1780,
+        740
       ],
       "size": [
         270,
-        178.00003051757812
+        262
       ],
       "flags": {},
-      "order": 13,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {
+          "name": "model",
+          "type": "MODEL",
+          "link": 7
+        },
+        {
           "name": "positive",
           "type": "CONDITIONING",
-          "link": 22
+          "link": 19
         },
         {
           "name": "negative",
           "type": "CONDITIONING",
-          "link": 24
-        },
-        {
-          "name": "control_net",
-          "type": "CONTROL_NET",
-          "link": 19
-        },
-        {
-          "name": "image",
-          "type": "IMAGE",
           "link": 20
         },
         {
-          "name": "vae",
-          "shape": 7,
-          "type": "VAE",
-          "link": null
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 10
         },
         {
-          "name": "strength",
-          "type": "FLOAT",
+          "name": "seed",
+          "type": "INT",
           "widget": {
-            "name": "strength"
+            "name": "seed"
           },
-          "link": 21
+          "link": 14
         }
       ],
       "outputs": [
         {
-          "name": "positive",
-          "type": "CONDITIONING",
+          "name": "LATENT",
+          "type": "LATENT",
           "links": [
-            23
-          ]
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "links": [
-            25
+            11
           ]
         }
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "ControlNetApplyAdvanced"
+        "ver": "0.3.42",
+        "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        1,
         0,
+        "fixed",
+        20,
+        8,
+        "dpmpp_2m",
+        "karras",
         1,
         null
       ]
     },
     {
-      "id": 7,
-      "type": "CLIPTextEncode",
-      "pos": [
-        890,
-        440
-      ],
-      "size": [
-        210.29940795898438,
-        88
-      ],
-      "flags": {},
-      "order": 12,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 5
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            24
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        "",
-        null
-      ],
-      "color": "#322",
-      "bgcolor": "#533"
-    },
-    {
-      "id": 18,
+      "id": 14,
       "type": "ControlNetLoader",
       "pos": [
-        580,
-        560
+        1210,
+        600
       ],
       "size": [
-        270,
+        210,
         58
       ],
       "flags": {},
-      "order": 2,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -463,13 +362,13 @@
           "name": "CONTROL_NET",
           "type": "CONTROL_NET",
           "links": [
-            19
+            15
           ]
         }
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.41",
+        "ver": "0.3.42",
         "Node name for S&R": "ControlNetLoader"
       },
       "widgets_values": [
@@ -478,60 +377,15 @@
       ]
     },
     {
-      "id": 20,
-      "type": "BlenderInputLoadImage",
+      "id": 2,
+      "type": "BlenderInputInt",
       "pos": [
-        890,
-        590
+        960,
+        1020
       ],
       "size": [
         210,
-        338
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            20
-          ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
-        }
-      ],
-      "title": "ControlNet Image",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "d4ac0c9751a3450b4ee0c176114d81167e52cdf7",
-        "Node name for S&R": "BlenderInputLoadImage",
-        "aux_id": "alexisrolland/ComfyUI-Blender"
-      },
-      "widgets_values": [
-        "depth_map.png",
-        5,
-        "image",
-        null
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 21,
-      "type": "BlenderInputFloat",
-      "pos": [
-        830,
-        1000
-      ],
-      "size": [
-        270,
-        146.00006103515625
+        178
       ],
       "flags": {},
       "order": 4,
@@ -539,199 +393,18 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "FLOAT",
-          "type": "FLOAT",
-          "links": [
-            21
-          ]
-        }
-      ],
-      "title": "ControlNet Strength",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "d4ac0c9751a3450b4ee0c176114d81167e52cdf7",
-        "Node name for S&R": "BlenderInputFloat",
-        "aux_id": "alexisrolland/ComfyUI-Blender"
-      },
-      "widgets_values": [
-        1.0000000000000002,
-        6,
-        1.0000000000000002,
-        0,
-        1.0000000000000002,
-        null
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 5,
-      "type": "BlenderInputInt",
-      "pos": [
-        890,
-        1230
-      ],
-      "size": [
-        210,
-        178
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
           "name": "INT",
           "type": "INT",
           "links": [
-            17
+            4
           ]
         }
       ],
       "title": "Width",
       "properties": {
         "cnr_id": "comfyui-blender",
-        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputInt",
-        "aux_id": "alexisrolland/ComfyUI-Blender"
-      },
-      "widgets_values": [
-        1024,
-        3,
-        1024,
-        768,
-        1344,
-        8,
-        null
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 8,
-      "type": "EmptyLatentImage",
-      "pos": [
-        1140,
-        530
-      ],
-      "size": [
-        270,
-        106
-      ],
-      "flags": {},
-      "order": 10,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "width",
-          "type": "INT",
-          "widget": {
-            "name": "width"
-          },
-          "link": 17
-        },
-        {
-          "name": "height",
-          "type": "INT",
-          "widget": {
-            "name": "height"
-          },
-          "link": 18
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            10
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "EmptyLatentImage"
-      },
-      "widgets_values": [
-        1024,
-        1024,
-        1,
-        null
-      ]
-    },
-    {
-      "id": 13,
-      "type": "BlenderInputSeed",
-      "pos": [
-        1140,
-        710
-      ],
-      "size": [
-        270,
-        180
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "INT",
-          "type": "INT",
-          "links": [
-            14
-          ]
-        }
-      ],
-      "title": "Seed",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "7efc395eff8bfbe08b5380d81a1dddaaa53eee1a",
-        "Node name for S&R": "BlenderInputSeed"
-      },
-      "widgets_values": [
-        0,
-        0,
-        0,
-        0,
-        2147483647,
-        1,
-        null
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 17,
-      "type": "BlenderInputInt",
-      "pos": [
-        890,
-        1490
-      ],
-      "size": [
-        210,
-        178
-      ],
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "INT",
-          "type": "INT",
-          "links": [
-            18
-          ]
-        }
-      ],
-      "title": "Height",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputInt",
-        "aux_id": "alexisrolland/ComfyUI-Blender"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputInt"
       },
       "widgets_values": [
         1024,
@@ -746,15 +419,331 @@
       "bgcolor": "#653"
     },
     {
-      "id": 2,
-      "type": "BlenderInputStringMultiline",
+      "id": 3,
+      "type": "BlenderInputInt",
       "pos": [
-        570,
-        120
+        960,
+        1260
+      ],
+      "size": [
+        210,
+        178
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "title": "Height",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputInt"
+      },
+      "widgets_values": [
+        1024,
+        5,
+        1024,
+        768,
+        1344,
+        8,
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 8,
+      "type": "EmptyLatentImage",
+      "pos": [
+        1475.5504150390625,
+        1000
+      ],
+      "size": [
+        260,
+        106
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 4
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            10
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        512,
+        512,
+        1,
+        null
+      ]
+    },
+    {
+      "id": 16,
+      "type": "BlenderInputLoadImage",
+      "pos": [
+        1210,
+        1040
+      ],
+      "size": [
+        210,
+        350
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            21
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "ControlNet Image",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputLoadImage"
+      },
+      "widgets_values": [
+        "depth_map.png",
+        6,
+        "image",
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 18,
+      "type": "BlenderInputFloat",
+      "pos": [
+        1210,
+        1470
+      ],
+      "size": [
+        210,
+        154
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": [
+            22
+          ]
+        }
+      ],
+      "title": "ControlNet Strength",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputFloat"
+      },
+      "widgets_values": [
+        1.0000000000000002,
+        7,
+        1.0000000000000002,
+        0,
+        1.0000000000000002,
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 9,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        830,
+        810
+      ],
+      "size": [
+        340,
+        98
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "ckpt_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "ckpt_name"
+          },
+          "link": 6
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            7
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            1,
+            3
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "albedobond\\albedobase-xl-v2.1.safetensors",
+        null
+      ]
+    },
+    {
+      "id": 15,
+      "type": "ControlNetApplyAdvanced",
+      "pos": [
+        1470,
+        740
       ],
       "size": [
         270,
-        190
+        186
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 16
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 17
+        },
+        {
+          "name": "control_net",
+          "type": "CONTROL_NET",
+          "link": 15
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 21
+        },
+        {
+          "name": "vae",
+          "shape": 7,
+          "type": "VAE",
+          "link": null
+        },
+        {
+          "name": "strength",
+          "type": "FLOAT",
+          "widget": {
+            "name": "strength"
+          },
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            19
+          ]
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "ControlNetApplyAdvanced"
+      },
+      "widgets_values": [
+        1,
+        0,
+        1,
+        null
+      ]
+    },
+    {
+      "id": 10,
+      "type": "BlenderInputSeed",
+      "pos": [
+        1480,
+        1180
+      ],
+      "size": [
+        260,
+        180
       ],
       "flags": {},
       "order": 8,
@@ -762,25 +751,26 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "STRING",
-          "type": "STRING",
+          "name": "INT",
+          "type": "INT",
           "links": [
-            2
+            14
           ]
         }
       ],
-      "title": "Prompt",
+      "title": "Seed",
       "properties": {
         "cnr_id": "comfyui-blender",
-        "ver": "a34047a38ebab9b576984ed0b04c212332373f19",
-        "Node name for S&R": "BlenderInputStringMultiline",
-        "aux_id": "alexisrolland/ComfyUI-Blender"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputSeed"
       },
       "widgets_values": [
-        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
-        2,
-        "",
-        null,
+        0,
+        1,
+        0,
+        1,
+        2147483647,
+        1,
         null
       ],
       "color": "#432",
@@ -789,8 +779,16 @@
   ],
   "links": [
     [
+      1,
+      9,
+      1,
+      6,
+      0,
+      "CLIP"
+    ],
+    [
       2,
-      2,
+      1,
       0,
       6,
       1,
@@ -798,25 +796,41 @@
     ],
     [
       3,
-      4,
+      9,
       1,
-      6,
+      7,
       0,
       "CLIP"
+    ],
+    [
+      4,
+      2,
+      0,
+      8,
+      0,
+      "INT"
     ],
     [
       5,
-      4,
-      1,
-      7,
+      3,
       0,
-      "CLIP"
+      8,
+      1,
+      "INT"
+    ],
+    [
+      6,
+      5,
+      0,
+      9,
+      0,
+      "COMBO"
     ],
     [
       7,
-      4,
-      0,
       9,
+      0,
+      11,
       0,
       "MODEL"
     ],
@@ -824,39 +838,39 @@
       10,
       8,
       0,
-      9,
+      11,
       3,
       "LATENT"
     ],
     [
       11,
-      9,
+      11,
       0,
-      10,
+      12,
       0,
       "LATENT"
     ],
     [
       12,
-      4,
+      9,
       2,
-      10,
+      12,
       1,
       "VAE"
     ],
     [
       13,
-      10,
+      12,
       0,
-      11,
+      13,
       0,
       "IMAGE"
     ],
     [
       14,
-      13,
+      10,
       0,
-      9,
+      11,
       4,
       "INT"
     ],
@@ -864,91 +878,67 @@
       15,
       14,
       0,
-      4,
-      0,
-      "COMBO"
-    ],
-    [
-      17,
-      5,
-      0,
-      8,
-      0,
-      "INT"
-    ],
-    [
-      18,
-      17,
-      0,
-      8,
-      1,
-      "INT"
-    ],
-    [
-      19,
-      18,
-      0,
-      19,
+      15,
       2,
       "CONTROL_NET"
     ],
     [
-      20,
-      20,
+      16,
+      6,
       0,
+      15,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      17,
+      7,
+      0,
+      15,
+      1,
+      "CONDITIONING"
+    ],
+    [
       19,
+      15,
+      0,
+      11,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      20,
+      15,
+      1,
+      11,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      21,
+      16,
+      0,
+      15,
       3,
       "IMAGE"
     ],
     [
-      21,
-      21,
+      22,
+      18,
       0,
-      19,
+      15,
       5,
       "FLOAT"
-    ],
-    [
-      22,
-      6,
-      0,
-      19,
-      0,
-      "CONDITIONING"
-    ],
-    [
-      23,
-      19,
-      0,
-      9,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      24,
-      7,
-      0,
-      19,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      25,
-      19,
-      1,
-      9,
-      2,
-      "CONDITIONING"
     ]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.8264462809917354,
+      "scale": 0.7513148009015777,
       "offset": [
-        -33.61048825109029,
-        70.45403157882515
+        -174.1145673828134,
+        -310.8534816894532
       ]
     },
     "frontendVersion": "1.23.4",
