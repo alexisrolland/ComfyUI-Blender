@@ -2,14 +2,15 @@
 import json
 import os
 import random
+import requests
 import threading
-import urllib.request
+from urllib.parse import urljoin
 
 import bpy
 
 from .. import connection
 from .. import workflow as w
-from ..utils import upload_file
+from ..utils import upload_file, show_error_popup
 
 
 class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
@@ -33,8 +34,9 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
             with open(workflow_path, "r",  encoding="utf-8") as file:
                 workflow = json.load(file)
 
-            # Get inputs from the workflow
+            # Get inputs and outputs from the workflow
             inputs = w.parse_workflow_for_inputs(workflow)
+            outputs = w.parse_workflow_for_outputs(workflow)
 
             current_workflow = context.scene.current_workflow
             for key, node in inputs.items():
@@ -47,11 +49,13 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     try:
                         response = upload_file(image_path, type="image")
                         if response.status_code != 200:
-                            self.report({'ERROR'}, f"Failed to upload image: {response.status_code} - {response.text}")
+                            error_message = f"Failed to upload image: {response.status_code} - {response.text}"
+                            show_error_popup(error_message)
                             return {'CANCELLED'}
                     except Exception as e:
                         input_name = current_workflow.bl_rna.properties[property_name].name  # Node title
-                        self.report({'ERROR'}, f"Error uploading image for input {input_name}: {str(e)}")
+                        error_message = f"Error uploading image for input {input_name}: {str(e)}"
+                        show_error_popup(error_message)
                         return {'CANCELLED'}
 
                     self.report({'INFO'}, "Image uploaded to ComfyUI server.")
@@ -75,38 +79,38 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     workflow[key]["inputs"]["value"] = getattr(current_workflow, property_name)
 
             # Establish the WebSocket connection
-            self.report({'INFO'}, "Connecting to server...")
-            connection.connect()
-            self.report({'INFO'}, "Connection established.")
+            if not connection.WS_CONNECTION:
+                self.report({'INFO'}, "Connecting to server...")
+                connection.connect()
+                self.report({'INFO'}, "Connection established.")
 
             # Send workflow to ComfyUI server
-            client_id = addon_prefs.client_id
-            data = {"prompt": workflow, "client_id": client_id}
-            data = json.dumps(data).encode("utf-8")
-            url = addon_prefs.server_address + "/prompt"
+            data = {"prompt": workflow, "client_id": addon_prefs.client_id}
+            url = urljoin(addon_prefs.server_address, "/prompt")
             headers = {"Content-Type": "application/json"}
 
-            # Create a request object and send it
-            request = urllib.request.Request(url, data=data, headers=headers, method="POST")
-            with urllib.request.urlopen(request) as r:
-                response_status = r.status
-                response_message = r.reason
-                response_data = r.read().decode("utf-8")
-
-            if response_status != 200:
-                self.report({'ERROR'}, f"Failed to send workflow: {response_status} - {response_message}")
-                return {'CANCELLED'}
-
-            self.report({'INFO'}, "Workflow sent to ComfyUI server.")
+            # Create and send the request
+            response = requests.post(url, json=data, headers=headers)
+            response.raise_for_status()  # Raise an exception for bad status codes
+            response_data = response.text
             prompt_id = json.loads(response_data).get("prompt_id", "")
+            self.report({'INFO'}, "Workflow sent to ComfyUI server.")
+
+            # Add the prompt to the queue collection
+            prompt = addon_prefs.queue.add()
+            prompt.name = prompt_id
+            prompt.workflow = str(workflow)
+            prompt.outputs = str(outputs)
 
             # Start the WebSocket listener in a separate thread
-            listener_thread = threading.Thread(target=connection.listen, args=(workflow, prompt_id), daemon=True)
+            # listener_thread = threading.Thread(target=connection.listen, args=(workflow, prompt_id), daemon=True)
+            listener_thread = threading.Thread(target=connection.listen, args=(), daemon=True)
             listener_thread.start()
             self.report({'INFO'}, "WebSocket listener started.")
         
         else:
-            self.report({'ERROR'}, "Invalid workflow.")
+            error_message = "Invalid workflow."
+            show_error_popup(error_message)
             return {'CANCELLED'}
 
         return {'FINISHED'}

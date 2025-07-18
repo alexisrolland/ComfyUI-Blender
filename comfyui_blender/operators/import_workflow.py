@@ -4,7 +4,7 @@ import shutil
 
 import bpy
 
-from ..utils import get_filepath
+from ..utils import get_filepath, show_error_popup
 
 
 class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
@@ -38,10 +38,14 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
                 self.report({'INFO'}, f"Workflow copied to: {workflow_path}")
 
             except Exception as e:
-                self.report({'ERROR'}, f"Failed to copy workflow file: {e}")
+                error_message = f"Failed to copy workflow file: {e}"
+                show_error_popup(error_message)
+                return {'CANCELLED'}
 
         else:
-            self.report({'ERROR'}, "Selected file is not a *.json.")
+            error_message = "Selected file is not a *.json."
+            show_error_popup(error_message)
+            return {'CANCELLED'}
         return {'FINISHED'}
 
     def invoke(self, context, event):

@@ -42,7 +42,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
             if output.type == "image":
                 # Load image in the data block if it does not exist
                 if output.filename not in bpy.data.images:
-                    full_path = os.path.join(outputs_folder, output.filepath)
+                    full_path = os.path.join(outputs_folder, output.name)
                     if os.path.exists(full_path):
                         bpy.data.images.load(full_path, check_existing=True)
                     else:
@@ -72,7 +72,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                     # Delete output
                     delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
                     delete_output.filename = output.filename
-                    delete_output.filepath = output.filepath
+                    delete_output.filepath = output.name
                     delete_output.type = output.type
 
                 box.separator(type="LINE")

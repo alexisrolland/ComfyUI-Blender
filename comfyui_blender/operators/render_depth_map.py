@@ -84,7 +84,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         temp_filepath = os.path.join(inputs_folder, "Image0001.png")
         depth_filename, depth_filepath = get_filepath("depth_map.png", inputs_folder)
         os.rename(temp_filepath, depth_filepath)
-        self.report({'INFO'}, f"Depth map save in: {depth_filepath}")
+        self.report({'INFO'}, f"Depth map saved: {depth_filepath}")
 
         # Load image in the data block
         bpy.data.images.load(depth_filepath, check_existing=True)

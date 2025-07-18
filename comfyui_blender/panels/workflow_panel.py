@@ -1,4 +1,6 @@
 """Panel to display workflows."""
+import os
+
 import bpy
 
 
@@ -31,6 +33,7 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         workflows_folder = str(addon_prefs.workflows_folder)
         workflow_filename = str(addon_prefs.workflow)
+        workflow_path = os.path.join(workflows_folder, workflow_filename)
 
         # Buttons to import a workflow
         row = layout.row(align=True)
@@ -40,17 +43,17 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
         # Dropdown list of workflows with actions
         row = layout.row(align=True)
         row.prop(addon_prefs, "workflow")
-        row.operator("comfy.delete_workflow", text="", icon="TRASH").filename = workflow_filename
+        delete_workflow = row.operator("comfy.delete_workflow", text="", icon="TRASH")
+        delete_workflow.filename = workflow_filename
+        delete_workflow.filepath = workflow_path
 
         # Queue status
-        queue = addon_prefs.queue
-        connection_status = addon_prefs.connection_status
         row = layout.row()
-        if connection_status:
-            row.label(text=f"Queue: {queue}")
-            row.label(icon="SORTTIME")
+        row.label(text=f"Queue: {len(addon_prefs.queue)}")
+        if addon_prefs.connection_status:
+            row.label(icon="INTERNET")
         else:
-            row.label(text=f"Queue: {queue}")
+            row.label(icon="INTERNET_OFFLINE")
 
 def register():
     """Register the panel."""

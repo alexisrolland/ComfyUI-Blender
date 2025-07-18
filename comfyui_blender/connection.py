@@ -1,11 +1,13 @@
 """Functions to manage the WebSocket connection to the ComfyUI server."""
+import ast
 import json
 import os
-import websocket
+from urllib.parse import urljoin, urlencode
 
 import bpy
+import websocket
 
-from .utils import download_file
+from .utils import download_file, show_error_popup
 from .workflow import parse_workflow_for_outputs
 
 
@@ -22,8 +24,11 @@ def connect():
     client_id = addon_prefs.client_id
 
     # Construct WebSocket address
-    server_address = server_address.rstrip("/")
-    server_address = server_address + f"/ws?clientId={client_id}"
+    url = urljoin(server_address, "/ws")
+    params = {"clientId": client_id}
+    server_address = f"{url}?{urlencode(params)}"
+
+    # Replace http with ws and https with wss
     if "https://" in server_address:
         server_address = server_address.replace("https://", "wss://")
     elif "http://" in server_address:
@@ -50,18 +55,19 @@ def disconnect():
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
     addon_prefs.connection_status = False
 
-def listen(workflow, prompt_id):
+def listen():
     """Listening function to receive and process messages from the WebSocket server."""
 
+    # Get add-on preferences
+    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+    queue = addon_prefs.queue
+
     # Get expected outputs from the workflow
-    outputs = parse_workflow_for_outputs(workflow)
+    # outputs = parse_workflow_for_outputs(workflow)
 
     # Get WebSocket connection
     global WS_CONNECTION, WS_LISTENING
     WS_LISTENING = True
-
-    # Get add-on preferences
-    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
 
     # Start listening for messages
     while WS_LISTENING:
@@ -72,23 +78,20 @@ def listen(workflow, prompt_id):
             message = json.loads(message)
             # print(f"Received message: {message}") # Debugging
 
-            # Check number of workflows in the queue
-            if message["type"] == "status":
-                data = message["data"]
-                addon_prefs.queue = data["status"]["exec_info"]["queue_remaining"]
-
             # Check if execution is complete
             if message["type"] == "executing":
                 data = message["data"]
-                if "prompt_id" in data.keys() and data["prompt_id"] == prompt_id:
+                if "prompt_id" in data.keys() and data["prompt_id"] in queue.keys():
                     if data["node"] is None:
                         break
 
             # Check if the message type is executed with outputs
             if message["type"] == "executed":
                 data = message["data"]
-                if data["prompt_id"] == prompt_id:
+                if data["prompt_id"] in queue.keys():
+                    # Get outputs from the workflow
                     key = data["node"]
+                    outputs = ast.literal_eval(queue[data["prompt_id"]].outputs)
 
                     # Check class type to retrieve only outputs for the add-on
                     if key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
@@ -97,8 +100,8 @@ def listen(workflow, prompt_id):
 
                             # Add image to outputs collection
                             image = addon_prefs.outputs_collection.add()
+                            image.name = os.path.join(output["subfolder"], output["filename"])
                             image.filename = output["filename"]
-                            image.filepath = os.path.join(output["subfolder"], output["filename"])
                             image.type = "image"
 
                             # Force redraw of the UI
@@ -107,5 +110,22 @@ def listen(workflow, prompt_id):
                                     if area.type == "VIEW_3D":  # Area of the add-on panel
                                         area.tag_redraw()
 
-    # Close the WebSocket connection
-    disconnect()
+            # Raise error message from ComfyUI server
+            if message["type"] == "execution_error":
+                data = message["data"]
+                if data["prompt_id"] in queue.keys():
+                    queue.remove(queue.find(data["prompt_id"]))
+                    error_message = data.get("exception_message", "Unknown error")
+
+                    # Schedule popup to run on main thread
+                    # Do not call the function directly since the thread is not the main thread
+                    def raise_error():
+                        show_error_popup(error_message)
+                        return None  # Stop the timer
+                    bpy.app.timers.register(raise_error, first_interval=0.0)
+            
+            # Remove prompt from the queue
+            if message["type"] == "execution_success":
+                data = message["data"]
+                if data["prompt_id"] in queue.keys():
+                    queue.remove(queue.find(data["prompt_id"]))

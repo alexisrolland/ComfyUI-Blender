@@ -100,10 +100,28 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
     )
 
     # Queue
-    queue: IntProperty(
+    # Declare a prompt property group used in the queue collection
+    class PromptPropertyGroup(bpy.types.PropertyGroup):
+        """Property group for the queue collection."""
+
+        # The name property serves as the key for the collection
+        name: StringProperty(
+            name="Prompt Id",
+            description="Identifier of the prompt returned by the ComfyUI server"
+        )
+        workflow: StringProperty(
+            name="Workflow",
+            description="Workflow sent to the ComfyUI server"
+        )
+        outputs: StringProperty(
+            name="Outputs",
+            description="Output nodes of the workflow"
+        )
+    bpy.utils.register_class(PromptPropertyGroup)
+    queue: CollectionProperty(
         name="Queue",
-        description="Number of workflows in the queue",
-        default=0
+        description="Collection of prompts sent to the ComfyUI server",
+        type=PromptPropertyGroup
     )
 
     # Outputs collection
@@ -111,13 +129,15 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
     class OutputPropertyGroup(bpy.types.PropertyGroup):
         """Property group for outputs collection."""
 
+        # The name property serves as the key for the collection
+        # Because the file path is unique, we use it as the key
+        name: StringProperty(
+            name="File Path",
+            description="Relative file path of the output"
+        )
         filename: StringProperty(
             name="File Name",
             description="File name of the output"
-        )
-        filepath: StringProperty(
-            name="File Path",
-            description="Relative file path of the output"
         )
         type: EnumProperty(
             name="Type",

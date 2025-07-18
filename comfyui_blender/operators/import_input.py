@@ -4,7 +4,7 @@ import shutil
 
 import bpy
 
-from ..utils import get_filepath
+from ..utils import get_filepath, show_error_popup
 
 
 class ComfyBlenderOperatorImportInput(bpy.types.Operator):
@@ -38,7 +38,9 @@ class ComfyBlenderOperatorImportInput(bpy.types.Operator):
                 self.report({'INFO'}, f"Input copied to: {input_filepath}")
 
             except Exception as e:
-                self.report({'ERROR'}, f"Failed to copy input file: {e}")
+                error_message = f"Failed to copy input file: {e}"
+                show_error_popup(error_message)
+                return {'CANCELLED'}
 
             # Load image in the data block
             bpy.data.images.load(input_filepath, check_existing=True)
@@ -55,7 +57,9 @@ class ComfyBlenderOperatorImportInput(bpy.types.Operator):
             current_workflow[self.workflow_property] = input_filepath
 
         else:
-            self.report({'ERROR'}, "Selected file is not a *.jpeg;*.jpg;*.png;*.webp.")
+            error_message = "Selected file is not a *.jpeg;*.jpg;*.png;*.webp."
+            show_error_popup(error_message)
+            return {'CANCELLED'}
         return {'FINISHED'}
 
     def invoke(self, context, event):
