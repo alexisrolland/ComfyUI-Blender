@@ -34,7 +34,7 @@ class BlenderInputCombo(String):
         INPUT_TYPES = super().INPUT_TYPES()
         INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
         INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
-        INPUT_TYPES["required"]["format_path"] = (IO.BOOLEAN, {"default": False, "tooltip": "If the string value is a file path, this format it to be compatible with the operating system where ComfyUI is running."})
+        INPUT_TYPES["required"]["format_path"] = (IO.BOOLEAN, {"default": False, "tooltip": "If the string value is a file path, format it to be compatible with the operating system where ComfyUI is running."})
         INPUT_TYPES["required"]["list"] = (IO.STRING, {"default": "", "multiline": True})
         return INPUT_TYPES
 
@@ -119,7 +119,7 @@ class BlenderInputString(String):
         INPUT_TYPES = super().INPUT_TYPES()
         INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
         INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
-        INPUT_TYPES["required"]["format_path"] = (IO.BOOLEAN, {"default": False, "tooltip": "If the string value is a file path, this format it to be compatible with the operating system where ComfyUI is running."})
+        INPUT_TYPES["required"]["format_path"] = (IO.BOOLEAN, {"default": False, "tooltip": "If the string value is a file path, format it to be compatible with the operating system where ComfyUI is running."})
         return INPUT_TYPES
 
     def execute(self, value: str, order: int, default: str, format_path: bool) -> tuple[str]:
@@ -135,7 +135,7 @@ class BlenderInputStringMultiline(StringMultiline):
         INPUT_TYPES = super().INPUT_TYPES()
         INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
         INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": "", "multiline": True})
-        INPUT_TYPES["required"]["format_path"] = (IO.BOOLEAN, {"default": False, "tooltip": "If the string value is a file path, this format it to be compatible with the operating system where ComfyUI is running."})
+        INPUT_TYPES["required"]["format_path"] = (IO.BOOLEAN, {"default": False, "tooltip": "If the string value is a file path, format it to be compatible with the operating system where ComfyUI is running."})
         return INPUT_TYPES
 
     def execute(self, value: str, order: int, default: str, format_path: bool) -> tuple[str]:
