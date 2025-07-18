@@ -1,13 +1,13 @@
-"""Operator to open Blender's built-in file browser."""
+"""Operator to open Blender's image editor."""
 import bpy
 
 
 class ComfyBlenderOperatorOpenImageEditor(bpy.types.Operator):
-    """Operator to open Blender's built-in image editor."""
+    """Operator to open Blender's image editor."""
 
     bl_idname = "comfy.open_image_editor"
     bl_label = "Open Image"
-    bl_description = "Open the image in Blender's built-in editor"
+    bl_description = "Open the image in Blender's image editor"
 
     filename: bpy.props.StringProperty(name="File Name")
 

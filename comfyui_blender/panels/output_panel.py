@@ -26,19 +26,30 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
 
         # Open file browser
         layout = self.layout
-        layout.operator("comfy.open_file_browser", text="Open Outputs Folder")
+
+        # Get outputs information
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+        outputs_folder = str(addon_prefs.outputs_folder)
+
+        row = layout.row()
+        row.label(text="") # Empty label for spacing
+        row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE").folder_path = outputs_folder
         box = layout.box()
 
         # Get outputs collection
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        outputs_folder = str(addon_prefs.outputs_folder)
-        for output in reversed(addon_prefs.outputs_collection):
+        for index, output in enumerate(reversed(addon_prefs.outputs_collection)):
             # Display output of type image
             if output.type == "image":
                 # Load image in the data block if it does not exist
                 if output.filename not in bpy.data.images:
                     full_path = os.path.join(outputs_folder, output.filepath)
-                    bpy.data.images.load(full_path, check_existing=True)
+                    if os.path.exists(full_path):
+                        bpy.data.images.load(full_path, check_existing=True)
+                    else:
+                        # If the file does not exist anymore, remove it from the outputs collection
+                        # To avoid error when trying to display the image
+                        addon_prefs.outputs_collection.remove(index)
+                        self.report({'INFO'}, f"Removed output from collection: {output.filename}")
 
                 # Display image
                 if output.filename in bpy.data.images:
@@ -65,6 +76,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                     delete_output.type = output.type
 
                 box.separator(type="LINE")
+                
 
 
 def register():
