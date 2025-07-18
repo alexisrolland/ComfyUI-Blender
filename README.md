@@ -1,10 +1,8 @@
 # ComfyUI Blender
 
-> Alpha version: This is functional but WORK IN PROGRESS, with a few quirks to be improved over time
-
 Blender add-on to send requests to a ComfyUI server. This respository contains both custom nodes to be installed on the ComfyUI server and the source code of the Blender add-on.
 
-![Blender Screenshot](./screenshot_blender.jpg)
+![Screenshot Blender](./screenshot_blender.jpg)
 
 ## Getting Started
 
@@ -27,12 +25,14 @@ In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > sel
 
 ## Usage
 
-1. Create a workflow in ComfyUI (see workflow examples in this repository).
+1. In ComfyUI, create a workflow using the Blender nodes (see workflow examples in this repository).
 
-2. Use the Blender nodes to define the inputs and outputs of the workflow to be displayed in the Blender add-on.
+    * The Blender nodes are used to define the inputs and outputs of the workflow to be displayed in the Blender add-on.
+    * The title of the nodes are used as labels in the Blender add-on panel.
+    * Export the workflow **in API format**: `Workflow` > `Export (API)`.
 
-3. Export the workflow **in API format**: `Workflow` > `Export (API)`.
+![Screenshot ComfyUI](./screenshot_comfyui.png)
 
-4. In the Blender add-on import the workflow JSON file from the ComfyUI Workflow panel.
+2. In Blender, import the workflow JSON file in API format: Press `N` > `ComfyUI` > `Import Workflow`.
 
-5. Update the inputs and click on **Run Workflow**.
+3. Update the inputs and click on **Run Workflow**.
