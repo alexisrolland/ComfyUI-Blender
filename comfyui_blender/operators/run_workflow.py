@@ -114,7 +114,6 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
             # Send workflow to ComfyUI server
             data = {"prompt": workflow, "client_id": addon_prefs.client_id}
-            print(data)
             url = urljoin(addon_prefs.server_address, "/prompt")
             headers = {"Content-Type": "application/json"}
             response = requests.post(url, json=data, headers=headers)
