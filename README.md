@@ -68,6 +68,6 @@ The node `Blender Input Load Image` provides the following features in Blender:
 
 ### Blender Input String & Blender Input String Multiline
 
-The node `Blender Input String` & `Blender Input String Multiline` provide the following settings in ComfyUI:
+The nodes `Blender Input String` & `Blender Input String Multiline` provide the following settings in ComfyUI:
 
 * **format_path**: If `True` and if the value provided to the node is a path, it will be formatted according the operating system ComfyUI runs on. This is particularly useful for input file paths that are contained in subfolders.
