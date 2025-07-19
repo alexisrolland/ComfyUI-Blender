@@ -1,8 +1,8 @@
 {
   "id": "e4ae1d2a-76bf-4cd7-bc07-b259704034a9",
   "revision": 0,
-  "last_node_id": 21,
-  "last_link_id": 29,
+  "last_node_id": 22,
+  "last_link_id": 30,
   "nodes": [
     {
       "id": 4,
@@ -31,15 +31,15 @@
       "id": 6,
       "type": "CLIPTextEncode",
       "pos": [
-        1140,
-        750
+        1000,
+        810
       ],
       "size": [
         210.29940795898438,
         88
       ],
       "flags": {},
-      "order": 10,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -61,7 +61,7 @@
           "name": "CONDITIONING",
           "type": "CONDITIONING",
           "links": [
-            24
+            19
           ]
         }
       ],
@@ -75,77 +75,50 @@
       ]
     },
     {
-      "id": 19,
-      "type": "InstructPixToPixConditioning",
+      "id": 7,
+      "type": "CLIPTextEncode",
       "pos": [
-        1620,
-        750
+        1000,
+        970
       ],
       "size": [
-        217.31991577148438,
-        86
+        210.29940795898438,
+        88
       ],
       "flags": {},
-      "order": 13,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 23
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 25
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 21
-        },
-        {
-          "name": "pixels",
-          "type": "IMAGE",
-          "link": 26
+          "name": "clip",
+          "type": "CLIP",
+          "link": 17
         }
       ],
       "outputs": [
         {
-          "name": "positive",
+          "name": "CONDITIONING",
           "type": "CONDITIONING",
           "links": [
-            18
-          ]
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "links": [
-            19
-          ]
-        },
-        {
-          "name": "latent",
-          "type": "LATENT",
-          "links": [
-            20
+            22
           ]
         }
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "InstructPixToPixConditioning"
+        "ver": "0.3.42",
+        "Node name for S&R": "CLIPTextEncode"
       },
-      "widgets_values": []
+      "widgets_values": [
+        ""
+      ]
     },
     {
       "id": 12,
       "type": "VAEDecode",
       "pos": [
-        2180,
-        750
+        1810,
+        810
       ],
       "size": [
         140,
@@ -163,7 +136,7 @@
         {
           "name": "vae",
           "type": "VAE",
-          "link": 29
+          "link": 30
         }
       ],
       "outputs": [
@@ -186,8 +159,8 @@
       "id": 13,
       "type": "BlenderOutputSaveImage",
       "pos": [
-        2360,
-        750
+        1990,
+        810
       ],
       "size": [
         210,
@@ -217,30 +190,346 @@
       "bgcolor": "#653"
     },
     {
-      "id": 7,
-      "type": "CLIPTextEncode",
+      "id": 18,
+      "type": "ConditioningZeroOut",
       "pos": [
-        1140,
-        910
+        1250,
+        970
       ],
       "size": [
-        210.29940795898438,
-        88
+        210,
+        26
       ],
       "flags": {},
-      "order": 9,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 17
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 22
         }
       ],
       "outputs": [
         {
           "name": "CONDITIONING",
           "type": "CONDITIONING",
+          "links": [
+            23
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.41",
+        "Node name for S&R": "ConditioningZeroOut"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 15,
+      "type": "DualCLIPLoader",
+      "pos": [
+        670,
+        810
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            16,
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.41",
+        "Node name for S&R": "DualCLIPLoader"
+      },
+      "widgets_values": [
+        "clip_l.safetensors",
+        "t5xxl_fp16.safetensors",
+        "flux",
+        "default"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "UNETLoader",
+      "pos": [
+        1250,
+        650
+      ],
+      "size": [
+        210,
+        82
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            21
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.41",
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "black-forest-labs\\flux1-dev.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 1,
+      "type": "BlenderInputStringMultiline",
+      "pos": [
+        600,
+        1020
+      ],
+      "size": [
+        340,
+        380
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "title": "Prompt",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputStringMultiline"
+      },
+      "widgets_values": [
+        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
+        3,
+        "",
+        false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 11,
+      "type": "KSampler",
+      "pos": [
+        1500,
+        810
+      ],
+      "size": [
+        270,
+        262
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 21
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 20
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 23
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 25
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": 14
+        },
+        {
+          "name": "denoise",
+          "type": "FLOAT",
+          "widget": {
+            "name": "denoise"
+          },
+          "link": 26
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        0,
+        "fixed",
+        20,
+        1,
+        "heun",
+        "beta",
+        1
+      ]
+    },
+    {
+      "id": 17,
+      "type": "FluxGuidance",
+      "pos": [
+        1250,
+        810
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.41",
+        "Node name for S&R": "FluxGuidance"
+      },
+      "widgets_values": [
+        3
+      ]
+    },
+    {
+      "id": 5,
+      "type": "BlenderInputCombo",
+      "pos": [
+        870,
+        540
+      ],
+      "size": [
+        340,
+        184
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "*",
+          "type": "*",
+          "links": [
+            15
+          ]
+        }
+      ],
+      "title": "Model",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "fe00f67deb08799bc6a8bad23c863249c11b241d",
+        "Node name for S&R": "BlenderInputCombo"
+      },
+      "widgets_values": [
+        "visitor01/rayflux-v1.0.safetensors",
+        2,
+        "",
+        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
+        "black-forest-labs/flux1-dev.safetensors\nvisitor01/rayflux-photoplus.safetensors\nvisitor01/rayflux-v1.0.safetensors"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 20,
+      "type": "VAEEncode",
+      "pos": [
+        1250,
+        1070
+      ],
+      "size": [
+        210,
+        46
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 24
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
           "links": [
             25
           ]
@@ -249,25 +538,22 @@
       "properties": {
         "cnr_id": "comfy-core",
         "ver": "0.3.42",
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        ""
-      ]
+        "Node name for S&R": "VAEEncode"
+      }
     },
     {
       "id": 10,
       "type": "BlenderInputSeed",
       "pos": [
-        1620,
-        910
+        1250,
+        1200
       ],
       "size": [
-        220,
-        180
+        210,
+        178
       ],
       "flags": {},
-      "order": 1,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -297,228 +583,14 @@
       "bgcolor": "#653"
     },
     {
-      "id": 15,
-      "type": "LoraLoaderModelOnly",
-      "pos": [
-        1570,
-        600
-      ],
-      "size": [
-        270,
-        82
-      ],
-      "flags": {},
-      "order": 11,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 15
-        },
-        {
-          "name": "strength_model",
-          "type": "FLOAT",
-          "widget": {
-            "name": "strength_model"
-          },
-          "link": 28
-        }
-      ],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            22
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "LoraLoaderModelOnly"
-      },
-      "widgets_values": [
-        "black-forest-labs\\flux1-depth-dev-lora.safetensors",
-        1
-      ]
-    },
-    {
-      "id": 14,
-      "type": "UNETLoader",
-      "pos": [
-        1260,
-        600
-      ],
-      "size": [
-        270,
-        82
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "unet_name",
-          "type": "COMBO",
-          "widget": {
-            "name": "unet_name"
-          },
-          "link": 27
-        }
-      ],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            15
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "UNETLoader"
-      },
-      "widgets_values": [
-        "black-forest-labs\\flux1-dev.safetensors",
-        "default"
-      ]
-    },
-    {
-      "id": 20,
-      "type": "BlenderInputLoadImage",
-      "pos": [
-        1380,
-        1040
-      ],
-      "size": [
-        210,
-        350
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            26
-          ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
-        }
-      ],
-      "title": "Depth Map",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "e5f69ef0b1450e0e1c96ba3156ed690fd8e7f9da",
-        "Node name for S&R": "BlenderInputLoadImage"
-      },
-      "widgets_values": [
-        "depth_map.png",
-        4,
-        "image"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 21,
-      "type": "BlenderInputFloat",
-      "pos": [
-        1260,
-        380
-      ],
-      "size": [
-        270,
-        154
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "FLOAT",
-          "type": "FLOAT",
-          "links": [
-            28
-          ]
-        }
-      ],
-      "title": "Depth Strength",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "e5f69ef0b1450e0e1c96ba3156ed690fd8e7f9da",
-        "Node name for S&R": "BlenderInputFloat"
-      },
-      "widgets_values": [
-        0.7500000000000001,
-        5,
-        0.7500000000000001,
-        0,
-        1.0000000000000002
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 5,
-      "type": "BlenderInputCombo",
-      "pos": [
-        880,
-        500
-      ],
-      "size": [
-        340,
-        184
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "*",
-          "type": "*",
-          "links": [
-            27
-          ]
-        }
-      ],
-      "title": "Model",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "fe00f67deb08799bc6a8bad23c863249c11b241d",
-        "Node name for S&R": "BlenderInputCombo"
-      },
-      "widgets_values": [
-        "visitor01/rayflux-v1.0.safetensors",
-        2,
-        "",
-        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
-        "black-forest-labs/flux1-dev.safetensors\nvisitor01/rayflux-photoplus.safetensors\nvisitor01/rayflux-v1.0.safetensors"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 18,
+      "id": 16,
       "type": "VAELoader",
       "pos": [
-        1380,
-        910
+        940,
+        1550
       ],
       "size": [
-        210,
+        270,
         58
       ],
       "flags": {},
@@ -530,8 +602,8 @@
           "name": "VAE",
           "type": "VAE",
           "links": [
-            21,
-            29
+            27,
+            30
           ]
         }
       ],
@@ -545,83 +617,15 @@
       ]
     },
     {
-      "id": 11,
-      "type": "KSampler",
+      "id": 19,
+      "type": "BlenderInputLoadImage",
       "pos": [
-        1870,
-        750
+        1000,
+        1130
       ],
       "size": [
-        270,
-        262
-      ],
-      "flags": {},
-      "order": 14,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 22
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 18
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 19
-        },
-        {
-          "name": "latent_image",
-          "type": "LATENT",
-          "link": 20
-        },
-        {
-          "name": "seed",
-          "type": "INT",
-          "widget": {
-            "name": "seed"
-          },
-          "link": 14
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            11
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.42",
-        "Node name for S&R": "KSampler"
-      },
-      "widgets_values": [
-        0,
-        "fixed",
-        20,
-        1,
-        "heun",
-        "beta",
-        1
-      ]
-    },
-    {
-      "id": 16,
-      "type": "DualCLIPLoader",
-      "pos": [
-        840,
-        750
-      ],
-      "size": [
-        270,
-        130
+        210,
+        350
       ],
       "flags": {},
       "order": 6,
@@ -629,36 +633,42 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "CLIP",
-          "type": "CLIP",
+          "name": "IMAGE",
+          "type": "IMAGE",
           "links": [
-            16,
-            17
+            24
           ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
         }
       ],
+      "title": "Input Image",
       "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "DualCLIPLoader"
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputLoadImage"
       },
       "widgets_values": [
-        "clip_l.safetensors",
-        "t5xxl_fp16.safetensors",
-        "flux",
-        "default"
-      ]
+        "example.png",
+        4,
+        "image"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
     },
     {
-      "id": 1,
-      "type": "BlenderInputStringMultiline",
+      "id": 21,
+      "type": "BlenderInputFloat",
       "pos": [
-        770,
-        950
+        1250,
+        1460
       ],
       "size": [
-        340,
-        360
+        210,
+        154
       ],
       "flags": {},
       "order": 7,
@@ -666,66 +676,28 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "STRING",
-          "type": "STRING",
+          "name": "FLOAT",
+          "type": "FLOAT",
           "links": [
-            2
+            26
           ]
         }
       ],
-      "title": "Prompt",
+      "title": "Denoise",
       "properties": {
         "cnr_id": "comfyui-blender",
         "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
-        "Node name for S&R": "BlenderInputStringMultiline"
+        "Node name for S&R": "BlenderInputFloat"
       },
       "widgets_values": [
-        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
-        3,
-        "",
-        false
+        0.5000000000000001,
+        5,
+        0.5000000000000001,
+        0.10000000000000002,
+        1.0000000000000002
       ],
       "color": "#432",
       "bgcolor": "#653"
-    },
-    {
-      "id": 17,
-      "type": "FluxGuidance",
-      "pos": [
-        1380,
-        750
-      ],
-      "size": [
-        210,
-        58
-      ],
-      "flags": {},
-      "order": 12,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "conditioning",
-          "type": "CONDITIONING",
-          "link": 24
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            23
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "FluxGuidance"
-      },
-      "widgets_values": [
-        3
-      ]
     }
   ],
   "links": [
@@ -763,102 +735,6 @@
     ],
     [
       15,
-      14,
-      0,
-      15,
-      0,
-      "MODEL"
-    ],
-    [
-      16,
-      16,
-      0,
-      6,
-      0,
-      "CLIP"
-    ],
-    [
-      17,
-      16,
-      0,
-      7,
-      0,
-      "CLIP"
-    ],
-    [
-      18,
-      19,
-      0,
-      11,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      19,
-      19,
-      1,
-      11,
-      2,
-      "CONDITIONING"
-    ],
-    [
-      20,
-      19,
-      2,
-      11,
-      3,
-      "LATENT"
-    ],
-    [
-      21,
-      18,
-      0,
-      19,
-      2,
-      "VAE"
-    ],
-    [
-      22,
-      15,
-      0,
-      11,
-      0,
-      "MODEL"
-    ],
-    [
-      23,
-      17,
-      0,
-      19,
-      0,
-      "CONDITIONING"
-    ],
-    [
-      24,
-      6,
-      0,
-      17,
-      0,
-      "CONDITIONING"
-    ],
-    [
-      25,
-      7,
-      0,
-      19,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      26,
-      20,
-      0,
-      19,
-      3,
-      "IMAGE"
-    ],
-    [
-      27,
       5,
       0,
       14,
@@ -866,16 +742,96 @@
       "COMBO"
     ],
     [
-      28,
+      16,
+      15,
+      0,
+      6,
+      0,
+      "CLIP"
+    ],
+    [
+      17,
+      15,
+      0,
+      7,
+      0,
+      "CLIP"
+    ],
+    [
+      19,
+      6,
+      0,
+      17,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      20,
+      17,
+      0,
+      11,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      21,
+      14,
+      0,
+      11,
+      0,
+      "MODEL"
+    ],
+    [
+      22,
+      7,
+      0,
+      18,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      23,
+      18,
+      0,
+      11,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      24,
+      19,
+      0,
+      20,
+      0,
+      "IMAGE"
+    ],
+    [
+      25,
+      20,
+      0,
+      11,
+      3,
+      "LATENT"
+    ],
+    [
+      26,
       21,
       0,
-      15,
-      1,
+      11,
+      5,
       "FLOAT"
     ],
     [
-      29,
-      18,
+      27,
+      16,
+      0,
+      20,
+      1,
+      "VAE"
+    ],
+    [
+      30,
+      16,
       0,
       12,
       1,
@@ -886,10 +842,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.7513148009015777,
+      "scale": 0.9090909090909091,
       "offset": [
-        -242.28879651322333,
-        -231.90080923614752
+        -340.27180211830296,
+        -637.6740396700249
       ]
     },
     "frontendVersion": "1.21.7",

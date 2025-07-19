@@ -29,10 +29,11 @@ In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > sel
 
     * The Blender nodes are used to define the inputs and outputs of the workflow to be displayed in the Blender add-on.
     * The title of the nodes are used as labels in the Blender add-on panel.
-    * Export the workflow **in API format**: `Workflow` > `Export (API)`.
 
 ![Screenshot ComfyUI](./screenshot_comfyui.png)
 
-2. In Blender, import the workflow JSON file in API format: Press `N` > `ComfyUI` > `Import Workflow`.
+2. Export the workflow JSON file **in API format**: `Workflow` > `Export (API)`.
 
-3. Update the inputs and click on **Run Workflow**.
+3. In Blender, import the workflow JSON file (make sure it is in API format): Press `N` > `ComfyUI` > `Import Workflow`.
+
+4. Update the inputs and click on **Run Workflow**.

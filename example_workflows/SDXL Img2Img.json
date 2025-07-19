@@ -446,7 +446,7 @@
         "Node name for S&R": "BlenderInputLoadImage"
       },
       "widgets_values": [
-        "dargon.png",
+        "example.png",
         4,
         "image",
         null
