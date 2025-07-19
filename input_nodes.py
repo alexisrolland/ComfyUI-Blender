@@ -1,5 +1,6 @@
 import os
 
+import folder_paths
 from comfy_extras.nodes_primitive import Boolean, Float, Int, String, StringMultiline
 from comfy.comfy_types.node_typing import IO
 from nodes import LoadImage
@@ -78,6 +79,33 @@ class BlenderInputInt(Int):
 
     def execute(self, value: int, order: int, default: int, min: int, max: int, step: int) -> tuple[int]:
         return (value,)
+
+class BlenderInputLoad3D():
+    """Node used by ComfyUI Blender add-on to input a 3D asset in a workflow."""
+    CATEGORY = "blender/inputs"
+    FUNCTION = "execute"
+    RETURN_TYPES = (IO.ANY,)
+    RETURN_NAMES = ("model_path",)
+
+    @staticmethod
+    def normalize_path(path):
+        """Ensure the model path is in the same format as ComfyUI native Load 3D node."""
+        return path.replace("\\", "/")
+
+    @classmethod
+    def INPUT_TYPES(s):
+        # Get list of 3D files
+        input_dir = os.path.join(folder_paths.get_input_directory(), "3d")
+        os.makedirs(input_dir, exist_ok=True)
+        files = [s.normalize_path(os.path.join("3d", f)) for f in os.listdir(input_dir) if f.endswith((".gltf", ".glb", ".obj", ".fbx", ".stl"))]
+
+        INPUT_TYPES = {"required": {}}
+        INPUT_TYPES["required"]["model_file"] = (sorted(files), {"file_upload": True})
+        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
+        return INPUT_TYPES
+
+    def execute(self, model_file, order):
+        return (model_file,)
 
 class BlenderInputLoadImage(LoadImage):
     """Node used by ComfyUI Blender add-on to input an image in a workflow."""

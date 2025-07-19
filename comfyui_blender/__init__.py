@@ -25,6 +25,7 @@ from .operators import (
     lock_seed,
     open_file_browser,
     open_image_editor,
+    prepare_3d_model,
     render_depth_map,
     render_view,
     run_workflow,
@@ -65,6 +66,7 @@ def register():
     lock_seed.register()
     open_file_browser.register()
     open_image_editor.register()
+    prepare_3d_model.register()
     render_depth_map.register()
     render_view.register()
     run_workflow.register()
@@ -90,6 +92,7 @@ def unregister():
     lock_seed.unregister()
     open_file_browser.unregister()
     open_image_editor.unregister()
+    prepare_3d_model.unregister()
     render_depth_map.unregister()
     render_view.unregister()
     run_workflow.unregister()

@@ -71,8 +71,6 @@ def upload_file(filepath, type, subfolder=None, overwrite=False):
     data = {}
     if overwrite:
         data["overwrite"] = True
-    if subfolder:
-        data["subfolder"] = subfolder
 
     # Read file data
     with open(filepath, "rb") as file:
@@ -82,9 +80,16 @@ def upload_file(filepath, type, subfolder=None, overwrite=False):
     filename = os.path.basename(filepath)
 
     # Build request according to the file type
-    if type == "image":
-        files = {"image": (filename, file_data)}
-        url = urljoin(addon_prefs.server_address, "/upload/image")
+    if type == "3d":
+        data["subfolder"] = "3d"
+        if subfolder:
+            data["subfolder"] = os.path.join(data["subfolder"], subfolder)
 
+    elif type == "image":
+        if subfolder:
+            data["subfolder"] = subfolder
+
+    files = {"image": (filename, file_data)}
+    url = urljoin(addon_prefs.server_address, "/upload/image")
     response = requests.post(url, files=files, data=data)
     return response

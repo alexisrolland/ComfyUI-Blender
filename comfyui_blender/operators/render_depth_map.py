@@ -1,5 +1,6 @@
 """Operator to render a depth map."""
 import os
+import shutil
 
 import bpy
 
@@ -18,14 +19,14 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
-        # Capture current values of the scene to set them back later
+        # Store original render settings
         scene = context.scene
-        file_format = scene.render.image_settings.file_format
-        color_mode = scene.render.image_settings.color_mode
-        color_depth = scene.render.image_settings.color_depth
-        compression = scene.render.image_settings.compression
-        display_device = scene.display_settings.display_device
-        view_transform = scene.view_settings.view_transform
+        original_file_format = scene.render.image_settings.file_format
+        original_color_mode = scene.render.image_settings.color_mode
+        original_color_depth = scene.render.image_settings.color_depth
+        original_compression = scene.render.image_settings.compression
+        original_display_device = scene.display_settings.display_device
+        original_view_transform = scene.view_settings.view_transform
 
         # Set up the scene for rendering
         scene.render.image_settings.file_format = "PNG"
@@ -35,27 +36,28 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         scene.display_settings.display_device = "Display P3"
         scene.view_settings.view_transform = "Raw"
 
-        # Enable Z pass and use nodes
-        bpy.context.scene.view_layers["ViewLayer"].use_pass_z = True
-        bpy.context.scene.use_nodes = True
+        # Enable Z pass
+        scene.view_layers["ViewLayer"].use_pass_z = True
+
+        # Get path to inputs folder
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+        inputs_folder = str(addon_prefs.inputs_folder)
+        os.makedirs(inputs_folder, exist_ok=True)
 
         # Create a new node tree for compositing
-        tree = bpy.context.scene.node_tree
+        scene.use_nodes = True
+        tree = scene.node_tree
         tree.nodes.clear()
 
         # Create nodes
         rlayers_node = tree.nodes.new(type="CompositorNodeRLayers")
         map_range_node = tree.nodes.new(type="CompositorNodeMapRange")
         output_file_node = tree.nodes.new(type="CompositorNodeOutputFile")
+        output_file_node.base_path = inputs_folder
 
         # Link nodes
         tree.links.new(rlayers_node.outputs["Depth"], map_range_node.inputs["Value"])
         tree.links.new(map_range_node.outputs["Value"], output_file_node.inputs["Image"])
-
-        # Set path to inputs folder
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        inputs_folder = str(addon_prefs.inputs_folder)
-        output_file_node.base_path = inputs_folder
 
         # Get closest and furthest vertices from the camera
         cam_location = scene.camera.matrix_world.translation
@@ -83,13 +85,13 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         
         temp_filepath = os.path.join(inputs_folder, "Image0001.png")
         depth_filename, depth_filepath = get_filepath("depth_map.png", inputs_folder)
-        os.rename(temp_filepath, depth_filepath)
+        shutil.move(temp_filepath, depth_filepath)  # Use shutil.move to rename file with overwrite
         self.report({'INFO'}, f"Depth map saved: {depth_filepath}")
 
         # Load image in the data block
         bpy.data.images.load(depth_filepath, check_existing=True)
 
-        # Delete the previous input file from Blender's data if it exists
+        # Delete the previous input image from Blender's data
         current_workflow = context.scene.current_workflow
         previous_input_filepath = getattr(current_workflow, self.workflow_property)
         previous_input_filename = os.path.basename(previous_input_filepath)
@@ -97,16 +99,20 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
             image = bpy.data.images.get(previous_input_filename)
             bpy.data.images.remove(image)
 
+        # Delete the previous input file
+        if os.path.exists(previous_input_filepath):
+            os.remove(previous_input_filepath)
+
         # Update the workflow property with the new input filepath
         current_workflow[self.workflow_property] = depth_filepath
 
         # Reset the scene with previous rendering settings
-        scene.render.image_settings.file_format = file_format
-        scene.render.image_settings.color_mode = color_mode
-        scene.render.image_settings.color_depth = color_depth
-        scene.render.image_settings.compression = compression
-        scene.display_settings.display_device = display_device
-        scene.view_settings.view_transform = view_transform
+        scene.render.image_settings.file_format = original_file_format
+        scene.render.image_settings.color_mode = original_color_mode
+        scene.render.image_settings.color_depth = original_color_depth
+        scene.render.image_settings.compression = original_compression
+        scene.display_settings.display_device = original_display_device
+        scene.view_settings.view_transform = original_view_transform
         return {'FINISHED'}
 
 def register():

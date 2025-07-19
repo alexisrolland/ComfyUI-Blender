@@ -71,8 +71,8 @@ def create_class_properties(dictionary):
             )
             continue
 
-        # Load image
-        if node["class_type"] == "BlenderInputLoadImage":
+        # Load 3D and Load image
+        if node["class_type"] in ("BlenderInputLoad3D", "BlenderInputLoadImage"):
             properties[property_name] = StringProperty(name=name)
             continue
         
@@ -87,16 +87,8 @@ def create_class_properties(dictionary):
             )
             continue
 
-        # String
-        if node["class_type"] == "BlenderInputString":
-            properties[property_name] = StringProperty(
-                name=name,
-                default=node["inputs"].get("default", "")
-            )
-            continue
-
-        # String multiline
-        elif node["class_type"] == "BlenderInputStringMultiline":
+        # String and String multiline
+        if node["class_type"] in ("BlenderInputString", "BlenderInputStringMultiline"):
             properties[property_name] = StringProperty(
                 name=name,
                 default=node["inputs"].get("default", "")

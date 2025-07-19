@@ -46,14 +46,55 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             for key, node in inputs.items():
                 property_name = f"node_{key}"
 
-                # Custom handling for image inputs
-                if node["class_type"] == "BlenderInputLoadImage":
+                # Custom handling for 3D model inputs
+                if node["class_type"] == "BlenderInputLoad3D":
                     # Get the input name from the workflow properties
                     name = current_workflow.bl_rna.properties[property_name].name  # Node title
                     row = box.row(align=True)
                     row.label(text=name + ":")
 
-                    # Import input button
+                    # Prepare 3D model
+                    prepare_3d = row.operator("comfy.prepare_3d_model", text="", icon="MESH_DATA")
+                    prepare_3d.workflow_property = property_name
+
+                    # Get the input file name from the workflow class
+                    input_filepath = getattr(current_workflow, property_name)
+                    input_filename = os.path.basename(input_filepath)
+                    preview_filename = input_filename.replace(".obj", "_preview.png")
+
+                    # Display imported input image if it exists
+                    if preview_filename in bpy.data.images:
+                        bpy.data.images[preview_filename].preview_ensure()
+
+                        # Image preview
+                        row = box.row()
+                        col = row.column(align=True)
+                        col.template_icon(icon_value=bpy.data.images[preview_filename].preview.icon_id, scale=5)
+
+                        # Input name
+                        input_name = col.operator("comfy.open_file_browser", text=input_filename, emboss=False)
+                        input_name.folder_path = inputs_folder
+
+                        # File browser button
+                        col = row.column(align=True)
+                        file_browser = col.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE")
+                        file_browser.folder_path = inputs_folder
+
+                        # Delete input button
+                        delete_input = col.operator("comfy.delete_input", text="", icon="TRASH")
+                        delete_input.filename = input_filename
+                        delete_input.filepath = input_filepath
+                        delete_input.workflow_property = property_name
+                        delete_input.type = "3d"
+
+                # Custom handling for image inputs
+                elif node["class_type"] == "BlenderInputLoadImage":
+                    # Get the input name from the workflow properties
+                    name = current_workflow.bl_rna.properties[property_name].name  # Node title
+                    row = box.row(align=True)
+                    row.label(text=name + ":")
+
+                    # Import button
                     import_input = row.operator("comfy.import_input", text="", icon="IMPORT")
                     import_input.workflow_property = property_name
 
@@ -87,12 +128,14 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                         image_editor = col.operator("comfy.open_image_editor", text="", icon="IMAGE")
                         image_editor.filename = input_filename
 
+                        # File browser button
                         file_browser = col.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE")
                         file_browser.folder_path = inputs_folder
 
                         # Delete input button
                         delete_input = col.operator("comfy.delete_input", text="", icon="TRASH")
                         delete_input.filename = input_filename
+                        delete_input.filepath = input_filepath
                         delete_input.workflow_property = property_name
                         delete_input.type = "image"
 

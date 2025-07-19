@@ -42,25 +42,53 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
             for key, node in inputs.items():
                 property_name = f"node_{key}"
 
-                # Custom handling for image inputs
-                if node["class_type"] == "BlenderInputLoadImage":
-                    # Upload image to ComfyUI server
-                    image_path = getattr(current_workflow, property_name)
+                # Custom handling for 3D model input
+                if node["class_type"] == "BlenderInputLoad3D":
+                    filepath = getattr(current_workflow, property_name)
                     try:
-                        response = upload_file(image_path, type="image")
+                        # Upload file on ComfyUI server
+                        response = upload_file(filepath, type="3d")
                         if response.status_code != 200:
-                            error_message = f"Failed to upload image: {response.status_code} - {response.text}"
+                            error_message = f"Failed to upload file: {response.status_code} - {response.text}"
                             show_error_popup(error_message)
                             return {'CANCELLED'}
                     except Exception as e:
                         input_name = current_workflow.bl_rna.properties[property_name].name  # Node title
-                        error_message = f"Error uploading image for input {input_name}: {str(e)}"
+                        error_message = f"Error uploading file for input {input_name}: {str(e)}"
                         show_error_popup(error_message)
                         return {'CANCELLED'}
 
-                    self.report({'INFO'}, "Image uploaded to ComfyUI server.")
-                    image_filename = response.json()["name"]
-                    workflow[key]["inputs"]["image"] = image_filename
+                    # Update workflow
+                    filepath = response.json()["name"]
+                    subfolder = response.json()["subfolder"]
+                    if subfolder:
+                        filepath = subfolder + "/" + filepath
+                    workflow[key]["inputs"]["model_file"] = filepath
+                    self.report({'INFO'}, f"File uploaded to ComfyUI server: {filepath}")
+
+                # Custom handling for image input
+                elif node["class_type"] == "BlenderInputLoadImage":
+                    filepath = getattr(current_workflow, property_name)
+                    try:
+                        # Upload file on ComfyUI server
+                        response = upload_file(filepath, type="image")  # 3D files also use the image type
+                        if response.status_code != 200:
+                            error_message = f"Failed to upload file: {response.status_code} - {response.text}"
+                            show_error_popup(error_message)
+                            return {'CANCELLED'}
+                    except Exception as e:
+                        input_name = current_workflow.bl_rna.properties[property_name].name  # Node title
+                        error_message = f"Error uploading file for input {input_name}: {str(e)}"
+                        show_error_popup(error_message)
+                        return {'CANCELLED'}
+
+                    # Update workflow
+                    filepath = response.json()["name"]
+                    subfolder = response.json()["subfolder"]
+                    if subfolder:
+                        filepath = subfolder + "/" + filepath
+                    workflow[key]["inputs"]["image"] = filepath
+                    self.report({'INFO'}, f"File uploaded to ComfyUI server: {filepath}")
 
                 # Custom handling for seed inputs
                 elif node["class_type"] == "BlenderInputSeed":
@@ -86,6 +114,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
             # Send workflow to ComfyUI server
             data = {"prompt": workflow, "client_id": addon_prefs.client_id}
+            print(data)
             url = urljoin(addon_prefs.server_address, "/prompt")
             headers = {"Content-Type": "application/json"}
             response = requests.post(url, json=data, headers=headers)
