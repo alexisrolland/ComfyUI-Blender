@@ -38,6 +38,7 @@ class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
 
         # Store original render settings
         scene = context.scene
+        original_filepath = scene.render.filepath
         original_camera = scene.camera
         original_resolution_x = scene.render.resolution_x
         original_resolution_y = scene.render.resolution_y
@@ -82,6 +83,7 @@ class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
         scene.camera = temp_camera
 
         # Set render settings for preview
+        scene.render.filepath = os.devnull  # Disable default render output
         scene.render.resolution_x = 512
         scene.render.resolution_y = 512
 
@@ -131,6 +133,7 @@ class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
         bpy.data.objects.remove(temp_camera, do_unlink=True)
         
         # Restore original render settings
+        scene.render.filepath = original_filepath
         scene.camera = original_camera
         scene.render.resolution_x = original_resolution_x
         scene.render.resolution_y = original_resolution_y

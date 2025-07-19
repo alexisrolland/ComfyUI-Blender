@@ -21,6 +21,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
 
         # Store original render settings
         scene = context.scene
+        original_filepath = scene.render.filepath
         original_file_format = scene.render.image_settings.file_format
         original_color_mode = scene.render.image_settings.color_mode
         original_color_depth = scene.render.image_settings.color_depth
@@ -29,6 +30,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         original_view_transform = scene.view_settings.view_transform
 
         # Set up the scene for rendering
+        scene.render.filepath = os.devnull  # Disable default render output
         scene.render.image_settings.file_format = "PNG"
         scene.render.image_settings.color_mode = "RGB"
         scene.render.image_settings.color_depth = "16"
@@ -106,7 +108,8 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         # Update the workflow property with the new input filepath
         current_workflow[self.workflow_property] = depth_filepath
 
-        # Reset the scene with previous rendering settings
+        # Restore original render settings
+        scene.render.filepath = original_filepath
         scene.render.image_settings.file_format = original_file_format
         scene.render.image_settings.color_mode = original_color_mode
         scene.render.image_settings.color_depth = original_color_depth

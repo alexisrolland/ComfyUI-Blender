@@ -19,6 +19,10 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
+        # Store original render settings
+        original_filepath = context.scene.render.filepath
+        context.scene.render.filepath = os.devnull  # Disable default render output
+
         # Get path to inputs folder
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         inputs_folder = str(addon_prefs.inputs_folder)
@@ -61,6 +65,8 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         # Update the workflow property with the new input filepath
         current_workflow[self.workflow_property] = render_filepath
 
+        # Restore original render settings
+        context.scene.render.filepath = original_filepath
         return {'FINISHED'}
 
 def register():
