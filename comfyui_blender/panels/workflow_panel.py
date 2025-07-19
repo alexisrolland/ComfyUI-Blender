@@ -47,9 +47,11 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
         delete_workflow.filename = workflow_filename
         delete_workflow.filepath = workflow_path
 
-        # Queue status
+        # Queue status and progress bar
         row = layout.row()
-        row.label(text=f"Queue: {len(addon_prefs.queue)}")
+        split = row.split(factor=0.20)
+        split.label(text=f"Queue: {len(addon_prefs.queue)}")
+        split.progress(factor=addon_prefs.progress_value, text=f"{int(addon_prefs.progress_value * 100)}%", type="BAR")
         if addon_prefs.connection_status:
             row.label(icon="INTERNET")
         else:

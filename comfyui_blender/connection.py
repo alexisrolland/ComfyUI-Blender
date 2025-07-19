@@ -62,9 +62,6 @@ def listen():
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
     queue = addon_prefs.queue
 
-    # Get expected outputs from the workflow
-    # outputs = parse_workflow_for_outputs(workflow)
-
     # Get WebSocket connection
     global WS_CONNECTION, WS_LISTENING
     WS_LISTENING = True
@@ -78,12 +75,32 @@ def listen():
             message = json.loads(message)
             # print(f"Received message: {message}") # Debugging
 
+            # Reset progress bar to 0 when execution starts
+            if message["type"] == "execution_start":
+                data = message["data"]
+                if data["prompt_id"] in queue.keys():
+                    addon_prefs.progress_value = 0.0
+
+            # Update progress bar with cached nodes
+            if message["type"] == "execution_cached":
+                data = message["data"]
+                if data["prompt_id"] in queue.keys():
+                    workflow = ast.literal_eval(queue[data["prompt_id"]].workflow)
+                    nb_nodes_total = len(workflow)
+                    nb_nodes_cached = len(data["nodes"])
+                    addon_prefs.progress_value = nb_nodes_cached / nb_nodes_total
+
             # Check if execution is complete
             if message["type"] == "executing":
                 data = message["data"]
-                if "prompt_id" in data.keys() and data["prompt_id"] in queue.keys():
+                if data["prompt_id"] in queue.keys():
                     if data["node"] is None:
                         break
+
+                    # Update progress bar with current node execution
+                    workflow = ast.literal_eval(queue[data["prompt_id"]].workflow)
+                    nb_nodes_total = len(workflow)
+                    addon_prefs.progress_value = addon_prefs.progress_value + (1 / nb_nodes_total)
 
             # Check if the message type is executed with outputs
             if message["type"] == "executed":
@@ -114,6 +131,7 @@ def listen():
             if message["type"] == "execution_error":
                 data = message["data"]
                 if data["prompt_id"] in queue.keys():
+                    # Remove prompt from the queue when execution fails
                     queue.remove(queue.find(data["prompt_id"]))
                     error_message = data.get("exception_message", "Unknown error")
 
@@ -123,9 +141,10 @@ def listen():
                         show_error_popup(error_message)
                         return None  # Stop the timer
                     bpy.app.timers.register(raise_error, first_interval=0.0)
-            
-            # Remove prompt from the queue
+
+            # Remove prompt from the queue when execution completes
             if message["type"] == "execution_success":
                 data = message["data"]
                 if data["prompt_id"] in queue.keys():
+                    addon_prefs.progress_value = 1.0
                     queue.remove(queue.find(data["prompt_id"]))

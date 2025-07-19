@@ -7,7 +7,6 @@ from bpy.props import (
     BoolProperty,
     CollectionProperty,
     EnumProperty,
-    IntProperty,
     StringProperty
 )
 
@@ -19,6 +18,14 @@ def sanitize_server_address(self, context):
 
     while self.server_address.endswith("/"):
         self.server_address = self.server_address.rstrip("/")
+
+def update_progress(self, context):
+    """Update callback to force UI redraw when progress changes."""
+
+    if context.screen:
+        for area in context.screen.areas:
+            if area.type == "VIEW_3D":
+                area.tag_redraw()
 
 class ComfyBlenderSettings(bpy.types.AddonPreferences):
     """ComfyUI Blender Add-on Preferences"""
@@ -122,6 +129,17 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
         name="Queue",
         description="Collection of prompts sent to the ComfyUI server",
         type=PromptPropertyGroup
+    )
+
+    # Progress value used for the progress bar
+    progress_value: bpy.props.FloatProperty(
+        name="Progress",
+        description="Generation progress",
+        default=0.0,
+        min=0.0,
+        max=1.0,
+        subtype="FACTOR",
+        update=update_progress
     )
 
     # Outputs collection
