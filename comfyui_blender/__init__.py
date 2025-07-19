@@ -20,7 +20,7 @@ from .operators import (
     delete_input,
     delete_output,
     delete_workflow,
-    import_input,
+    import_image,
     import_workflow,
     lock_seed,
     open_file_browser,
@@ -61,7 +61,7 @@ def register():
     delete_input.register()
     delete_output.register()
     delete_workflow.register()
-    import_input.register()
+    import_image.register()
     import_workflow.register()
     lock_seed.register()
     open_file_browser.register()
@@ -87,7 +87,7 @@ def unregister():
     delete_input.unregister()
     delete_output.unregister()
     delete_workflow.unregister()
-    import_input.unregister()
+    import_image.unregister()
     import_workflow.unregister()
     lock_seed.unregister()
     open_file_browser.unregister()

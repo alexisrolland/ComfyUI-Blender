@@ -1,4 +1,4 @@
-"""Operator to import an input."""
+"""Operator to import an image."""
 import os
 import shutil
 
@@ -8,11 +8,11 @@ from ..utils import get_filepath, show_error_popup
 
 
 class ComfyBlenderOperatorImportInput(bpy.types.Operator):
-    """Operator to import an input."""
+    """Operator to import an image."""
 
-    bl_idname = "comfy.import_input"
-    bl_label = "Import Input"
-    bl_description = "Import an input file"
+    bl_idname = "comfy.import_image"
+    bl_label = "Import Image"
+    bl_description = "Import an image"
 
     filepath: bpy.props.StringProperty(name="File Path", subtype="FILE_PATH")
     filter_glob: bpy.props.StringProperty(name="File Filter", default="*.jpeg;*.jpg;*.png;*.webp")
