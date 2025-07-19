@@ -88,10 +88,14 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
             data = {"prompt": workflow, "client_id": addon_prefs.client_id}
             url = urljoin(addon_prefs.server_address, "/prompt")
             headers = {"Content-Type": "application/json"}
-
-            # Create and send the request
             response = requests.post(url, json=data, headers=headers)
-            response.raise_for_status()  # Raise an exception for bad status codes
+
+            # Raise an exception for bad status codes
+            if response.status_code != 200:
+                error_message = response.text
+                show_error_popup(error_message)
+                return {'CANCELLED'}
+
             response_data = response.text
             prompt_id = json.loads(response_data).get("prompt_id", "")
             self.report({'INFO'}, "Workflow sent to ComfyUI server.")
