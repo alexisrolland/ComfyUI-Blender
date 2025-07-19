@@ -22,10 +22,8 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
     def draw(self, context):
         """Draw the panel."""
 
-        layout = self.layout
-
         # Buttons to open preferences
-        row = layout.row()
+        row = self.layout.row()
         row.label(text="") # Empty label for spacing
         row.operator("preferences.addon_show", text="", icon="PREFERENCES").module = "comfyui_blender"
 
@@ -36,20 +34,20 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
         workflow_path = os.path.join(workflows_folder, workflow_filename)
 
         # Buttons to import a workflow
-        row = layout.row(align=True)
+        row = self.layout.row(align=True)
         row.operator("comfy.import_workflow", text="Import Workflow")
         row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE").folder_path = workflows_folder
 
         # Dropdown list of workflows with actions
-        row = layout.row(align=True)
+        row = self.layout.row(align=True)
         row.prop(addon_prefs, "workflow")
         delete_workflow = row.operator("comfy.delete_workflow", text="", icon="TRASH")
         delete_workflow.filename = workflow_filename
         delete_workflow.filepath = workflow_path
 
         # Queue status and progress bar
-        row = layout.row()
-        split = row.split(factor=0.20)
+        row = self.layout.row(align=True)
+        split = row.split(factor=0.23)
         split.label(text=f"Queue: {len(addon_prefs.queue)}")
         split.progress(factor=addon_prefs.progress_value, text=f"{int(addon_prefs.progress_value * 100)}%", type="BAR")
         if addon_prefs.connection_status:

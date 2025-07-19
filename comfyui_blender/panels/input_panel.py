@@ -25,17 +25,16 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
     def draw(self, context):
         """Draw the panel."""
 
-        layout = self.layout
-
         # Get the selected workflow
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         workflows_folder = str(addon_prefs.workflows_folder)
         workflow_filename = str(addon_prefs.workflow)
         workflow_path = os.path.join(workflows_folder, workflow_filename)
+        inputs_folder = str(addon_prefs.inputs_folder)
 
         # Load the workflow JSON file
         if os.path.exists(workflow_path) and os.path.isfile(workflow_path):
-            box = layout.box()
+            box = self.layout.box()
             with open(workflow_path, "r",  encoding="utf-8") as file:
                 workflow = json.load(file)
 
@@ -57,6 +56,10 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                     # Import input button
                     import_input = row.operator("comfy.import_input", text="", icon="IMPORT")
                     import_input.workflow_property = property_name
+
+                    # Render view
+                    render_view = row.operator("comfy.render_view", text="", icon="OUTPUT")
+                    render_view.workflow_property = property_name
 
                     # Render depth map
                     render_depth = row.operator("comfy.render_depth_map", text="", icon="MATERIAL")
@@ -83,6 +86,9 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                         col = row.column(align=True)
                         image_editor = col.operator("comfy.open_image_editor", text="", icon="IMAGE")
                         image_editor.filename = input_filename
+
+                        file_browser = col.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE")
+                        file_browser.folder_path = inputs_folder
 
                         # Delete input button
                         delete_input = col.operator("comfy.delete_input", text="", icon="TRASH")

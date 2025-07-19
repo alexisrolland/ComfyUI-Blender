@@ -131,7 +131,8 @@ def listen():
             if message["type"] == "execution_error":
                 data = message["data"]
                 if data["prompt_id"] in queue.keys():
-                    # Remove prompt from the queue when execution fails
+                    # Reset progress and remove prompt from the queue when execution fails
+                    addon_prefs.progress_value = 0.0
                     queue.remove(queue.find(data["prompt_id"]))
                     error_message = data.get("exception_message", "Unknown error")
 

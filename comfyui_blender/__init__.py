@@ -26,6 +26,7 @@ from .operators import (
     open_file_browser,
     open_image_editor,
     render_depth_map,
+    render_view,
     run_workflow,
     select_folder
 )
@@ -65,6 +66,7 @@ def register():
     open_file_browser.register()
     open_image_editor.register()
     render_depth_map.register()
+    render_view.register()
     run_workflow.register()
     select_folder.register()
 
@@ -89,6 +91,7 @@ def unregister():
     open_file_browser.unregister()
     open_image_editor.unregister()
     render_depth_map.unregister()
+    render_view.unregister()
     run_workflow.unregister()
     select_folder.unregister()
 

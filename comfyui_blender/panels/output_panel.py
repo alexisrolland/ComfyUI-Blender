@@ -24,17 +24,10 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
     def draw(self, context):
         """Draw the panel."""
 
-        # Open file browser
-        layout = self.layout
-
         # Get outputs information
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         outputs_folder = str(addon_prefs.outputs_folder)
-
-        row = layout.row()
-        row.label(text="") # Empty label for spacing
-        row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE").folder_path = outputs_folder
-        box = layout.box()
+        box = self.layout.box()
 
         # Get outputs collection
         for index, output in enumerate(reversed(addon_prefs.outputs_collection)):
@@ -68,6 +61,9 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                     col = row.column(align=True)
                     image_editor = col.operator("comfy.open_image_editor", text="", icon="IMAGE")
                     image_editor.filename = output.filename
+
+                    file_browser = col.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE")
+                    file_browser.folder_path = outputs_folder
 
                     # Delete output
                     delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
