@@ -27,7 +27,7 @@ In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > sel
 
 1. In ComfyUI, create a workflow using the Blender nodes (see workflow examples in this repository).
 
-    * The Blender nodes are used to define the inputs and outputs of the workflow to be displayed in the Blender add-on.
+    * The Blender nodes are used to define the inputs and outputs to be displayed in the Blender add-on.
     * The title of the nodes are used as labels in the Blender add-on panel.
 
 ![Screenshot ComfyUI](./screenshot_comfyui.png)
