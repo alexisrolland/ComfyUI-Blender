@@ -4,7 +4,7 @@ import shutil
 
 import bpy
 
-from ..utils import get_filepath
+from ..utils import get_filepath, show_error_popup
 
 
 class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
@@ -19,8 +19,14 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
-        # Store original render settings
         scene = context.scene
+        if not scene.camera:
+            error_message = "No camera found"
+            show_error_popup(error_message)
+            self.report({'ERROR'}, "No camera found")
+            return {'CANCELLED'}
+
+        # Store original render settings
         original_filepath = scene.render.filepath
         original_file_format = scene.render.image_settings.file_format
         original_color_mode = scene.render.image_settings.color_mode
@@ -66,7 +72,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         min_distance = float('inf')
         max_distance = 0.0
 
-        for obj in bpy.context.scene.objects:
+        for obj in scene.objects:
             if obj.type == "MESH":
                 for vertex in obj.data.vertices:
                     world_coord = obj.matrix_world @ vertex.co
@@ -94,7 +100,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         bpy.data.images.load(depth_filepath, check_existing=True)
 
         # Delete the previous input image from Blender's data
-        current_workflow = context.scene.current_workflow
+        current_workflow = scene.current_workflow
         previous_input_filepath = getattr(current_workflow, self.workflow_property)
         previous_input_filename = os.path.basename(previous_input_filepath)
         if bpy.data.images.get(previous_input_filename):

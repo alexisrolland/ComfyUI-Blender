@@ -4,7 +4,7 @@ import shutil
 
 import bpy
 
-from ..utils import get_filepath
+from ..utils import get_filepath, show_error_popup
 
 
 class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
@@ -19,9 +19,16 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
+        scene = context.scene
+        if not scene.camera:
+            error_message = "No camera found"
+            show_error_popup(error_message)
+            self.report({'ERROR'}, "No camera found")
+            return {'CANCELLED'}
+
         # Store original render settings
-        original_filepath = context.scene.render.filepath
-        context.scene.render.filepath = os.devnull  # Disable default render output
+        original_filepath = scene.render.filepath
+        scene.render.filepath = os.devnull  # Disable default render output
 
         # Get path to inputs folder
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
@@ -29,8 +36,8 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         os.makedirs(inputs_folder, exist_ok=True)
 
         # Create a new node tree for compositing
-        context.scene.use_nodes = True
-        tree = context.scene.node_tree
+        scene.use_nodes = True
+        tree = scene.node_tree
         tree.nodes.clear()
 
         # Create nodes
@@ -51,7 +58,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         bpy.data.images.load(render_filepath, check_existing=True)
 
         # Delete the previous input image from Blender's data
-        current_workflow = context.scene.current_workflow
+        current_workflow = scene.current_workflow
         previous_input_filepath = getattr(current_workflow, self.workflow_property)
         previous_input_filename = os.path.basename(previous_input_filepath)
         if bpy.data.images.get(previous_input_filename):
@@ -66,7 +73,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         current_workflow[self.workflow_property] = render_filepath
 
         # Restore original render settings
-        context.scene.render.filepath = original_filepath
+        scene.render.filepath = original_filepath
         return {'FINISHED'}
 
 def register():
