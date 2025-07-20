@@ -39,8 +39,7 @@
         2,
         "",
         "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
-        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
-        null
+        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -102,8 +101,7 @@
         "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
         3,
         "",
-        false,
-        null
+        false
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -152,8 +150,7 @@
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        "",
-        null
+        ""
       ]
     },
     {
@@ -192,8 +189,7 @@
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        "",
-        null
+        ""
       ]
     },
     {
@@ -267,8 +263,7 @@
         "Node name for S&R": "BlenderOutputSaveImage"
       },
       "widgets_values": [
-        "blender",
-        null
+        "blender"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -338,42 +333,7 @@
         8,
         "dpmpp_2m",
         "karras",
-        1,
-        null
-      ]
-    },
-    {
-      "id": 14,
-      "type": "ControlNetLoader",
-      "pos": [
-        1210,
-        600
-      ],
-      "size": [
-        210,
-        58
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "CONTROL_NET",
-          "type": "CONTROL_NET",
-          "links": [
-            15
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.42",
-        "Node name for S&R": "ControlNetLoader"
-      },
-      "widgets_values": [
-        "xinsir\\controlnet-union-sdxl-promax-1.0.safetensors",
-        null
+        1
       ]
     },
     {
@@ -388,7 +348,7 @@
         178
       ],
       "flags": {},
-      "order": 4,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -412,8 +372,7 @@
         1024,
         768,
         1344,
-        8,
-        null
+        8
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -430,7 +389,7 @@
         178
       ],
       "flags": {},
-      "order": 5,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -454,8 +413,7 @@
         1024,
         768,
         1344,
-        8,
-        null
+        8
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -509,8 +467,7 @@
       "widgets_values": [
         512,
         512,
-        1,
-        null
+        1
       ]
     },
     {
@@ -525,7 +482,7 @@
         350
       ],
       "flags": {},
-      "order": 6,
+      "order": 5,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -551,8 +508,7 @@
       "widgets_values": [
         "depth_map.png",
         6,
-        "image",
-        null
+        "image"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -569,7 +525,7 @@
         154
       ],
       "flags": {},
-      "order": 7,
+      "order": 6,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -592,8 +548,7 @@
         7,
         1.0000000000000002,
         0,
-        1.0000000000000002,
-        null
+        1.0000000000000002
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -652,8 +607,7 @@
         "Node name for S&R": "CheckpointLoaderSimple"
       },
       "widgets_values": [
-        "albedobond\\albedobase-xl-v2.1.safetensors",
-        null
+        "albedobond\\albedobase-xl-v2.1.safetensors"
       ]
     },
     {
@@ -730,8 +684,7 @@
       "widgets_values": [
         1,
         0,
-        1,
-        null
+        1
       ]
     },
     {
@@ -746,7 +699,7 @@
         180
       ],
       "flags": {},
-      "order": 8,
+      "order": 7,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -770,11 +723,43 @@
         0,
         1,
         2147483647,
-        1,
-        null
+        1
       ],
       "color": "#432",
       "bgcolor": "#653"
+    },
+    {
+      "id": 14,
+      "type": "ControlNetLoader",
+      "pos": [
+        1210,
+        600
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CONTROL_NET",
+          "type": "CONTROL_NET",
+          "links": [
+            15
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.42",
+        "Node name for S&R": "ControlNetLoader"
+      },
+      "widgets_values": [
+        "xinsir\\controlnet-union-sdxl-1.0-promax.safetensors"
+      ]
     }
   ],
   "links": [
@@ -941,7 +926,7 @@
         -310.8534816894532
       ]
     },
-    "frontendVersion": "1.23.4",
+    "frontendVersion": "1.21.7",
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,
