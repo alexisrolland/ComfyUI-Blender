@@ -56,7 +56,7 @@ The node `Blender Input Combo` provides the following settings in ComfyUI:
 
 The node `Blender Input Load 3D` provides the following features in Blender:
 
-* **Prepare 3D Model**: Prepare an `.obj` file with the selected meshes.
+* **Prepare 3D Model**: Prepare an `.obj` file with the selected meshes to be sent to the ComfyUI server.
 
 ### Blender Input Load Image
 
@@ -65,6 +65,7 @@ The node `Blender Input Load Image` provides the following features in Blender:
 * **Import Image**: Import a custom image.
 * **Render View**: Render an image from the camera.
 * **Render Depth Map**: Render a depth map from the camera.
+* **Render Lineart**: Render a lineart from the camera.
 
 ### Blender Input String & Blender Input String Multiline
 
