@@ -61,7 +61,7 @@ def create_class_properties(dictionary):
             continue
 
         # Integer
-        if node["class_type"] in ("BlenderInputInt", "BlenderInputSeed"):
+        if node["class_type"] == "BlenderInputInt":
             properties[property_name] = IntProperty(
                 name=name,
                 default=node["inputs"].get("default", 0),
