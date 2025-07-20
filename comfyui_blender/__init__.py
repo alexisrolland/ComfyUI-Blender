@@ -27,6 +27,7 @@ from .operators import (
     open_image_editor,
     prepare_3d_model,
     render_depth_map,
+    render_lineart,
     render_view,
     run_workflow,
     select_folder
@@ -68,6 +69,7 @@ def register():
     open_image_editor.register()
     prepare_3d_model.register()
     render_depth_map.register()
+    render_lineart.register()
     render_view.register()
     run_workflow.register()
     select_folder.register()
@@ -94,6 +96,7 @@ def unregister():
     open_image_editor.unregister()
     prepare_3d_model.unregister()
     render_depth_map.unregister()
+    render_lineart.unregister()
     render_view.unregister()
     run_workflow.unregister()
     select_folder.unregister()

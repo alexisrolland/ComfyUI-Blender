@@ -106,6 +106,10 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                     render_depth = row.operator("comfy.render_depth_map", text="", icon="MATERIAL")
                     render_depth.workflow_property = property_name
 
+                    # Render lineart
+                    render_lineart = row.operator("comfy.render_lineart", text="", icon="SPHERE")
+                    render_lineart.workflow_property = property_name
+
                     # Get the input file name from the workflow class
                     input_filepath = getattr(current_workflow, property_name)
                     input_filename = os.path.basename(input_filepath)

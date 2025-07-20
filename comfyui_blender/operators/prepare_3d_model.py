@@ -1,9 +1,9 @@
 """Operator to prepare a 3D model file to import it on ComfyUI server."""
 import os
 import shutil
+from mathutils import Vector
 
 import bpy
-from mathutils import Vector
 
 from ..utils import get_filepath, show_error_popup
 
