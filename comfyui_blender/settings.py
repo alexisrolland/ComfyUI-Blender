@@ -27,6 +27,42 @@ def update_progress(self, context):
             if area.type == "VIEW_3D":
                 area.tag_redraw()
 
+class PromptPropertyGroup(bpy.types.PropertyGroup):
+    """Property group for the queue collection."""
+
+    # The name property serves as the key for the collection
+    name: StringProperty(
+        name="Prompt Id",
+        description="Identifier of the prompt returned by the ComfyUI server"
+    )
+    workflow: StringProperty(
+        name="Workflow",
+        description="Workflow sent to the ComfyUI server"
+    )
+    outputs: StringProperty(
+        name="Outputs",
+        description="Output nodes of the workflow"
+    )
+
+class OutputPropertyGroup(bpy.types.PropertyGroup):
+    """Property group for outputs collection."""
+
+    # The name property serves as the key for the collection
+    # Because the file path is unique, we use it as the key
+    name: StringProperty(
+        name="File Path",
+        description="Relative file path of the output"
+    )
+    filename: StringProperty(
+        name="File Name",
+        description="File name of the output"
+    )
+    type: EnumProperty(
+        name="Type",
+        description="Type of the output",
+        items=[("image", "Image", "Image output")]
+    )
+
 class ComfyBlenderSettings(bpy.types.AddonPreferences):
     """ComfyUI Blender Add-on Preferences"""
 
@@ -107,24 +143,6 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
     )
 
     # Queue
-    # Declare a prompt property group used in the queue collection
-    class PromptPropertyGroup(bpy.types.PropertyGroup):
-        """Property group for the queue collection."""
-
-        # The name property serves as the key for the collection
-        name: StringProperty(
-            name="Prompt Id",
-            description="Identifier of the prompt returned by the ComfyUI server"
-        )
-        workflow: StringProperty(
-            name="Workflow",
-            description="Workflow sent to the ComfyUI server"
-        )
-        outputs: StringProperty(
-            name="Outputs",
-            description="Output nodes of the workflow"
-        )
-    bpy.utils.register_class(PromptPropertyGroup)
     queue: CollectionProperty(
         name="Queue",
         description="Collection of prompts sent to the ComfyUI server",
@@ -142,27 +160,7 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
         update=update_progress
     )
 
-    # Outputs collection
-    # Declare an output property group used in a collection
-    class OutputPropertyGroup(bpy.types.PropertyGroup):
-        """Property group for outputs collection."""
-
-        # The name property serves as the key for the collection
-        # Because the file path is unique, we use it as the key
-        name: StringProperty(
-            name="File Path",
-            description="Relative file path of the output"
-        )
-        filename: StringProperty(
-            name="File Name",
-            description="File name of the output"
-        )
-        type: EnumProperty(
-            name="Type",
-            description="Type of the output",
-            items=[("image", "Image", "Image output")]
-        )
-    bpy.utils.register_class(OutputPropertyGroup)
+    # Outputs
     outputs_collection: CollectionProperty(
         name="Outputs Collection",
         description="Collection of generated outputs",
@@ -204,6 +202,8 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
 def register():
     """Register the operator."""
 
+    bpy.utils.register_class(PromptPropertyGroup)
+    bpy.utils.register_class(OutputPropertyGroup)
     bpy.utils.register_class(ComfyBlenderSettings)
 
     # Force the update of the workflow property to trigger the registration of the selected workflow class
@@ -213,4 +213,6 @@ def register():
 def unregister():
     """Unregister the operator."""
 
+    bpy.utils.unregister_class(PromptPropertyGroup)
+    bpy.utils.unregister_class(OutputPropertyGroup)
     bpy.utils.unregister_class(ComfyBlenderSettings)

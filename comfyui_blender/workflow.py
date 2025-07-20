@@ -102,11 +102,8 @@ def create_class_properties(dictionary):
             continue
     return properties
 
-def create_workflow_class(workflow_filename, properties):
+def create_workflow_class(class_name, properties):
     """Create a new PropertyGroup class for a workflow."""
-
-    # Generate a class name from the workflow file name
-    class_name = get_workflow_class_name(workflow_filename)
 
     # Create the new class
     new_class = type(class_name, (bpy.types.PropertyGroup,), {})
@@ -178,6 +175,12 @@ def register_workflow_class(self, context):
     workflows_folder = str(addon_prefs.workflows_folder)
     workflow_filename = str(self.workflow)
     workflow_path = os.path.join(workflows_folder, workflow_filename)
+    workflow_class_name = get_workflow_class_name(workflow_filename)
+
+    # Unregister workflow class if it already exists
+    for subclass in bpy.types.PropertyGroup.__subclasses__():
+        if subclass.__name__==workflow_class_name and subclass.is_registered:
+            bpy.utils.unregister_class(subclass)
 
     # Load the workflow JSON file
     if os.path.exists(workflow_path) and os.path.isfile(workflow_path):
@@ -188,21 +191,6 @@ def register_workflow_class(self, context):
         inputs = parse_workflow_for_inputs(workflow)
         outputs = parse_workflow_for_outputs(workflow)
         properties = create_class_properties({**inputs, **outputs}) # Merge dictionaries
-        workflow_class = create_workflow_class(workflow_filename, properties)
-
-        # Unregister the class if it already exists
-        if hasattr(bpy.types, workflow_class.__name__):
-            unregister(workflow_class)
-        register(workflow_class)
-
-def register(workflow_class):
-    """Register the panel."""
-
-    bpy.utils.register_class(workflow_class)
-    bpy.types.Scene.current_workflow = bpy.props.PointerProperty(type=workflow_class)
-
-def unregister(workflow_class):
-    """Unregister the panel."""
-
-    del bpy.types.Scene.current_workflow
-    bpy.utils.unregister_class(workflow_class)
+        workflow_class = create_workflow_class(workflow_class_name, properties)
+        bpy.utils.register_class(workflow_class)
+        bpy.types.Scene.current_workflow = bpy.props.PointerProperty(type=workflow_class)
