@@ -57,15 +57,16 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                     output_name = col.operator("comfy.open_image_editor", text=output.filename, emboss=False)
                     output_name.filename = output.filename
 
-                    # Image editor
+                    # Image editor button
                     col = row.column(align=True)
                     image_editor = col.operator("comfy.open_image_editor", text="", icon="IMAGE")
                     image_editor.filename = output.filename
 
+                    # File browser button
                     file_browser = col.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE")
                     file_browser.folder_path = outputs_folder
 
-                    # Delete output
+                    # Delete output button
                     delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
                     delete_output.filename = output.filename
                     delete_output.filepath = output.name
@@ -81,12 +82,16 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                     row = box.row()
                     col = row.column(align=True)
 
-                    # Import mesh button
-                    import_model = col.operator("comfy.import_3d_model", text=f"{output.filename}")
+                    # Output name operator with link
+                    output_name = col.operator("comfy.import_3d_model", text=output.filename, emboss=False, icon="OUTLINER_OB_MESH")
+                    output_name.filepath = full_path
+
+                    # Import 3D model button
+                    col = row.column(align=True)
+                    import_model = col.operator("comfy.import_3d_model", text="", icon="IMPORT")
                     import_model.filepath = full_path
 
                     # File browser button
-                    col = row.column(align=True)
                     file_browser = col.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE")
                     file_browser.folder_path = outputs_folder
 
