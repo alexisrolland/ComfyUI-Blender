@@ -7,11 +7,13 @@ This is a Blender add-on to send requests to a ComfyUI server. This respository 
 
 ## How Is It Different ?
 
-* This Blender add-on allows to use any ComfyUI workflow and dynamically displays input controls with a simple UI in the add-on panel:
-  * Create a workflow in ComfyUI **with the Blender nodes**.
-  * Export the workflow **in API format**.
-  * Import the workflow in the Blender add-on... voilà!
-* Both the custom nodes and add-on are lightweight and simple to install, with almost no extra dependencies.
+This Blender add-on allows to use any ComfyUI workflow and dynamically displays input controls with a simple UI in the add-on panel:
+
+* Create a workflow in ComfyUI **with the Blender nodes**.
+* Export the workflow **in API format**.
+* Import the workflow in the Blender add-on... voilà!
+
+Both the custom nodes and add-on are lightweight and simple to install, with no extra dependencies beside the `websocket-client` required by the add-on to retrieve results from the ComfyUI server.
 
 ![Screenshot Blender](./screenshot_blender.jpg)
 
