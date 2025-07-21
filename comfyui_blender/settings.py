@@ -60,7 +60,7 @@ class OutputPropertyGroup(bpy.types.PropertyGroup):
     type: EnumProperty(
         name="Type",
         description="Type of the output",
-        items=[("image", "Image", "Image output")]
+        items=[("3d", "3d", "3D model output"), ("image", "Image", "Image output")]
     )
 
 class ComfyBlenderSettings(bpy.types.AddonPreferences):

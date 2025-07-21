@@ -72,8 +72,37 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                     delete_output.type = output.type
 
                 box.separator(type="LINE")
-                
 
+            # Display output of type 3d
+            if output.type == "3d":
+                full_path = os.path.join(outputs_folder, output.name)
+                if os.path.exists(full_path):
+                    # Create UI elements for 3D output
+                    row = box.row()
+                    col = row.column(align=True)
+
+                    # Import mesh button
+                    import_model = col.operator("comfy.import_3d_model", text=f"{output.filename}")
+                    import_model.filepath = full_path
+
+                    # File browser button
+                    col = row.column(align=True)
+                    file_browser = col.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE")
+                    file_browser.folder_path = outputs_folder
+
+                    # Delete output button
+                    delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
+                    delete_output.filename = output.filename
+                    delete_output.filepath = output.name
+                    delete_output.type = output.type
+
+                else:
+                    # If the file does not exist anymore, remove it from the outputs collection
+                    # To avoid error when trying to display the image
+                    addon_prefs.outputs_collection.remove(index)
+                    self.report({'INFO'}, f"Removed output from collection: {output.filename}")
+
+                box.separator(type="LINE")
 
 def register():
     """Register the panel."""

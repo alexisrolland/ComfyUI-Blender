@@ -10,6 +10,7 @@ from .input_nodes import (
     BlenderInputStringMultiline
 )
 from .output_nodes import (
+    BlenderOutputDownload3D,
     BlenderOutputSaveImage
 )
 
@@ -25,6 +26,7 @@ NODE_CLASS_MAPPINGS = {
     "BlenderInputSeed": BlenderInputSeed,
     "BlenderInputString": BlenderInputString,
     "BlenderInputStringMultiline": BlenderInputStringMultiline,
+    "BlenderOutputDownload3D": BlenderOutputDownload3D,
     "BlenderOutputSaveImage": BlenderOutputSaveImage
 }
 
@@ -39,5 +41,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "BlenderInputSeed": "Blender Input Seed",
     "BlenderInputString": "Blender Input String",
     "BlenderInputStringMultiline": "Blender Input String Multiline",
+    "BlenderOutputDownload3D": "Blender Output Download 3D",
     "BlenderOutputSaveImage": "Blender Output Save Image"
 }

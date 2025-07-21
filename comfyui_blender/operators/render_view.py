@@ -23,7 +23,6 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         if not scene.camera:
             error_message = "No camera found"
             show_error_popup(error_message)
-            self.report({'ERROR'}, "No camera found")
             return {'CANCELLED'}
 
         # Store original render settings

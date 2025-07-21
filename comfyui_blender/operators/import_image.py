@@ -7,7 +7,7 @@ import bpy
 from ..utils import get_filepath, show_error_popup
 
 
-class ComfyBlenderOperatorImportInput(bpy.types.Operator):
+class ComfyBlenderOperatorImportImage(bpy.types.Operator):
     """Operator to import an image."""
 
     bl_idname = "comfy.import_image"
@@ -71,9 +71,9 @@ class ComfyBlenderOperatorImportInput(bpy.types.Operator):
 def register():
     """Register the operator."""
 
-    bpy.utils.register_class(ComfyBlenderOperatorImportInput)
+    bpy.utils.register_class(ComfyBlenderOperatorImportImage)
 
 def unregister():
     """Unregister the operator."""
 
-    bpy.utils.unregister_class(ComfyBlenderOperatorImportInput)
+    bpy.utils.unregister_class(ComfyBlenderOperatorImportImage)
