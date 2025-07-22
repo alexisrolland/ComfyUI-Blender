@@ -108,9 +108,14 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
             # Establish the WebSocket connection
             if not connection.WS_CONNECTION:
-                self.report({'INFO'}, "Connecting to server...")
-                connection.connect()
-                self.report({'INFO'}, "Connection established.")
+                try:
+                    self.report({'INFO'}, "Connecting to server...")
+                    connection.connect()
+                    self.report({'INFO'}, "Connection established.")
+                except Exception as e:
+                    error_message = f"Failed to connect to ComfyUI server: {addon_prefs.server_address}. {e}"
+                    show_error_popup(error_message)
+                    return {'CANCELLED'}
 
             # Send workflow to ComfyUI server
             data = {"prompt": workflow, "client_id": addon_prefs.client_id}
