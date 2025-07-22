@@ -2,13 +2,13 @@
 import ast
 import json
 import os
+import time
 from urllib.parse import urljoin, urlencode
 
 import bpy
 import websocket
 
 from .utils import download_file, show_error_popup
-from .workflow import parse_workflow_for_outputs
 
 
 # Global variable to manage the WebSocket connection
@@ -37,7 +37,11 @@ def connect():
     # Establish the WebSocket connection
     global WS_CONNECTION
     WS_CONNECTION = websocket.WebSocket()
-    WS_CONNECTION.connect(server_address)
+    try:
+        WS_CONNECTION.connect(server_address)
+    except Exception as e:
+        WS_CONNECTION = None
+        raise e
 
     # Update connection status
     addon_prefs.connection_status = True
@@ -68,7 +72,12 @@ def listen():
 
     # Start listening for messages
     while WS_LISTENING:
-        message = WS_CONNECTION.recv()
+        try:
+            message = WS_CONNECTION.recv()
+        except Exception as e:
+            time.sleep(1)
+            connect()  # Try to reconnect
+            continue
 
         # Process the message
         if isinstance(message, str) and message != "":

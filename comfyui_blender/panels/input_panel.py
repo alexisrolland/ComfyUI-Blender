@@ -33,7 +33,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
         inputs_folder = str(addon_prefs.inputs_folder)
 
         # Load the workflow JSON file
-        if os.path.exists(workflow_path) and os.path.isfile(workflow_path):
+        if os.path.exists(workflow_path):
             box = self.layout.box()
             with open(workflow_path, "r",  encoding="utf-8") as file:
                 workflow = json.load(file)
