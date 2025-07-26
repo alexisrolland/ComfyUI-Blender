@@ -13,8 +13,6 @@ This Blender add-on allows to use any ComfyUI workflow and dynamically displays 
 * Export the workflow **in API format**.
 * Import the workflow in the Blender add-on... voilà!
 
-Both the custom nodes and add-on are lightweight and simple to install, with no extra dependencies beside the `websocket-client` required by the add-on to retrieve results from the ComfyUI server.
-
 ![Screenshot Blender](./screenshot_blender.jpg)
 
 ## Getting Started
@@ -51,34 +49,4 @@ In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > sel
 
 4. Update the inputs and click on **Run Workflow**.
 
-## Features
-
-Below is a non exhaustive list of features that require some explanations.
-
-### Blender Input Combo
-
-The node `Blender Input Combo` provides the following settings in ComfyUI:
-
-* **list**: A list of values that will be displayed in a dropdown box in Blender (one item per line).
-* **format_path**: If `True` and if the value provided to the node is a path, it will be formatted according the operating system ComfyUI runs on. This is particularly useful for lists of models that are contained in subfolders.
-
-### Blender Input Load 3D
-
-The node `Blender Input Load 3D` provides the following features in Blender:
-
-* **Prepare 3D Model**: Prepare an `.obj` file with the selected meshes to be sent to the ComfyUI server.
-
-### Blender Input Load Image
-
-The node `Blender Input Load Image` provides the following features in Blender:
-
-* **Import Image**: Import a custom image.
-* **Render View**: Render an image from the camera.
-* **Render Depth Map**: Render a depth map from the camera.
-* **Render Lineart**: Render a lineart from the camera.
-
-### Blender Input String & Blender Input String Multiline
-
-The nodes `Blender Input String` & `Blender Input String Multiline` provide the following settings in ComfyUI:
-
-* **format_path**: If `True` and if the value provided to the node is a path, it will be formatted according the operating system ComfyUI runs on. This is particularly useful for input file paths that are contained in subfolders.
+For more details about the various features and use cases, refer to the **[DOCUMENTATION](https://github.com/alexisrolland/ComfyUI-Blender/wiki)**.
