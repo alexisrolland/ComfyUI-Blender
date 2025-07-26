@@ -24,7 +24,7 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
 
         # Buttons to open preferences
         row = self.layout.row()
-        row.label(text="") # Empty label for spacing
+        row.alignment = "RIGHT"
         row.operator("preferences.addon_show", text="", icon="PREFERENCES").module = "comfyui_blender"
 
         # Get workflows information

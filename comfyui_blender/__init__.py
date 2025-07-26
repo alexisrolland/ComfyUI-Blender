@@ -31,7 +31,8 @@ from .operators import (
     render_lineart,
     render_view,
     run_workflow,
-    select_folder
+    select_folder,
+    switch_output_layout
 )
 from .panels import (
     input_panel,
@@ -75,6 +76,7 @@ def register():
     render_view.register()
     run_workflow.register()
     select_folder.register()
+    switch_output_layout.register()
 
     # Panels
     workflow_panel.register()
@@ -103,6 +105,7 @@ def unregister():
     render_view.unregister()
     run_workflow.unregister()
     select_folder.unregister()
+    switch_output_layout.unregister()
 
     # Panels
     workflow_panel.unregister()

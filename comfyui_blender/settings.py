@@ -172,6 +172,13 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
         type=OutputPropertyGroup
     )
 
+    outputs_layout: EnumProperty(
+        name="Outputs Layout",
+        description="Layout type for the outputs",
+        default="thumbnail",
+        items=[("list", "List", "Display outputs in a list"), ("thumbnail", "Thumbnail", "Display outputs as thumbnails")],
+    )
+
     def draw(self, context):
         """Draw the panel."""
 

@@ -84,22 +84,16 @@ class ComfyBlenderOperatorDeleteInputOk(bpy.types.Operator):
                 self.report({'INFO'}, f"Deleted file: {self.filepath}")
 
         if self.type == "3d":
-            # Remove preview image from Blender's data
-            preview_filename = self.filename.replace(".obj", "_preview.png")
-            image = bpy.data.images.get(preview_filename)
-            bpy.data.images.remove(image)
-            self.report({'INFO'}, f"Removed image from Blender data: {preview_filename}")
-
-            # Delete preview image file
-            preview_filepath = self.filepath.replace(".obj", "_preview.png")
-            if os.path.exists(preview_filepath):
-                os.remove(preview_filepath)
-                self.report({'INFO'}, f"Deleted file: {preview_filepath}")
-
             # Delete 3D model file
             if os.path.exists(self.filepath):
                 os.remove(self.filepath)
                 self.report({'INFO'}, f"Deleted file: {self.filepath}")
+        
+        # Force redraw of the UI
+        for screen in bpy.data.screens:  # Iterate through all screens
+            for area in screen.areas:  # Access areas in each screen
+                if area.type == "VIEW_3D":  # Area of the add-on panel
+                    area.tag_redraw()
 
         return {'FINISHED'}
 
