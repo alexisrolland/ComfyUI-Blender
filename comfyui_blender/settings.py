@@ -10,14 +10,9 @@ from bpy.props import (
     StringProperty
 )
 
+from .connection import disconnect
 from .workflow import get_workflow_list, register_workflow_class
 
-
-def sanitize_server_address(self, context):
-    """Ensure the server address ends with a slash."""
-
-    while self.server_address.endswith("/"):
-        self.server_address = self.server_address.rstrip("/")
 
 def update_progress(self, context):
     """Update callback to force UI redraw when progress changes."""
@@ -26,6 +21,16 @@ def update_progress(self, context):
         for area in context.screen.areas:
             if area.type == "VIEW_3D":
                 area.tag_redraw()
+
+def update_server_address(self, context):
+    """Reset connection and cleanse the server address."""
+
+    # Reset current connection
+    disconnect()
+
+    # Ensure the server address ends without a slash.
+    while self.server_address.endswith("/"):
+        self.server_address = self.server_address.rstrip("/")
 
 class PromptPropertyGroup(bpy.types.PropertyGroup):
     """Property group for the queue collection."""
@@ -60,7 +65,7 @@ class OutputPropertyGroup(bpy.types.PropertyGroup):
     type: EnumProperty(
         name="Type",
         description="Type of the output",
-        items=[("image", "Image", "Image output")]
+        items=[("3d", "3d", "3D model output"), ("image", "Image", "Image output")]
     )
 
 class ComfyBlenderSettings(bpy.types.AddonPreferences):
@@ -83,7 +88,7 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
         name="Server Address",
         description="URL of the ComfyUI server",
         default="http://127.0.0.1:8188",
-        update=sanitize_server_address
+        update=update_server_address
     )
 
     # Connection status
@@ -165,6 +170,13 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
         name="Outputs Collection",
         description="Collection of generated outputs",
         type=OutputPropertyGroup
+    )
+
+    outputs_layout: EnumProperty(
+        name="Outputs Layout",
+        description="Layout type for the outputs",
+        default="thumbnail",
+        items=[("list", "List", "Display outputs in a list"), ("thumbnail", "Thumbnail", "Display outputs as thumbnails")],
     )
 
     def draw(self, context):

@@ -24,7 +24,6 @@ class ComfyBlenderOperatorRenderLineart(bpy.types.Operator):
         if not context.scene.camera:
             error_message = "No camera found"
             show_error_popup(error_message)
-            self.report({'ERROR'}, "No camera found")
             return {'CANCELLED'}
         
         # Calculate position behind the camera

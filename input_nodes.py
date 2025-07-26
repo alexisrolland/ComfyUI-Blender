@@ -11,6 +11,7 @@ MIN_INT = -2147483648
 MAX_FLOAT = 2147483647.00
 MAX_INT = 2147483647
 
+
 class BlenderInputBoolean(Boolean):
     """Node used by ComfyUI Blender add-on to input a boolean in a workflow."""
     CATEGORY = "blender/inputs"
@@ -85,7 +86,6 @@ class BlenderInputLoad3D():
     CATEGORY = "blender/inputs"
     FUNCTION = "execute"
     RETURN_TYPES = (IO.ANY,)
-    RETURN_NAMES = ("model_path",)
 
     @staticmethod
     def normalize_path(path):

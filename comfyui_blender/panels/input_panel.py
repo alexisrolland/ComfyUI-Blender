@@ -33,7 +33,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
         inputs_folder = str(addon_prefs.inputs_folder)
 
         # Load the workflow JSON file
-        if os.path.exists(workflow_path) and os.path.isfile(workflow_path):
+        if os.path.exists(workflow_path):
             box = self.layout.box()
             with open(workflow_path, "r",  encoding="utf-8") as file:
                 workflow = json.load(file)
@@ -60,28 +60,25 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                     # Get the input file name from the workflow class
                     input_filepath = getattr(current_workflow, property_name)
                     input_filename = os.path.basename(input_filepath)
-                    preview_filename = input_filename.replace(".obj", "_preview.png")
 
-                    # Display imported input image if it exists
-                    if preview_filename in bpy.data.images:
-                        bpy.data.images[preview_filename].preview_ensure()
+                    # Display prepared 3D model
+                    if input_filename:
+                        row_input = box.row(align=True)
 
-                        # Image preview
-                        row = box.row()
-                        col = row.column(align=True)
-                        col.template_icon(icon_value=bpy.data.images[preview_filename].preview.icon_id, scale=5)
+                        # Input name operator with link
+                        input_name = row_input.operator("comfy.import_3d_model", text=input_filename, emboss=False, icon="MESH_DATA")
+                        input_name.filepath = input_filepath
 
-                        # Input name
-                        input_name = col.operator("comfy.open_file_browser", text=input_filename, emboss=False)
-                        input_name.folder_path = inputs_folder
+                        # Import 3D model button
+                        import_model = row_input.operator("comfy.import_3d_model", text="", icon="IMPORT")
+                        import_model.filepath = input_filepath
 
                         # File browser button
-                        col = row.column(align=True)
-                        file_browser = col.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE")
+                        file_browser = row_input.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE")
                         file_browser.folder_path = inputs_folder
 
                         # Delete input button
-                        delete_input = col.operator("comfy.delete_input", text="", icon="TRASH")
+                        delete_input = row_input.operator("comfy.delete_input", text="", icon="TRASH")
                         delete_input.filename = input_filename
                         delete_input.filepath = input_filepath
                         delete_input.workflow_property = property_name

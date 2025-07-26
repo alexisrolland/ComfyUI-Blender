@@ -1,4 +1,5 @@
 import os
+import random
 import requests
 import textwrap
 from urllib.parse import urljoin
@@ -14,7 +15,8 @@ def download_file(filename, subfolder):
     outputs_folder = addon_prefs.outputs_folder
 
     # Download the file data from the ComfyUI server
-    params = {"filename": filename, "subfolder": subfolder, "type": "output"}
+    # Add a random parameter to avoid caching issues
+    params = {"filename": filename, "subfolder": subfolder, "type": "output", "rand": random.random()}
     url = f"{server_address}/view"
 
     # Download with streaming to handle large files and avoid memory issues

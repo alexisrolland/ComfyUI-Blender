@@ -20,6 +20,7 @@ from .operators import (
     delete_input,
     delete_output,
     delete_workflow,
+    import_3d_model,
     import_image,
     import_workflow,
     lock_seed,
@@ -30,7 +31,8 @@ from .operators import (
     render_lineart,
     render_view,
     run_workflow,
-    select_folder
+    select_folder,
+    switch_output_layout
 )
 from .panels import (
     input_panel,
@@ -43,7 +45,7 @@ from . import settings
 bl_info = {
     "name": "ComfyUI Blender",
     "author": "Alexis ROLLAND",
-    "version": (0, 4, 1),
+    "version": (0, 5, 0),
     "blender": (4, 4, 3),
     "location": "View3D > Sidebar > ComfyUI",
     "description": "Blender add-on to send requests to a ComfyUI server.",
@@ -62,6 +64,7 @@ def register():
     delete_input.register()
     delete_output.register()
     delete_workflow.register()
+    import_3d_model.register()
     import_image.register()
     import_workflow.register()
     lock_seed.register()
@@ -73,6 +76,7 @@ def register():
     render_view.register()
     run_workflow.register()
     select_folder.register()
+    switch_output_layout.register()
 
     # Panels
     workflow_panel.register()
@@ -89,6 +93,7 @@ def unregister():
     delete_input.unregister()
     delete_output.unregister()
     delete_workflow.unregister()
+    import_3d_model.unregister()
     import_image.unregister()
     import_workflow.unregister()
     lock_seed.unregister()
@@ -100,6 +105,7 @@ def unregister():
     render_view.unregister()
     run_workflow.unregister()
     select_folder.unregister()
+    switch_output_layout.unregister()
 
     # Panels
     workflow_panel.unregister()

@@ -2,13 +2,13 @@
 import ast
 import json
 import os
+import time
 from urllib.parse import urljoin, urlencode
 
 import bpy
 import websocket
 
 from .utils import download_file, show_error_popup
-from .workflow import parse_workflow_for_outputs
 
 
 # Global variable to manage the WebSocket connection
@@ -37,7 +37,11 @@ def connect():
     # Establish the WebSocket connection
     global WS_CONNECTION
     WS_CONNECTION = websocket.WebSocket()
-    WS_CONNECTION.connect(server_address)
+    try:
+        WS_CONNECTION.connect(server_address)
+    except Exception as e:
+        WS_CONNECTION = None
+        raise e
 
     # Update connection status
     addon_prefs.connection_status = True
@@ -68,7 +72,12 @@ def listen():
 
     # Start listening for messages
     while WS_LISTENING:
-        message = WS_CONNECTION.recv()
+        try:
+            message = WS_CONNECTION.recv()
+        except Exception as e:
+            time.sleep(1)
+            connect()  # Try to reconnect
+            continue
 
         # Process the message
         if isinstance(message, str) and message != "":
@@ -110,7 +119,7 @@ def listen():
                     key = data["node"]
                     outputs = ast.literal_eval(queue[data["prompt_id"]].outputs)
 
-                    # Check class type to retrieve only outputs for the add-on
+                    # Check class type to retrieve image outputs
                     if key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
                         for output in data["output"]["images"]:
                             download_file(output["filename"], output["subfolder"])
@@ -120,6 +129,24 @@ def listen():
                             image.name = os.path.join(output["subfolder"], output["filename"])
                             image.filename = output["filename"]
                             image.type = "image"
+
+                            # Force redraw of the UI
+                            for screen in bpy.data.screens:  # Iterate through all screens
+                                for area in screen.areas:  # Access areas in each screen
+                                    if area.type == "VIEW_3D":  # Area of the add-on panel
+                                        area.tag_redraw()
+
+                    # Check class type to retrieve 3D outputs
+                    elif key in outputs and outputs[key]["class_type"] == "BlenderOutputDownload3D":
+                        for output in data["output"]["result"]:
+                            subfolder, filename = output.rsplit("/", 1)  # Split the path at the last slash to get subfolder and filename
+                            download_file(filename, subfolder)
+
+                            # Add 3D model to outputs collection
+                            model = addon_prefs.outputs_collection.add()
+                            model.name = os.path.join(subfolder, filename)
+                            model.filename = filename
+                            model.type = "3d"
 
                             # Force redraw of the UI
                             for screen in bpy.data.screens:  # Iterate through all screens
