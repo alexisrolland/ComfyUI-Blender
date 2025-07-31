@@ -1,10 +1,9 @@
 """Operator to import a 3D model into the scene."""
 import os
-import shutil
 
 import bpy
 
-from ..utils import get_filepath, show_error_popup
+from ..utils import show_error_popup
 
 
 class ComfyBlenderOperatorImport3DModel(bpy.types.Operator):

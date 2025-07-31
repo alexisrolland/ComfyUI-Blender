@@ -3,7 +3,7 @@ import os
 
 import bpy
 
-from ..workflow import get_workflow_class_name, get_workflow_list
+from ..workflow import get_workflow_list
 from ..utils import show_error_popup
 
 
@@ -74,12 +74,6 @@ class ComfyBlenderOperatorDeleteWorkflowOk(bpy.types.Operator):
                 addon_prefs = context.preferences.addons["comfyui_blender"].preferences
                 workflows = get_workflow_list(addon_prefs, context)
                 addon_prefs.workflow = workflows[0][0]  # First tuple's first element (filename)
-
-                # Unregister the workflow class
-                # To be reworked and tested
-                # class_name = get_workflow_class_name(self.filename)
-                # workflow_class = getattr(bpy.types, class_name)
-                # unregister(workflow_class)
             else:
                 self.report({'WARNING'}, f"Workflow file not found: {self.filepath}")
                 return {'CANCELLED'}

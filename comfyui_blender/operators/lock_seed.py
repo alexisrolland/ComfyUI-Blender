@@ -1,8 +1,6 @@
 """Operator to lock a seed value."""
 import bpy
 
-from ..utils import get_filepath
-
 
 class ComfyBlenderOperatorLockSeed(bpy.types.Operator):
     """Operator to lock a seed value."""
