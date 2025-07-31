@@ -7,7 +7,9 @@ This respository contains both custom nodes to be installed on the ComfyUI serve
 
 * Create a workflow in ComfyUI **with the Blender nodes**.
 * Export the workflow **in API format**.
-* Import the workflow in the Blender add-on, the UI is automatically generated according to the Blender input and output nodes used in the workflow.
+* Import the workflow in the Blender add-on
+
+The Blender add-on UI is automatically generated according to the input and output nodes used in the workflow.
 
 ![Screenshot Blender](./screenshot_blender.jpg)
 
