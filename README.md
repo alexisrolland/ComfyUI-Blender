@@ -3,15 +3,11 @@
 [![ComfyUI Registry](https://img.shields.io/badge/comfyui-registry-grey?labelColor=blue)](https://registry.comfy.org/nodes/comfyui-blender)
 [![Latest Release](https://img.shields.io/github/v/release/alexisrolland/ComfyUI-Blender)](https://github.com/alexisrolland/ComfyUI-Blender/releases/latest)
 
-This is a Blender add-on to send requests to a ComfyUI server. This respository contains both custom nodes to be installed on the ComfyUI server and the source code of the Blender add-on.
-
-## How Is It Different ?
-
-This Blender add-on allows to use any ComfyUI workflow and dynamically displays input controls with a simple UI in the add-on panel:
+This respository contains both custom nodes to be installed on the ComfyUI server and the Blender add-on to send workflows to the ComfyUI server. 
 
 * Create a workflow in ComfyUI **with the Blender nodes**.
 * Export the workflow **in API format**.
-* Import the workflow in the Blender add-on... voilà!
+* Import the workflow in the Blender add-on, the UI is automatically generated according to the Blender input and output nodes used in the workflow.
 
 ![Screenshot Blender](./screenshot_blender.jpg)
 
