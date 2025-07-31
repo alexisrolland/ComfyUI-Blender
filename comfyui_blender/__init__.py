@@ -45,7 +45,7 @@ from . import settings
 bl_info = {
     "name": "ComfyUI Blender",
     "author": "Alexis ROLLAND",
-    "version": (0, 5, 0),
+    "version": (0, 5, 1),
     "blender": (4, 4, 3),
     "location": "View3D > Sidebar > ComfyUI",
     "description": "Blender add-on to send requests to a ComfyUI server.",

@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-blender"
 description = "Blender plugin to send requests to a ComfyUI server."
-version = "v0.5.0"
+version = "v0.5.1"
 license = { text = "GPL-3.0 license" }
 dependencies = []
 
