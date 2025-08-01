@@ -12,7 +12,7 @@ class BlenderOutputDownload3D():
     @classmethod
     def INPUT_TYPES(s):
         INPUT_TYPES = {"required": {}}
-        INPUT_TYPES["required"]["model_file"] = (IO.STRING, {"default": "", "multiline": False})
+        INPUT_TYPES["required"]["model_file"] = (IO.STRING, {"forceInput": True})
         return INPUT_TYPES
 
     def execute(self, model_file: str) -> dict:
