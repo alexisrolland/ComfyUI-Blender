@@ -20,6 +20,7 @@ from .operators import (
     delete_input,
     delete_output,
     delete_workflow,
+    get_camera_resolution,
     import_3d_model,
     import_image,
     import_workflow,
@@ -32,6 +33,7 @@ from .operators import (
     render_view,
     run_workflow,
     select_folder,
+    set_camera_resolution,
     switch_output_layout
 )
 from .panels import (
@@ -64,6 +66,7 @@ def register():
     delete_input.register()
     delete_output.register()
     delete_workflow.register()
+    get_camera_resolution.register()
     import_3d_model.register()
     import_image.register()
     import_workflow.register()
@@ -76,6 +79,7 @@ def register():
     render_view.register()
     run_workflow.register()
     select_folder.register()
+    set_camera_resolution.register()
     switch_output_layout.register()
 
     # Panels
@@ -93,6 +97,7 @@ def unregister():
     delete_input.unregister()
     delete_output.unregister()
     delete_workflow.unregister()
+    get_camera_resolution.unregister()
     import_3d_model.unregister()
     import_image.unregister()
     import_workflow.unregister()
@@ -105,6 +110,7 @@ def unregister():
     render_view.unregister()
     run_workflow.unregister()
     select_folder.unregister()
+    set_camera_resolution.unregister()
     switch_output_layout.unregister()
 
     # Panels

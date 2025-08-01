@@ -47,7 +47,34 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 property_name = f"node_{key}"
 
                 # Custom handling for 3D model inputs
-                if node["class_type"] == "BlenderInputLoad3D":
+                if node["class_type"] == "BlenderInputInt":
+                    row = box.row(align=True)
+                    row.prop(current_workflow, property_name)
+
+                    # Set / get camera width
+                    if node["inputs"].get("camera_width", False):
+                        set_width = row.operator("comfy.set_camera_resolution", text="", icon="CAMERA_DATA")
+                        set_width.value = current_workflow.get(property_name, node["inputs"].get("default", 0))
+                        set_width.axis = "X"
+
+                        get_width = row.operator("comfy.get_camera_resolution", text="", icon="IMAGE_DATA")
+                        get_width.property_name = property_name
+                        get_width.axis = "X"
+
+                    # Set / get camera height
+                    if node["inputs"].get("camera_height", False):
+                        row = box.row(align=True)
+                        row.prop(current_workflow, property_name)
+                        set_height = row.operator("comfy.set_camera_resolution", text="", icon="CAMERA_DATA")
+                        set_height.value = current_workflow.get(property_name, node["inputs"].get("default", 0))
+                        set_height.axis = "Y"
+
+                        get_width = row.operator("comfy.get_camera_resolution", text="", icon="IMAGE_DATA")
+                        get_width.property_name = property_name
+                        get_width.axis = "Y"
+
+                # Custom handling for 3D model inputs
+                elif node["class_type"] == "BlenderInputLoad3D":
                     # Get the input name from the workflow properties
                     name = current_workflow.bl_rna.properties[property_name].name  # Node title
                     row = box.row(align=True)

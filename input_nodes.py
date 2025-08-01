@@ -76,9 +76,11 @@ class BlenderInputInt(Int):
         INPUT_TYPES["required"]["min"] = (IO.INT, {"default": MIN_INT, "min": MIN_INT, "max": MAX_INT, "step": 1})
         INPUT_TYPES["required"]["max"] = (IO.INT, {"default": MAX_INT, "min": MIN_INT, "max": MAX_INT, "step": 1})
         INPUT_TYPES["required"]["step"] = (IO.INT, {"default": 1, "min": 1, "max": MAX_INT, "step": 1})
+        INPUT_TYPES["required"]["camera_width"] = (IO.BOOLEAN, {"default": False, "tooltip": "Display a button to set/get the camera width."})
+        INPUT_TYPES["required"]["camera_height"] = (IO.BOOLEAN, {"default": False, "tooltip": "Display a button to set/get the camera height."})
         return INPUT_TYPES
 
-    def execute(self, value: int, order: int, default: int, min: int, max: int, step: int) -> tuple[int]:
+    def execute(self, value: int, order: int, default: int, min: int, max: int, step: int, camera_width: bool, camera_height: bool) -> tuple[int]:
         return (value,)
 
 class BlenderInputLoad3D():
