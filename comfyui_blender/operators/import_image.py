@@ -65,6 +65,14 @@ class ComfyBlenderOperatorImportImage(bpy.types.Operator):
     def invoke(self, context, event):
         """Invoke the file selector for importing a workflow."""
 
+        addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+        outputs_folder = addon_prefs.outputs_folder
+        
+        # Set the filepath to the folder and add a trailing slash/backslash
+        if not outputs_folder.endswith(os.sep):
+            outputs_folder += os.sep
+        self.filepath = outputs_folder
+
         context.window_manager.fileselect_add(self)
         return {'RUNNING_MODAL'}
 
