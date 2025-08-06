@@ -119,26 +119,9 @@ def listen():
                     key = data["node"]
                     outputs = ast.literal_eval(queue[data["prompt_id"]].outputs)
 
-                    # Check class type to retrieve image outputs
-                    if key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
-                        for output in data["output"]["images"]:
-                            download_file(output["filename"], output["subfolder"])
-
-                            # Add image to outputs collection
-                            image = addon_prefs.outputs_collection.add()
-                            image.name = os.path.join(output["subfolder"], output["filename"])
-                            image.filename = output["filename"]
-                            image.type = "image"
-
-                            # Force redraw of the UI
-                            for screen in bpy.data.screens:  # Iterate through all screens
-                                for area in screen.areas:  # Access areas in each screen
-                                    if area.type == "VIEW_3D":  # Area of the add-on panel
-                                        area.tag_redraw()
-
                     # Check class type to retrieve 3D outputs
-                    elif key in outputs and outputs[key]["class_type"] == "BlenderOutputDownload3D":
-                        for output in data["output"]["result"]:
+                    if key in outputs and outputs[key]["class_type"] == "BlenderOutputDownload3D":
+                        for output in data["output"]["3d"]:
                             subfolder, filename = output.rsplit("/", 1)  # Split the path at the last slash to get subfolder and filename
                             download_file(filename, subfolder)
 
@@ -147,6 +130,40 @@ def listen():
                             model.name = os.path.join(subfolder, filename)
                             model.filename = filename
                             model.type = "3d"
+
+                            # Force redraw of the UI
+                            for screen in bpy.data.screens:  # Iterate through all screens
+                                for area in screen.areas:  # Access areas in each screen
+                                    if area.type == "VIEW_3D":  # Area of the add-on panel
+                                        area.tag_redraw()
+
+                    # Check class type to retrieve 3D outputs
+                    elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveGlb":
+                        for output in data["output"]["3d"]:
+                            download_file(output["filename"], output["subfolder"])
+
+                            # Add 3D model to outputs collection
+                            model = addon_prefs.outputs_collection.add()
+                            model.name = os.path.join(output["subfolder"], output["filename"])
+                            model.filename = output["filename"]
+                            model.type = "3d"
+
+                            # Force redraw of the UI
+                            for screen in bpy.data.screens:  # Iterate through all screens
+                                for area in screen.areas:  # Access areas in each screen
+                                    if area.type == "VIEW_3D":  # Area of the add-on panel
+                                        area.tag_redraw()
+
+                    # Check class type to retrieve image outputs
+                    elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
+                        for output in data["output"]["images"]:
+                            download_file(output["filename"], output["subfolder"])
+
+                            # Add image to outputs collection
+                            image = addon_prefs.outputs_collection.add()
+                            image.name = os.path.join(output["subfolder"], output["filename"])
+                            image.filename = output["filename"]
+                            image.type = "image"
 
                             # Force redraw of the UI
                             for screen in bpy.data.screens:  # Iterate through all screens

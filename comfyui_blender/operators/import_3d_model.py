@@ -24,14 +24,17 @@ class ComfyBlenderOperatorImport3DModel(bpy.types.Operator):
  
         if ext == ".obj":
             bpy.ops.wm.obj_import(filepath=self.filepath)
-        elif ext == ".ply":
-            bpy.ops.wm.ply_import(filepath=self.filepath)
-        elif ext == ".stl":
-            bpy.ops.wm.stl_import(filepath=self.filepath)
-        elif ext == ".fbx":
-            bpy.ops.import_scene.fbx(filepath=self.filepath)
-        elif ext in ".dae":
-            bpy.ops.wm.collada_import(filepath=self.filepath)
+        elif ext in [".glb", ".gltf"]:
+            bpy.ops.import_scene.gltf(filepath=self.filepath)
+        # Not tested yet
+        # elif ext == ".ply":
+        #     bpy.ops.wm.ply_import(filepath=self.filepath)
+        # elif ext == ".stl":
+        #     bpy.ops.wm.stl_import(filepath=self.filepath)
+        # elif ext == ".fbx":
+        #     bpy.ops.import_scene.fbx(filepath=self.filepath)
+        # elif ext in ".dae":
+        #     bpy.ops.wm.collada_import(filepath=self.filepath)
         else:
             error_message = f"Unsupported file format: {ext}"
             show_error_popup(error_message)

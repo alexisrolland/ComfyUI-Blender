@@ -69,7 +69,7 @@ class ComfyBlenderOperatorDeleteInputOk(bpy.types.Operator):
         """Execute the operator."""
 
         # Remove input file path from workflow
-        context.scene.current_workflow[self.workflow_property] = None
+        context.scene.current_workflow[self.workflow_property] = ""
         self.report({'INFO'}, f"Removed input from workflow: {self.workflow_property}")
 
         if self.type == "image":
