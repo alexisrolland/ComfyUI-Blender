@@ -63,8 +63,6 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
                     # Set / get camera height
                     if node["inputs"].get("camera_height", False):
-                        row = box.row(align=True)
-                        row.prop(current_workflow, property_name)
                         set_height = row.operator("comfy.set_camera_resolution", text="", icon="CAMERA_DATA")
                         set_height.value = current_workflow.get(property_name, node["inputs"].get("default", 0))
                         set_height.axis = "Y"
