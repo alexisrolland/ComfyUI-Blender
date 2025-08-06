@@ -48,11 +48,14 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
                 # Custom handling for 3D model inputs
                 if node["class_type"] == "BlenderInputInt":
+                    print(property_name)
                     row = box.row(align=True)
                     row.prop(current_workflow, property_name)
 
                     # Set / get camera width
                     if node["inputs"].get("camera_width", False):
+                        print("canera_width")
+                        print(node["inputs"].get("camera_width"))
                         set_width = row.operator("comfy.set_camera_resolution", text="", icon="CAMERA_DATA")
                         set_width.value = current_workflow.get(property_name, node["inputs"].get("default", 0))
                         set_width.axis = "X"
@@ -63,8 +66,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
                     # Set / get camera height
                     if node["inputs"].get("camera_height", False):
-                        row = box.row(align=True)
-                        row.prop(current_workflow, property_name)
+                        print("camera_height")
+                        print(node["inputs"].get("camera_height"))
                         set_height = row.operator("comfy.set_camera_resolution", text="", icon="CAMERA_DATA")
                         set_height.value = current_workflow.get(property_name, node["inputs"].get("default", 0))
                         set_height.axis = "Y"
@@ -169,6 +172,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
                 # Custom handling for seed inputs
                 elif node["class_type"] == "BlenderInputSeed":
+                    print(property_name)
+                    print("seed")
                     row = box.row(align=True)
                     row.prop(current_workflow, property_name) # Random seed management to be implemented
                     if addon_prefs.lock_seed:
@@ -177,6 +182,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                         row.prop(addon_prefs, "lock_seed", text="", icon="UNLOCKED")
 
                 else:
+                    print(property_name)
                     # Default display for other input types
                     box.prop(current_workflow, property_name)
 
