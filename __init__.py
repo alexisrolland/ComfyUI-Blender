@@ -11,6 +11,7 @@ from .input_nodes import (
 )
 from .output_nodes import (
     BlenderOutputDownload3D,
+    BlenderOutputSaveGlb,
     BlenderOutputSaveImage
 )
 
@@ -27,6 +28,7 @@ NODE_CLASS_MAPPINGS = {
     "BlenderInputString": BlenderInputString,
     "BlenderInputStringMultiline": BlenderInputStringMultiline,
     "BlenderOutputDownload3D": BlenderOutputDownload3D,
+    "BlenderOutputSaveGlb": BlenderOutputSaveGlb,
     "BlenderOutputSaveImage": BlenderOutputSaveImage
 }
 
@@ -42,5 +44,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "BlenderInputString": "Blender Input String",
     "BlenderInputStringMultiline": "Blender Input String Multiline",
     "BlenderOutputDownload3D": "Blender Output Download 3D",
+    "BlenderOutputSaveGlb": "Blender Output Save GLB",
     "BlenderOutputSaveImage": "Blender Output Save Image"
 }

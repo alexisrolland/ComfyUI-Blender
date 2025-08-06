@@ -1,4 +1,5 @@
 from comfy.comfy_types.node_typing import IO
+from comfy_extras.nodes_hunyuan3d import SaveGLB
 from nodes import SaveImage
 
 
@@ -18,8 +19,12 @@ class BlenderOutputDownload3D():
     def execute(self, model_file: str) -> dict:
         websocket_message = {}
         websocket_message["ui"] = {}
-        websocket_message["ui"]["result"] = [model_file]
+        websocket_message["ui"]["3d"] = [model_file]
         return websocket_message
+
+class BlenderOutputSaveGlb(SaveGLB):
+    """Node used by ComfyUI Blender add-on to GLB file output from a workflow."""
+    CATEGORY = "blender/outputs"
 
 class BlenderOutputSaveImage(SaveImage):
     """Node used by ComfyUI Blender add-on to capture an image output from a workflow."""
