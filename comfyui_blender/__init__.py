@@ -5,7 +5,7 @@ import sys
 def install_dependencies():
     """Install required Python dependencies."""
 
-    required_packages = ["websocket-client"]
+    required_packages = ["websocket-client==1.8.0"]
     for package in required_packages:
         try:
             __import__(package)
