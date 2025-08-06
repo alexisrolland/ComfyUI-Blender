@@ -127,22 +127,24 @@ class BlenderInputLoadImage(LoadImage):
     def IS_CHANGED(s, image, order):
         return super().IS_CHANGED(image)
 
-class BlenderInputSeed(BlenderInputInt):
-    """
-    Node used by ComfyUI Blender add-on to input a seed value in a workflow.
-    This node reuses the most parameters from the BlenderInputInt node, but the display is different in Blender.
-    """
+class BlenderInputSeed(Int):
+    """Node used by ComfyUI Blender add-on to input a seed value in a workflow."""
     CATEGORY = "blender/inputs"
+    FUNCTION = "execute"
 
     @classmethod
     def INPUT_TYPES(s):
         INPUT_TYPES = super().INPUT_TYPES()
+        INPUT_TYPES["required"]["value"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
+        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
+        INPUT_TYPES["required"]["default"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "step": 1})
         INPUT_TYPES["required"]["min"] = (IO.INT, {"default": 0, "min": 0, "max": MAX_INT, "step": 1})
-
-        # Remove the camera width and height options as they are not relevant for seed input
-        del INPUT_TYPES["required"]["camera_width"]
-        del INPUT_TYPES["required"]["camera_height"]
+        INPUT_TYPES["required"]["max"] = (IO.INT, {"default": MAX_INT, "min": MIN_INT, "max": MAX_INT, "step": 1})
+        INPUT_TYPES["required"]["step"] = (IO.INT, {"default": 1, "min": 1, "max": MAX_INT, "step": 1})
         return INPUT_TYPES
+
+    def execute(self, value: int, order: int, default: int, min: int, max: int, step: int) -> tuple[int]:
+        return (value,)
 
 class BlenderInputString(String):
     """Node used by ComfyUI Blender add-on to input a string in a workflow."""
