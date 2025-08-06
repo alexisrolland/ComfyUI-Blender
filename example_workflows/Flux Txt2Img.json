@@ -80,7 +80,7 @@
         88
       ],
       "flags": {},
-      "order": 10,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -242,7 +242,7 @@
         106
       ],
       "flags": {},
-      "order": 9,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
@@ -390,88 +390,6 @@
       ]
     },
     {
-      "id": 2,
-      "type": "BlenderInputInt",
-      "pos": [
-        1000,
-        1140
-      ],
-      "size": [
-        210,
-        178
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "INT",
-          "type": "INT",
-          "links": [
-            4
-          ]
-        }
-      ],
-      "title": "Width",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
-        "Node name for S&R": "BlenderInputInt"
-      },
-      "widgets_values": [
-        1024,
-        4,
-        1024,
-        768,
-        1344,
-        8
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 3,
-      "type": "BlenderInputInt",
-      "pos": [
-        1000,
-        1390
-      ],
-      "size": [
-        210,
-        178
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "INT",
-          "type": "INT",
-          "links": [
-            5
-          ]
-        }
-      ],
-      "title": "Height",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
-        "Node name for S&R": "BlenderInputInt"
-      },
-      "widgets_values": [
-        1024,
-        5,
-        1024,
-        768,
-        1344,
-        8
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 14,
       "type": "UNETLoader",
       "pos": [
@@ -483,7 +401,7 @@
         82
       ],
       "flags": {},
-      "order": 11,
+      "order": 10,
       "mode": 0,
       "inputs": [
         {
@@ -526,7 +444,7 @@
         380
       ],
       "flags": {},
-      "order": 6,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -672,7 +590,7 @@
         184
       ],
       "flags": {},
-      "order": 7,
+      "order": 5,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -696,6 +614,92 @@
         "",
         "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
         "black-forest-labs/flux1-dev.safetensors\nvisitor01/rayflux-photoplus.safetensors\nvisitor01/rayflux-v1.0.safetensors"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 2,
+      "type": "BlenderInputInt",
+      "pos": [
+        1000,
+        1140
+      ],
+      "size": [
+        210,
+        226
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "title": "Width",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputInt"
+      },
+      "widgets_values": [
+        1024,
+        4,
+        1024,
+        768,
+        1344,
+        8,
+        true,
+        false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 3,
+      "type": "BlenderInputInt",
+      "pos": [
+        1000,
+        1440
+      ],
+      "size": [
+        210,
+        226
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "title": "Height",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputInt"
+      },
+      "widgets_values": [
+        1024,
+        5,
+        1024,
+        768,
+        1344,
+        8,
+        false,
+        true
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -841,7 +845,7 @@
         -350.4204816894532
       ]
     },
-    "frontendVersion": "1.21.7",
+    "frontendVersion": "1.23.4",
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,

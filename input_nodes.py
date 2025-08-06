@@ -138,6 +138,10 @@ class BlenderInputSeed(BlenderInputInt):
     def INPUT_TYPES(s):
         INPUT_TYPES = super().INPUT_TYPES()
         INPUT_TYPES["required"]["min"] = (IO.INT, {"default": 0, "min": 0, "max": MAX_INT, "step": 1})
+
+        # Remove the camera width and height options as they are not relevant for seed input
+        del INPUT_TYPES["required"]["camera_width"]
+        del INPUT_TYPES["required"]["camera_height"]
         return INPUT_TYPES
 
 class BlenderInputString(String):

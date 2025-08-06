@@ -111,8 +111,7 @@
         8,
         "dpmpp_2m",
         "karras",
-        1,
-        null
+        1
       ]
     },
     {
@@ -124,7 +123,7 @@
       ],
       "size": [
         210,
-        198
+        270
       ],
       "flags": {},
       "order": 12,
@@ -144,8 +143,7 @@
         "Node name for S&R": "BlenderOutputSaveImage"
       },
       "widgets_values": [
-        "blender",
-        null
+        "blender"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -162,7 +160,7 @@
         106
       ],
       "flags": {},
-      "order": 6,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -199,8 +197,7 @@
       "widgets_values": [
         512,
         512,
-        1,
-        null
+        1
       ]
     },
     {
@@ -239,8 +236,7 @@
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        "",
-        null
+        ""
       ]
     },
     {
@@ -287,9 +283,71 @@
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        "",
-        null
+        ""
       ]
+    },
+    {
+      "id": 4,
+      "type": "MarkdownNote",
+      "pos": [
+        450,
+        500
+      ],
+      "size": [
+        340,
+        230
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 5,
+      "type": "BlenderInputCombo",
+      "pos": [
+        450,
+        810
+      ],
+      "size": [
+        340,
+        184
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "*",
+          "type": "*",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "title": "Model",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "fe00f67deb08799bc6a8bad23c863249c11b241d",
+        "Node name for S&R": "BlenderInputCombo"
+      },
+      "widgets_values": [
+        "visitor01/raymnants-v3.0.safetensors",
+        2,
+        "",
+        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
+        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
     },
     {
       "id": 9,
@@ -303,7 +361,7 @@
         98
       ],
       "flags": {},
-      "order": 7,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -345,9 +403,47 @@
         "Node name for S&R": "CheckpointLoaderSimple"
       },
       "widgets_values": [
-        "albedobond\\albedobase-xl-v2.1.safetensors",
-        null
+        "albedobond\\albedobase-xl-v2.1.safetensors"
       ]
+    },
+    {
+      "id": 1,
+      "type": "BlenderInputStringMultiline",
+      "pos": [
+        830,
+        380
+      ],
+      "size": [
+        340,
+        278
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "title": "Prompt",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputStringMultiline"
+      },
+      "widgets_values": [
+        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
+        3,
+        "",
+        false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
     },
     {
       "id": 2,
@@ -358,10 +454,10 @@
       ],
       "size": [
         270,
-        178
+        226
       ],
       "flags": {},
-      "order": 0,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -386,7 +482,8 @@
         768,
         1344,
         8,
-        null
+        true,
+        false
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -396,14 +493,14 @@
       "type": "BlenderInputInt",
       "pos": [
         900,
-        1230
+        1270
       ],
       "size": [
         270,
-        178
+        226
       ],
       "flags": {},
-      "order": 1,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -428,111 +525,8 @@
         768,
         1344,
         8,
-        null
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 5,
-      "type": "BlenderInputCombo",
-      "pos": [
-        450,
-        810
-      ],
-      "size": [
-        340,
-        184
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "*",
-          "type": "*",
-          "links": [
-            6
-          ]
-        }
-      ],
-      "title": "Model",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "fe00f67deb08799bc6a8bad23c863249c11b241d",
-        "Node name for S&R": "BlenderInputCombo"
-      },
-      "widgets_values": [
-        "visitor01/raymnants-v3.0.safetensors",
-        2,
-        "",
-        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
-        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
-        null
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 4,
-      "type": "MarkdownNote",
-      "pos": [
-        450,
-        500
-      ],
-      "size": [
-        340,
-        230
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 1,
-      "type": "BlenderInputStringMultiline",
-      "pos": [
-        830,
-        380
-      ],
-      "size": [
-        340,
-        278
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            2
-          ]
-        }
-      ],
-      "title": "Prompt",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
-        "Node name for S&R": "BlenderInputStringMultiline"
-      },
-      "widgets_values": [
-        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
-        3,
-        "",
-        false,
-        null
+        null,
+        true
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -573,8 +567,7 @@
         0,
         0,
         2147483647,
-        1,
-        null
+        1
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -700,8 +693,8 @@
     "ds": {
       "scale": 0.8264462809917354,
       "offset": [
-        -201.58156738281272,
-        -259.3074816894533
+        -188.27156738281278,
+        -296.81748168945313
       ]
     },
     "frontendVersion": "1.23.4",
