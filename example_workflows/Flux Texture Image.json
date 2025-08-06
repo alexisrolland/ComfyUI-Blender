@@ -242,7 +242,7 @@
         106
       ],
       "flags": {},
-      "order": 10,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -436,7 +436,7 @@
         58
       ],
       "flags": {},
-      "order": 15,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {
@@ -464,46 +464,6 @@
       ]
     },
     {
-      "id": 5,
-      "type": "BlenderInputCombo",
-      "pos": [
-        640,
-        540
-      ],
-      "size": [
-        340,
-        184
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "*",
-          "type": "*",
-          "links": [
-            15
-          ]
-        }
-      ],
-      "title": "Model",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "fe00f67deb08799bc6a8bad23c863249c11b241d",
-        "Node name for S&R": "BlenderInputCombo"
-      },
-      "widgets_values": [
-        "visitor01/rayflux-v1.0.safetensors",
-        2,
-        "",
-        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
-        "black-forest-labs/flux1-dev.safetensors\nvisitor01/rayflux-photoplus.safetensors\nvisitor01/rayflux-v1.0.safetensors"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 2,
       "type": "BlenderInputInt",
       "pos": [
@@ -515,7 +475,7 @@
         226
       ],
       "flags": {},
-      "order": 4,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -558,7 +518,7 @@
         226
       ],
       "flags": {},
-      "order": 5,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -590,10 +550,10 @@
       "bgcolor": "#653"
     },
     {
-      "id": 14,
-      "type": "UNETLoader",
+      "id": 19,
+      "type": "SeamlessTile",
       "pos": [
-        1020,
+        1250,
         650
       ],
       "size": [
@@ -601,16 +561,13 @@
         82
       ],
       "flags": {},
-      "order": 9,
+      "order": 15,
       "mode": 0,
       "inputs": [
         {
-          "name": "unet_name",
-          "type": "COMBO",
-          "widget": {
-            "name": "unet_name"
-          },
-          "link": 15
+          "name": "model",
+          "type": "MODEL",
+          "link": 24
         }
       ],
       "outputs": [
@@ -618,18 +575,91 @@
           "name": "MODEL",
           "type": "MODEL",
           "links": [
-            24
+            25
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-seamless-tiling",
+        "ver": "1.0.0",
+        "Node name for S&R": "SeamlessTile"
+      },
+      "widgets_values": [
+        "enable",
+        "Make a copy"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "VAELoader",
+      "pos": [
+        1250,
+        1500
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            26
           ]
         }
       ],
       "properties": {
         "cnr_id": "comfy-core",
         "ver": "0.3.41",
-        "Node name for S&R": "UNETLoader"
+        "Node name for S&R": "VAELoader"
       },
       "widgets_values": [
-        "black-forest-labs\\flux1-dev.safetensors",
-        "default"
+        "ae.safetensors"
+      ]
+    },
+    {
+      "id": 20,
+      "type": "MakeCircularVAE",
+      "pos": [
+        1500,
+        1150
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 26
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            27
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-seamless-tiling",
+        "ver": "1.0.0",
+        "Node name for S&R": "MakeCircularVAE"
+      },
+      "widgets_values": [
+        "enable",
+        "Make a copy"
       ]
     },
     {
@@ -672,10 +702,10 @@
       "bgcolor": "#653"
     },
     {
-      "id": 19,
-      "type": "SeamlessTile",
+      "id": 14,
+      "type": "UNETLoader",
       "pos": [
-        1250,
+        1000,
         650
       ],
       "size": [
@@ -683,13 +713,16 @@
         82
       ],
       "flags": {},
-      "order": 14,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
-          "name": "model",
-          "type": "MODEL",
-          "link": 24
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": 15
         }
       ],
       "outputs": [
@@ -697,30 +730,30 @@
           "name": "MODEL",
           "type": "MODEL",
           "links": [
-            25
+            24
           ]
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-seamless-tiling",
-        "ver": "1.0.0",
-        "Node name for S&R": "SeamlessTile"
+        "cnr_id": "comfy-core",
+        "ver": "0.3.41",
+        "Node name for S&R": "UNETLoader"
       },
       "widgets_values": [
-        "enable",
-        "Make a copy"
+        "black-forest-labs\\flux1-dev.safetensors",
+        "default"
       ]
     },
     {
-      "id": 16,
-      "type": "VAELoader",
+      "id": 5,
+      "type": "BlenderInputCombo",
       "pos": [
-        1250,
-        1500
+        600,
+        540
       ],
       "size": [
-        210,
-        58
+        340,
+        184
       ],
       "flags": {},
       "order": 7,
@@ -728,61 +761,28 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "VAE",
-          "type": "VAE",
+          "name": "*",
+          "type": "*",
           "links": [
-            26
+            15
           ]
         }
       ],
+      "title": "Model",
       "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.41",
-        "Node name for S&R": "VAELoader"
+        "cnr_id": "comfyui-blender",
+        "ver": "fe00f67deb08799bc6a8bad23c863249c11b241d",
+        "Node name for S&R": "BlenderInputCombo"
       },
       "widgets_values": [
-        "ae.safetensors"
-      ]
-    },
-    {
-      "id": 20,
-      "type": "MakeCircularVAE",
-      "pos": [
-        1500,
-        1150
+        "visitor01/rayflux-v1.0.safetensors",
+        2,
+        "",
+        "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
+        "black-forest-labs/flux1-dev.safetensors\nvisitor01/rayflux-photoplus.safetensors\nvisitor01/rayflux-v1.0.safetensors"
       ],
-      "size": [
-        270,
-        82
-      ],
-      "flags": {},
-      "order": 12,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 26
-        }
-      ],
-      "outputs": [
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [
-            27
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfyui-seamless-tiling",
-        "ver": "1.0.0",
-        "Node name for S&R": "MakeCircularVAE"
-      },
-      "widgets_values": [
-        "enable",
-        "Make a copy"
-      ]
+      "color": "#432",
+      "bgcolor": "#653"
     }
   ],
   "links": [
