@@ -1,3 +1,5 @@
+import os
+
 from comfy.comfy_types.node_typing import IO
 from comfy_extras.nodes_hunyuan3d import SaveGLB
 from nodes import SaveImage
@@ -17,9 +19,15 @@ class BlenderOutputDownload3D():
         return INPUT_TYPES
 
     def execute(self, model_file: str) -> dict:
+
+        # Get results
+        subfolder, filename = os.path.split(model_file)
+        result = {"filename": filename, "subfolder": subfolder, "type": "output"}
+
+        # Push results
         websocket_message = {}
         websocket_message["ui"] = {}
-        websocket_message["ui"]["3d"] = [model_file]
+        websocket_message["ui"]["3d"] = [result]
         return websocket_message
 
 class BlenderOutputSaveGlb(SaveGLB):

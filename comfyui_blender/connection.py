@@ -122,13 +122,12 @@ def listen():
                     # Check class type to retrieve 3D outputs
                     if key in outputs and outputs[key]["class_type"] == "BlenderOutputDownload3D":
                         for output in data["output"]["3d"]:
-                            subfolder, filename = output.rsplit("/", 1)  # Split the path at the last slash to get subfolder and filename
-                            download_file(filename, subfolder)
+                            download_file(output["filename"], output["subfolder"])
 
                             # Add 3D model to outputs collection
                             model = addon_prefs.outputs_collection.add()
-                            model.name = os.path.join(subfolder, filename)
-                            model.filename = filename
+                            model.name = os.path.join(output["subfolder"], output["filename"])
+                            model.filename = output["filename"]
                             model.type = "3d"
 
                             # Force redraw of the UI
