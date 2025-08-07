@@ -11,16 +11,37 @@ from bpy.props import (
 )
 
 from .connection import disconnect
+from .utils import show_error_popup
 from .workflow import get_workflow_list, register_workflow_class
 
 
 def update_progress(self, context):
-    """Update callback to force UI redraw when progress changes."""
+    """Callback to force UI redraw when progress changes."""
 
     if context.screen:
         for area in context.screen.areas:
             if area.type == "VIEW_3D":
                 area.tag_redraw()
+
+def update_project_folders(self, context):
+    """Callback to update workflows, inputs and outputs folders according to the project base folder."""
+
+    addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+
+    # Set workflows folder
+    workflows_folder = os.path.join(self.base_folder, "workflows")
+    os.makedirs(workflows_folder, exist_ok=True)
+    addon_prefs.workflows_folder = workflows_folder
+
+    # Set inputs folder
+    inputs_folder = os.path.join(self.base_folder, "inputs")
+    os.makedirs(inputs_folder, exist_ok=True)
+    addon_prefs.inputs_folder = inputs_folder
+
+    # Set outputs folder
+    outputs_folder = os.path.join(self.base_folder, "outputs")
+    os.makedirs(outputs_folder, exist_ok=True)
+    addon_prefs.outputs_folder = outputs_folder
 
 def update_server_address(self, context):
     """Reset connection and cleanse the server address."""
@@ -31,6 +52,28 @@ def update_server_address(self, context):
     # Ensure the server address ends without a slash.
     while self.server_address.endswith("/"):
         self.server_address = self.server_address.rstrip("/")
+
+def update_use_blend_file_location(self, context):
+    """Update project base folders according to the location of the .blend file."""
+
+    addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+
+    # Set project folder to the current .blend file location
+    if self.use_blend_file_location:
+        blend_file_path = bpy.data.filepath
+        if blend_file_path:
+            blend_file_folder_path = os.path.dirname(blend_file_path)
+            addon_prefs.base_folder = os.path.join(blend_file_folder_path, "project")
+        else:
+            self.use_blend_file_location = False
+            show_error_popup("Save your .blend file before using this option.")
+            return
+    else:
+        # Reset to base project folder
+        addon_prefs.base_folder = addon_prefs.default_base_folder
+
+    # Update workflows, inputs and outputs folders
+    update_project_folders(self, context)
 
 class PromptPropertyGroup(bpy.types.PropertyGroup):
     """Property group for the queue collection."""
@@ -105,8 +148,26 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
     addon_name = __package__
     base_path = f"C:\\Users\\{os.getlogin()}\\AppData\\Roaming\\Blender Foundation\\Blender\\{major}.{minor}\\scripts\\addons\\{addon_name}"
 
+    # Project base folder
+    default_base_folder = os.path.join(base_path, "project")
+    os.makedirs(default_base_folder, exist_ok=True)
+    base_folder: StringProperty(
+        name="Base Folder",
+        description="Base project folder where workflows, inputs and outputs are stored",
+        default=default_base_folder,
+        update=update_project_folders
+    )
+
+    # Use .blend file location
+    use_blend_file_location: BoolProperty(
+        name="Use .blend File Location",
+        description="Save workflows, inputs and outputs in the same folder as the current .blend file",
+        default=False,
+        update=update_use_blend_file_location
+    )
+
     # Workflows folder
-    default_workflows_folder = os.path.join(base_path, "workflows")
+    default_workflows_folder = os.path.join(default_base_folder, "workflows")
     os.makedirs(default_workflows_folder, exist_ok=True)
     workflows_folder: StringProperty(
         name="Workflows Folder",
@@ -115,7 +176,7 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
     )
 
     # Inputs folder path
-    default_inputs_folder = os.path.join(base_path, "inputs")
+    default_inputs_folder = os.path.join(default_base_folder, "inputs")
     os.makedirs(default_inputs_folder, exist_ok=True)
     inputs_folder: StringProperty(
         name="Inputs Folder",
@@ -124,7 +185,7 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
     )
 
     # Outputs folder path
-    default_outputs_folder = os.path.join(base_path, "outputs")
+    default_outputs_folder = os.path.join(default_base_folder, "outputs")
     os.makedirs(default_outputs_folder, exist_ok=True)
     outputs_folder: StringProperty(
         name="Outputs Folder",
@@ -172,6 +233,7 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
         type=OutputPropertyGroup
     )
 
+    # Outputs layout
     outputs_layout: EnumProperty(
         name="Outputs Layout",
         description="Layout type for the outputs",
@@ -185,29 +247,43 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
         layout = self.layout
 
         # Client Id and server address
+        layout.label(text="Server:")
         col = layout.column()
-        col.label(text="Server:")
         col.prop(self, "client_id", emboss=False)
         col.prop(self, "server_address")
 
-        # Workflows folder
+        # Use .blend file location
+        layout.label(text="Project Folders:")
+        col = layout.column(align=True)
+        col.prop(self, "use_blend_file_location", text="Use .blend File Location")
+
+        # Base project folder
+        row = col.row(align=True)
+        row.prop(self, "base_folder", text="Base Folder")
+        select_base_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
+        select_base_folder.target_property = "base_folder"
+
+        # Create box for subfolders
         col = layout.column()
-        col.label(text="Folders:")
-        row = col.split(factor=0.8)
-        row.prop(self, "workflows_folder", text="Workflows Folder")
-        select_workflows_folder = row.operator("comfy.select_folder", text="Select")
+        box = col.box()
+        col = box.column(align=True)
+
+        # Workflows folder
+        row = col.row(align=True)
+        row.prop(self, "workflows_folder", text="Workflows")
+        select_workflows_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
         select_workflows_folder.target_property = "workflows_folder"
 
         # Inputs folder
-        row = col.split(factor=0.8)
-        row.prop(self, "inputs_folder", text="Inputs Folder")
-        select_inputs_folder = row.operator("comfy.select_folder", text="Select")
+        row = col.row(align=True)
+        row.prop(self, "inputs_folder", text="Inputs")
+        select_inputs_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
         select_inputs_folder.target_property = "inputs_folder"
 
         # Outputs folder
-        row = col.split(factor=0.8)
-        row.prop(self, "outputs_folder", text="Outputs Folder")
-        select_outputs_folder = row.operator("comfy.select_folder", text="Select")
+        row = col.row(align=True)
+        row.prop(self, "outputs_folder", text="Outputs")
+        select_outputs_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
         select_outputs_folder.target_property = "outputs_folder"
 
 

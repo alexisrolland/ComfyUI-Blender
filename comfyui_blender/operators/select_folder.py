@@ -17,7 +17,10 @@ class ComfyBlenderOperatorSelectFolder(bpy.types.Operator):
         """Execute the operator."""
 
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        if self.target_property == "workflows_folder":
+        if self.target_property == "base_folder":
+            addon_prefs.base_folder = self.directory
+
+        elif self.target_property == "workflows_folder":
             addon_prefs.workflows_folder = self.directory
 
         elif self.target_property == "inputs_folder":
