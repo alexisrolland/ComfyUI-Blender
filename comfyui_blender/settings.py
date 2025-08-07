@@ -82,6 +82,18 @@ class PromptPropertyGroup(bpy.types.PropertyGroup):
         name="Outputs",
         description="Output nodes of the workflow"
     )
+    status: EnumProperty(
+        name="Status",
+        description="Status of the workflow in the queue",
+        default="pending",
+        items=[
+            ("pending", "Pending", ""),
+            ("execution_start", "Execution Start", ""),
+            ("execution_cached", "Execution Cached", ""),
+            ("executing", "Executing", ""),
+            ("executed", "Executed", "")
+        ]
+    )
 
 class OutputPropertyGroup(bpy.types.PropertyGroup):
     """Property group for outputs collection."""
@@ -99,7 +111,7 @@ class OutputPropertyGroup(bpy.types.PropertyGroup):
     type: EnumProperty(
         name="Type",
         description="Type of the output",
-        items=[("3d", "3d", "3D model output"), ("image", "Image", "Image output")]
+        items=[("3d", "3D", "3D model output"), ("image", "Image", "Image output")]
     )
 
 class ComfyBlenderSettings(bpy.types.AddonPreferences):

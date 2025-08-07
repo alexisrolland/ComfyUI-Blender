@@ -146,6 +146,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         prompt.name = prompt_id
         prompt.workflow = str(workflow)
         prompt.outputs = str(outputs)
+        prompt.status = "pending"
 
         # Start the WebSocket listener in a separate thread
         listener_thread = threading.Thread(target=connection.listen, args=(), daemon=True)

@@ -17,6 +17,7 @@ def install_dependencies():
 install_dependencies()
 
 from .operators import (
+    clear_queue,
     delete_input,
     delete_output,
     delete_workflow,
@@ -34,6 +35,7 @@ from .operators import (
     run_workflow,
     select_folder,
     set_camera_resolution,
+    stop_workflow,
     switch_output_layout
 )
 from .panels import (
@@ -63,6 +65,7 @@ def register():
     settings.register()
 
     # Operators
+    clear_queue.register()
     delete_input.register()
     delete_output.register()
     delete_workflow.register()
@@ -80,6 +83,7 @@ def register():
     run_workflow.register()
     select_folder.register()
     set_camera_resolution.register()
+    stop_workflow.register()
     switch_output_layout.register()
 
     # Panels
@@ -94,6 +98,7 @@ def unregister():
     settings.unregister()
 
     # Operators
+    clear_queue.unregister()
     delete_input.unregister()
     delete_output.unregister()
     delete_workflow.unregister()
@@ -111,6 +116,7 @@ def unregister():
     run_workflow.unregister()
     select_folder.unregister()
     set_camera_resolution.unregister()
+    stop_workflow.unregister()
     switch_output_layout.unregister()
 
     # Panels

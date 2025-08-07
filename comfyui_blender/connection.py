@@ -89,6 +89,7 @@ def listen():
                 data = message["data"]
                 if data["prompt_id"] in queue.keys():
                     addon_prefs.progress_value = 0.0
+                    queue[data["prompt_id"]].status = message["type"]
 
             # Update progress bar with cached nodes
             if message["type"] == "execution_cached":
@@ -98,6 +99,7 @@ def listen():
                     nb_nodes_total = len(workflow)
                     nb_nodes_cached = len(data["nodes"])
                     addon_prefs.progress_value = nb_nodes_cached / nb_nodes_total
+                    queue[data["prompt_id"]].status = message["type"]
 
             # Check if execution is complete
             if message["type"] == "executing":
@@ -110,11 +112,14 @@ def listen():
                     workflow = ast.literal_eval(queue[data["prompt_id"]].workflow)
                     nb_nodes_total = len(workflow)
                     addon_prefs.progress_value = addon_prefs.progress_value + (1 / nb_nodes_total)
+                    queue[data["prompt_id"]].status = message["type"]
 
             # Check if the message type is executed with outputs
             if message["type"] == "executed":
                 data = message["data"]
                 if data["prompt_id"] in queue.keys():
+                    queue[data["prompt_id"]].status = message["type"]
+
                     # Get outputs from the workflow
                     key = data["node"]
                     outputs = ast.literal_eval(queue[data["prompt_id"]].outputs)
@@ -185,6 +190,11 @@ def listen():
                         show_error_popup(error_message)
                         return None  # Stop the timer
                     bpy.app.timers.register(raise_error, first_interval=0.0)
+
+            # Reset progress and remove prompt from the queue when execution is interrupted
+            if message["type"] == "execution_interrupted":
+                    addon_prefs.progress_value = 0.0
+                    queue.remove(queue.find(data["prompt_id"]))
 
             # Remove prompt from the queue when execution completes
             if message["type"] == "execution_success":

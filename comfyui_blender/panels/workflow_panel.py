@@ -23,12 +23,13 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
         """Draw the panel."""
 
         # Buttons to open preferences
-        row = self.layout.row()
+        row = self.layout.row(align=True)
         row.alignment = "RIGHT"
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+        row.label(icon="INTERNET") if addon_prefs.connection_status else row.label(icon="INTERNET_OFFLINE")
         row.operator("preferences.addon_show", text="", icon="PREFERENCES").module = "comfyui_blender"
 
         # Get workflows information
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         workflows_folder = str(addon_prefs.workflows_folder)
         workflow_filename = str(addon_prefs.workflow)
         workflow_path = os.path.join(workflows_folder, workflow_filename)
@@ -47,13 +48,12 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
 
         # Queue status and progress bar
         row = self.layout.row(align=True)
-        split = row.split(factor=0.23)
+        split = row.split(factor=0.21)
         split.label(text=f"Queue: {len(addon_prefs.queue)}")
-        split.progress(factor=addon_prefs.progress_value, text=f"{int(addon_prefs.progress_value * 100)}%", type="BAR")
-        if addon_prefs.connection_status:
-            row.label(icon="INTERNET")
-        else:
-            row.label(icon="INTERNET_OFFLINE")
+        sub_row = split.row(align=True)
+        sub_row.progress(factor=addon_prefs.progress_value, text=f"{int(addon_prefs.progress_value * 100)}%", type="BAR")
+        sub_row.operator("comfy.stop_workflow", text="", icon="CANCEL")
+        sub_row.operator("comfy.clear_queue", text="", icon="SEQ_SEQUENCER")
 
 def register():
     """Register the panel."""
