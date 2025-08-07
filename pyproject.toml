@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-blender"
-description = "Blender plugin to send requests to a ComfyUI server."
+description = "Custom nodes and add-on to use ComfyUI from Blender."
 version = "v0.6.1"
 license = { text = "GPL-3.0 license" }
 dependencies = []
