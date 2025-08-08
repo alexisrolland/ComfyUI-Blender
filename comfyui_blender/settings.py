@@ -26,6 +26,9 @@ def callback_use_blend_file_location(self, context):
             self.use_blend_file_location = False
             show_error_popup("Save your .blend file before using this option.")
             return
+    else:
+        # Reset to the default base folder
+        self.base_folder = self.base_path
 
     # Update workflows, inputs and outputs folders
     update_project_folders(self, context)
@@ -149,7 +152,7 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
     blender_version = bpy.app.version
     major, minor, patch = blender_version
     addon_name = __package__
-    base_path = f"C:\\Users\\{os.getlogin()}\\AppData\\Roaming\\Blender Foundation\\Blender\\{major}.{minor}\\scripts\\addons\\{addon_name}"
+    base_path = f"C:\\Users\\{os.getlogin()}\\AppData\\Roaming\\Blender Foundation\\Blender\\data\\{addon_name}"
 
     # Project base folder
     base_folder: StringProperty(
