@@ -35,7 +35,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
         file_browser.folder_path = outputs_folder
 
         # Switch output layout to list
-        output_layout = row.operator("comfy.switch_output_layout", text="", icon="COLLAPSEMENU")
+        output_layout = row.operator("comfy.switch_output_layout", text="", icon="LONGDISPLAY")
         output_layout.layout_type = "list"
 
         # Switch output layout to thumbnail
