@@ -2,20 +2,6 @@
 import subprocess
 import sys
 
-def install_dependencies():
-    """Install required Python dependencies."""
-
-    required_packages = ["websocket-client==1.8.0"]
-    for package in required_packages:
-        try:
-            __import__(package)
-        except ImportError:
-            print(f"Installing missing package: {package}")
-            subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-# Install dependencies before importing modules to avoid errors
-install_dependencies()
-
 from .operators import (
     clear_queue,
     delete_input,

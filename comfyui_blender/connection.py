@@ -6,7 +6,7 @@ import time
 from urllib.parse import urljoin, urlencode
 
 import bpy
-import websocket
+from ._vendor import websocket
 
 from .utils import download_file, show_error_popup
 

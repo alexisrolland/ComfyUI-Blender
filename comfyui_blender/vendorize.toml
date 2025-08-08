@@ -1,0 +1,4 @@
+target = "_vendor"
+packages = [
+    "websocket-client~=1.8",
+]
