@@ -28,6 +28,109 @@
       "bgcolor": "#653"
     },
     {
+      "id": 2,
+      "type": "ImageOnlyCheckpointLoader",
+      "pos": [
+        -110,
+        190
+      ],
+      "size": [
+        369.6000061035156,
+        98
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            8
+          ]
+        },
+        {
+          "label": "CLIP_VISION",
+          "name": "CLIP_VISION",
+          "type": "CLIP_VISION",
+          "slot_index": 1,
+          "links": [
+            9
+          ]
+        },
+        {
+          "label": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "slot_index": 2,
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.43",
+        "Node name for S&R": "ImageOnlyCheckpointLoader",
+        "models": [
+          {
+            "name": "hunyuan3d-dit-v2_fp16.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/hunyuan3D_2.0_repackaged/resolve/main/split_files/hunyuan3d-dit-v2_fp16.safetensors",
+            "directory": "checkpoints"
+          }
+        ]
+      },
+      "widgets_values": [
+        "hunyuan3d-dit-v2.safetensors"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "BlenderInputLoadImage",
+      "pos": [
+        -430,
+        490
+      ],
+      "size": [
+        270,
+        338.0000305175781
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            19
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "Image",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
+        "Node name for S&R": "BlenderInputLoadImage"
+      },
+      "widgets_values": [
+        "example.png",
+        2,
+        "image"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
       "id": 4,
       "type": "ModelSamplingAuraFlow",
       "pos": [
@@ -199,148 +302,6 @@
       "widgets_values": []
     },
     {
-      "id": 9,
-      "type": "VAEDecodeHunyuan3D",
-      "pos": [
-        1180,
-        290
-      ],
-      "size": [
-        315,
-        102
-      ],
-      "flags": {},
-      "order": 14,
-      "mode": 0,
-      "inputs": [
-        {
-          "label": "samples",
-          "name": "samples",
-          "type": "LATENT",
-          "link": 6
-        },
-        {
-          "label": "vae",
-          "name": "vae",
-          "type": "VAE",
-          "link": 12
-        }
-      ],
-      "outputs": [
-        {
-          "label": "VOXEL",
-          "name": "VOXEL",
-          "type": "VOXEL",
-          "slot_index": 0,
-          "links": [
-            7
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.43",
-        "Node name for S&R": "VAEDecodeHunyuan3D"
-      },
-      "widgets_values": [
-        8000,
-        256
-      ]
-    },
-    {
-      "id": 11,
-      "type": "BlenderOutputSaveGlb",
-      "pos": [
-        1830,
-        290
-      ],
-      "size": [
-        270,
-        58
-      ],
-      "flags": {},
-      "order": 16,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "mesh",
-          "type": "MESH",
-          "link": 11
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
-        "Node name for S&R": "BlenderOutputSaveGlb"
-      },
-      "widgets_values": [
-        "3d/blender"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 2,
-      "type": "ImageOnlyCheckpointLoader",
-      "pos": [
-        -110,
-        190
-      ],
-      "size": [
-        369.6000061035156,
-        98
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "label": "MODEL",
-          "name": "MODEL",
-          "type": "MODEL",
-          "slot_index": 0,
-          "links": [
-            8
-          ]
-        },
-        {
-          "label": "CLIP_VISION",
-          "name": "CLIP_VISION",
-          "type": "CLIP_VISION",
-          "slot_index": 1,
-          "links": [
-            9
-          ]
-        },
-        {
-          "label": "VAE",
-          "name": "VAE",
-          "type": "VAE",
-          "slot_index": 2,
-          "links": [
-            12
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.43",
-        "Node name for S&R": "ImageOnlyCheckpointLoader",
-        "models": [
-          {
-            "name": "hunyuan3d-dit-v2_fp16.safetensors",
-            "url": "https://huggingface.co/Comfy-Org/hunyuan3D_2.0_repackaged/resolve/main/split_files/hunyuan3d-dit-v2_fp16.safetensors",
-            "directory": "checkpoints"
-          }
-        ]
-      },
-      "widgets_values": [
-        "hunyuan3d-dit-v2.safetensors"
-      ]
-    },
-    {
       "id": 8,
       "type": "KSampler",
       "pos": [
@@ -423,41 +384,139 @@
       ]
     },
     {
-      "id": 15,
-      "type": "BlenderInputSeed",
+      "id": 9,
+      "type": "VAEDecodeHunyuan3D",
       "pos": [
-        590,
-        420
+        1180,
+        290
       ],
       "size": [
-        210,
-        178
+        315,
+        102
       ],
       "flags": {},
-      "order": 3,
+      "order": 14,
       "mode": 0,
-      "inputs": [],
+      "inputs": [
+        {
+          "label": "samples",
+          "name": "samples",
+          "type": "LATENT",
+          "link": 6
+        },
+        {
+          "label": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 12
+        }
+      ],
       "outputs": [
         {
-          "name": "INT",
-          "type": "INT",
+          "label": "VOXEL",
+          "name": "VOXEL",
+          "type": "VOXEL",
+          "slot_index": 0,
           "links": [
-            18
+            7
           ]
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
-        "Node name for S&R": "BlenderInputSeed"
+        "cnr_id": "comfy-core",
+        "ver": "0.3.43",
+        "Node name for S&R": "VAEDecodeHunyuan3D"
       },
       "widgets_values": [
-        0,
-        1,
-        0,
-        0,
-        2147483647,
-        1
+        8000,
+        256
+      ]
+    },
+    {
+      "id": 10,
+      "type": "VoxelToMesh",
+      "pos": [
+        1530,
+        290
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "voxel",
+          "type": "VOXEL",
+          "link": 7
+        },
+        {
+          "name": "algorithm",
+          "type": "COMBO",
+          "widget": {
+            "name": "algorithm"
+          },
+          "link": 15
+        },
+        {
+          "name": "threshold",
+          "type": "FLOAT",
+          "widget": {
+            "name": "threshold"
+          },
+          "link": 23
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MESH",
+          "type": "MESH",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.43",
+        "Node name for S&R": "VoxelToMesh"
+      },
+      "widgets_values": [
+        "surface net",
+        0.6000000000000001
+      ]
+    },
+    {
+      "id": 11,
+      "type": "BlenderOutputSaveGlb",
+      "pos": [
+        1830,
+        290
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "mesh",
+          "type": "MESH",
+          "link": 11
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
+        "Node name for S&R": "BlenderOutputSaveGlb"
+      },
+      "widgets_values": [
+        "3d/blender"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -543,58 +602,15 @@
       "bgcolor": "#653"
     },
     {
-      "id": 3,
-      "type": "BlenderInputLoadImage",
+      "id": 14,
+      "type": "BlenderInputFloat",
       "pos": [
-        -430,
-        490
+        1180,
+        740
       ],
       "size": [
-        270,
-        338.0000305175781
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            19
-          ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
-        }
-      ],
-      "title": "Image",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
-        "Node name for S&R": "BlenderInputLoadImage"
-      },
-      "widgets_values": [
-        "blender_00007_.png",
-        2,
-        "image"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 17,
-      "type": "AILab_ColorInput",
-      "pos": [
-        -428.0348205566406,
-        890
-      ],
-      "size": [
-        270,
-        82
+        320,
+        160
       ],
       "flags": {},
       "order": 7,
@@ -602,22 +618,68 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "COLOR",
-          "type": "COLOR",
+          "name": "FLOAT",
+          "type": "FLOAT",
           "links": [
-            21
+            23
+          ]
+        }
+      ],
+      "title": "Voxel To Mesh Threshold",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
+        "Node name for S&R": "BlenderInputFloat"
+      },
+      "widgets_values": [
+        0.6000000000000001,
+        5,
+        0.6000000000000001,
+        -1.0000000000000002,
+        1.0000000000000002
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 15,
+      "type": "BlenderInputSeed",
+      "pos": [
+        590,
+        420
+      ],
+      "size": [
+        210,
+        178
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            18
           ]
         }
       ],
       "properties": {
-        "cnr_id": "comfyui-rmbg",
-        "ver": "2.7.0",
-        "Node name for S&R": "AILab_ColorInput"
+        "cnr_id": "comfyui-blender",
+        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
+        "Node name for S&R": "BlenderInputSeed"
       },
       "widgets_values": [
-        "white",
-        ""
-      ]
+        0,
+        1,
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
     },
     {
       "id": 16,
@@ -679,103 +741,45 @@
         false,
         false,
         "Color"
-      ]
+      ],
+      "color": "#222e40",
+      "bgcolor": "#364254"
     },
     {
-      "id": 14,
-      "type": "BlenderInputFloat",
+      "id": 17,
+      "type": "AILab_ColorInput",
       "pos": [
-        1180,
-        740
-      ],
-      "size": [
-        320,
-        160
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "FLOAT",
-          "type": "FLOAT",
-          "links": [
-            23
-          ]
-        }
-      ],
-      "title": "Voxel To Mesh Threshold",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
-        "Node name for S&R": "BlenderInputFloat"
-      },
-      "widgets_values": [
-        0.6000000000000001,
-        5,
-        0.6000000000000001,
-        -1.0000000000000002,
-        1.0000000000000002
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 10,
-      "type": "VoxelToMesh",
-      "pos": [
-        1530,
-        290
+        -428.0348205566406,
+        890
       ],
       "size": [
         270,
         82
       ],
       "flags": {},
-      "order": 15,
+      "order": 6,
       "mode": 0,
-      "inputs": [
-        {
-          "name": "voxel",
-          "type": "VOXEL",
-          "link": 7
-        },
-        {
-          "name": "algorithm",
-          "type": "COMBO",
-          "widget": {
-            "name": "algorithm"
-          },
-          "link": 15
-        },
-        {
-          "name": "threshold",
-          "type": "FLOAT",
-          "widget": {
-            "name": "threshold"
-          },
-          "link": 23
-        }
-      ],
+      "inputs": [],
       "outputs": [
         {
-          "name": "MESH",
-          "type": "MESH",
+          "name": "COLOR",
+          "type": "COLOR",
           "links": [
-            11
+            21
           ]
         }
       ],
       "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.43",
-        "Node name for S&R": "VoxelToMesh"
+        "cnr_id": "comfyui-rmbg",
+        "ver": "2.7.0",
+        "Node name for S&R": "AILab_ColorInput"
       },
       "widgets_values": [
-        "surface net",
-        0.6000000000000001
-      ]
+        "white",
+        ""
+      ],
+      "color": "#2e3e57",
+      "bgcolor": "#4b5b73"
     }
   ],
   "links": [
