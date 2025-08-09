@@ -252,25 +252,21 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
 
         # Client Id and server address
         layout.label(text="Server:")
-        col = layout.column()
-        col.prop(self, "client_id", emboss=False)
-        col.prop(self, "server_address")
+        layout.prop(self, "client_id", emboss=False)
+        layout.prop(self, "server_address")
 
-        # Use .blend file location
-        layout.label(text="Project Folders:")
-        col = layout.column(align=True)
-        col.prop(self, "use_blend_file_location", text="Use .blend File Location")
+        # Folders
+        layout.label(text="Folders:")
 
-        # Base project folder
-        row = col.row(align=True)
+        # Base folder
+        row = layout.row(align=True)
         row.prop(self, "base_folder", text="Base Folder", emboss=not self.use_blend_file_location)
         if not self.use_blend_file_location:
             select_base_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
             select_base_folder.target_property = "base_folder"
 
         # Create box for subfolders
-        col = layout.column()
-        box = col.box()
+        box = layout.box()
         col = box.column(align=True)
 
         # Workflows folder
@@ -294,6 +290,8 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
             select_outputs_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
             select_outputs_folder.target_property = "outputs_folder"
 
+        # Use .blend file location
+        layout.prop(self, "use_blend_file_location", text="Use .blend File Location")
 
 def register():
     """Register the operator."""
