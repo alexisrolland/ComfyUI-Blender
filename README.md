@@ -28,6 +28,8 @@ Note these nodes do not require additional Python dependencies. They are only us
 
 ### Install Blender Add-on
 
+This add-on has been developed for Blender `v4.5` and above.
+
 Download the add-on package `comfyui_blender_[...].zip` from the **[LATEST RELEASE](https://github.com/alexisrolland/ComfyUI-Blender/releases)**.
 
 In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > select the zip package.
