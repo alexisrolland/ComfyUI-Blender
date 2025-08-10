@@ -13,7 +13,12 @@ To update dependencies:
 
 ```sh
 python -m venv .venv
+
+# Bash command if you're on Linux
 source .venv/bin/activate
+
+# PowerShell command if you're on Windows
+.venv\Scripts\Activate.ps1
 
 # Install and run Vendorize
 python -m pip install vendorize
