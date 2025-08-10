@@ -152,7 +152,8 @@ class ComfyBlenderSettings(bpy.types.AddonPreferences):
     blender_version = bpy.app.version
     major, minor, patch = blender_version
     addon_name = __package__
-    base_path = f"C:\\Users\\{os.getlogin()}\\AppData\\Roaming\\Blender Foundation\\Blender\\data\\{addon_name}"
+    base_path = os.path.dirname(bpy.utils.resource_path("USER"))
+    base_path = os.path.join(base_path, "data", addon_name)
 
     # Project base folder
     base_folder: StringProperty(
