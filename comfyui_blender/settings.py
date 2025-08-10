@@ -202,7 +202,7 @@ class AddonPreferences(bpy.types.AddonPreferences):
         default=default_outputs_folder
     )
 
-    # Workflow
+    # Current workflow
     workflow: EnumProperty(
         name="Workflow",
         description="Workflow to send to the ComfyUI server.",

@@ -60,9 +60,10 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
 
                 # Display output of type image
                 if output.type == "image":
+                    full_path = os.path.join(outputs_folder, output.name)
+
                     # Load image in the data block if it does not exist
                     if output.filename not in bpy.data.images:
-                        full_path = os.path.join(outputs_folder, output.name)
                         if os.path.exists(full_path):
                             bpy.data.images.load(full_path, check_existing=True)
                         else:
@@ -83,6 +84,11 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         col = row.column(align=True)
                         image_editor = col.operator("comfy.open_image_editor", text="", icon="IMAGE")
                         image_editor.filename = output.filename
+
+                        # Reload workflow button
+                        reload_workflow = col.operator("comfy.import_workflow_from_metadata", text="", icon="NODETREE")
+                        reload_workflow.filepath = full_path
+                        reload_workflow.type = output.type
 
                         # Delete output button
                         delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
@@ -144,9 +150,10 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
 
                 # Display output of type image
                 if output.type == "image":
+                    full_path = os.path.join(outputs_folder, output.name)
+
                     # Load image in the data block if it does not exist
                     if output.filename not in bpy.data.images:
-                        full_path = os.path.join(outputs_folder, output.name)
                         if os.path.exists(full_path):
                             bpy.data.images.load(full_path, check_existing=True)
                         else:
@@ -163,6 +170,11 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         # Image editor button
                         image_editor = row_right.operator("comfy.open_image_editor", text="", icon="IMAGE")
                         image_editor.filename = output.filename
+
+                        # Reload workflow button
+                        reload_workflow = row_right.operator("comfy.import_workflow_from_metadata", text="", icon="NODETREE")
+                        reload_workflow.filepath = full_path
+                        reload_workflow.type = output.type
 
                 # Display output of type 3d
                 elif output.type == "3d":

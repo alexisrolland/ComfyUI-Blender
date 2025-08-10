@@ -13,11 +13,11 @@ from bpy.props import (
 )
 
 
-def create_class_properties(dictionary):
+def create_class_properties(inputs, keep_values=False):
     """Create properties for each input and output of the workflow."""
 
     properties = {}
-    for key, node in dictionary.items():
+    for key, node in inputs.items():
         property_name = f"node_{key}"
         property_name = re.sub(r"[^a-zA-Z0-9_]", "_", property_name).lower()        
         metadata = node.get("_meta", {})
@@ -28,7 +28,7 @@ def create_class_properties(dictionary):
         if node["class_type"] == "BlenderInputBoolean":
             properties[property_name] = BoolProperty(
                 name=name,
-                default=node["inputs"].get("default", "")
+                default=node["inputs"].get("default", False)
             )
             continue
 
@@ -39,6 +39,7 @@ def create_class_properties(dictionary):
             items = node["inputs"]["list"].split("\n")
             if default not in items:
                 default = items[0]
+
             properties[property_name] = EnumProperty(
                 name=name,
                 default=default,
@@ -94,12 +95,6 @@ def create_class_properties(dictionary):
                 default=node["inputs"].get("default", "")
             )
             continue
-        
-        # Output properties
-        # Save image
-        if node["class_type"] == "BlenderOutputSaveImage":
-            properties[property_name] = StringProperty(name=name)
-            continue
     return properties
 
 def create_workflow_class(class_name, properties):
@@ -148,8 +143,10 @@ def parse_workflow_for_inputs(workflow):
     inputs = {}
     sorted_inputs = inputs
     for key, node in workflow.items():
-        if node.get("class_type").startswith("BlenderInput"):
-            inputs[key]=node
+        class_type = node.get("class_type")
+        if class_type:
+            if class_type.startswith("BlenderInput"):
+                inputs[key]=node
 
     if len(inputs) > 0:
         # Reorder the keys based on the "order" property of the nodes dictionaries
@@ -164,8 +161,10 @@ def parse_workflow_for_outputs(workflow):
 
     outputs = {}
     for key, node in workflow.items():
-        if node.get("class_type").startswith("BlenderOutput"):
-            outputs[key]=node
+        class_type = node.get("class_type")
+        if class_type:
+            if class_type.startswith("BlenderOutput"):
+                outputs[key]=node
     return outputs
 
 def register_workflow_class(self, context):
@@ -187,10 +186,26 @@ def register_workflow_class(self, context):
         with open(workflow_path, "r",  encoding="utf-8") as file:
             workflow = json.load(file)
 
-        # Get inputs and outputs from the workflow
+        # Get inputs from the workflow
         inputs = parse_workflow_for_inputs(workflow)
-        outputs = parse_workflow_for_outputs(workflow)
-        properties = create_class_properties({**inputs, **outputs}) # Merge dictionaries
+        properties = create_class_properties(inputs)
         workflow_class = create_workflow_class(workflow_class_name, properties)
+
+        # Register the workflow class
         bpy.utils.register_class(workflow_class)
         bpy.types.Scene.current_workflow = bpy.props.PointerProperty(type=workflow_class)
+
+        # Get custom data from the workflow
+        keep_values = False
+        if workflow.get("comfyui_blender"):
+            keep_values = workflow["comfyui_blender"].get("keep_values", False)
+
+        # Overwrite values after registration
+        # Note keep_values is set to True when reloading a workflow from outputs
+        if hasattr(context.scene, "current_workflow") and keep_values:
+            workflow_instance = context.scene.current_workflow
+            for key, node in inputs.items():
+                property_name = f"node_{key}"
+                property_name = re.sub(r"[^a-zA-Z0-9_]", "_", property_name).lower()
+                if hasattr(workflow_instance, property_name):
+                    setattr(workflow_instance, property_name, node["inputs"].get("value", ""))
