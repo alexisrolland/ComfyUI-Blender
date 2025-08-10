@@ -17,7 +17,7 @@ class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
-        # Get add-on preferences and selected workflow
+        # Get add-on preferences
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
 
         # Stop workflow execution on ComfyUI server

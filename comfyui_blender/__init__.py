@@ -1,7 +1,4 @@
 """ComfyUI Blender Add-on"""
-import subprocess
-import sys
-
 from .operators import (
     clear_queue,
     delete_input,
@@ -29,6 +26,7 @@ from .panels import (
     output_panel,
     workflow_panel
 )
+from . import hooks
 from . import settings
 
 
@@ -46,6 +44,9 @@ bl_info = {
 
 def register():
     """Register add-on preferences, operators, and panels."""
+
+    # Hooks
+    hooks.register()
 
     # Preferences
     settings.register()
@@ -79,6 +80,9 @@ def register():
 
 def unregister():
     """Unregister add-on preferences, operators, and panels."""
+
+    # Hooks
+    hooks.register()
 
     # Preferences
     settings.unregister()

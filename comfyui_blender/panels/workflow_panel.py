@@ -22,9 +22,12 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
     def draw(self, context):
         """Draw the panel."""
 
-        # Buttons to open preferences
+        # Use .blend file location
         row = self.layout.row(align=True)
-        row.alignment = "RIGHT"
+        project_settings = bpy.context.scene.comfyui_project_settings
+        row.prop(project_settings, "use_blend_file_location")
+
+        # Buttons to open preferences
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         row.label(icon="INTERNET") if addon_prefs.connection_status else row.label(icon="INTERNET_OFFLINE")
         row.operator("preferences.addon_show", text="", icon="PREFERENCES").module = "comfyui_blender"
