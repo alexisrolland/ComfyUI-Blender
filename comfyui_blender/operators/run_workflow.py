@@ -125,6 +125,9 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                 # Default handling for other input types
                 workflow[key]["inputs"]["value"] = getattr(current_workflow, property_name)
 
+        # Remove custom data from the workflow to avoid error from ComfyUI server
+        workflow.pop("comfyui_blender", None)
+
         # Send workflow to ComfyUI server
         data = {"prompt": workflow, "client_id": addon_prefs.client_id}
         url = urljoin(addon_prefs.server_address, "/prompt")
