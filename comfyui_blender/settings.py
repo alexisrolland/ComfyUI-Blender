@@ -257,7 +257,7 @@ class AddonPreferences(bpy.types.AddonPreferences):
 
         # Client Id and server address
         layout.label(text="Server:")
-        layout.prop(self, "client_id", emboss=False)
+        layout.prop(self, "client_id")
         layout.prop(self, "server_address")
 
         # Folders
