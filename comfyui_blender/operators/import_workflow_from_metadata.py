@@ -53,7 +53,7 @@ class ComfyBlenderOperatorImportWorkflowFromMetadata(bpy.types.Operator):
                     workflow_filename, workflow_path = get_filepath(workflow_filename, workflows_folder)
 
                     try:
-                        # Save workflow file
+                        # Save the file to the workflow folder
                         with open(workflow_path, "w", encoding="utf-8") as file:
                             json.dump(metadata["prompt"], file, indent=2, ensure_ascii=False)
                         self.report({'INFO'}, f"Workflow saved to: {workflow_path}")

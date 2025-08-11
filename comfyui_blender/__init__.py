@@ -1,4 +1,7 @@
 """ComfyUI Blender Add-on"""
+from .menus import (
+    file_browser_menu
+)
 from .operators import (
     clear_queue,
     delete_input,
@@ -23,6 +26,7 @@ from .operators import (
     switch_output_layout
 )
 from .panels import (
+    file_browser_panel,
     input_panel,
     output_panel,
     workflow_panel
@@ -52,6 +56,9 @@ def register():
     # Preferences
     settings.register()
 
+    # Menus
+    file_browser_menu.register()
+
     # Operators
     clear_queue.register()
     delete_input.register()
@@ -76,6 +83,7 @@ def register():
     switch_output_layout.register()
 
     # Panels
+    file_browser_panel.register()
     workflow_panel.register()
     input_panel.register()
     output_panel.register()
@@ -88,6 +96,9 @@ def unregister():
 
     # Preferences
     settings.unregister()
+
+    # Menus
+    file_browser_menu.unregister()
 
     # Operators
     clear_queue.unregister()
@@ -113,6 +124,7 @@ def unregister():
     switch_output_layout.unregister()
 
     # Panels
+    file_browser_panel.unregister()
     workflow_panel.unregister()
     input_panel.unregister()
     output_panel.unregister()
