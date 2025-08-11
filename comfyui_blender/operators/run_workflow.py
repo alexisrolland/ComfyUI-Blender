@@ -111,15 +111,15 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
             # Custom handling for seed inputs
             elif node["class_type"] == "BlenderInputSeed":
-                if addon_prefs.lock_seed:
-                    seed = getattr(current_workflow, property_name)
-                else:
-                    # If lock seed is not enabled, generate a random seed
+                seed = getattr(current_workflow, property_name)
+                workflow[key]["inputs"]["value"] = seed
+
+                # If lock seed is not enabled, generate a new random seed
+                if not addon_prefs.lock_seed:
                     min = current_workflow.bl_rna.properties[property_name].hard_min
                     max = current_workflow.bl_rna.properties[property_name].hard_max
                     seed = random.randint(min, max)
                     setattr(current_workflow, property_name, seed)
-                workflow[key]["inputs"]["value"] = seed
 
             else:
                 # Default handling for other input types
