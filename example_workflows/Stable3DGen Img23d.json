@@ -1,0 +1,372 @@
+{
+  "id": "a4bc9489-299f-499a-b427-ef84a35c34f6",
+  "revision": 0,
+  "last_node_id": 24,
+  "last_link_id": 40,
+  "nodes": [
+    {
+      "id": 16,
+      "type": "Stable3DLoadModels",
+      "pos": [
+        122.61805725097656,
+        -337.5390625
+      ],
+      "size": [
+        315,
+        126
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "hi3dgen pipeline",
+          "type": "HI3DGEN_PIPELINE",
+          "links": [
+            31,
+            33
+          ]
+        },
+        {
+          "name": "Normal predictor",
+          "type": "STABLE3D_NORMAL",
+          "links": [
+            32
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Stable3DLoadModels"
+      },
+      "widgets_values": [
+        "Stable-X/trellis-normal-v0-1",
+        "Stable-X/yoso-normal-v1-8-1",
+        "ZhengPeng7/BiRefNet",
+        null
+      ]
+    },
+    {
+      "id": 12,
+      "type": "Stable3DPreprocessImage",
+      "pos": [
+        535.5403442382812,
+        -187.32595825195312
+      ],
+      "size": [
+        367.79998779296875,
+        74
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "hi3dgen_pipeline",
+          "type": "HI3DGEN_PIPELINE",
+          "link": 33
+        },
+        {
+          "name": "normal_predictor",
+          "type": "STABLE3D_NORMAL",
+          "link": 32
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 37
+        }
+      ],
+      "outputs": [
+        {
+          "name": "normal_images",
+          "type": "IMAGE",
+          "links": [
+            26,
+            27
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Stable3DPreprocessImage"
+      },
+      "widgets_values": [
+        null
+      ]
+    },
+    {
+      "id": 19,
+      "type": "Preview3D",
+      "pos": [
+        1478.064453125,
+        -362.6379699707031
+      ],
+      "size": [
+        400,
+        334
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "camera_info",
+          "shape": 7,
+          "type": "LOAD3D_CAMERA",
+          "link": null
+        },
+        {
+          "name": "model_file",
+          "type": "STRING",
+          "widget": {
+            "name": "model_file"
+          },
+          "link": 35
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "Preview3D",
+        "Last Time Model File": "2025-08-11-095326_mesh.glb"
+      },
+      "widgets_values": [
+        "2025-08-11-095326_mesh.glb",
+        "",
+        null
+      ]
+    },
+    {
+      "id": 11,
+      "type": "Stable3DGenerate3D",
+      "pos": [
+        978.2960205078125,
+        -371.08160400390625
+      ],
+      "size": [
+        393,
+        198
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "hi3dgen_pipeline",
+          "type": "HI3DGEN_PIPELINE",
+          "link": 31
+        },
+        {
+          "name": "normal_images",
+          "type": "IMAGE",
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mesh_file_path",
+          "type": "STRING",
+          "links": [
+            35,
+            40
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Stable3DGenerate3D"
+      },
+      "widgets_values": [
+        1662275347,
+        "randomize",
+        3,
+        50,
+        3,
+        6,
+        null
+      ]
+    },
+    {
+      "id": 13,
+      "type": "PreviewImage",
+      "pos": [
+        732.9700927734375,
+        -10.469552993774414
+      ],
+      "size": [
+        210,
+        246
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 26
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": [
+        null
+      ]
+    },
+    {
+      "id": 24,
+      "type": "BlenderOutputDownload3D",
+      "pos": [
+        1491.4105224609375,
+        -504.2081298828125
+      ],
+      "size": [
+        223.89999389648438,
+        34
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model_file",
+          "type": "STRING",
+          "link": 40
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "BlenderOutputDownload3D"
+      },
+      "widgets_values": [
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 21,
+      "type": "BlenderInputLoadImage",
+      "pos": [
+        163.33412170410156,
+        -58.32684326171875
+      ],
+      "size": [
+        270,
+        338
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            37
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "Image",
+      "properties": {
+        "Node name for S&R": "BlenderInputLoadImage",
+        "cnr_id": "comfyui-blender",
+        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9"
+      },
+      "widgets_values": [
+        "example.png",
+        2,
+        "image",
+        null
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    }
+  ],
+  "links": [
+    [
+      26,
+      12,
+      0,
+      13,
+      0,
+      "IMAGE"
+    ],
+    [
+      27,
+      12,
+      0,
+      11,
+      1,
+      "IMAGE"
+    ],
+    [
+      31,
+      16,
+      0,
+      11,
+      0,
+      "HI3DGEN_PIPELINE"
+    ],
+    [
+      32,
+      16,
+      1,
+      12,
+      1,
+      "STABLE3D_NORMAL"
+    ],
+    [
+      33,
+      16,
+      0,
+      12,
+      0,
+      "HI3DGEN_PIPELINE"
+    ],
+    [
+      35,
+      11,
+      0,
+      19,
+      1,
+      "STRING"
+    ],
+    [
+      37,
+      21,
+      0,
+      12,
+      2,
+      "IMAGE"
+    ],
+    [
+      40,
+      11,
+      0,
+      24,
+      0,
+      "STRING"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1.1000000000000005,
+      "offset": [
+        120.82924088451281,
+        682.1411357114133
+      ]
+    },
+    "frontendVersion": "1.21.7",
+    "ue_links": []
+  },
+  "version": 0.4
+}

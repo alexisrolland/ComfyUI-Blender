@@ -127,7 +127,7 @@ def listen():
                     # Check class type to retrieve 3D outputs
                     if key in outputs and outputs[key]["class_type"] == "BlenderOutputDownload3D":
                         for output in data["output"]["3d"]:
-                            download_file(output["filename"], output["subfolder"])
+                            download_file(output["filename"], output["subfolder"], output.get("type", "output"))
 
                             # Add 3D model to outputs collection
                             model = addon_prefs.outputs_collection.add()
@@ -161,7 +161,7 @@ def listen():
                     # Check class type to retrieve image outputs
                     elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
                         for output in data["output"]["images"]:
-                            download_file(output["filename"], output["subfolder"])
+                            download_file(output["filename"], output["subfolder"], output.get("type", "output"))
 
                             # Add image to outputs collection
                             image = addon_prefs.outputs_collection.add()
