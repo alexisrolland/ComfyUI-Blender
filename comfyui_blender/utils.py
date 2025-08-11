@@ -7,7 +7,7 @@ from urllib.parse import urljoin
 import bpy
 
 
-def download_file(filename, subfolder, output_type="output"):
+def download_file(filename, subfolder, type="output"):
     """Download a file from the ComfyUI server."""
 
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
