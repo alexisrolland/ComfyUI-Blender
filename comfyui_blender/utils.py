@@ -1,3 +1,4 @@
+import logging
 import os
 import random
 import requests
@@ -5,6 +6,8 @@ import textwrap
 from urllib.parse import urljoin
 
 import bpy
+
+log = logging.getLogger("comfyui_blender")
 
 
 def download_file(filename, subfolder, type="output"):

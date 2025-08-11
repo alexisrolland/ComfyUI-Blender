@@ -1,7 +1,10 @@
+import logging
 import os
 
 import bpy
 from bpy.app.handlers import persistent
+
+log = logging.getLogger("comfyui_blender")
 
 
 @persistent

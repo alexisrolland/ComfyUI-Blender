@@ -1,4 +1,6 @@
 """ComfyUI Blender Add-on Settings"""
+
+import logging
 import os
 import uuid
 
@@ -13,6 +15,10 @@ from bpy.props import (
 from .connection import disconnect
 from .utils import show_error_popup
 from .workflow import get_workflow_list, register_workflow_class
+
+log = logging.getLogger("comfyui_blender")
+log.setLevel(logging.INFO)
+log.addHandler(logging.StreamHandler())
 
 
 def update_progress(self, context):
@@ -50,6 +56,15 @@ def update_server_address(self, context):
     # Ensure the server address ends without a slash.
     while self.server_address.endswith("/"):
         self.server_address = self.server_address.rstrip("/")
+
+
+def toggle_debug_logging(self, context):
+    if self.debug_logging:
+        log.setLevel(logging.DEBUG)
+        log.debug(f"Debug logging activated.")
+    else:
+        log.setLevel(logging.INFO)
+
 
 def update_use_blend_file_location(self, context):
     """Update project base folders according to the location of the .blend file."""
@@ -155,6 +170,13 @@ class AddonPreferences(bpy.types.AddonPreferences):
         update=update_server_address
     )
 
+    # Toggle debug logging
+    debug_logging: BoolProperty(
+        name="Debug logging",
+        description="Activate debug logs for the addon.",
+        default=False,
+        update=toggle_debug_logging
+    )
     # Connection status
     # This is used to indicate if the Blender add-on is connected to the ComfyUI server via WebSocket
     connection_status: BoolProperty(
@@ -259,6 +281,7 @@ class AddonPreferences(bpy.types.AddonPreferences):
         layout.label(text="Server:")
         layout.prop(self, "client_id")
         layout.prop(self, "server_address")
+        layout.prop(self, "debug_logging")
 
         # Folders
         layout.label(text="Folders:")

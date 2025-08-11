@@ -1,5 +1,6 @@
 """Functions to create dynamic workflow classes and properties"""
 import json
+import logging
 import os
 import re
 
@@ -12,6 +13,8 @@ from bpy.props import (
     StringProperty
 )
 
+log = logging.getLogger("comfyui_blender")
+
 
 def create_class_properties(inputs, keep_values=False):
     """Create properties for each input and output of the workflow."""
@@ -19,7 +22,7 @@ def create_class_properties(inputs, keep_values=False):
     properties = {}
     for key, node in inputs.items():
         property_name = f"node_{key}"
-        property_name = re.sub(r"[^a-zA-Z0-9_]", "_", property_name).lower()        
+        property_name = re.sub(r"[^a-zA-Z0-9_]", "_", property_name).lower()
         metadata = node.get("_meta", {})
         name = metadata.get("title", f"Node {key}")
 

@@ -24,3 +24,7 @@ source .venv/bin/activate
 python -m pip install vendorize
 python-vendorize
 ```
+
+## Debug
+In order to help debug the add on and comfy connections, a 'Debug logging' option is available in the blender addon settings.
+Logs are available in blender stdout or system console.
