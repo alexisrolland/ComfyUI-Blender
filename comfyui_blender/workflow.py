@@ -43,7 +43,6 @@ def create_class_properties(inputs, keep_values=False):
     properties = {}
     for key, node in inputs.items():
         property_name = f"node_{key}"
-        property_name = re.sub(r"[^a-zA-Z0-9_]", "_", property_name).lower()        
         metadata = node.get("_meta", {})
         name = metadata.get("title", f"Node {key}")
 
@@ -230,6 +229,16 @@ def register_workflow_class(self, context):
             workflow_instance = context.scene.current_workflow
             for key, node in inputs.items():
                 property_name = f"node_{key}"
-                property_name = re.sub(r"[^a-zA-Z0-9_]", "_", property_name).lower()
+
                 if hasattr(workflow_instance, property_name):
-                    setattr(workflow_instance, property_name, node["inputs"].get("value", ""))
+                    # Custom handling for 3D model input
+                    if node["class_type"] == "BlenderInputLoad3D":
+                        setattr(workflow_instance, property_name, node["inputs"].get("model_file", ""))
+                    
+                    # Custom handling for image input
+                    elif node["class_type"] == "BlenderInputLoadImage":
+                        setattr(workflow_instance, property_name, node["inputs"].get("image", ""))
+
+                    else:
+                        # Default handling for other input types
+                        setattr(workflow_instance, property_name, node["inputs"].get("value", ""))

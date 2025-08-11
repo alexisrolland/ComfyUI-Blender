@@ -45,6 +45,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
                     # Copy the file to the workflows folder
                     shutil.copy(self.filepath, workflow_path)
                     self.report({'INFO'}, f"Workflow copied to: {workflow_path}")
+
                 except Exception as e:
                     error_message = f"Failed to copy workflow file: {e}"
                     show_error_popup(error_message)

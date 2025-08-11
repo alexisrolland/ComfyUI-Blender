@@ -35,6 +35,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
             try:
                 connection.connect()
                 self.report({'INFO'}, "Connection established.")
+
             except Exception as e:
                 error_message = f"Failed to connect to ComfyUI server: {addon_prefs.server_address}. {e}"
                 show_error_popup(error_message)
@@ -71,6 +72,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                         error_message = f"Failed to upload file: {response.status_code} - {response.text}"
                         show_error_popup(error_message)
                         return {'CANCELLED'}
+
                 except Exception as e:
                     input_name = current_workflow.bl_rna.properties[property_name].name  # Node title
                     error_message = f"Error uploading file for input {input_name}: {str(e)}"
@@ -95,6 +97,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                         error_message = f"Failed to upload file: {response.status_code} - {response.text}"
                         show_error_popup(error_message)
                         return {'CANCELLED'}
+
                 except Exception as e:
                     input_name = current_workflow.bl_rna.properties[property_name].name  # Node title
                     error_message = f"Error uploading file for input {input_name}: {str(e)}"

@@ -57,6 +57,7 @@ class ComfyBlenderOperatorImportWorkflowFromMetadata(bpy.types.Operator):
                         with open(workflow_path, "w", encoding="utf-8") as file:
                             json.dump(metadata["prompt"], file, indent=2, ensure_ascii=False)
                         self.report({'INFO'}, f"Workflow saved to: {workflow_path}")
+
                     except Exception as e:
                         error_message = f"Failed to save workflow: {e}"
                         show_error_popup(error_message)
