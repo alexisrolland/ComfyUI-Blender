@@ -31,7 +31,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
         # File browser button
         row = self.layout.row(align=True)
         row.alignment = "RIGHT"
-        file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE")
+        file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
         file_browser.folder_path = outputs_folder
 
         # Switch output layout to list
