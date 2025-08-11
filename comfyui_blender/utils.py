@@ -16,7 +16,7 @@ def download_file(filename, subfolder, type="output"):
 
     # Download the file data from the ComfyUI server
     # Add a random parameter to avoid caching issues
-    params = {"filename": filename, "subfolder": subfolder, "type": output_type, "rand": random.random()}
+    params = {"filename": filename, "subfolder": subfolder, "type": type, "rand": random.random()}
     url = f"{server_address}/view"
 
     # Download with streaming to handle large files and avoid memory issues
