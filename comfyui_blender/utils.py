@@ -7,7 +7,7 @@ from urllib.parse import urljoin
 import bpy
 
 
-def download_file(filename, subfolder):
+def download_file(filename, subfolder, output_type="output"):
     """Download a file from the ComfyUI server."""
 
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
@@ -16,7 +16,7 @@ def download_file(filename, subfolder):
 
     # Download the file data from the ComfyUI server
     # Add a random parameter to avoid caching issues
-    params = {"filename": filename, "subfolder": subfolder, "type": "output", "rand": random.random()}
+    params = {"filename": filename, "subfolder": subfolder, "type": output_type, "rand": random.random()}
     url = f"{server_address}/view"
 
     # Download with streaming to handle large files and avoid memory issues
