@@ -9,8 +9,8 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
 
     bl_label = "Workflow"
     bl_idname = "COMFY_PT_Workflow"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
     bl_category = "ComfyUI"
 
     def draw_header(self, context):

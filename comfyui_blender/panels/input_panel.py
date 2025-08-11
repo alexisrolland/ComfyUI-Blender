@@ -12,8 +12,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
     bl_label = "Inputs"
     bl_idname = "COMFY_PT_Input"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
     bl_category = "ComfyUI"
 
     def draw_header(self, context):
