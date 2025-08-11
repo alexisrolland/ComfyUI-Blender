@@ -29,15 +29,15 @@ class ComfyBlenderPanelFileBrowser(bpy.types.Panel):
         workflows_folder = str(addon_prefs.workflows_folder)
 
         # Inputs folder
-        inputs = layout.operator("comfy.open_file_browser", text="Inputs", icon="FILE_FOLDER_LARGE")
+        inputs = layout.operator("comfy.open_file_browser", text="Inputs", icon="FILE_FOLDER")
         inputs.folder_path = inputs_folder
 
         # Outputs folder
-        outputs = layout.operator("comfy.open_file_browser", text="Outputs", icon="FILE_FOLDER_LARGE")
+        outputs = layout.operator("comfy.open_file_browser", text="Outputs", icon="FILE_FOLDER")
         outputs.folder_path = outputs_folder
 
         # Workflows folder
-        workflows = layout.operator("comfy.open_file_browser", text="Workflows", icon="FILE_FOLDER_LARGE")
+        workflows = layout.operator("comfy.open_file_browser", text="Workflows", icon="FILE_FOLDER")
         workflows.folder_path = workflows_folder
 
 def register():
