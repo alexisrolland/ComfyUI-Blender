@@ -43,7 +43,7 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
 
         for workflow in blender_workflows:
             try:
-                log.info(f"Downloading workflow {workflow}")
+                log.info(f"Downloading workflow: {workflow}")
                 workflow_download_url = urljoin(server_address, quote(f"/api/workflow_templates/{self.custom_node_name}/{workflow}.json.api"))
                 workflow_json = requests.get(workflow_download_url).json()
 
