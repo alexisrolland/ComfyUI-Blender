@@ -61,7 +61,7 @@ def update_server_address(self, context):
 def toggle_debug_logging(self, context):
     if self.debug_logging:
         log.setLevel(logging.DEBUG)
-        log.debug(f"Debug logging activated.")
+        log.debug("Debug logging activated.")
     else:
         log.setLevel(logging.INFO)
 
