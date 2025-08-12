@@ -34,7 +34,6 @@ class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
         # Get path to inputs folder
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         inputs_folder = str(addon_prefs.inputs_folder)
-        os.makedirs(inputs_folder, exist_ok=True)
         file_name, filepath = get_filepath("3d_model.obj", inputs_folder)
 
         # Export selected meshes
