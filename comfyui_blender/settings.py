@@ -197,15 +197,6 @@ class AddonPreferences(bpy.types.AddonPreferences):
         update=update_project_folders
     )
 
-    # Workflows folder
-    default_workflows_folder = os.path.join(base_path, "workflows")
-    os.makedirs(default_workflows_folder, exist_ok=True)
-    workflows_folder: StringProperty(
-        name="Workflows Folder",
-        description="Folder where workflows are stored.",
-        default=default_workflows_folder
-    )
-
     # Inputs folder path
     default_inputs_folder = os.path.join(base_path, "inputs")
     os.makedirs(default_inputs_folder, exist_ok=True)
@@ -222,6 +213,24 @@ class AddonPreferences(bpy.types.AddonPreferences):
         name="Outputs Folder",
         description="Folder where outputs are stored.",
         default=default_outputs_folder
+    )
+
+    # Temp folder path
+    temp_folder = os.path.join(base_path, "temp")
+    os.makedirs(temp_folder, exist_ok=True)
+    temp_folder: StringProperty(
+        name="Temporary Files Folder",
+        description="Folder to store temporary files.",
+        default=temp_folder
+    )
+
+    # Workflows folder
+    default_workflows_folder = os.path.join(base_path, "workflows")
+    os.makedirs(default_workflows_folder, exist_ok=True)
+    workflows_folder: StringProperty(
+        name="Workflows Folder",
+        description="Folder where workflows are stored.",
+        default=default_workflows_folder
     )
 
     # Current workflow
