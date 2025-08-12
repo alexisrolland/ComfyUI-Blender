@@ -78,6 +78,9 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
                     continue
             else:
                 self.report({'INFO'}, f"Workflow already exists: {workflow_filename}")
+
+            # Force refresh of the panel
+            addon_prefs.workflow = addon_prefs.workflow
         return {'FINISHED'}
 
 
