@@ -38,7 +38,6 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
             log.warning(f"No ComfyUI-Blender workflow found. custom_node may not be properly installed.")
             return
 
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         workflows_folder = str(addon_prefs.workflows_folder)
         os.makedirs(workflows_folder, exist_ok=True)
 
