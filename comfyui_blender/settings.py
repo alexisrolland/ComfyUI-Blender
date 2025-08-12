@@ -58,13 +58,13 @@ def update_server_address(self, context):
         self.server_address = self.server_address.rstrip("/")
 
 
-def toggle_debug_logging(self, context):
-    if self.debug_logging:
+def toggle_debug_mode(self, context):
+    if self.debug_mode:
         log.setLevel(logging.DEBUG)
-        log.debug("Debug logging activated.")
+        log.debug("Debug mode activated.")
     else:
         log.setLevel(logging.INFO)
-
+        log.debug("Debug mode deactivated.")
 
 def update_use_blend_file_location(self, context):
     """Update project base folders according to the location of the .blend file."""
