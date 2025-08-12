@@ -1,0 +1,243 @@
+{
+  "1": {
+    "inputs": {
+      "value": "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
+      "order": 3,
+      "default": "",
+      "format_path": false
+    },
+    "class_type": "BlenderInputStringMultiline",
+    "_meta": {
+      "title": "Prompt"
+    }
+  },
+  "5": {
+    "inputs": {
+      "value": "visitor01/rayflux-v1.0.safetensors",
+      "order": 2,
+      "default": "",
+      "format_path": "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
+      "list": "black-forest-labs/flux1-dev.safetensors\nvisitor01/rayflux-photoplus.safetensors\nvisitor01/rayflux-v1.0.safetensors"
+    },
+    "class_type": "BlenderInputCombo",
+    "_meta": {
+      "title": "Model"
+    }
+  },
+  "6": {
+    "inputs": {
+      "text": [
+        "1",
+        0
+      ],
+      "clip": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "7": {
+    "inputs": {
+      "text": "",
+      "clip": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "10": {
+    "inputs": {
+      "value": 0,
+      "order": 1,
+      "default": 0,
+      "min": 0,
+      "max": 2147483647,
+      "step": 1
+    },
+    "class_type": "BlenderInputSeed",
+    "_meta": {
+      "title": "Seed"
+    }
+  },
+  "11": {
+    "inputs": {
+      "seed": [
+        "10",
+        0
+      ],
+      "steps": 20,
+      "cfg": 1,
+      "sampler_name": "heun",
+      "scheduler": "beta",
+      "denoise": 1,
+      "model": [
+        "15",
+        0
+      ],
+      "positive": [
+        "19",
+        0
+      ],
+      "negative": [
+        "19",
+        1
+      ],
+      "latent_image": [
+        "19",
+        2
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "12": {
+    "inputs": {
+      "samples": [
+        "11",
+        0
+      ],
+      "vae": [
+        "18",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "13": {
+    "inputs": {
+      "filename_prefix": "blender",
+      "images": [
+        "12",
+        0
+      ]
+    },
+    "class_type": "BlenderOutputSaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "14": {
+    "inputs": {
+      "unet_name": [
+        "5",
+        0
+      ],
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "15": {
+    "inputs": {
+      "lora_name": "black-forest-labs\\flux1-depth-dev-lora.safetensors",
+      "strength_model": [
+        "21",
+        0
+      ],
+      "model": [
+        "14",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "16": {
+    "inputs": {
+      "clip_name1": "clip_l.safetensors",
+      "clip_name2": "t5xxl_fp16.safetensors",
+      "type": "flux",
+      "device": "default"
+    },
+    "class_type": "DualCLIPLoader",
+    "_meta": {
+      "title": "DualCLIPLoader"
+    }
+  },
+  "17": {
+    "inputs": {
+      "guidance": 3,
+      "conditioning": [
+        "6",
+        0
+      ]
+    },
+    "class_type": "FluxGuidance",
+    "_meta": {
+      "title": "FluxGuidance"
+    }
+  },
+  "18": {
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "19": {
+    "inputs": {
+      "positive": [
+        "17",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "vae": [
+        "18",
+        0
+      ],
+      "pixels": [
+        "20",
+        0
+      ]
+    },
+    "class_type": "InstructPixToPixConditioning",
+    "_meta": {
+      "title": "InstructPixToPixConditioning"
+    }
+  },
+  "20": {
+    "inputs": {
+      "image": "depth_map.png",
+      "order": 4
+    },
+    "class_type": "BlenderInputLoadImage",
+    "_meta": {
+      "title": "Depth Map"
+    }
+  },
+  "21": {
+    "inputs": {
+      "value": 0.7500000000000001,
+      "order": 5,
+      "default": 0.7500000000000001,
+      "min": 0,
+      "max": 1.0000000000000002
+    },
+    "class_type": "BlenderInputFloat",
+    "_meta": {
+      "title": "Depth Strength"
+    }
+  }
+}

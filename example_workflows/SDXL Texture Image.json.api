@@ -1,0 +1,213 @@
+{
+  "1": {
+    "inputs": {
+      "value": "seamless, tileable texture of old, broken stone with moss. The texture should feature irregular stone surfaces with cracks and crevices, and patches of moss growing in and on the stones. Ensure high-resolution details with natural variations in color and texture. Optimize for PBR workflows with neutral lighting. Include subtle imperfections like dirt and grime for realism. The mood should be dark and gritty, suitable for fantasy or historical video game environments.",
+      "order": 3,
+      "default": "",
+      "format_path": false
+    },
+    "class_type": "BlenderInputStringMultiline",
+    "_meta": {
+      "title": "Prompt"
+    }
+  },
+  "2": {
+    "inputs": {
+      "value": 1024,
+      "order": 4,
+      "default": 1024,
+      "min": 768,
+      "max": 1344,
+      "step": 8,
+      "camera_width": true,
+      "camera_height": false
+    },
+    "class_type": "BlenderInputInt",
+    "_meta": {
+      "title": "Width"
+    }
+  },
+  "3": {
+    "inputs": {
+      "value": 1024,
+      "order": 5,
+      "default": 1024,
+      "min": 768,
+      "max": 1344,
+      "step": 8,
+      "camera_width": null,
+      "camera_height": true
+    },
+    "class_type": "BlenderInputInt",
+    "_meta": {
+      "title": "Height"
+    }
+  },
+  "5": {
+    "inputs": {
+      "value": "visitor01/raymnants-v3.0.safetensors",
+      "order": 2,
+      "default": "",
+      "format_path": "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
+      "list": "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors"
+    },
+    "class_type": "BlenderInputCombo",
+    "_meta": {
+      "title": "Model"
+    }
+  },
+  "6": {
+    "inputs": {
+      "text": [
+        "1",
+        0
+      ],
+      "clip": [
+        "9",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "7": {
+    "inputs": {
+      "text": "",
+      "clip": [
+        "9",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "8": {
+    "inputs": {
+      "width": [
+        "2",
+        0
+      ],
+      "height": [
+        "3",
+        0
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
+  },
+  "9": {
+    "inputs": {
+      "ckpt_name": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "10": {
+    "inputs": {
+      "value": 0,
+      "order": 1,
+      "default": 0,
+      "min": 0,
+      "max": 2147483647,
+      "step": 1
+    },
+    "class_type": "BlenderInputSeed",
+    "_meta": {
+      "title": "Seed"
+    }
+  },
+  "11": {
+    "inputs": {
+      "seed": [
+        "10",
+        0
+      ],
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "14",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "12": {
+    "inputs": {
+      "samples": [
+        "11",
+        0
+      ],
+      "vae": [
+        "15",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "13": {
+    "inputs": {
+      "filename_prefix": "blender",
+      "images": [
+        "12",
+        0
+      ]
+    },
+    "class_type": "BlenderOutputSaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "14": {
+    "inputs": {
+      "UNKNOWN": "Make a copy",
+      "model": [
+        "9",
+        0
+      ]
+    },
+    "_meta": {}
+  },
+  "15": {
+    "inputs": {
+      "UNKNOWN": "Make a copy",
+      "vae": [
+        "9",
+        2
+      ]
+    },
+    "_meta": {}
+  }
+}

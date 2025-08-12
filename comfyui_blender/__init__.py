@@ -7,6 +7,7 @@ from .operators import (
     delete_input,
     delete_output,
     delete_workflow,
+    download_example_workflows,
     get_camera_resolution,
     import_3d_model,
     import_image,
@@ -64,6 +65,7 @@ def register():
     delete_input.register()
     delete_output.register()
     delete_workflow.register()
+    download_example_workflows.register()
     get_camera_resolution.register()
     import_3d_model.register()
     import_image.register()
@@ -105,6 +107,7 @@ def unregister():
     delete_input.unregister()
     delete_output.unregister()
     delete_workflow.unregister()
+    download_example_workflows.unregister()
     get_camera_resolution.unregister()
     import_3d_model.unregister()
     import_image.unregister()

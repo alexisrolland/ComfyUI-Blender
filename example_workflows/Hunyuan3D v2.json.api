@@ -1,0 +1,233 @@
+{
+  "2": {
+    "inputs": {
+      "ckpt_name": "hunyuan3d-dit-v2.safetensors"
+    },
+    "class_type": "ImageOnlyCheckpointLoader",
+    "_meta": {
+      "title": "Image Only Checkpoint Loader (img2vid model)"
+    }
+  },
+  "3": {
+    "inputs": {
+      "image": "example.png",
+      "order": 2
+    },
+    "class_type": "BlenderInputLoadImage",
+    "_meta": {
+      "title": "Image"
+    }
+  },
+  "4": {
+    "inputs": {
+      "shift": 1.0000000000000002,
+      "model": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingAuraFlow",
+    "_meta": {
+      "title": "ModelSamplingAuraFlow"
+    }
+  },
+  "5": {
+    "inputs": {
+      "crop": "none",
+      "clip_vision": [
+        "2",
+        1
+      ],
+      "image": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "CLIPVisionEncode",
+    "_meta": {
+      "title": "CLIP Vision Encode"
+    }
+  },
+  "6": {
+    "inputs": {
+      "resolution": 3072,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentHunyuan3Dv2",
+    "_meta": {
+      "title": "EmptyLatentHunyuan3Dv2"
+    }
+  },
+  "7": {
+    "inputs": {
+      "clip_vision_output": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "Hunyuan3Dv2Conditioning",
+    "_meta": {
+      "title": "Hunyuan3Dv2Conditioning"
+    }
+  },
+  "8": {
+    "inputs": {
+      "seed": [
+        "15",
+        0
+      ],
+      "steps": 20,
+      "cfg": [
+        "12",
+        0
+      ],
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "denoise": 1,
+      "model": [
+        "4",
+        0
+      ],
+      "positive": [
+        "7",
+        0
+      ],
+      "negative": [
+        "7",
+        1
+      ],
+      "latent_image": [
+        "6",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "9": {
+    "inputs": {
+      "num_chunks": 8000,
+      "octree_resolution": 256,
+      "samples": [
+        "8",
+        0
+      ],
+      "vae": [
+        "2",
+        2
+      ]
+    },
+    "class_type": "VAEDecodeHunyuan3D",
+    "_meta": {
+      "title": "VAEDecodeHunyuan3D"
+    }
+  },
+  "10": {
+    "inputs": {
+      "algorithm": [
+        "13",
+        0
+      ],
+      "threshold": [
+        "14",
+        0
+      ],
+      "voxel": [
+        "9",
+        0
+      ]
+    },
+    "class_type": "VoxelToMesh",
+    "_meta": {
+      "title": "VoxelToMesh"
+    }
+  },
+  "11": {
+    "inputs": {
+      "filename_prefix": "3d/blender",
+      "mesh": [
+        "10",
+        0
+      ]
+    },
+    "class_type": "BlenderOutputSaveGlb",
+    "_meta": {
+      "title": "Blender Output Save GLB"
+    }
+  },
+  "12": {
+    "inputs": {
+      "value": 8.000000000000002,
+      "order": 3,
+      "default": 8.000000000000002,
+      "min": 4.000000000000001,
+      "max": 8.000000000000002
+    },
+    "class_type": "BlenderInputFloat",
+    "_meta": {
+      "title": "Cfg"
+    }
+  },
+  "13": {
+    "inputs": {
+      "value": "surface net",
+      "order": 4,
+      "default": "surface net",
+      "format_path": false,
+      "list": "basic\nsurface net"
+    },
+    "class_type": "BlenderInputCombo",
+    "_meta": {
+      "title": "Voxel To Mesh Algorithm"
+    }
+  },
+  "14": {
+    "inputs": {
+      "value": 0.6000000000000001,
+      "order": 5,
+      "default": 0.6000000000000001,
+      "min": -1.0000000000000002,
+      "max": 1.0000000000000002
+    },
+    "class_type": "BlenderInputFloat",
+    "_meta": {
+      "title": "Voxel To Mesh Threshold"
+    }
+  },
+  "15": {
+    "inputs": {
+      "value": 0,
+      "order": 1,
+      "default": 0,
+      "min": 0,
+      "max": 2147483647,
+      "step": 1
+    },
+    "class_type": "BlenderInputSeed",
+    "_meta": {
+      "title": "Blender Input Seed"
+    }
+  },
+  "16": {
+    "inputs": {
+      "UNKNOWN": "Color",
+      "image": [
+        "3",
+        0
+      ],
+      "background_color": [
+        "17",
+        0
+      ]
+    },
+    "_meta": {}
+  },
+  "17": {
+    "inputs": {
+      "UNKNOWN": ""
+    },
+    "_meta": {}
+  }
+}

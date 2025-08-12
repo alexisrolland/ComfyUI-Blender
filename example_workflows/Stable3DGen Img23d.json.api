@@ -1,0 +1,101 @@
+{
+  "11": {
+    "inputs": {
+      "seed": 1662275347,
+      "ss_guidance_strength": 3,
+      "ss_sampling_steps": 50,
+      "slat_guidance_strength": 3,
+      "slat_sampling_steps": 6,
+      "hi3dgen_pipeline": [
+        "16",
+        0
+      ],
+      "normal_images": [
+        "12",
+        0
+      ]
+    },
+    "class_type": "Stable3DGenerate3D",
+    "_meta": {
+      "title": "Stable-3D Generate 3D"
+    }
+  },
+  "12": {
+    "inputs": {
+      "hi3dgen_pipeline": [
+        "16",
+        0
+      ],
+      "normal_predictor": [
+        "16",
+        1
+      ],
+      "image": [
+        "21",
+        0
+      ]
+    },
+    "class_type": "Stable3DPreprocessImage",
+    "_meta": {
+      "title": "Stable-3D Preprocess Image"
+    }
+  },
+  "13": {
+    "inputs": {
+      "images": [
+        "12",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "16": {
+    "inputs": {
+      "trellis_model": "Stable-X/trellis-normal-v0-1",
+      "normal_model": "Stable-X/yoso-normal-v1-8-1",
+      "birefnet_model": "ZhengPeng7/BiRefNet"
+    },
+    "class_type": "Stable3DLoadModels",
+    "_meta": {
+      "title": "Stable-3D Load Models"
+    }
+  },
+  "19": {
+    "inputs": {
+      "model_file": [
+        "11",
+        0
+      ],
+      "image": ""
+    },
+    "class_type": "Preview3D",
+    "_meta": {
+      "title": "Preview 3D"
+    }
+  },
+  "21": {
+    "inputs": {
+      "image": "example.png",
+      "order": 2
+    },
+    "class_type": "BlenderInputLoadImage",
+    "_meta": {
+      "title": "Image"
+    }
+  },
+  "24": {
+    "inputs": {
+      "model_file": [
+        "11",
+        0
+      ]
+    },
+    "class_type": "BlenderOutputDownload3D",
+    "_meta": {
+      "title": "Blender Output Download 3D"
+    }
+  }
+}
