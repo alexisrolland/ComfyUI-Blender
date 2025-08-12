@@ -239,22 +239,30 @@
   },
   "19": {
     "inputs": {
-      "UNKNOWN": "Make a copy",
+      "tiling": "enable",
+      "copy_model": "Make a copy",
       "model": [
         "14",
         0
       ]
     },
-    "_meta": {}
+    "class_type": "SeamlessTile",
+    "_meta": {
+      "title": "Seamless Tile"
+    }
   },
   "20": {
     "inputs": {
-      "UNKNOWN": "Make a copy",
+      "tiling": "enable",
+      "copy_vae": "Make a copy",
       "vae": [
         "16",
         0
       ]
     },
-    "_meta": {}
+    "class_type": "MakeCircularVAE",
+    "_meta": {
+      "title": "Make Circular VAE"
+    }
   }
 }
