@@ -24,9 +24,6 @@ class ComfyBlenderOperatorImportWorkflowFromMetadata(bpy.types.Operator):
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         workflows_folder = str(addon_prefs.workflows_folder)
 
-        # Create the workflows folder if it doesn't exist
-        os.makedirs(workflows_folder, exist_ok=True)
-
         if self.type == "image":
             # Extract workflow from the metadata of the image file
             with open(self.filepath, "rb") as file:

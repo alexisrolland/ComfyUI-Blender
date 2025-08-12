@@ -26,9 +26,6 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
             addon_prefs = context.preferences.addons["comfyui_blender"].preferences
             workflows_folder = str(addon_prefs.workflows_folder)
 
-            # Create the workflows folder if it doesn't exist
-            os.makedirs(workflows_folder, exist_ok=True)
-
             # Load selected workflow file
             with open(self.filepath, "r", encoding="utf-8") as file:
                 new_workflow_data = json.load(file)
