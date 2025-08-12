@@ -7,7 +7,7 @@ from urllib.parse import urljoin, quote
 
 import bpy
 
-from ..utils import get_filepath, show_error_popup
+from ..utils import add_comfy_headers, get_comfy_url, get_filepath, show_error_popup
 from ..workflow import check_workflow_file_exists
 
 log = logging.getLogger("comfyui_blender")
@@ -27,11 +27,10 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
         """Execute the operator."""
         
         addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-        server_address = addon_prefs.server_address
         workflows_folder = str(addon_prefs.workflows_folder)
 
         # Download example workflows
-        url = urljoin(server_address, "/api/workflow_templates")
+        workflow_templates_url = get_comfy_url("/api/workflow_templates")
         response = requests.get(url)
         response.raise_for_status()  # Raise an exception for bad status codes
 
@@ -47,7 +46,7 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
         # Download workflows
         for workflow in example_workflows:
             self.report({'INFO'}, f"Downloading workflow: {workflow}")
-            workflow_url = urljoin(server_address, quote(f"/api/workflow_templates/{custom_node_key}/{workflow}.json.api"))
+            workflow_url = get_comfy_url(quote(f"/api/workflow_templates/{custom_node_key}/{workflow}.json.api"))
             response = requests.get(workflow_url)
             if response.status_code != 200:
                 error_message = f"Failed to download workflow: {workflow_url}"

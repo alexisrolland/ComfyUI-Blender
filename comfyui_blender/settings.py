@@ -65,7 +65,6 @@ def toggle_debug_mode(self, context):
         log.debug("Debug mode activated.")
     else:
         log.setLevel(logging.INFO)
-        log.debug("Debug mode deactivated.")
 
 def update_use_blend_file_location(self, context):
     """Update project base folders according to the location of the .blend file."""
@@ -181,6 +180,19 @@ class AddonPreferences(bpy.types.AddonPreferences):
         description="URL of the ComfyUI server.",
         default="http://127.0.0.1:8188",
         update=update_server_address
+    )
+
+    # Optional custom headers for server authentication for instance
+    server_header_key: StringProperty(
+        name="Key",
+        description="Custom header key to send along our Comfy requests.",
+        default=""
+    )
+    # Optional custom headers for server authentication for instance
+    server_header_value: StringProperty(
+        name="",
+        description="Custom header value to send along our Comfy requests.",
+        default=""
     )
 
     # Debug mode
@@ -303,6 +315,10 @@ class AddonPreferences(bpy.types.AddonPreferences):
         layout.label(text="Server:")
         layout.prop(self, "client_id")
         layout.prop(self, "server_address")
+        layout.label(text="Custom Headers:")
+        row = layout.row(align=True)
+        row.prop(self, "server_header_key")
+        row.prop(self, "server_header_value")
         layout.prop(self, "debug_mode")
 
         # Folders

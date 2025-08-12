@@ -3,7 +3,7 @@ import os
 import random
 import requests
 import textwrap
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlencode
 
 import bpy
 
@@ -14,16 +14,17 @@ def download_file(filename, subfolder, type="output"):
     """Download a file from the ComfyUI server."""
 
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-    server_address = addon_prefs.server_address
     outputs_folder = addon_prefs.outputs_folder
 
     # Download the file data from the ComfyUI server
     # Add a random parameter to avoid caching issues
     params = {"filename": filename, "subfolder": subfolder, "type": type, "rand": random.random()}
-    url = f"{server_address}/view"
+    url = get_comfy_url("/view", params=params)
 
+    headers = {"Content-Type": "application/json"}
+    headers = add_comfy_headers(headers)
     # Download with streaming to handle large files and avoid memory issues
-    response = requests.get(url, params=params, stream=True)
+    response = requests.get(url, params=params, headers=headers, stream=True)
     response.raise_for_status()  # Raise an exception for bad status codes
 
     # Save the file in the output folder
@@ -69,9 +70,6 @@ def show_error_popup(message):
 def upload_file(filepath, type, subfolder=None, overwrite=False):
     """Upload a file to the ComfyUI server."""
 
-    # Get server address
-    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-
     # Prepare form data
     data = {}
     if overwrite:
@@ -95,6 +93,38 @@ def upload_file(filepath, type, subfolder=None, overwrite=False):
             data["subfolder"] = subfolder
 
     files = {"image": (filename, file_data)}
-    url = urljoin(addon_prefs.server_address, "/upload/image")
-    response = requests.post(url, files=files, data=data)
+    url = get_comfy_url("/upload/image")
+    headers = add_comfy_headers()
+    response = requests.post(url, files=files, data=data, headers=headers)
     return response
+
+
+def get_comfy_url(route=None, params=None):
+    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+    server_address = addon_prefs.server_address
+    if route:
+        server_url = urljoin(server_address, route)
+    if params:
+        server_url = f"{server_url}?{urlencode(params)}"
+    return server_url
+
+
+def get_comfy_ws_url(route=None, params=None):
+    url = get_comfy_url(route=route, params=params)
+    # Replace http with ws and https with wss
+    if "https://" in url:
+        url = url.replace("https://", "wss://")
+    elif "http://" in url:
+        url = url.replace("http://", "ws://")
+    return url
+
+
+def add_comfy_headers(headers=None):
+    if headers is None:
+        headers = {}
+    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+    custom_header_key = addon_prefs.server_header_key
+    custom_header_value = addon_prefs.server_header_value
+    if custom_header_key and custom_header_value:
+        headers[custom_header_key] = custom_header_value
+    return headers

@@ -9,7 +9,7 @@ from urllib.parse import urljoin, urlencode
 import bpy
 from ._vendor import websocket
 
-from .utils import download_file, show_error_popup
+from .utils import download_file, show_error_popup, add_comfy_headers, get_comfy_ws_url
 
 
 log = logging.getLogger("comfyui_blender")
@@ -24,25 +24,18 @@ def connect():
 
     # Get the server address from addon preferences
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-    server_address = addon_prefs.server_address
     client_id = addon_prefs.client_id
 
     # Construct WebSocket address
-    url = urljoin(server_address, "/ws")
     params = {"clientId": client_id}
-    server_address = f"{url}?{urlencode(params)}"
-
-    # Replace http with ws and https with wss
-    if "https://" in server_address:
-        server_address = server_address.replace("https://", "wss://")
-    elif "http://" in server_address:
-        server_address = server_address.replace("http://", "ws://")
+    headers = add_comfy_headers()
+    url = get_comfy_ws_url("/ws", params=params)
 
     # Establish the WebSocket connection
     global WS_CONNECTION
     WS_CONNECTION = websocket.WebSocket()
     try:
-        WS_CONNECTION.connect(server_address)
+        WS_CONNECTION.connect(url, headers=headers)
     except Exception as e:
         WS_CONNECTION = None
         raise e
@@ -80,6 +73,7 @@ def listen():
             message = WS_CONNECTION.recv()
         except Exception as e:
             time.sleep(1)
+            log.debug(f"websocket disconnection received. trying to reconnect.")
             connect()  # Try to reconnect
             continue
 
