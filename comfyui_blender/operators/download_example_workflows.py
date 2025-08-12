@@ -14,7 +14,7 @@ log = logging.getLogger("comfyui_blender")
 
 
 class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
-    """Operator to download the example workflows locally."""
+    """Operator to download example workflows from ComfyUI server."""
 
     bl_idname = "comfy.download_example_workflows"
     bl_label = "Download Example Workflow"
