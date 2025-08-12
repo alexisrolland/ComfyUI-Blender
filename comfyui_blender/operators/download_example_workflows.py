@@ -31,7 +31,9 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
         workflow_templates_url = urljoin(server_address, "/api/workflow_templates")
 
         workflow_templates = requests.get(workflow_templates_url).json()
-        blender_workflows = workflow_templates.get(self.custom_node_name, [])
+        # Find matching key case-insensitively
+        custom_node_key = next((k for k in workflow_templates.keys() if k.casefold() == self.custom_node_name.casefold()), None)
+        blender_workflows = workflow_templates.get(custom_node_key, []) if custom_node_key else []
         if not blender_workflows:
             log.warning(f"No ComfyUI-Blender workflow found. custom_node may not be properly installed.")
             return
