@@ -281,7 +281,7 @@ class AddonPreferences(bpy.types.AddonPreferences):
         layout.label(text="Server:")
         layout.prop(self, "client_id")
         layout.prop(self, "server_address")
-        layout.prop(self, "debug_logging")
+        layout.prop(self, "debug_mode")
 
         # Folders
         layout.label(text="Folders:")
