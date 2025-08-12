@@ -9,8 +9,8 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
 
     bl_label = "Workflow"
     bl_idname = "COMFY_PT_Workflow"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
     bl_category = "ComfyUI"
 
     def draw_header(self, context):
@@ -40,7 +40,7 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
         # Buttons to import a workflow
         row = self.layout.row(align=True)
         row.operator("comfy.import_workflow", text="Import Workflow")
-        row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER_LARGE").folder_path = workflows_folder
+        row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER").folder_path = workflows_folder
 
         # Dropdown list of workflows with actions
         row = self.layout.row(align=True)

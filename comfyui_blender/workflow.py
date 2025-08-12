@@ -1,4 +1,5 @@
 """Functions to create dynamic workflow classes and properties"""
+import hashlib
 import json
 import logging
 import os
@@ -16,13 +17,35 @@ from bpy.props import (
 log = logging.getLogger("comfyui_blender")
 
 
+def check_workflow_file_exists(new_workflow_data, workflows_folder):
+    """Check if a workflow already exists and return the name of the existing file."""
+
+    # Create normalized content and hash for new workflow
+    new_content = json.dumps(new_workflow_data, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    new_hash = hashlib.sha256(new_content).hexdigest()
+
+    # Loop over existing files
+    for filename in os.listdir(workflows_folder):
+        if filename.endswith(".json"):
+            # Load existing workflow data
+            filepath = os.path.join(workflows_folder, filename)
+            with open(filepath, "r", encoding="utf-8") as file:
+                existing_workflow_data = json.load(file)
+
+            # Create normalized content and hash for existing workflow
+            existing_content = json.dumps(existing_workflow_data, sort_keys=True, separators=(",", ":")).encode("utf-8")
+            existing_hash = hashlib.sha256(existing_content).hexdigest()
+ 
+            # Compare hashes
+            if new_hash == existing_hash:
+                return filename
+
 def create_class_properties(inputs, keep_values=False):
     """Create properties for each input and output of the workflow."""
 
     properties = {}
     for key, node in inputs.items():
         property_name = f"node_{key}"
-        property_name = re.sub(r"[^a-zA-Z0-9_]", "_", property_name).lower()
         metadata = node.get("_meta", {})
         name = metadata.get("title", f"Node {key}")
 
@@ -209,6 +232,16 @@ def register_workflow_class(self, context):
             workflow_instance = context.scene.current_workflow
             for key, node in inputs.items():
                 property_name = f"node_{key}"
-                property_name = re.sub(r"[^a-zA-Z0-9_]", "_", property_name).lower()
+
                 if hasattr(workflow_instance, property_name):
-                    setattr(workflow_instance, property_name, node["inputs"].get("value", ""))
+                    # Custom handling for 3D model input
+                    if node["class_type"] == "BlenderInputLoad3D":
+                        setattr(workflow_instance, property_name, node["inputs"].get("model_file", ""))
+                    
+                    # Custom handling for image input
+                    elif node["class_type"] == "BlenderInputLoadImage":
+                        setattr(workflow_instance, property_name, node["inputs"].get("image", ""))
+
+                    else:
+                        # Default handling for other input types
+                        setattr(workflow_instance, property_name, node["inputs"].get("value", ""))

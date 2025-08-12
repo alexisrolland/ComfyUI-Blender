@@ -301,13 +301,6 @@ class AddonPreferences(bpy.types.AddonPreferences):
         box = layout.box()
         col = box.column(align=True)
 
-        # Workflows folder
-        row = col.row(align=True)
-        row.prop(self, "workflows_folder", text="Workflows", emboss=not use_file_loc)
-        if not use_file_loc:
-            select_workflows_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
-            select_workflows_folder.target_property = "workflows_folder"
-
         # Inputs folder
         row = col.row(align=True)
         row.prop(self, "inputs_folder", text="Inputs", emboss=not use_file_loc)
@@ -321,6 +314,13 @@ class AddonPreferences(bpy.types.AddonPreferences):
         if not use_file_loc:
             select_outputs_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
             select_outputs_folder.target_property = "outputs_folder"
+        
+        # Workflows folder
+        row = col.row(align=True)
+        row.prop(self, "workflows_folder", text="Workflows", emboss=not use_file_loc)
+        if not use_file_loc:
+            select_workflows_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
+            select_workflows_folder.target_property = "workflows_folder"
 
 def register():
     """Register classes."""
