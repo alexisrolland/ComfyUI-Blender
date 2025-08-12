@@ -89,28 +89,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
             # Custom handling for image input
             elif node["class_type"] == "BlenderInputLoadImage":
-                filepath = getattr(current_workflow, property_name)
-                try:
-                    # Upload file on ComfyUI server
-                    response = upload_file(filepath, type="image")  # 3D files also use the image type
-                    if response.status_code != 200:
-                        error_message = f"Failed to upload file: {response.status_code} - {response.text}"
-                        show_error_popup(error_message)
-                        return {'CANCELLED'}
-
-                except Exception as e:
-                    input_name = current_workflow.bl_rna.properties[property_name].name  # Node title
-                    error_message = f"Error uploading file for input {input_name}: {str(e)}"
-                    show_error_popup(error_message)
-                    return {'CANCELLED'}
-
-                # Update workflow
-                filepath = response.json()["name"]
-                subfolder = response.json()["subfolder"]
-                if subfolder:
-                    filepath = subfolder + "/" + filepath
-                workflow[key]["inputs"]["image"] = filepath
-                self.report({'INFO'}, f"File uploaded to ComfyUI server: {filepath}")
+                workflow[key]["inputs"]["image"] = getattr(current_workflow, property_name)
 
             # Custom handling for seed inputs
             elif node["class_type"] == "BlenderInputSeed":

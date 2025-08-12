@@ -240,7 +240,17 @@ def register_workflow_class(self, context):
                     
                     # Custom handling for image input
                     elif node["class_type"] == "BlenderInputLoadImage":
-                        setattr(workflow_instance, property_name, node["inputs"].get("image", ""))
+                        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+                        inputs_folder = str(addon_prefs.inputs_folder)
+                        input_filename = node["inputs"].get("image", "")
+                        input_filepath = os.path.join(inputs_folder, node["inputs"].get("image", ""))
+
+                        # Load image in the data block
+                        if os.path.exists(input_filepath):
+                            bpy.data.images.load(input_filepath, check_existing=True)
+
+                        # Update the workflow property with the input file path as defined on the ComfyUI server
+                        setattr(workflow_instance, property_name, input_filename)
 
                     else:
                         # Default handling for other input types
