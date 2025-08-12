@@ -170,12 +170,12 @@ class AddonPreferences(bpy.types.AddonPreferences):
         update=update_server_address
     )
 
-    # Toggle debug logging
-    debug_logging: BoolProperty(
-        name="Debug logging",
-        description="Activate debug logs for the addon.",
+    # Debug mode
+    debug_mode: BoolProperty(
+        name="Debug Mode",
+        description="Display debug log messages in Blender's system console.",
         default=False,
-        update=toggle_debug_logging
+        update=toggle_debug_mode
     )
     # Connection status
     # This is used to indicate if the Blender add-on is connected to the ComfyUI server via WebSocket
