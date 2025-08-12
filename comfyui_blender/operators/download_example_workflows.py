@@ -37,8 +37,6 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
         if not blender_workflows:
             log.warning(f"No ComfyUI-Blender workflow found. custom_node may not be properly installed.")
             return
-        else:
-            log.debug(f"Blender example workflows found: {blender_workflows}")
 
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         workflows_folder = str(addon_prefs.workflows_folder)
