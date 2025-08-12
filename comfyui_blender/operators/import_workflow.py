@@ -1,10 +1,12 @@
 """Operator to import a workflow JSON file."""
+import json
 import os
 import shutil
 
 import bpy
 
 from ..utils import get_filepath, show_error_popup
+from ..workflow import check_workflow_file_exists
 
 
 class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
@@ -23,24 +25,36 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
         if self.filepath.lower().endswith(".json"):
             addon_prefs = context.preferences.addons["comfyui_blender"].preferences
             workflows_folder = str(addon_prefs.workflows_folder)
-            workflow_filename = os.path.basename(self.filepath)
 
             # Create the workflows folder if it doesn't exist
             os.makedirs(workflows_folder, exist_ok=True)
 
-            # Get target file name and path
-            workflow_filename, workflow_path = get_filepath(workflow_filename, workflows_folder)
+            # Load selected workflow file
+            with open(self.filepath, "r", encoding="utf-8") as file:
+                new_workflow_data = json.load(file)
 
-            try:
-                # Copy the file to the workflows folder and select the workflow
-                shutil.copy(self.filepath, workflow_path)
-                addon_prefs.workflow = workflow_filename
-                self.report({'INFO'}, f"Workflow copied to: {workflow_path}")
+            # Check if a workflow with the same data already exists
+            workflow_filename = check_workflow_file_exists(new_workflow_data, workflows_folder)
 
-            except Exception as e:
-                error_message = f"Failed to copy workflow file: {e}"
-                show_error_popup(error_message)
-                return {'CANCELLED'}
+            # Get target file name and path if workflow does not exist
+            if not workflow_filename:
+                workflow_filename = os.path.basename(self.filepath)
+                workflow_filename, workflow_path = get_filepath(workflow_filename, workflows_folder)
+
+                try:
+                    # Copy the file to the workflows folder
+                    shutil.copy(self.filepath, workflow_path)
+                    self.report({'INFO'}, f"Workflow copied to: {workflow_path}")
+
+                except Exception as e:
+                    error_message = f"Failed to copy workflow file: {e}"
+                    show_error_popup(error_message)
+                    return {'CANCELLED'}
+            else:
+                self.report({'INFO'}, f"Workflow already exists: {workflow_filename}")
+
+            # Set current workflow to load workflow
+            addon_prefs.workflow = workflow_filename
 
         else:
             error_message = "Selected file is not a *.json."

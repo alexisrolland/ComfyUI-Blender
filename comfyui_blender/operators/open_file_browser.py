@@ -23,7 +23,7 @@ class ComfyBlenderOperatorOpenFileBrowser(bpy.types.Operator):
 
         # If no file browser area exists, split the screen to create one
         if file_browser_area is None:
-            bpy.ops.screen.area_split(direction="VERTICAL", factor=0.3)
+            bpy.ops.screen.area_split(direction="VERTICAL", factor=0.4)
 
             # Get the newly created area (the last one)
             file_browser_area = context.screen.areas[-1]

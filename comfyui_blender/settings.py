@@ -1,4 +1,6 @@
 """ComfyUI Blender Add-on Settings"""
+
+import logging
 import os
 import uuid
 
@@ -13,6 +15,10 @@ from bpy.props import (
 from .connection import disconnect
 from .utils import show_error_popup
 from .workflow import get_workflow_list, register_workflow_class
+
+log = logging.getLogger("comfyui_blender")
+log.setLevel(logging.INFO)
+log.addHandler(logging.StreamHandler())
 
 
 def update_progress(self, context):
@@ -50,6 +56,15 @@ def update_server_address(self, context):
     # Ensure the server address ends without a slash.
     while self.server_address.endswith("/"):
         self.server_address = self.server_address.rstrip("/")
+
+
+def toggle_debug_mode(self, context):
+    if self.debug_mode:
+        log.setLevel(logging.DEBUG)
+        log.debug("Debug mode activated.")
+    else:
+        log.setLevel(logging.INFO)
+        log.debug("Debug mode deactivated.")
 
 def update_use_blend_file_location(self, context):
     """Update project base folders according to the location of the .blend file."""
@@ -155,6 +170,13 @@ class AddonPreferences(bpy.types.AddonPreferences):
         update=update_server_address
     )
 
+    # Debug mode
+    debug_mode: BoolProperty(
+        name="Debug Mode",
+        description="Display debug log messages in Blender's system console.",
+        default=False,
+        update=toggle_debug_mode
+    )
     # Connection status
     # This is used to indicate if the Blender add-on is connected to the ComfyUI server via WebSocket
     connection_status: BoolProperty(
@@ -259,6 +281,7 @@ class AddonPreferences(bpy.types.AddonPreferences):
         layout.label(text="Server:")
         layout.prop(self, "client_id")
         layout.prop(self, "server_address")
+        layout.prop(self, "debug_mode")
 
         # Folders
         layout.label(text="Folders:")
@@ -278,13 +301,6 @@ class AddonPreferences(bpy.types.AddonPreferences):
         box = layout.box()
         col = box.column(align=True)
 
-        # Workflows folder
-        row = col.row(align=True)
-        row.prop(self, "workflows_folder", text="Workflows", emboss=not use_file_loc)
-        if not use_file_loc:
-            select_workflows_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
-            select_workflows_folder.target_property = "workflows_folder"
-
         # Inputs folder
         row = col.row(align=True)
         row.prop(self, "inputs_folder", text="Inputs", emboss=not use_file_loc)
@@ -298,6 +314,13 @@ class AddonPreferences(bpy.types.AddonPreferences):
         if not use_file_loc:
             select_outputs_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
             select_outputs_folder.target_property = "outputs_folder"
+        
+        # Workflows folder
+        row = col.row(align=True)
+        row.prop(self, "workflows_folder", text="Workflows", emboss=not use_file_loc)
+        if not use_file_loc:
+            select_workflows_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
+            select_workflows_folder.target_property = "workflows_folder"
 
 def register():
     """Register classes."""

@@ -35,6 +35,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
             try:
                 connection.connect()
                 self.report({'INFO'}, "Connection established.")
+
             except Exception as e:
                 error_message = f"Failed to connect to ComfyUI server: {addon_prefs.server_address}. {e}"
                 show_error_popup(error_message)
@@ -71,6 +72,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                         error_message = f"Failed to upload file: {response.status_code} - {response.text}"
                         show_error_popup(error_message)
                         return {'CANCELLED'}
+
                 except Exception as e:
                     input_name = current_workflow.bl_rna.properties[property_name].name  # Node title
                     error_message = f"Error uploading file for input {input_name}: {str(e)}"
@@ -95,6 +97,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                         error_message = f"Failed to upload file: {response.status_code} - {response.text}"
                         show_error_popup(error_message)
                         return {'CANCELLED'}
+
                 except Exception as e:
                     input_name = current_workflow.bl_rna.properties[property_name].name  # Node title
                     error_message = f"Error uploading file for input {input_name}: {str(e)}"
@@ -111,15 +114,15 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
             # Custom handling for seed inputs
             elif node["class_type"] == "BlenderInputSeed":
-                if addon_prefs.lock_seed:
-                    seed = getattr(current_workflow, property_name)
-                else:
-                    # If lock seed is not enabled, generate a random seed
+                seed = getattr(current_workflow, property_name)
+                workflow[key]["inputs"]["value"] = seed
+
+                # If lock seed is not enabled, generate a new random seed
+                if not addon_prefs.lock_seed:
                     min = current_workflow.bl_rna.properties[property_name].hard_min
                     max = current_workflow.bl_rna.properties[property_name].hard_max
                     seed = random.randint(min, max)
                     setattr(current_workflow, property_name, seed)
-                workflow[key]["inputs"]["value"] = seed
 
             else:
                 # Default handling for other input types
