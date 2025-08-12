@@ -44,9 +44,6 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
             show_error_popup(error_message)
             return {'CANCELLED'}
 
-        # Create the workflows folder if it doesn't exist
-        os.makedirs(workflows_folder, exist_ok=True)
-
         # Download workflows
         for workflow in example_workflows:
             self.report({'INFO'}, f"Downloading workflow: {workflow}")
