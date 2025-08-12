@@ -27,5 +27,5 @@ python-vendorize
 
 ## Debug Mode
 
-In order to help debug the add on and comfy connections, a 'Debug logging' option is available in the blender addon settings.
+Activate the debug mode in the add-on preferences to log the ComfyUI server messages in Blender's system console.
 Logs are available in blender stdout or system console.
