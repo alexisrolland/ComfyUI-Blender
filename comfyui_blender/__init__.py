@@ -11,7 +11,6 @@ from .operators import (
     get_camera_resolution,
     import_3d_model,
     import_input_image,
-    import_workflow_from_metadata,
     import_workflow,
     lock_seed,
     open_file_browser,
@@ -39,7 +38,7 @@ from . import settings
 bl_info = {
     "name": "ComfyUI Blender",
     "author": "Alexis ROLLAND",
-    "version": (0, 9, 0),
+    "version": (0, 10, 0),
     "blender": (4, 4, 3),
     "location": "View3D > Sidebar > ComfyUI",
     "description": "Blender add-on to send requests to a ComfyUI server.",
@@ -69,7 +68,6 @@ def register():
     get_camera_resolution.register()
     import_3d_model.register()
     import_input_image.register()
-    import_workflow_from_metadata.register()
     import_workflow.register()
     lock_seed.register()
     open_file_browser.register()
@@ -111,7 +109,6 @@ def unregister():
     get_camera_resolution.unregister()
     import_3d_model.unregister()
     import_input_image.unregister()
-    import_workflow_from_metadata.unregister()
     import_workflow.unregister()
     lock_seed.unregister()
     open_file_browser.unregister()
