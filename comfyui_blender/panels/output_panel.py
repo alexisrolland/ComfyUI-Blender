@@ -86,9 +86,9 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         image_editor.filename = output.filename
 
                         # Reload workflow button
-                        reload_workflow = col.operator("comfy.import_workflow_from_metadata", text="", icon="NODETREE")
-                        reload_workflow.filepath = full_path
-                        reload_workflow.type = output.type
+                        import_workflow = col.operator("comfy.import_workflow", text="", icon="NODETREE")
+                        import_workflow.filepath = full_path
+                        import_workflow.invoke_default = False
 
                         # Delete output button
                         delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
@@ -172,9 +172,9 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         image_editor.filename = output.filename
 
                         # Reload workflow button
-                        reload_workflow = row_right.operator("comfy.import_workflow_from_metadata", text="", icon="NODETREE")
-                        reload_workflow.filepath = full_path
-                        reload_workflow.type = output.type
+                        import_workflow = row_right.operator("comfy.import_workflow", text="", icon="NODETREE")
+                        import_workflow.filepath = full_path
+                        import_workflow.invoke_default = False
 
                 # Display output of type 3d
                 elif output.type == "3d":

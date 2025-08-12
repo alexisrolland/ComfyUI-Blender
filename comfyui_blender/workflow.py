@@ -137,6 +137,55 @@ def create_workflow_class(class_name, properties):
     new_class.__annotations__ = {prop_name: properties[prop_name] for prop_name in properties}
     return new_class
 
+def extract_workflow_from_metadata(filepath):
+    """Extract workflow from the metadata of a file."""
+
+    def _chunk_iter(data):
+        """Iterate over PNG data chunks to extract metadata. This function was borrowed from:
+        https://blender.stackexchange.com/questions/35504/read-image-metadata-from-python"""
+
+        total_length = len(data)
+        end = 4
+
+        while(end + 8 < total_length):     
+            length = int.from_bytes(data[end + 4: end + 8], 'big')
+            begin_chunk_type = end + 8
+            begin_chunk_data = begin_chunk_type + 4
+            end = begin_chunk_data + length
+            yield (data[begin_chunk_type: begin_chunk_data], data[begin_chunk_data: end])
+
+    # Placeholder for GLB metadata extraction
+    if filepath.lower().endswith(".glb"):
+        return None
+    
+    # Placeholder for OBJ metadata extraction
+    if filepath.lower().endswith(".obj"):
+        return None
+
+    # PNG metadata extraction
+    elif filepath.lower().endswith(".png"):
+        with open(filepath, "rb") as file:
+            data = file.read()
+
+        metadata = {}
+        for chunk_type, chunk_data in _chunk_iter(data):
+            if chunk_type == b'tEXt':
+                key, value = chunk_data.decode("iso-8859-1").split("\0")
+                metadata = {key: json.loads(value)}
+
+        # Add a flag to keep current values when reloading the workflow
+        # Instead of using the default values
+        if metadata.get("prompt"):
+            metadata["prompt"]["comfyui_blender"] = {}
+            metadata["prompt"]["comfyui_blender"]["keep_values"] = True
+            return metadata["prompt"]
+        else:
+            return None
+
+    # File type is not supported
+    else:
+        return None
+
 def get_workflow_class_name(workflow_filename):
     """Generate a class name from the workflow file name."""
 

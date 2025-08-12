@@ -6,7 +6,7 @@ import shutil
 import bpy
 
 from ..utils import get_filepath, show_error_popup
-from ..workflow import check_workflow_file_exists
+from ..workflow import check_workflow_file_exists, extract_workflow_from_metadata
 
 
 class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
@@ -17,15 +17,17 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
     bl_description = "Import a workflow JSON file"
 
     filepath: bpy.props.StringProperty(name="File Path", subtype="FILE_PATH")
-    filter_glob: bpy.props.StringProperty(name="File Filter", default="*.json")
+    filter_glob: bpy.props.StringProperty(name="File Filter", default="*.json;*.png;")
+    invoke_default: bpy.props.BoolProperty(default=True, options={'HIDDEN'})
 
     def execute(self, context):
         """Execute the operator."""
 
+        # Get workflows folder
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+        workflows_folder = str(addon_prefs.workflows_folder)
+        
         if self.filepath.lower().endswith(".json"):
-            addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-            workflows_folder = str(addon_prefs.workflows_folder)
-
             # Load selected workflow file
             with open(self.filepath, "r", encoding="utf-8") as file:
                 new_workflow_data = json.load(file)
@@ -52,6 +54,39 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
 
             # Set current workflow to load workflow
             addon_prefs.workflow = workflow_filename
+        
+        elif self.filepath.lower().endswith(".png"):
+            # Extract workflow from the metadata of the file
+            new_workflow_data = extract_workflow_from_metadata(self.filepath)
+            if not new_workflow_data:
+                error_message = "No workflow found in the metadata."
+                show_error_popup(error_message)
+                return {'CANCELLED'}
+
+            # Check if a workflow with the same data already exists
+            workflow_filename = check_workflow_file_exists(new_workflow_data, workflows_folder)
+
+            # Get target file name and path if workflow does not exist
+            if not workflow_filename:
+                workflow_filename = os.path.basename(self.filepath)
+                workflow_filename = os.path.splitext(workflow_filename)[0] + ".json"
+                workflow_filename, workflow_path = get_filepath(workflow_filename, workflows_folder)
+
+                try:
+                    # Save the file to the workflow folder
+                    with open(workflow_path, "w", encoding="utf-8") as file:
+                        json.dump(new_workflow_data, file, indent=2, ensure_ascii=False)
+                    self.report({'INFO'}, f"Workflow saved to: {workflow_path}")
+
+                except Exception as e:
+                    error_message = f"Failed to save workflow: {e}"
+                    show_error_popup(error_message)
+                    return {'CANCELLED'}
+            else:
+                self.report({'INFO'}, f"Workflow already exists: {workflow_filename}")
+
+            # Set current workflow to load workflow
+            addon_prefs.workflow = workflow_filename
 
         else:
             error_message = "Selected file is not a *.json."
@@ -61,6 +96,10 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
 
     def invoke(self, context, event):
         """Invoke the file selector for importing a workflow."""
+
+        # Skip modal box
+        if not self.invoke_default:
+            return self.execute(context)
 
         context.window_manager.fileselect_add(self)
         return {'RUNNING_MODAL'}
