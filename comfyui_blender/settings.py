@@ -337,6 +337,9 @@ def register():
     # Register the project settings to the scene
     bpy.types.Scene.comfyui_project_settings = bpy.props.PointerProperty(type=ProjectSettingsPropertyGroup)
 
+    if bpy.context.preferences.addons["comfyui_blender"].preferences.debug_mode:
+        log.setLevel(logging.DEBUG)
+
 def unregister():
     """Unregister classes."""
 
