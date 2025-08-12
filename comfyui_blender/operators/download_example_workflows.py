@@ -18,7 +18,7 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
 
     bl_idname = "comfy.download_example_workflows"
     bl_label = "Download Example Workflows"
-    bl_description = "Download ComfyUI-Blender example workflows from Comfy"
+    bl_description = "Download ComfyUI-Blender example workflows from the ComfyUI server"
     custom_node_name = "ComfyUI-Blender"
 
     def execute(self, context):
