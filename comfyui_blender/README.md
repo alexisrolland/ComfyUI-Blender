@@ -24,3 +24,7 @@ source .venv/bin/activate
 python -m pip install vendorize
 python-vendorize
 ```
+
+## Debug Mode
+
+Activate the debug mode in the add-on preferences to log the ComfyUI server messages in Blender's system console.

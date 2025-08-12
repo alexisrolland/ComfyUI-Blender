@@ -1,6 +1,7 @@
 """Functions to manage the WebSocket connection to the ComfyUI server."""
 import ast
 import json
+import logging
 import os
 import time
 from urllib.parse import urljoin, urlencode
@@ -9,6 +10,9 @@ import bpy
 from ._vendor import websocket
 
 from .utils import download_file, show_error_popup
+
+
+log = logging.getLogger("comfyui_blender")
 
 
 # Global variable to manage the WebSocket connection
@@ -82,7 +86,7 @@ def listen():
         # Process the message
         if isinstance(message, str) and message != "":
             message = json.loads(message)
-            # print(f"Received message: {message}") # Debugging
+            log.debug(f"Received websocket message: {message}")
 
             # Reset progress bar to 0 when execution starts
             if message["type"] == "execution_start":

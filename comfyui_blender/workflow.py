@@ -1,6 +1,7 @@
 """Functions to create dynamic workflow classes and properties"""
 import hashlib
 import json
+import logging
 import os
 import re
 
@@ -12,6 +13,8 @@ from bpy.props import (
     IntProperty,
     StringProperty
 )
+
+log = logging.getLogger("comfyui_blender")
 
 
 def check_workflow_file_exists(new_workflow_data, workflows_folder):
