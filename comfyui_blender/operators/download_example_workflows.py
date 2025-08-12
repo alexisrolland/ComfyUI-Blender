@@ -1,4 +1,4 @@
-"""Operator to download Example workflows from ComfyUI."""
+"""Operator to download example workflows from ComfyUI server."""
 import json
 import logging
 import os
