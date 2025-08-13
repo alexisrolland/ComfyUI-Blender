@@ -9,6 +9,7 @@ from bpy.props import (
     BoolProperty,
     CollectionProperty,
     EnumProperty,
+    IntProperty,
     StringProperty
 )
 
@@ -126,6 +127,18 @@ class PromptPropertyGroup(bpy.types.PropertyGroup):
             ("executing", "Executing", ""),
             ("executed", "Executed", "")
         ]
+    )
+
+    total_nb_nodes: IntProperty(
+        name="Total Number of Nodes",
+        description="Total number of nodes in the workflow.",
+        default=0
+    )
+
+    nb_nodes_cached: IntProperty(
+        name="Number of Nodes Cached",
+        description="Number of nodes reusing the cache during the workflow execution.",
+        default=0
     )
 
 class OutputPropertyGroup(bpy.types.PropertyGroup):

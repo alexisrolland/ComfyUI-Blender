@@ -86,24 +86,24 @@ def listen():
         # Process the message
         if isinstance(message, str) and message != "":
             message = json.loads(message)
-            log.debug(f"Received websocket message: {message}")
+            #log.debug(f"Received websocket message: {message}")
+            #print(f"Received websocket message: {message}")
 
             # Reset progress bar to 0 when execution starts
             if message["type"] == "execution_start":
                 data = message["data"]
                 if data["prompt_id"] in queue.keys():
-                    addon_prefs.progress_value = 0.0
                     queue[data["prompt_id"]].status = message["type"]
+                    workflow = ast.literal_eval(queue[data["prompt_id"]].workflow)
+                    queue[data["prompt_id"]].total_nb_nodes = len(workflow)
+                    addon_prefs.progress_value = 0.0
 
-            # Update progress bar with cached nodes
+            # Update cached nodes
             if message["type"] == "execution_cached":
                 data = message["data"]
                 if data["prompt_id"] in queue.keys():
-                    workflow = ast.literal_eval(queue[data["prompt_id"]].workflow)
-                    nb_nodes_total = len(workflow)
-                    nb_nodes_cached = len(data["nodes"])
-                    addon_prefs.progress_value = nb_nodes_cached / nb_nodes_total
                     queue[data["prompt_id"]].status = message["type"]
+                    queue[data["prompt_id"]].nb_nodes_cached = len(data["nodes"])
 
             # Check if execution is complete
             if message["type"] == "executing":
@@ -111,11 +111,6 @@ def listen():
                 if data["prompt_id"] in queue.keys():
                     if data["node"] is None:
                         break
-
-                    # Update progress bar with current node execution
-                    workflow = ast.literal_eval(queue[data["prompt_id"]].workflow)
-                    nb_nodes_total = len(workflow)
-                    addon_prefs.progress_value = addon_prefs.progress_value + (1 / nb_nodes_total)
                     queue[data["prompt_id"]].status = message["type"]
 
             # Check if the message type is executed with outputs
@@ -184,8 +179,8 @@ def listen():
                 data = message["data"]
                 if data["prompt_id"] in queue.keys():
                     # Reset progress and remove prompt from the queue when execution fails
-                    addon_prefs.progress_value = 0.0
                     queue.remove(queue.find(data["prompt_id"]))
+                    addon_prefs.progress_value = 0.0
                     error_message = data.get("exception_message", "Unknown error")
 
                     # Schedule popup to run on main thread
@@ -197,12 +192,29 @@ def listen():
 
             # Reset progress and remove prompt from the queue when execution is interrupted
             if message["type"] == "execution_interrupted":
-                    addon_prefs.progress_value = 0.0
                     queue.remove(queue.find(data["prompt_id"]))
+                    addon_prefs.progress_value = 0.0
 
             # Remove prompt from the queue when execution completes
             if message["type"] == "execution_success":
                 data = message["data"]
                 if data["prompt_id"] in queue.keys():
-                    addon_prefs.progress_value = 1.0
                     queue.remove(queue.find(data["prompt_id"]))
+                    addon_prefs.progress_value = 1.0
+
+            # Update progress bar
+            if message["type"] == "progress_state":
+                data = message["data"]
+                if data["prompt_id"] in queue.keys():
+                    # Percentage of progress contribution per node
+                    total_nb_nodes = queue[data["prompt_id"]].total_nb_nodes - queue[data["prompt_id"]].nb_nodes_cached
+                    node_contribution = 100 / total_nb_nodes
+
+                    # Get progress from executing nodes
+                    workflow_progress = 0
+                    for key, node in data["nodes"].items():
+                        node_progress = node["value"] / node["max"] * node_contribution
+                        workflow_progress += node_progress
+
+                    # Update progress value
+                    addon_prefs.progress_value = workflow_progress / 100.0
