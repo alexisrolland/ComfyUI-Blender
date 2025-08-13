@@ -89,7 +89,14 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
             # Custom handling for image input
             elif node["class_type"] == "BlenderInputLoadImage":
-                workflow[key]["inputs"]["image"] = getattr(current_workflow, property_name)
+                property_value = getattr(current_workflow, property_name)
+                if property_value:
+                    workflow[key]["inputs"]["image"] = property_value
+                else:
+                    property_name = current_workflow.bl_rna.properties[property_name].name  # Node title
+                    error_message = f"Input {property_name} is empty."
+                    show_error_popup(error_message)
+                    return {'CANCELLED'}
 
             # Custom handling for seed inputs
             elif node["class_type"] == "BlenderInputSeed":
