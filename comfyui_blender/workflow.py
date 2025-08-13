@@ -171,7 +171,10 @@ def extract_workflow_from_metadata(filepath):
         for chunk_type, chunk_data in _chunk_iter(data):
             if chunk_type == b'tEXt':
                 key, value = chunk_data.decode("iso-8859-1").split("\0")
-                metadata = {key: json.loads(value)}
+                try:
+                    metadata = {key: json.loads(value)}
+                except Exception as e:
+                    return None  # Return None if JSON parsing fails
 
         # Add a flag to keep current values when reloading the workflow
         # Instead of using the default values
