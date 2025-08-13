@@ -42,7 +42,7 @@ class ComfyBlenderOperatorImport3DModel(bpy.types.Operator):
         return {'FINISHED'}
 
     def invoke(self, context, event):
-        """Invoke the file selector for importing a workflow."""
+        """Invoke the file selector."""
 
         # If filepath is already set, execute directly without file browser
         if self.filepath:

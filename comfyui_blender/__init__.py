@@ -15,6 +15,7 @@ from .operators import (
     lock_seed,
     open_file_browser,
     open_image_editor,
+    open_image,
     prepare_3d_model,
     render_depth_map,
     render_lineart,
@@ -72,6 +73,7 @@ def register():
     lock_seed.register()
     open_file_browser.register()
     open_image_editor.register()
+    open_image.register()
     prepare_3d_model.register()
     render_depth_map.register()
     render_lineart.register()
@@ -113,6 +115,7 @@ def unregister():
     lock_seed.unregister()
     open_file_browser.unregister()
     open_image_editor.unregister()
+    open_image.unregister()
     prepare_3d_model.unregister()
     render_depth_map.unregister()
     render_lineart.unregister()

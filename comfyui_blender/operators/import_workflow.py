@@ -95,7 +95,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
         return {'FINISHED'}
 
     def invoke(self, context, event):
-        """Invoke the file selector for importing a workflow."""
+        """Invoke the file selector."""
 
         # Skip modal box
         if not self.invoke_default:

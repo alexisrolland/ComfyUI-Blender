@@ -17,6 +17,12 @@ def draw_file_browser_menu(self, context):
         filename = context.active_file.name
         filepath = os.path.join(directory, filename)
 
+        # Open image
+        if filename.lower().endswith((".jpeg", ".jpg", ".png", ".webp")):
+            open_image = layout.operator("comfy.open_image")
+            open_image.filepath = filepath
+            open_image.invoke_default = False
+
         # Import workflow
         if filename.lower().endswith((".json", ".png")):
             import_workflow = layout.operator("comfy.import_workflow")
