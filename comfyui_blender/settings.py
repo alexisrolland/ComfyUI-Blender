@@ -104,11 +104,11 @@ class ListHttpHeaders(bpy.types.UIList):
 
             # Key column
             split = row.split(factor=0.4)
-            split.prop(item, "key", text="Key", emboss=False)
+            split.prop(item, "key", text="Key")
 
             # Value column
             sub_row = split.row()
-            sub_row.prop(item, "value", text="Value", emboss=False)
+            sub_row.prop(item, "value", text="Value")
 
         elif self.layout_type == "GRID":
             layout.alignment = "CENTER"
