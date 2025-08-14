@@ -30,7 +30,7 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
         workflows_folder = str(addon_prefs.workflows_folder)
 
         # Download example workflows
-        workflow_templates_url = get_url("/api/workflow_templates")
+        url = get_url("/api/workflow_templates")
         response = requests.get(url)
         response.raise_for_status()  # Raise an exception for bad status codes
 
@@ -46,10 +46,10 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
         # Download workflows
         for workflow in example_workflows:
             self.report({'INFO'}, f"Downloading workflow: {workflow}")
-            workflow_url = get_url(quote(f"/api/workflow_templates/{custom_node_key}/{workflow}.json.api"))
-            response = requests.get(workflow_url)
+            url = get_url(quote(f"/api/workflow_templates/{custom_node_key}/{workflow}.json.api"))
+            response = requests.get(url)
             if response.status_code != 200:
-                error_message = f"Failed to download workflow: {workflow_url}"
+                error_message = f"Failed to download workflow: {url}"
                 show_error_popup(error_message)
                 continue
 
