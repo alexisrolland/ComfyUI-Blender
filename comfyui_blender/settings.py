@@ -50,6 +50,15 @@ def update_project_folders(self, context):
     os.makedirs(outputs_folder, exist_ok=True)
     self.outputs_folder = outputs_folder
 
+def update_project_folders_delayed():
+    """Delayed update of folders when use_blend_file_location is enabled."""
+    try:
+        project_settings = bpy.context.scene.comfyui_project_settings
+        if project_settings.use_blend_file_location:
+            update_use_blend_file_location(project_settings, bpy.context)
+        return None
+    except Exception as e:
+        return 0.1
 
 def update_server_address(self, context):
     """Reset connection and cleanse the server address."""
@@ -60,7 +69,6 @@ def update_server_address(self, context):
     # Ensure the server address ends without a slash.
     while self.server_address.endswith("/"):
         self.server_address = self.server_address.rstrip("/")
-
 
 def toggle_debug_mode(self, context):
     if self.debug_mode:
@@ -431,12 +439,16 @@ def register():
     bpy.utils.register_class(RemoveHttpHeader)
     bpy.utils.register_class(AddonPreferences)
 
+    # Register the project settings to the scene
+    bpy.types.Scene.comfyui_project_settings = bpy.props.PointerProperty(type=ProjectSettingsPropertyGroup)
+
     # Force the update of the workflow property to trigger the registration of the selected workflow class
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
     addon_prefs.workflow = addon_prefs.workflow
 
-    # Register the project settings to the scene
-    bpy.types.Scene.comfyui_project_settings = bpy.props.PointerProperty(type=ProjectSettingsPropertyGroup)
+    # Check if use_blend_file_location is enabled and update folders accordingly
+    # Use a timer to check and update folders after Blender is fully loaded
+    bpy.app.timers.register(update_project_folders_delayed, first_interval=0.1)
 
     if bpy.context.preferences.addons["comfyui_blender"].preferences.debug_mode:
         log.setLevel(logging.DEBUG)
