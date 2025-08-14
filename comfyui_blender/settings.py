@@ -17,6 +17,7 @@ from .connection import disconnect
 from .utils import show_error_popup
 from .workflow import get_workflow_list, register_workflow_class
 
+
 log = logging.getLogger("comfyui_blender")
 log.setLevel(logging.INFO)
 log.addHandler(logging.StreamHandler())
@@ -88,6 +89,69 @@ def update_use_blend_file_location(self, context):
 
     # Force the update of the workflow property to refresh the input panel
     addon_prefs.workflow = addon_prefs.workflow
+
+
+class CustomHttpHeadersUIList(bpy.types.UIList):
+    """UIList for custom HTTP headers."""
+
+    # Disable the filter by default
+    use_filter_show = False
+
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+        # item is a CustomHttpHeaderPropertyGroup
+        if self.layout_type in {'DEFAULT', 'COMPACT'}:
+            row = layout.row(align=True)
+            row.prop(item, "key", text="header")
+            row.prop(item, "value", text="")
+            # Add remove button for each item
+            remove_op = row.operator("comfy.http_header_remove", icon="X", text="")
+            remove_op.index = index
+        elif self.layout_type == 'GRID':
+            layout.alignment = 'CENTER'
+            layout.label(text=item.key or "")
+
+
+class CustomHttpHeaderAdd(bpy.types.Operator):
+    bl_idname = "comfy.http_header_add"
+    bl_label = "Add Header"
+    bl_description = "Add a new HTTP header"
+
+    def execute(self, context):
+        prefs = context.preferences.addons["comfyui_blender"].preferences
+        item = prefs.http_headers.add()
+        item.key = ""
+        item.value = ""
+        prefs.http_headers_index = len(prefs.http_headers) - 1
+        return {'FINISHED'}
+
+
+class CustomHttpHeaderRemove(bpy.types.Operator):
+    bl_idname = "comfy.http_header_remove"
+    bl_label = "Remove Header"
+    bl_description = "Remove the selected HTTP header"
+
+    index: IntProperty()
+
+    def execute(self, context):
+        prefs = context.preferences.addons["comfyui_blender"].preferences
+        if 0 <= self.index < len(prefs.http_headers):
+            prefs.http_headers.remove(self.index)
+            prefs.http_headers_index = min(max(0, self.index - 1), len(prefs.http_headers) - 1)
+        return {'FINISHED'}
+
+
+class CustomHttpHeaderPropertyGroup(bpy.types.PropertyGroup):
+    """Property group for custom http headers."""
+
+    key: StringProperty(
+        name="Key",
+        description="Header key to include in the http requests sent to the ComfyUI server."
+    )
+    value: StringProperty(
+        name="Value",
+        description="Header value to include in the http requests sent to the ComfyUI server."
+    )
+
 
 class ProjectSettingsPropertyGroup(bpy.types.PropertyGroup):
     """Property group for project-specific settings."""
@@ -182,17 +246,15 @@ class AddonPreferences(bpy.types.AddonPreferences):
         update=update_server_address
     )
 
-    # Optional custom headers for server authentication for instance
-    server_header_key: StringProperty(
-        name="Key",
-        description="Custom header key to send along our Comfy requests.",
-        default=""
+    # Custom http headers, this can be used if the ComfyUI server requires custom authentication
+    http_headers: CollectionProperty(
+        name="Custom Headers",
+        description="Custom headers to include in the http requests sent to the ComfyUI server.",
+        type=CustomHttpHeaderPropertyGroup
     )
-    # Optional custom headers for server authentication for instance
-    server_header_value: StringProperty(
-        name="",
-        description="Custom header value to send along our Comfy requests.",
-        default=""
+    http_headers_index: IntProperty(
+        name="Active Header",
+        default=0
     )
 
     # Debug mode
@@ -316,9 +378,19 @@ class AddonPreferences(bpy.types.AddonPreferences):
         layout.prop(self, "client_id")
         layout.prop(self, "server_address")
         layout.label(text="Custom Headers:")
-        row = layout.row(align=True)
-        row.prop(self, "server_header_key")
-        row.prop(self, "server_header_value")
+
+        # Custom HTTP headers
+        row = layout.row(align=False)
+        row.label(text="Custom HTTP Headers:")
+        row.operator("comfy.http_header_add", icon="ADD", text="Add a header.")
+
+        layout.template_list(
+            "CustomHttpHeadersUIList", "",
+            self, "http_headers",
+            self, "http_headers_index",
+            rows=1
+        )
+
         layout.prop(self, "debug_mode")
 
         # Folders
@@ -366,6 +438,10 @@ def register():
     bpy.utils.register_class(ProjectSettingsPropertyGroup)
     bpy.utils.register_class(PromptPropertyGroup)
     bpy.utils.register_class(OutputPropertyGroup)
+    bpy.utils.register_class(CustomHttpHeaderPropertyGroup)
+    bpy.utils.register_class(CustomHttpHeaderAdd)
+    bpy.utils.register_class(CustomHttpHeaderRemove)
+    bpy.utils.register_class(CustomHttpHeadersUIList)
     bpy.utils.register_class(AddonPreferences)
 
     # Force the update of the workflow property to trigger the registration of the selected workflow class
@@ -381,6 +457,10 @@ def register():
 def unregister():
     """Unregister classes."""
 
+    bpy.utils.unregister_class(CustomHttpHeadersUIList)
+    bpy.utils.unregister_class(CustomHttpHeaderRemove)
+    bpy.utils.unregister_class(CustomHttpHeaderAdd)
+    bpy.utils.unregister_class(CustomHttpHeaderPropertyGroup)
     bpy.utils.unregister_class(ProjectSettingsPropertyGroup)
     bpy.utils.unregister_class(PromptPropertyGroup)
     bpy.utils.unregister_class(OutputPropertyGroup)

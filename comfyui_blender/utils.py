@@ -123,8 +123,7 @@ def add_comfy_headers(headers=None):
     if headers is None:
         headers = {}
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-    custom_header_key = addon_prefs.server_header_key
-    custom_header_value = addon_prefs.server_header_value
-    if custom_header_key and custom_header_value:
-        headers[custom_header_key] = custom_header_value
+    for header in addon_prefs.http_headers:
+        if header.key:
+            headers[header.key] = header.value
     return headers
