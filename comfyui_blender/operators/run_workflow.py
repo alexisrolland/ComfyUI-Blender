@@ -5,7 +5,6 @@ import os
 import random
 import requests
 import threading
-from urllib.parse import urljoin
 
 import bpy
 
