@@ -73,7 +73,7 @@ def listen():
             message = WS_CONNECTION.recv()
         except Exception as e:
             time.sleep(1)
-            log.debug(f"websocket disconnection received. trying to reconnect.")
+            log.debug(f"WebSocket connection error. Trying to reconnect...")
             connect()  # Try to reconnect
             continue
 
