@@ -6,10 +6,24 @@ class ComfyBlenderOperatorOpenFileBrowser(bpy.types.Operator):
     """Operator to open Blender's file browser."""
 
     bl_idname = "comfy.open_file_browser"
-    bl_label = "Open File Browser"
+    bl_label = "" # Empty label to display the custom label instead
     bl_description = "Open Blender's file browser"
 
     folder_path: bpy.props.StringProperty(name="Folder Path")
+    custom_label: bpy.props.StringProperty(
+        name="Custom Label",
+        description="Custom label for the operator",
+        options={'HIDDEN'}
+    )
+
+    @classmethod
+    def description(cls, context, properties):
+        # Use a custom description when requested from the UI
+        custom_label = getattr(properties, "custom_label", "")
+        if custom_label:
+            print(custom_label)
+            return custom_label
+        return cls.bl_description
 
     def execute(self, context):
         """Execute the operator."""

@@ -1,9 +1,9 @@
-"""Panel to display outputs options in the file browser."""
+"""Panel to display options in the file browser."""
 import bpy
 
 
 class ComfyBlenderPanelFileBrowser(bpy.types.Panel):
-    """Panel to display outputs options in the file browser."""
+    """Panel to display options in the file browser."""
 
     bl_label = "ComfyUI"
     bl_idname = "COMFY_PT_FileBrowser"

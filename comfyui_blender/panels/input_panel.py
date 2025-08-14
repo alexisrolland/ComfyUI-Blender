@@ -101,6 +101,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                         # File browser button
                         file_browser = row_input.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
                         file_browser.folder_path = inputs_folder
+                        file_browser.custom_label = "Open Inputs Folder"
 
                         # Delete input button
                         delete_input = row_input.operator("comfy.delete_input", text="", icon="TRASH")
@@ -157,6 +158,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                         # File browser button
                         file_browser = col.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
                         file_browser.folder_path = inputs_folder
+                        file_browser.custom_label = "Open Inputs Folder"
 
                         # Delete input button
                         delete_input = col.operator("comfy.delete_input", text="", icon="TRASH")

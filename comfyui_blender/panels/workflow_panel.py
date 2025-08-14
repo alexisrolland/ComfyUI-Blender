@@ -41,7 +41,9 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
         row = self.layout.row(align=True)
         row.operator("comfy.import_workflow", text="Import Workflow")
         row.operator("comfy.download_example_workflows", text="", icon="IMPORT")
-        row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER").folder_path = workflows_folder
+        file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
+        file_browser.folder_path = workflows_folder
+        file_browser.custom_label = "Open Workflows Folder"
 
         # Dropdown list of workflows with actions
         row = self.layout.row(align=True)
