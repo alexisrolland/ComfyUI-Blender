@@ -9,7 +9,7 @@ from urllib.parse import urljoin, urlencode
 import bpy
 from ._vendor import websocket
 
-from .utils import download_file, show_error_popup, add_comfy_headers, get_comfy_ws_url
+from .utils import add_custom_headers, download_file, show_error_popup, get_websocket_url
 
 
 log = logging.getLogger("comfyui_blender")
@@ -28,8 +28,8 @@ def connect():
 
     # Construct WebSocket address
     params = {"clientId": client_id}
-    headers = add_comfy_headers()
-    url = get_comfy_ws_url("/ws", params=params)
+    headers = add_custom_headers()
+    url = get_websocket_url("/ws", params=params)
 
     # Establish the WebSocket connection
     global WS_CONNECTION

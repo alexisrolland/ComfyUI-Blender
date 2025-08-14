@@ -7,7 +7,7 @@ from urllib.parse import urljoin, quote
 
 import bpy
 
-from ..utils import add_comfy_headers, get_url, get_filepath, show_error_popup
+from ..utils import get_filepath, get_url, show_error_popup
 from ..workflow import check_workflow_file_exists
 
 log = logging.getLogger("comfyui_blender")

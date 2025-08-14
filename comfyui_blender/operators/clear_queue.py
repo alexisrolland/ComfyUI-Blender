@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 
 import bpy
 
-from ..utils import add_comfy_headers, get_url, show_error_popup
+from ..utils import add_custom_headers, get_url, show_error_popup
 
 
 class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
@@ -24,7 +24,7 @@ class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
         data = {"clear": True}
         url = get_url("/queue")
         headers = {"Content-Type": "application/json"}
-        headers = add_comfy_headers(headers)
+        headers = add_custom_headers(headers)
         response = requests.post(url, json=data, headers=headers)
 
         # Raise an exception for bad status codes

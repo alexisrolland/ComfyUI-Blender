@@ -22,7 +22,7 @@ def download_file(filename, subfolder, type="output"):
     url = get_url("/view", params=params)
 
     headers = {"Content-Type": "application/json"}
-    headers = add_comfy_headers(headers)
+    headers = add_custom_headers(headers)
     # Download with streaming to handle large files and avoid memory issues
     response = requests.get(url, params=params, headers=headers, stream=True)
     response.raise_for_status()  # Raise an exception for bad status codes
@@ -94,10 +94,9 @@ def upload_file(filepath, type, subfolder=None, overwrite=False):
 
     files = {"image": (filename, file_data)}
     url = get_url("/upload/image")
-    headers = add_comfy_headers()
+    headers = add_custom_headers()
     response = requests.post(url, files=files, data=data, headers=headers)
     return response
-
 
 def get_url(route=None, params=None):
     """Compose the URL for a ComfyUI server route."""
@@ -110,8 +109,9 @@ def get_url(route=None, params=None):
         server_url = f"{server_url}?{urlencode(params)}"
     return server_url
 
+def get_websocket_url(route=None, params=None):
+    """Compose the URL for a ComfyUI WebSocket server route."""
 
-def get_comfy_ws_url(route=None, params=None):
     url = get_url(route=route, params=params)
     # Replace http with ws and https with wss
     if "https://" in url:
@@ -120,8 +120,9 @@ def get_comfy_ws_url(route=None, params=None):
         url = url.replace("http://", "ws://")
     return url
 
+def add_custom_headers(headers=None):
+    """Compose the URL for a ComfyUI WebSocket server route."""
 
-def add_comfy_headers(headers=None):
     if headers is None:
         headers = {}
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
