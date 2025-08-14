@@ -19,7 +19,7 @@ def download_file(filename, subfolder, type="output"):
     # Download the file data from the ComfyUI server
     # Add a random parameter to avoid caching issues
     params = {"filename": filename, "subfolder": subfolder, "type": type, "rand": random.random()}
-    url = get_comfy_url("/view", params=params)
+    url = get_url("/view", params=params)
 
     headers = {"Content-Type": "application/json"}
     headers = add_comfy_headers(headers)
@@ -93,13 +93,15 @@ def upload_file(filepath, type, subfolder=None, overwrite=False):
             data["subfolder"] = subfolder
 
     files = {"image": (filename, file_data)}
-    url = get_comfy_url("/upload/image")
+    url = get_url("/upload/image")
     headers = add_comfy_headers()
     response = requests.post(url, files=files, data=data, headers=headers)
     return response
 
 
-def get_comfy_url(route=None, params=None):
+def get_url(route=None, params=None):
+    """Compose the URL for a ComfyUI server route."""
+
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
     server_address = addon_prefs.server_address
     if route:
@@ -110,7 +112,7 @@ def get_comfy_url(route=None, params=None):
 
 
 def get_comfy_ws_url(route=None, params=None):
-    url = get_comfy_url(route=route, params=params)
+    url = get_url(route=route, params=params)
     # Replace http with ws and https with wss
     if "https://" in url:
         url = url.replace("https://", "wss://")

@@ -11,7 +11,7 @@ import bpy
 
 from .. import connection
 from .. import workflow as w
-from ..utils import add_comfy_headers, get_comfy_url, upload_file, show_error_popup
+from ..utils import add_comfy_headers, get_url, upload_file, show_error_popup
 
 log = logging.getLogger("comfyui_blender")
 
@@ -124,7 +124,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
         # Send workflow to ComfyUI server
         data = {"prompt": workflow, "client_id": addon_prefs.client_id}
-        url = get_comfy_url("/prompt")
+        url = get_url("/prompt")
         headers = {"Content-Type": "application/json"}
         headers = add_comfy_headers(headers)
         response = requests.post(url, json=data, headers=headers)
