@@ -19,8 +19,9 @@ from .workflow import get_workflow_list, register_workflow_class
 
 
 log = logging.getLogger("comfyui_blender")
-log.setLevel(logging.INFO)
-log.addHandler(logging.StreamHandler())
+if not log.handlers:
+    log.setLevel(logging.INFO)
+    log.addHandler(logging.StreamHandler())
 
 
 def update_progress(self, context):

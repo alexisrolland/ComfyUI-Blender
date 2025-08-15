@@ -80,8 +80,7 @@ def listen():
         # Process the message
         if isinstance(message, str) and message != "":
             message = json.loads(message)
-            #log.debug(f"Received websocket message: {message}")
-            #print(f"Received websocket message: {message}")
+            log.debug(f"Received websocket message: {message}")
 
             # Reset progress bar to 0 when execution starts
             if message["type"] == "execution_start":
