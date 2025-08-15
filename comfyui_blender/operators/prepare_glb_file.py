@@ -1,4 +1,4 @@
-"""Operator to prepare a 3D model file to import it on ComfyUI server as GLB file."""
+"""Operator to prepare a GLB file to import it on the ComfyUI server."""
 import os
 import shutil
 
@@ -8,11 +8,11 @@ from ..utils import show_error_popup, upload_file
 
 
 class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
-    """Operator to prepare a 3D model file to import it on ComfyUI server."""
+    """Operator to prepare a GLB file to import it on the ComfyUI server."""
 
     bl_idname = "comfy.prepare_glb_file"
     bl_label = "Prepare GLB file"
-    bl_description = "Prepare a 3D model to import it on ComfyUI server as GLB file"
+    bl_description = "Prepare GLB file to import on the ComfyUI server"
 
     workflow_property: bpy.props.StringProperty(name="Workflow Property")
     temp_filename = "blender_3d_model.glb"

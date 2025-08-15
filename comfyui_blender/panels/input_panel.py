@@ -79,16 +79,15 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                     row.label(text=name + ":")
 
                     # Prepare GLB file
-                    buttons = box.row(align=True)
-                    prepare_glb = buttons.operator("comfy.prepare_glb_file", text="glb", icon="MESH_DATA")
+                    prepare_glb = row.operator("comfy.prepare_glb_file", text="glb", icon="MESH_DATA")
                     prepare_glb.workflow_property = property_name
 
                     # Prepare OBJ file
-                    prepare_obj = buttons.operator("comfy.prepare_obj_file", text="obj", icon="MESH_DATA")
+                    prepare_obj = row.operator("comfy.prepare_obj_file", text="obj", icon="MESH_DATA")
                     prepare_obj.workflow_property = property_name
 
                     # File browser button
-                    file_browser = buttons.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
+                    file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
                     file_browser.folder_path = inputs_folder
                     file_browser.custom_label = "Open Inputs Folder"
 
@@ -103,13 +102,9 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                         input_name = row.operator("comfy.import_3d_model", text=input_filename, emboss=False, icon="MESH_DATA")
                         input_name.filepath = input_filepath
 
-                        # Import 3D model button
-                        col = row.column(align=True)
-                        import_model = col.operator("comfy.import_3d_model", text="", icon="IMPORT")
-                        import_model.filepath = input_filepath
-
                         # Delete input button
-                        delete_input = col.operator("comfy.delete_input", text="", icon="TRASH")
+                        sub_row = row.row(align=True)
+                        delete_input = sub_row.operator("comfy.delete_input", text="", icon="TRASH")
                         delete_input.filename = input_filename
                         delete_input.filepath = input_filepath
                         delete_input.workflow_property = property_name
@@ -151,26 +146,22 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                     if input_filename in bpy.data.images:
                         row = box.row()
 
-                        # Image preview
-                        bpy.data.images[input_filename].preview_ensure()
-                        col = row.column(align=True)
-                        col.template_icon(icon_value=bpy.data.images[input_filename].preview.icon_id, scale=5)
-
                         # Image name with link
-                        input_name = col.operator("comfy.open_image_editor", text=input_filename, emboss=False)
+                        input_name = row.operator("comfy.open_image_editor", text=input_filename, emboss=False, icon="IMAGE_DATA")
                         input_name.filename = input_filename
 
-                        # Image editor button
-                        col = row.column(align=True)
-                        image_editor = col.operator("comfy.open_image_editor", text="", icon="IMAGE")
-                        image_editor.filename = input_filename
-
                         # Delete input button
-                        delete_input = col.operator("comfy.delete_input", text="", icon="TRASH")
+                        sub_row = row.row(align=True)
+                        delete_input = sub_row.operator("comfy.delete_input", text="", icon="TRASH")
                         delete_input.filename = input_filename
                         delete_input.filepath = input_filepath
                         delete_input.workflow_property = property_name
                         delete_input.type = "image"
+
+                        # Image preview
+                        bpy.data.images[input_filename].preview_ensure()
+                        preview = box.row()
+                        preview.template_icon(icon_value=bpy.data.images[input_filename].preview.icon_id, scale=5)
 
                 # Custom handling for seed inputs
                 elif node["class_type"] == "BlenderInputSeed":
