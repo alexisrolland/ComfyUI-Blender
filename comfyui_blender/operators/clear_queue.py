@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 
 import bpy
 
-from ..utils import add_custom_headers, get_url, show_error_popup
+from ..utils import add_custom_headers, get_server_url, show_error_popup
 
 
 class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
@@ -22,7 +22,7 @@ class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
 
         # Stop workflow execution on ComfyUI server
         data = {"clear": True}
-        url = get_url("/queue")
+        url = get_server_url("/queue")
         headers = {"Content-Type": "application/json"}
         headers = add_custom_headers(headers)
         response = requests.post(url, json=data, headers=headers)
