@@ -1,16 +1,18 @@
 """Operator to send and execute a workflow on ComfyUI server."""
 import json
+import logging
 import os
 import random
 import requests
 import threading
-from urllib.parse import urljoin
 
 import bpy
 
 from .. import connection
 from .. import workflow as w
-from ..utils import upload_file, show_error_popup
+from ..utils import add_custom_headers, get_server_url, upload_file, show_error_popup
+
+log = logging.getLogger("comfyui_blender")
 
 
 class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
@@ -38,6 +40,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
             except Exception as e:
                 error_message = f"Failed to connect to ComfyUI server: {addon_prefs.server_address}. {e}"
+                log.exception(error_message)
                 show_error_popup(error_message)
                 return {'CANCELLED'}    
         else:
@@ -70,6 +73,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     response = upload_file(filepath, type="3d")
                     if response.status_code != 200:
                         error_message = f"Failed to upload file: {response.status_code} - {response.text}"
+                        log.error(error_message)
                         show_error_popup(error_message)
                         return {'CANCELLED'}
 
@@ -119,8 +123,9 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
         # Send workflow to ComfyUI server
         data = {"prompt": workflow, "client_id": addon_prefs.client_id}
-        url = urljoin(addon_prefs.server_address, "/prompt")
+        url = get_server_url("/prompt")
         headers = {"Content-Type": "application/json"}
+        headers = add_custom_headers(headers)
         response = requests.post(url, json=data, headers=headers)
 
         # Raise an exception for bad status codes

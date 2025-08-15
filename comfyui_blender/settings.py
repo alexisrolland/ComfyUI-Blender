@@ -17,6 +17,7 @@ from .connection import disconnect
 from .utils import show_error_popup
 from .workflow import get_workflow_list, register_workflow_class
 
+
 log = logging.getLogger("comfyui_blender")
 log.setLevel(logging.INFO)
 log.addHandler(logging.StreamHandler())
@@ -29,6 +30,7 @@ def update_progress(self, context):
         for area in context.screen.areas:
             if area.type == "VIEW_3D":
                 area.tag_redraw()
+
 
 def update_project_folders(self, context):
     """Callback to update workflows, inputs and outputs folders according to the project base folder."""
@@ -48,6 +50,7 @@ def update_project_folders(self, context):
     os.makedirs(outputs_folder, exist_ok=True)
     self.outputs_folder = outputs_folder
 
+
 def update_server_address(self, context):
     """Reset connection and cleanse the server address."""
 
@@ -65,7 +68,7 @@ def toggle_debug_mode(self, context):
         log.debug("Debug mode activated.")
     else:
         log.setLevel(logging.INFO)
-        log.debug("Debug mode deactivated.")
+
 
 def update_use_blend_file_location(self, context):
     """Update project base folders according to the location of the .blend file."""
@@ -90,6 +93,46 @@ def update_use_blend_file_location(self, context):
     # Force the update of the workflow property to refresh the input panel
     addon_prefs.workflow = addon_prefs.workflow
 
+
+class AddHttpHeader(bpy.types.Operator):
+    bl_idname = "comfy.add_http_header"
+    bl_label = "Add Header"
+    bl_description = "Add a custom HTTP header"
+
+    def execute(self, context):
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+        item = addon_prefs.http_headers.add()
+        item.key = ""
+        item.value = ""
+        return {'FINISHED'}
+
+
+class RemoveHttpHeader(bpy.types.Operator):
+    bl_idname = "comfy.remove_http_header"
+    bl_label = "Remove Header"
+    bl_description = "Remove the selected HTTP header"
+
+    index: IntProperty(name="Index")
+
+    def execute(self, context):
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+        addon_prefs.http_headers.remove(self.index)
+        return {'FINISHED'}
+
+
+class HttpHeaderPropertyGroup(bpy.types.PropertyGroup):
+    """Property group for custom http headers."""
+
+    key: StringProperty(
+        name="Key",
+        description="Header key to include in the http requests sent to the ComfyUI server."
+    )
+    value: StringProperty(
+        name="Value",
+        description="Header value to include in the http requests sent to the ComfyUI server."
+    )
+
+
 class ProjectSettingsPropertyGroup(bpy.types.PropertyGroup):
     """Property group for project-specific settings."""
 
@@ -99,6 +142,7 @@ class ProjectSettingsPropertyGroup(bpy.types.PropertyGroup):
         default=False,
         update=update_use_blend_file_location
     )
+
 
 class PromptPropertyGroup(bpy.types.PropertyGroup):
     """Property group for the queue collection."""
@@ -141,6 +185,7 @@ class PromptPropertyGroup(bpy.types.PropertyGroup):
         default=0
     )
 
+
 class OutputPropertyGroup(bpy.types.PropertyGroup):
     """Property group for outputs collection."""
 
@@ -159,6 +204,7 @@ class OutputPropertyGroup(bpy.types.PropertyGroup):
         description="Type of the output.",
         items=[("3d", "3D", "3D model output"), ("image", "Image", "Image output")]
     )
+
 
 class AddonPreferences(bpy.types.AddonPreferences):
     """Add-on Preferences"""
@@ -181,6 +227,13 @@ class AddonPreferences(bpy.types.AddonPreferences):
         description="URL of the ComfyUI server.",
         default="http://127.0.0.1:8188",
         update=update_server_address
+    )
+
+    # Custom http headers, this can be used if the ComfyUI server requires custom authentication
+    http_headers: CollectionProperty(
+        name="Custom Headers",
+        description="Custom headers to include in the http requests sent to the ComfyUI server.",
+        type=HttpHeaderPropertyGroup
     )
 
     # Debug mode
@@ -303,6 +356,28 @@ class AddonPreferences(bpy.types.AddonPreferences):
         layout.label(text="Server:")
         layout.prop(self, "client_id")
         layout.prop(self, "server_address")
+
+        # Custom HTTP headers
+        row = layout.row()
+        split = row.split(factor=0.85)
+        split.label(text="Custom HTTP Headers:")
+        sub_row = split.row()
+        sub_row.operator("comfy.add_http_header", icon="ADD", text="Add")
+        col = layout.column()
+
+        for index, header in enumerate(self.http_headers):
+            # Key column
+            row = col.row()
+            split = row.split(factor=0.4)
+            split.prop(header, "key", text="", placeholder="Key")
+
+            # Value column
+            sub_row = split.row()
+            sub_row.prop(header, "value", text="", placeholder="Value")
+            remove_header = sub_row.operator("comfy.remove_http_header", icon="TRASH", text="")
+            remove_header.index = index
+
+        # Debug mode
         layout.prop(self, "debug_mode")
 
         # Folders
@@ -344,12 +419,16 @@ class AddonPreferences(bpy.types.AddonPreferences):
             select_workflows_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
             select_workflows_folder.target_property = "workflows_folder"
 
+
 def register():
     """Register classes."""
 
     bpy.utils.register_class(ProjectSettingsPropertyGroup)
     bpy.utils.register_class(PromptPropertyGroup)
     bpy.utils.register_class(OutputPropertyGroup)
+    bpy.utils.register_class(HttpHeaderPropertyGroup)
+    bpy.utils.register_class(AddHttpHeader)
+    bpy.utils.register_class(RemoveHttpHeader)
     bpy.utils.register_class(AddonPreferences)
 
     # Force the update of the workflow property to trigger the registration of the selected workflow class
@@ -362,10 +441,14 @@ def register():
     if bpy.context.preferences.addons["comfyui_blender"].preferences.debug_mode:
         log.setLevel(logging.DEBUG)
 
+
 def unregister():
     """Unregister classes."""
 
+    bpy.utils.unregister_class(AddonPreferences)
+    bpy.utils.unregister_class(RemoveHttpHeader)
+    bpy.utils.unregister_class(AddHttpHeader)
+    bpy.utils.unregister_class(HttpHeaderPropertyGroup)
     bpy.utils.unregister_class(ProjectSettingsPropertyGroup)
     bpy.utils.unregister_class(PromptPropertyGroup)
     bpy.utils.unregister_class(OutputPropertyGroup)
-    bpy.utils.unregister_class(AddonPreferences)
