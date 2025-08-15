@@ -104,10 +104,10 @@ def get_server_url(route=None, params=None):
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
     server_address = addon_prefs.server_address
     if route:
-        server_url = urljoin(server_address, route)
+        server_url = urljoin(server_address, quote(route))
     if params:
         server_url = f"{server_url}?{urlencode(params)}"
-    return quote(server_url)
+    return server_url
 
 def get_websocket_url(route=None, params=None):
     """Compose the URL for a ComfyUI WebSocket server route."""
