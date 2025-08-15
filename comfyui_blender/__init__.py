@@ -16,7 +16,8 @@ from .operators import (
     open_file_browser,
     open_image_editor,
     open_image,
-    prepare_3d_model,
+    prepare_glb_file,
+    prepare_obj_file,
     render_depth_map,
     render_lineart,
     render_view,
@@ -74,7 +75,8 @@ def register():
     open_file_browser.register()
     open_image_editor.register()
     open_image.register()
-    prepare_3d_model.register()
+    prepare_glb_file.register()
+    prepare_obj_file.register()
     render_depth_map.register()
     render_lineart.register()
     render_view.register()
@@ -116,7 +118,8 @@ def unregister():
     open_file_browser.unregister()
     open_image_editor.unregister()
     open_image.unregister()
-    prepare_3d_model.unregister()
+    prepare_glb_file.unregister()
+    prepare_obj_file.unregister()
     render_depth_map.unregister()
     render_lineart.unregister()
     render_view.unregister()

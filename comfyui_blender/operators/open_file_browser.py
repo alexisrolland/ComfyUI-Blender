@@ -18,10 +18,9 @@ class ComfyBlenderOperatorOpenFileBrowser(bpy.types.Operator):
 
     @classmethod
     def description(cls, context, properties):
-        # Use a custom description when requested from the UI
+        # Use a custom description
         custom_label = getattr(properties, "custom_label", "")
         if custom_label:
-            print(custom_label)
             return custom_label
         return cls.bl_description
 
