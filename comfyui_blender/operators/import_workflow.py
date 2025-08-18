@@ -5,7 +5,7 @@ import shutil
 
 import bpy
 
-from ..utils import get_filepath, show_error_popup
+from ..utils import get_filepath
 from ..workflow import check_workflow_file_exists, extract_workflow_from_metadata
 
 
@@ -47,7 +47,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
 
                 except Exception as e:
                     error_message = f"Failed to copy workflow file: {e}"
-                    show_error_popup(error_message)
+                    bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
             else:
                 self.report({'INFO'}, f"Workflow already exists: {workflow_filename}")
@@ -60,7 +60,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
             new_workflow_data = extract_workflow_from_metadata(self.filepath)
             if not new_workflow_data:
                 error_message = "No workflow found in the metadata."
-                show_error_popup(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 return {'CANCELLED'}
 
             # Check if a workflow with the same data already exists
@@ -80,7 +80,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
 
                 except Exception as e:
                     error_message = f"Failed to save workflow: {e}"
-                    show_error_popup(error_message)
+                    bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
             else:
                 self.report({'INFO'}, f"Workflow already exists: {workflow_filename}")
@@ -90,7 +90,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
 
         else:
             error_message = "Selected file is not a *.json."
-            show_error_popup(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
         return {'FINISHED'}
 

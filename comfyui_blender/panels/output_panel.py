@@ -17,9 +17,10 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
         """Draw the panel header."""
 
         # Display custom title with number of outputs
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+        project_settings = bpy.context.scene.comfyui_project_settings
+        outputs_collection = project_settings.outputs_collection
         self.layout.label(icon="IMAGE_DATA")
-        self.bl_label = f"Outputs ({len(addon_prefs.outputs_collection)})"
+        self.bl_label = f"Outputs ({len(outputs_collection)})"
 
     def draw(self, context):
         """Draw the panel."""
@@ -27,6 +28,10 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
         # Get outputs folder
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         outputs_folder = str(addon_prefs.outputs_folder)
+
+        # Get outputs collection
+        project_settings = bpy.context.scene.comfyui_project_settings
+        outputs_collection = project_settings.outputs_collection
 
         # File browser button
         row = self.layout.row(align=True)
@@ -47,7 +52,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
         box = self.layout.box()
 
         # Display message when outputs collection is empty
-        if len(addon_prefs.outputs_collection) == 0:
+        if len(outputs_collection) == 0:
             box.label(text="No output generated yet")
             return
 
@@ -56,7 +61,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
             flow = box.grid_flow(row_major=True, columns=2, even_columns=True, even_rows=True, align=True)
 
             # Get outputs collection
-            for index, output in enumerate(reversed(addon_prefs.outputs_collection)):
+            for index, output in enumerate(reversed(outputs_collection)):
                 card = flow.column(align=True)
 
                 # Display output of type image
@@ -70,7 +75,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         else:
                             # If the file does not exist anymore, remove it from the outputs collection
                             # To avoid error when trying to display the image
-                            addon_prefs.outputs_collection.remove(index)
+                            outputs_collection.remove(index)
 
                     # Display image
                     if output.filename in bpy.data.images:
@@ -138,11 +143,11 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                     else:
                         # If the file does not exist anymore, remove it from the outputs collection
                         # To avoid error when trying to display the image
-                        addon_prefs.outputs_collection.remove(index)
+                        outputs_collection.remove(index)
 
         # Display outputs as list
         elif addon_prefs.outputs_layout == "list":
-            for index, output in enumerate(reversed(addon_prefs.outputs_collection)):
+            for index, output in enumerate(reversed(outputs_collection)):
                 row = box.row(align=True)
                 row_left = row.row(align=True)
                 row_left.alignment = "LEFT"
@@ -160,7 +165,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         else:
                             # If the file does not exist anymore, remove it from the outputs collection
                             # To avoid error when trying to display the image
-                            addon_prefs.outputs_collection.remove(index)
+                            outputs_collection.remove(index)
 
                     # Display image
                     if output.filename in bpy.data.images:
@@ -193,7 +198,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                     else:
                         # If the file does not exist anymore, remove it from the outputs collection
                         # To avoid error when trying to display the image
-                        addon_prefs.outputs_collection.remove(index)
+                        outputs_collection.remove(index)
 
                 # Delete output button
                 delete_output = row_right.operator("comfy.delete_output", text="", icon="TRASH")

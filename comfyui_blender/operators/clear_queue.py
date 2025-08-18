@@ -1,10 +1,9 @@
 """Operator to remove all pending workflows from ComfyUI server queue."""
 import requests
-from urllib.parse import urljoin
 
 import bpy
 
-from ..utils import add_custom_headers, get_server_url, show_error_popup
+from ..utils import add_custom_headers, get_server_url
 
 
 class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
@@ -30,7 +29,7 @@ class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
         # Raise an exception for bad status codes
         if response.status_code != 200:
             error_message = response.text
-            show_error_popup(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
         # Get indices of workflows to remove and remove them in reverse order

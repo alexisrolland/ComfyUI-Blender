@@ -5,7 +5,7 @@ import requests
 
 import bpy
 
-from ..utils import add_custom_headers, get_filepath, get_server_url, show_error_popup
+from ..utils import add_custom_headers, get_filepath, get_server_url
 from ..workflow import check_workflow_file_exists
 
 log = logging.getLogger("comfyui_blender")
@@ -30,8 +30,13 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
         # Download example workflows
         url = get_server_url("/api/workflow_templates")
         headers = add_custom_headers()
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()  # Raise an exception for bad status codes
+        try:
+            response = requests.get(url, headers=headers)
+        except Exception as e:
+            error_message = f"Failed to download example workflows from ComfyUI server: {addon_prefs.server_address}. {e}"
+            log.exception(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+            return {'CANCELLED'}
 
         # Find matching key case-insensitively
         workflow_templates = response.json()
@@ -39,7 +44,7 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
         example_workflows = workflow_templates.get(custom_node_key, []) if custom_node_key else []
         if not example_workflows:
             error_message = f"Example workflows not found. The ComfyUI-Blender nodes may not be properly installed on the ComfyUI server."
-            show_error_popup(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
         # Download workflows
@@ -49,7 +54,7 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
             response = requests.get(url, headers=headers)
             if response.status_code != 200:
                 error_message = f"Failed to download workflow: {url}"
-                show_error_popup(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 continue
 
             # Check if a workflow with the same data already exists
@@ -69,7 +74,7 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
 
                 except Exception as e:
                     error_message = f"Failed to save workflow: {e}"
-                    show_error_popup(error_message)
+                    bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     continue
             else:
                 self.report({'INFO'}, f"Workflow already exists: {workflow_filename}")

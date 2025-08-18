@@ -23,9 +23,14 @@ def download_file(filename, subfolder, type="output"):
 
     headers = {"Content-Type": "application/json"}
     headers = add_custom_headers(headers)
-    # Download with streaming to handle large files and avoid memory issues
-    response = requests.get(url, params=params, headers=headers, stream=True)
-    response.raise_for_status()  # Raise an exception for bad status codes
+    try:
+        # Download with streaming to handle large files and avoid memory issues
+        response = requests.get(url, params=params, headers=headers, stream=True)
+    except Exception as e:
+        error_message = f"Failed to download file from ComfyUI server: {addon_prefs.server_address}. {e}"
+        log.exception(error_message)
+        bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+        return
 
     # Save the file in the output folder
     folder = os.path.join(outputs_folder, subfolder)
@@ -38,6 +43,7 @@ def download_file(filename, subfolder, type="output"):
         for chunk in response.iter_content(chunk_size=8192):
             if chunk:  # Filter out keep-alive chunks
                 file.write(chunk)
+
 
 def get_filepath(filename, folder):
     """Handle file names conflicts when importing files, by appending an incremental number"""
@@ -54,6 +60,9 @@ def get_filepath(filename, folder):
         filepath = os.path.join(folder, filename)
     return filename, filepath
 
+
+# This method has been replaced by the operator show_error_message
+# The operator provides a OK button to ensure the popup does not disappear immediately
 def show_error_popup(message):
     """Show an error popup."""
 
@@ -66,6 +75,7 @@ def show_error_popup(message):
             self.layout.label(text=line)
 
     bpy.context.window_manager.popup_menu(draw, title="Execution Error", icon="ERROR")
+
 
 def upload_file(filepath, type, subfolder=None, overwrite=False):
     """Upload a file to the ComfyUI server."""
@@ -98,6 +108,7 @@ def upload_file(filepath, type, subfolder=None, overwrite=False):
     response = requests.post(url, files=files, data=data, headers=headers)
     return response
 
+
 def get_server_url(route=None, params=None):
     """Compose the URL for a ComfyUI server route."""
 
@@ -109,6 +120,7 @@ def get_server_url(route=None, params=None):
         server_url = f"{server_url}?{urlencode(params)}"
     return server_url
 
+
 def get_websocket_url(route=None, params=None):
     """Compose the URL for a ComfyUI WebSocket server route."""
 
@@ -119,6 +131,7 @@ def get_websocket_url(route=None, params=None):
     elif "http://" in url:
         url = url.replace("http://", "ws://")
     return url
+
 
 def add_custom_headers(headers=None):
     """Compose the URL for a ComfyUI WebSocket server route."""

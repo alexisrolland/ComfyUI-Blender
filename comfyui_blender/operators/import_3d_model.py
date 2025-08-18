@@ -3,8 +3,6 @@ import os
 
 import bpy
 
-from ..utils import show_error_popup
-
 
 class ComfyBlenderOperatorImport3DModel(bpy.types.Operator):
     """Operator to import a 3D model into the scene."""
@@ -37,7 +35,7 @@ class ComfyBlenderOperatorImport3DModel(bpy.types.Operator):
         #     bpy.ops.wm.collada_import(filepath=self.filepath)
         else:
             error_message = f"Unsupported file format: {ext}"
-            show_error_popup(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
         return {'FINISHED'}
 

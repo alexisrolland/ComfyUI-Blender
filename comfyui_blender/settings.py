@@ -14,7 +14,6 @@ from bpy.props import (
 )
 
 from .connection import disconnect
-from .utils import show_error_popup
 from .workflow import get_workflow_list, register_workflow_class
 
 
@@ -22,6 +21,15 @@ log = logging.getLogger("comfyui_blender")
 if not log.handlers:
     log.setLevel(logging.INFO)
     log.addHandler(logging.StreamHandler())
+
+
+# Callback methods
+def toggle_debug_mode(self, context):
+    if self.debug_mode:
+        log.setLevel(logging.DEBUG)
+        log.debug("Debug mode activated.")
+    else:
+        log.setLevel(logging.INFO)
 
 
 def update_progress(self, context):
@@ -51,6 +59,7 @@ def update_project_folders(self, context):
     os.makedirs(outputs_folder, exist_ok=True)
     self.outputs_folder = outputs_folder
 
+
 def update_project_folders_delayed():
     """Delayed update of folders when use_blend_file_location is enabled."""
     try:
@@ -61,6 +70,7 @@ def update_project_folders_delayed():
     except Exception as e:
         return 0.1
 
+
 def update_server_address(self, context):
     """Reset connection and cleanse the server address."""
 
@@ -70,13 +80,6 @@ def update_server_address(self, context):
     # Ensure the server address ends without a slash.
     while self.server_address.endswith("/"):
         self.server_address = self.server_address.rstrip("/")
-
-def toggle_debug_mode(self, context):
-    if self.debug_mode:
-        log.setLevel(logging.DEBUG)
-        log.debug("Debug mode activated.")
-    else:
-        log.setLevel(logging.INFO)
 
 
 def update_use_blend_file_location(self, context):
@@ -90,7 +93,8 @@ def update_use_blend_file_location(self, context):
             addon_prefs.base_folder = os.path.dirname(bpy.data.filepath)
         else:
             self.use_blend_file_location = False
-            show_error_popup("Save your .blend file before using this option.")
+            error_message = "Save your .blend file before using this option."
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return
     else:
         # Reset to the default base folder
@@ -103,6 +107,7 @@ def update_use_blend_file_location(self, context):
     addon_prefs.workflow = addon_prefs.workflow
 
 
+# Operators
 class AddHttpHeader(bpy.types.Operator):
     bl_idname = "comfy.add_http_header"
     bl_label = "Add Header"
@@ -129,6 +134,7 @@ class RemoveHttpHeader(bpy.types.Operator):
         return {'FINISHED'}
 
 
+# Property Groups
 class HttpHeaderPropertyGroup(bpy.types.PropertyGroup):
     """Property group for custom http headers."""
 
@@ -142,8 +148,35 @@ class HttpHeaderPropertyGroup(bpy.types.PropertyGroup):
     )
 
 
+class OutputPropertyGroup(bpy.types.PropertyGroup):
+    """Property group for outputs collection."""
+
+    # The name property serves as the key for the collection
+    # Because the file path is unique, we use it as the key
+    name: StringProperty(
+        name="File Path",
+        description="Relative file path of the output."
+    )
+    filename: StringProperty(
+        name="File Name",
+        description="File name of the output."
+    )
+    type: EnumProperty(
+        name="Type",
+        description="Type of the output.",
+        items=[("3d", "3D", "3D model output"), ("image", "Image", "Image output")]
+    )
+
+
 class ProjectSettingsPropertyGroup(bpy.types.PropertyGroup):
     """Property group for project-specific settings."""
+
+    # Outputs
+    outputs_collection: CollectionProperty(
+        name="Outputs Collection",
+        description="Collection of generated outputs.",
+        type=OutputPropertyGroup
+    )
 
     use_blend_file_location: BoolProperty(
         name="Use .blend File Location",
@@ -192,26 +225,6 @@ class PromptPropertyGroup(bpy.types.PropertyGroup):
         name="Number of Nodes Cached",
         description="Number of nodes reusing the cache during the workflow execution.",
         default=0
-    )
-
-
-class OutputPropertyGroup(bpy.types.PropertyGroup):
-    """Property group for outputs collection."""
-
-    # The name property serves as the key for the collection
-    # Because the file path is unique, we use it as the key
-    name: StringProperty(
-        name="File Path",
-        description="Relative file path of the output."
-    )
-    filename: StringProperty(
-        name="File Name",
-        description="File name of the output."
-    )
-    type: EnumProperty(
-        name="Type",
-        description="Type of the output.",
-        items=[("3d", "3D", "3D model output"), ("image", "Image", "Image output")]
     )
 
 
@@ -341,13 +354,6 @@ class AddonPreferences(bpy.types.AddonPreferences):
         update=update_progress
     )
 
-    # Outputs
-    outputs_collection: CollectionProperty(
-        name="Outputs Collection",
-        description="Collection of generated outputs.",
-        type=OutputPropertyGroup
-    )
-
     # Outputs layout
     outputs_layout: EnumProperty(
         name="Outputs Layout",
@@ -432,15 +438,18 @@ class AddonPreferences(bpy.types.AddonPreferences):
 def register():
     """Register classes."""
 
-    bpy.utils.register_class(ProjectSettingsPropertyGroup)
-    bpy.utils.register_class(PromptPropertyGroup)
-    bpy.utils.register_class(OutputPropertyGroup)
-    bpy.utils.register_class(HttpHeaderPropertyGroup)
+    # Register operators
     bpy.utils.register_class(AddHttpHeader)
     bpy.utils.register_class(RemoveHttpHeader)
+
+    # Register add-on settings
+    bpy.utils.register_class(HttpHeaderPropertyGroup)
+    bpy.utils.register_class(PromptPropertyGroup)
     bpy.utils.register_class(AddonPreferences)
 
-    # Register the project settings to the scene
+    # Register project settings
+    bpy.utils.register_class(OutputPropertyGroup)
+    bpy.utils.register_class(ProjectSettingsPropertyGroup)
     bpy.types.Scene.comfyui_project_settings = bpy.props.PointerProperty(type=ProjectSettingsPropertyGroup)
 
     # Force the update of the workflow property to trigger the registration of the selected workflow class
@@ -451,6 +460,7 @@ def register():
     # Use a timer to check and update folders after Blender is fully loaded
     bpy.app.timers.register(update_project_folders_delayed, first_interval=0.1)
 
+    # Check if debug_mode is enabled and reset log level accordingly
     if bpy.context.preferences.addons["comfyui_blender"].preferences.debug_mode:
         log.setLevel(logging.DEBUG)
 
@@ -458,10 +468,17 @@ def register():
 def unregister():
     """Unregister classes."""
 
+    # Unregister project settings
+    bpy.utils.unregister_class(ProjectSettingsPropertyGroup)
+    bpy.utils.unregister_class(OutputPropertyGroup)
+
+    # Unregister add-on settings
     bpy.utils.unregister_class(AddonPreferences)
+    bpy.utils.unregister_class(PromptPropertyGroup)
+    bpy.utils.unregister_class(HttpHeaderPropertyGroup)
+
+    # Unregister operators
     bpy.utils.unregister_class(RemoveHttpHeader)
     bpy.utils.unregister_class(AddHttpHeader)
-    bpy.utils.unregister_class(HttpHeaderPropertyGroup)
-    bpy.utils.unregister_class(ProjectSettingsPropertyGroup)
-    bpy.utils.unregister_class(PromptPropertyGroup)
-    bpy.utils.unregister_class(OutputPropertyGroup)
+    
+    

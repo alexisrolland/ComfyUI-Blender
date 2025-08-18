@@ -1,10 +1,13 @@
 """Operator to import an input image."""
+import logging
 import os
 import shutil
 
 import bpy
 
-from ..utils import show_error_popup, upload_file
+from ..utils import upload_file
+
+log = logging.getLogger("comfyui_blender")
 
 
 class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
@@ -21,12 +24,22 @@ class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
+        # Get add-on preferences
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+
         if self.filepath.lower().endswith((".jpeg", ".jpg", ".png", ".webp")):
             # Upload file on ComfyUI server
-            response = upload_file(self.filepath, type="image")
+            try:
+                response = upload_file(self.filepath, type="image")
+            except Exception as e:
+                error_message = f"Failed to upload file to ComfyUI server: {addon_prefs.server_address}. {e}"
+                log.exception(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                return {'CANCELLED'}
+
             if response.status_code != 200:
                 error_message = f"Failed to upload file: {response.status_code} - {response.text}"
-                show_error_popup(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 return {'CANCELLED'}
 
             # Delete the previous input file from Blender's data if it exists
@@ -53,7 +66,7 @@ class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
 
             except Exception as e:
                 error_message = f"Failed to copy input file: {e}"
-                show_error_popup(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 return {'CANCELLED'}
 
             # Load image in the data block
@@ -64,7 +77,7 @@ class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
 
         else:
             error_message = "Selected file is not a *.jpeg;*.jpg;*.png;*.webp."
-            show_error_popup(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
         return {'FINISHED'}
 
