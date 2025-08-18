@@ -24,6 +24,7 @@ from .operators import (
     run_workflow,
     select_folder,
     set_camera_resolution,
+    show_error_popup,
     stop_workflow,
     switch_output_layout
 )
@@ -83,6 +84,7 @@ def register():
     run_workflow.register()
     select_folder.register()
     set_camera_resolution.register()
+    show_error_popup.register()
     stop_workflow.register()
     switch_output_layout.register()
 
@@ -126,6 +128,7 @@ def unregister():
     run_workflow.unregister()
     select_folder.unregister()
     set_camera_resolution.unregister()
+    show_error_popup.unregister()
     stop_workflow.unregister()
     switch_output_layout.unregister()
 

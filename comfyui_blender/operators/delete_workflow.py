@@ -4,7 +4,6 @@ import os
 import bpy
 
 from ..workflow import get_workflow_list
-from ..utils import show_error_popup
 
 
 class ComfyBlenderOperatorDeleteWorkflow(bpy.types.Operator):
@@ -80,7 +79,7 @@ class ComfyBlenderOperatorDeleteWorkflowOk(bpy.types.Operator):
 
         except Exception as e:
             error_message = f"Failed to delete workflow {self.filepath}: {str(e)}"
-            show_error_popup(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
         return {'FINISHED'}
 

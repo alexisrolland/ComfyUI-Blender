@@ -14,7 +14,6 @@ from bpy.props import (
 )
 
 from .connection import disconnect
-from .utils import show_error_popup
 from .workflow import get_workflow_list, register_workflow_class
 
 
@@ -90,7 +89,8 @@ def update_use_blend_file_location(self, context):
             addon_prefs.base_folder = os.path.dirname(bpy.data.filepath)
         else:
             self.use_blend_file_location = False
-            show_error_popup("Save your .blend file before using this option.")
+            error_message = "Save your .blend file before using this option."
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return
     else:
         # Reset to the default base folder

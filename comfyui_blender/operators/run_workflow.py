@@ -10,7 +10,7 @@ import bpy
 
 from .. import connection
 from .. import workflow as w
-from ..utils import add_custom_headers, get_server_url, show_error_popup
+from ..utils import add_custom_headers, get_server_url
 
 log = logging.getLogger("comfyui_blender")
 
@@ -40,7 +40,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
             except Exception as e:
                 error_message = f"Failed to connect to ComfyUI server: {addon_prefs.server_address}. {e}"
                 log.exception(error_message)
-                show_error_popup(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 return {'CANCELLED'}
         else:
             self.report({'INFO'}, "Reusing existing connection.")
@@ -48,7 +48,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         # Verify workflow JSON file exists
         if not os.path.exists(workflow_path):
             error_message = f"Workflow file does not exist: {workflow_path}"
-            show_error_popup(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
         # Load the workflow JSON file
@@ -72,7 +72,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                 else:
                     property_name = current_workflow.bl_rna.properties[property_name].name  # Node title
                     error_message = f"Input {property_name} is empty."
-                    show_error_popup(error_message)
+                    bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
 
             # Custom handling for image input
@@ -83,7 +83,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                 else:
                     property_name = current_workflow.bl_rna.properties[property_name].name  # Node title
                     error_message = f"Input {property_name} is empty."
-                    show_error_popup(error_message)
+                    bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
 
             # Custom handling for seed inputs
@@ -115,7 +115,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         # Raise an exception for bad status codes
         if response.status_code != 200:
             error_message = response.text
-            show_error_popup(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
         response_data = response.text

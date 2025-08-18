@@ -4,12 +4,11 @@ import json
 import logging
 import os
 import time
-from urllib.parse import urljoin, urlencode
 
 import bpy
 from ._vendor import websocket
 
-from .utils import add_custom_headers, download_file, show_error_popup, get_websocket_url
+from .utils import add_custom_headers, download_file, get_websocket_url
 
 
 log = logging.getLogger("comfyui_blender")
@@ -175,11 +174,12 @@ def listen():
                     queue.remove(queue.find(data["prompt_id"]))
                     addon_prefs.progress_value = 0.0
                     error_message = data.get("exception_message", "Unknown error")
+                    error_message = f"Execution error from ComfyUI server: {error_message}"
 
                     # Schedule popup to run on main thread
                     # Do not call the function directly since the thread is not the main thread
                     def raise_error():
-                        show_error_popup(error_message)
+                        bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                         return None  # Stop the timer
                     bpy.app.timers.register(raise_error, first_interval=0.0)
 
@@ -200,8 +200,10 @@ def listen():
                 data = message["data"]
                 if data["prompt_id"] in queue.keys():
                     # Percentage of progress contribution per node
-                    total_nb_nodes = queue[data["prompt_id"]].total_nb_nodes - queue[data["prompt_id"]].nb_nodes_cached
-                    node_contribution = 100 / total_nb_nodes
+                    total_nb_nodes = queue[data["prompt_id"]].get("total_nb_nodes", 0)
+                    nb_nodes_cached = queue[data["prompt_id"]].get("nb_nodes_cached", 0)
+                    nb_nodes_to_execute = total_nb_nodes - nb_nodes_cached
+                    node_contribution = 100 / nb_nodes_to_execute
 
                     # Get progress from executing nodes
                     workflow_progress = 0

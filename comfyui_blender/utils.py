@@ -29,7 +29,7 @@ def download_file(filename, subfolder, type="output"):
     except Exception as e:
         error_message = f"Failed to download file from ComfyUI server: {addon_prefs.server_address}. {e}"
         log.exception(error_message)
-        show_error_popup(error_message)
+        bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
         return
 
     # Save the file in the output folder
@@ -59,6 +59,8 @@ def get_filepath(filename, folder):
         filepath = os.path.join(folder, filename)
     return filename, filepath
 
+# This method has been replaced by the operator show_error_message
+# The operator provides a OK button to ensure the popup does not disappear immediately
 def show_error_popup(message):
     """Show an error popup."""
 

@@ -5,7 +5,7 @@ import shutil
 
 import bpy
 
-from ..utils import show_error_popup, upload_file
+from ..utils import upload_file
 
 log = logging.getLogger("comfyui_blender")
 
@@ -27,7 +27,7 @@ class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
         selected_meshes = [obj for obj in context.selected_objects if obj.type == "MESH"]
         if not selected_meshes:
             error_message = f"Select at least one mesh object."
-            show_error_popup(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
         # Build temp file paths
@@ -44,12 +44,12 @@ class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
         except Exception as e:
             error_message = f"Failed to upload file to ComfyUI server: {addon_prefs.server_address}. {e}"
             log.exception(error_message)
-            show_error_popup(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
         if response.status_code != 200:
             error_message = f"Failed to upload file: {response.status_code} - {response.text}"
-            show_error_popup(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
         # Build input file paths
@@ -68,7 +68,7 @@ class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
 
         except Exception as e:
             error_message = f"Failed to copy input file: {e}"
-            show_error_popup(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
         # Update the workflow property with the input file path as defined on the ComfyUI server

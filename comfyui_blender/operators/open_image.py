@@ -1,8 +1,6 @@
 """Operator to load open an image."""
 import bpy
 
-from ..utils import show_error_popup
-
 
 class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
     """Operator to load open an image."""
@@ -25,7 +23,7 @@ class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
 
         else:
             error_message = "Selected file is not a *.jpeg;*.jpg;*.png;*.webp."
-            show_error_popup(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
         return {'FINISHED'}
 
