@@ -64,8 +64,8 @@ class ComfyBlenderOperatorDeleteOutputOk(bpy.types.Operator):
         """Execute the operator."""
 
         # Get outputs collection
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        outputs_collection = addon_prefs.outputs_collection
+        project_settings = bpy.context.scene.comfyui_project_settings
+        outputs_collection = project_settings.outputs_collection
 
         # Find and delete the output from the collection
         outputs_collection.remove(outputs_collection.find(self.filepath))

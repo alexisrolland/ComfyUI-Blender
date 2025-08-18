@@ -62,6 +62,10 @@ def listen():
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
     queue = addon_prefs.queue
 
+    # Get project settings
+    project_settings = bpy.context.scene.comfyui_project_settings
+    outputs_collection = project_settings.outputs_collection
+
     # Get WebSocket connection
     global WS_CONNECTION, WS_LISTENING
     WS_LISTENING = True
@@ -121,7 +125,7 @@ def listen():
                             download_file(output["filename"], output["subfolder"], output.get("type", "output"))
 
                             # Add 3D model to outputs collection
-                            model = addon_prefs.outputs_collection.add()
+                            model = outputs_collection.add()
                             model.name = os.path.join(output["subfolder"], output["filename"])
                             model.filename = output["filename"]
                             model.type = "3d"
@@ -138,7 +142,7 @@ def listen():
                             download_file(output["filename"], output["subfolder"])
 
                             # Add 3D model to outputs collection
-                            model = addon_prefs.outputs_collection.add()
+                            model = outputs_collection.add()
                             model.name = os.path.join(output["subfolder"], output["filename"])
                             model.filename = output["filename"]
                             model.type = "3d"
@@ -155,7 +159,7 @@ def listen():
                             download_file(output["filename"], output["subfolder"], output.get("type", "output"))
 
                             # Add image to outputs collection
-                            image = addon_prefs.outputs_collection.add()
+                            image = outputs_collection.add()
                             image.name = os.path.join(output["subfolder"], output["filename"])
                             image.filename = output["filename"]
                             image.type = "image"
@@ -203,7 +207,7 @@ def listen():
                     total_nb_nodes = queue[data["prompt_id"]].get("total_nb_nodes", 0)
                     nb_nodes_cached = queue[data["prompt_id"]].get("nb_nodes_cached", 0)
                     nb_nodes_to_execute = total_nb_nodes - nb_nodes_cached
-                    node_contribution = 100 / nb_nodes_to_execute
+                    node_contribution = 100 / nb_nodes_to_execute if nb_nodes_to_execute > 0 else 100
 
                     # Get progress from executing nodes
                     workflow_progress = 0
