@@ -23,9 +23,14 @@ def download_file(filename, subfolder, type="output"):
 
     headers = {"Content-Type": "application/json"}
     headers = add_custom_headers(headers)
-    # Download with streaming to handle large files and avoid memory issues
-    response = requests.get(url, params=params, headers=headers, stream=True)
-    response.raise_for_status()  # Raise an exception for bad status codes
+    try:
+        # Download with streaming to handle large files and avoid memory issues
+        response = requests.get(url, params=params, headers=headers, stream=True)
+    except Exception as e:
+        error_message = f"Failed to download file from ComfyUI server: {addon_prefs.server_address}. {e}"
+        log.exception(error_message)
+        show_error_popup(error_message)
+        return {'CANCELLED'}
 
     # Save the file in the output folder
     folder = os.path.join(outputs_folder, subfolder)

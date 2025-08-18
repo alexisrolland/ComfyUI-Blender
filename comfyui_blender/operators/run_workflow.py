@@ -37,12 +37,11 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
             try:
                 connection.connect()
                 self.report({'INFO'}, "Connection established.")
-
             except Exception as e:
                 error_message = f"Failed to connect to ComfyUI server: {addon_prefs.server_address}. {e}"
                 log.exception(error_message)
                 show_error_popup(error_message)
-                return {'CANCELLED'}    
+                return {'CANCELLED'}
         else:
             self.report({'INFO'}, "Reusing existing connection.")
 

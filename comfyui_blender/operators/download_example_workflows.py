@@ -30,8 +30,13 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
         # Download example workflows
         url = get_server_url("/api/workflow_templates")
         headers = add_custom_headers()
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()  # Raise an exception for bad status codes
+        try:
+            response = requests.get(url, headers=headers)
+        except Exception as e:
+            error_message = f"Failed to download example workflows from ComfyUI server: {addon_prefs.server_address}. {e}"
+            log.exception(error_message)
+            show_error_popup(error_message)
+            return {'CANCELLED'}
 
         # Find matching key case-insensitively
         workflow_templates = response.json()
