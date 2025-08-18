@@ -30,7 +30,7 @@ def download_file(filename, subfolder, type="output"):
         error_message = f"Failed to download file from ComfyUI server: {addon_prefs.server_address}. {e}"
         log.exception(error_message)
         show_error_popup(error_message)
-        return {'CANCELLED'}
+        return
 
     # Save the file in the output folder
     folder = os.path.join(outputs_folder, subfolder)

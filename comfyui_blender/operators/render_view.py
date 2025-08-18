@@ -1,10 +1,13 @@
 """Operator to render from the camera view."""
+import logging
 import os
 import shutil
 
 import bpy
 
 from ..utils import show_error_popup, upload_file
+
+log = logging.getLogger("comfyui_blender")
 
 
 class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
@@ -57,7 +60,14 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         temp_filepath = os.path.join(temp_folder, temp_filename)
 
         # Upload file on ComfyUI server
-        response = upload_file(temp_filepath, type="image")
+        try:
+            response = upload_file(temp_filepath, type="image")
+        except Exception as e:
+            error_message = f"Failed to upload file to ComfyUI server: {addon_prefs.server_address}. {e}"
+            log.exception(error_message)
+            show_error_popup(error_message)
+            return {'CANCELLED'}
+
         if response.status_code != 200:
             error_message = f"Failed to upload file: {response.status_code} - {response.text}"
             show_error_popup(error_message)

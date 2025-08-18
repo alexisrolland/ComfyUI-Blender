@@ -1,10 +1,13 @@
 """Operator to prepare an OBJ file to import it on the ComfyUI server."""
+import logging
 import os
 import shutil
 
 import bpy
 
 from ..utils import show_error_popup, upload_file
+
+log = logging.getLogger("comfyui_blender")
 
 
 class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
@@ -36,7 +39,14 @@ class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
         bpy.ops.wm.obj_export(filepath=temp_filepath, export_selected_objects=True, export_materials=False)
 
         # Upload file on ComfyUI server
-        response = upload_file(temp_filepath, type="3d")
+        try:
+            response = upload_file(temp_filepath, type="3d")
+        except Exception as e:
+            error_message = f"Failed to upload file to ComfyUI server: {addon_prefs.server_address}. {e}"
+            log.exception(error_message)
+            show_error_popup(error_message)
+            return {'CANCELLED'}
+
         if response.status_code != 200:
             error_message = f"Failed to upload file: {response.status_code} - {response.text}"
             show_error_popup(error_message)

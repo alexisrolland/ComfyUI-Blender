@@ -1,7 +1,7 @@
 """Operator to load open an image."""
 import bpy
 
-from ..utils import show_error_popup, upload_file
+from ..utils import show_error_popup
 
 
 class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
