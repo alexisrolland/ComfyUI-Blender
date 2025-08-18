@@ -11,4 +11,4 @@ Repository = "https://github.com/alexisrolland/ComfyUI-Blender"
 [tool.comfy]
 PublisherId = "alexisrolland"
 DisplayName = "ComfyUI-Blender"
-Icon = "https://github.com/alexisrolland/ComfyUI-Blender-Doc/blob/main/assets/comfyui_blender.png"
+Icon = "https://raw.githubusercontent.com/alexisrolland/ComfyUI-Blender-Doc/2ef47b6e54396ec5238ade09cf70fa4f28fcbd6f/assets/comfyui_blender.png"
