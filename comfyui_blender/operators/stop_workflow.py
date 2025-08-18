@@ -1,6 +1,5 @@
 """Operator to stop the execution of a workflow on ComfyUI server."""
 import requests
-from urllib.parse import urljoin
 
 import bpy
 

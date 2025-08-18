@@ -1,6 +1,5 @@
 """Operator to remove all pending workflows from ComfyUI server queue."""
 import requests
-from urllib.parse import urljoin
 
 import bpy
 

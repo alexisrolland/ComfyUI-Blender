@@ -6,7 +6,7 @@ from mathutils import Vector
 
 import bpy
 
-from ..utils import get_filepath, show_error_popup, upload_file
+from ..utils import show_error_popup, upload_file
 
 log = logging.getLogger("comfyui_blender")
 
