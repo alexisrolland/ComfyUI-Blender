@@ -178,10 +178,12 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         self.reset_scene(context, **reset_params)
         return {'FINISHED'}
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorRenderDepthMap)
+
 
 def unregister():
     """Unregister the operator."""

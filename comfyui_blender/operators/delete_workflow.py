@@ -50,6 +50,7 @@ class ComfyBlenderOperatorDeleteWorkflow(bpy.types.Operator):
         button_ok.filepath = self.filepath
         row.operator("comfy.delete_workflow_cancel", text="Cancel")
 
+
 class ComfyBlenderOperatorDeleteWorkflowOk(bpy.types.Operator):
     """Confirm deletion."""
 
@@ -83,6 +84,7 @@ class ComfyBlenderOperatorDeleteWorkflowOk(bpy.types.Operator):
             return {'CANCELLED'}
         return {'FINISHED'}
 
+
 class ComfyBlenderOperatorDeleteWorkflowCancel(bpy.types.Operator):
     """Cancel deletion."""
 
@@ -96,12 +98,14 @@ class ComfyBlenderOperatorDeleteWorkflowCancel(bpy.types.Operator):
 
         return {'CANCELLED'}
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorDeleteWorkflow)
     bpy.utils.register_class(ComfyBlenderOperatorDeleteWorkflowOk)
     bpy.utils.register_class(ComfyBlenderOperatorDeleteWorkflowCancel)
+
 
 def unregister():
     """Unregister the operator."""

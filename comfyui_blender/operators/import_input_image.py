@@ -94,10 +94,12 @@ class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
         context.window_manager.fileselect_add(self)
         return {'RUNNING_MODAL'}
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorImportInputImage)
+
 
 def unregister():
     """Unregister the operator."""

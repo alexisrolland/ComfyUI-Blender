@@ -48,6 +48,7 @@ class ComfyBlenderOperatorDeleteOutput(bpy.types.Operator):
         button_ok.type = self.type
         row.operator("comfy.delete_output_cancel", text="Cancel")
 
+
 class ComfyBlenderOperatorDeleteOutputOk(bpy.types.Operator):
     """Confirm deletion."""
 
@@ -78,6 +79,7 @@ class ComfyBlenderOperatorDeleteOutputOk(bpy.types.Operator):
             self.report({'INFO'}, f"Removed image from Blender data: {self.filename}")
         return {'FINISHED'}
 
+
 class ComfyBlenderOperatorDeleteOutputCancel(bpy.types.Operator):
     """Cancel deletion."""
 
@@ -91,12 +93,14 @@ class ComfyBlenderOperatorDeleteOutputCancel(bpy.types.Operator):
 
         return {'CANCELLED'}
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorDeleteOutput)
     bpy.utils.register_class(ComfyBlenderOperatorDeleteOutputOk)
     bpy.utils.register_class(ComfyBlenderOperatorDeleteOutputCancel)
+
 
 def unregister():
     """Unregister the operator."""

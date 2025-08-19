@@ -135,10 +135,12 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         self.report({'INFO'}, "WebSocket listener started.")
         return {'FINISHED'}
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorRunWorkflow)
+
 
 def unregister():
     """Unregister the operator."""

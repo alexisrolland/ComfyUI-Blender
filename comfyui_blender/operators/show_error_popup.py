@@ -35,10 +35,12 @@ class ComfyBlenderOperatorShowErrorPopup(bpy.types.Operator):
         for line in wrapped_lines:
             col.label(text=line)
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorShowErrorPopup)
+
 
 def unregister():
     """Unregister the operator."""

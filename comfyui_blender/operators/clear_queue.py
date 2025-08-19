@@ -41,10 +41,12 @@ class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
         self.report({'INFO'}, "Request to stop workflow execution sent to ComfyUI server.")
         return {'FINISHED'}
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorStopWorkflow)
+
 
 def unregister():
     """Unregister the operator."""
