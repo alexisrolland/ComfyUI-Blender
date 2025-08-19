@@ -1,7 +1,7 @@
 {
   "2": {
     "inputs": {
-      "ckpt_name": "hunyuan3d-dit-v2.safetensors"
+      "ckpt_name": "tencent\\hunyuan3d-dit-v2.safetensors"
     },
     "class_type": "ImageOnlyCheckpointLoader",
     "_meta": {
@@ -154,7 +154,7 @@
     },
     "class_type": "BlenderOutputSaveGlb",
     "_meta": {
-      "title": "Blender Output Save GLB"
+      "title": "Save GLB"
     }
   },
   "12": {
@@ -207,7 +207,7 @@
     },
     "class_type": "BlenderInputSeed",
     "_meta": {
-      "title": "Blender Input Seed"
+      "title": "Seed"
     }
   },
   "16": {
@@ -220,12 +220,12 @@
       "invert_output": false,
       "refine_foreground": false,
       "background": "Color",
-      "image": [
-        "3",
-        0
-      ],
       "background_color": [
         "17",
+        0
+      ],
+      "image": [
+        "3",
         0
       ]
     },
