@@ -18,6 +18,7 @@ from .operators import (
     open_image,
     prepare_glb_file,
     prepare_obj_file,
+    rename_workflow,
     render_depth_map,
     render_lineart,
     render_view,
@@ -78,6 +79,7 @@ def register():
     open_image.register()
     prepare_glb_file.register()
     prepare_obj_file.register()
+    rename_workflow.register()
     render_depth_map.register()
     render_lineart.register()
     render_view.register()
@@ -122,6 +124,7 @@ def unregister():
     open_image.unregister()
     prepare_glb_file.unregister()
     prepare_obj_file.unregister()
+    rename_workflow.unregister()
     render_depth_map.unregister()
     render_lineart.unregister()
     render_view.unregister()
