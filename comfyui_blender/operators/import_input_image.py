@@ -63,7 +63,6 @@ class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
                 # Copy the file to the inputs folder
                 shutil.copy(self.filepath, input_fullpath)
                 self.report({'INFO'}, f"Input copied to: {input_fullpath}")
-
             except Exception as e:
                 error_message = f"Failed to copy input file: {e}"
                 bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
