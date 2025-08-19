@@ -32,7 +32,7 @@ class ComfyBlenderOperatorDeleteOutput(bpy.types.Operator):
 
         # Title
         row = layout.row()
-        row.label(text="Delete Output")
+        row.label(text="Delete Output", icon="QUESTION")
         layout.separator(type="LINE")
 
         # Message

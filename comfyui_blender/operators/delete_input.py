@@ -35,7 +35,7 @@ class ComfyBlenderOperatorDeleteInput(bpy.types.Operator):
 
         # Title
         row = layout.row()
-        row.label(text="Delete Input")
+        row.label(text="Delete Input", icon="QUESTION")
         layout.separator(type="LINE")
 
         # Message

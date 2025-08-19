@@ -8,7 +8,7 @@ def draw_file_browser_menu(self, context):
     """Context menu to provide custom actions in the file browser."""
 
     layout = self.layout
-    layout.separator()
+    layout.separator(type="LINE")
     layout.label(text="ComfyUI")
 
     # Get selected file

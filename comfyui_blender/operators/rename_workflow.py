@@ -26,7 +26,7 @@ class ComfyBlenderOperatorRenameWorkflow(bpy.types.Operator):
 
         # Use invoke popup instead invoke props dialog to avoid blocking thread
         # Invoke popup requires a custom OK / Cancel buttons
-        return context.window_manager.invoke_popup(self, width=400)
+        return context.window_manager.invoke_popup(self, width=300)
 
     def draw(self, context):
         """Customize the confirmation dialog."""

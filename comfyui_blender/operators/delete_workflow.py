@@ -35,7 +35,7 @@ class ComfyBlenderOperatorDeleteWorkflow(bpy.types.Operator):
 
         # Title
         row = layout.row()
-        row.label(text="Delete Workflow")
+        row.label(text="Delete Workflow", icon="QUESTION")
         layout.separator(type="LINE")
 
         # Message
