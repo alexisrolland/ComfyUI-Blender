@@ -3,7 +3,7 @@
 [![ComfyUI Registry](https://img.shields.io/badge/comfyui-registry-grey?labelColor=blue)](https://registry.comfy.org/nodes/comfyui-blender)
 [![Latest Release](https://img.shields.io/github/v/release/alexisrolland/ComfyUI-Blender)](https://github.com/alexisrolland/ComfyUI-Blender/releases/latest)
 
-This respository contains both custom nodes to be installed on the ComfyUI server and the Blender add-on to send workflows to the ComfyUI server. 
+This respository contains both custom nodes to be installed on the ComfyUI server and the Blender add-on to send workflows to the ComfyUI server. They can be used as follow:
 
 * Create a workflow in ComfyUI **with the Blender nodes**.
 * Export the workflow **in API format**.
@@ -24,15 +24,20 @@ cd ./ComfyUI/custom_nodes
 git clone https://github.com/alexisrolland/ComfyUI-Blender.git
 ```
 
-Note these nodes do not require additional Python dependencies. They are only used to define the inputs and outputs of the workflows to be displayed in the Blender add-on.
+#### Remarks 
+> The custom nodes do not require additional Python dependencies. They are only used to define the inputs and outputs of the workflows to be displayed in the Blender add-on.
+
+> Ensure you have a recent version of ComfyUI. The add-on has has been developed based on ComfyUI `v0.3.49`. Some features such as the progress bar are not working properly on earlier versions.
 
 ### Install Blender Add-on
-
-This add-on has been developed for Blender `v4.5` and above.
 
 Download the add-on package `comfyui_blender_[...].zip` from the **[LATEST RELEASE](https://github.com/alexisrolland/ComfyUI-Blender/releases)**.
 
 In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > select the zip package.
+
+#### Remarks
+
+> Ensure you have a recent version of Blender. The add-on has been developed for Blender `v4.5` and above. Some features such as the lineart rendering are not working properly on earlier versions.
 
 ## Usage
 
