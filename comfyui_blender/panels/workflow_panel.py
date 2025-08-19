@@ -37,17 +37,25 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
         workflow_filename = str(addon_prefs.workflow)
         workflow_path = os.path.join(workflows_folder, workflow_filename)
 
-        # Buttons to import a workflow
+        # Button to import workflows
         row = self.layout.row(align=True)
-        row.operator("comfy.import_workflow", text="Import Workflow")
-        row.operator("comfy.download_example_workflows", text="", icon="IMPORT")
+        import_workflow = row.operator("comfy.import_workflow", text="Import Workflow")
+        import_workflow.invoke_default = True
+
+        # Button to download example workflows
+        # Hide this since example workflows are likely not working natively on the user's ComfyUI instance
+        # row.operator("comfy.download_example_workflows", text="", icon="IMPORT")
+
+        # Button to open the workflows folder
         file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
         file_browser.folder_path = workflows_folder
         file_browser.custom_label = "Open Workflows Folder"
 
-        # Dropdown list of workflows with actions
+        # Dropdown list of workflows
         row = self.layout.row(align=True)
         row.prop(addon_prefs, "workflow")
+
+        # Button to delete the current workflow
         delete_workflow = row.operator("comfy.delete_workflow", text="", icon="TRASH")
         delete_workflow.filename = workflow_filename
         delete_workflow.filepath = workflow_path
