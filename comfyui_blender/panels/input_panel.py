@@ -30,11 +30,10 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
         workflows_folder = str(addon_prefs.workflows_folder)
         workflow_filename = str(addon_prefs.workflow)
         workflow_path = os.path.join(workflows_folder, workflow_filename)
-        inputs_folder = str(addon_prefs.inputs_folder)
+        current_workflow = context.scene.current_workflow
 
         # Load the workflow JSON file
         if os.path.exists(workflow_path):
-            box = self.layout.box()
             with open(workflow_path, "r",  encoding="utf-8") as file:
                 workflow = json.load(file)
 
@@ -42,144 +41,176 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             inputs = w.parse_workflow_for_inputs(workflow)
 
             # Display workflow input properties
-            current_workflow = context.scene.current_workflow
             for key, node in inputs.items():
                 property_name = f"node_{key}"
 
-                # Custom handling for 3D model inputs
-                if node["class_type"] == "BlenderInputInt":
-                    row = box.row(align=True)
-                    row.prop(current_workflow, property_name)
+                # Custom handling for group of inputs
+                if node["class_type"] == "BlenderInputGroup":
+                    col = self.layout.column()
+                    if node["inputs"].get("show_title", False):
+                        # Get the input name from the workflow properties
+                        name = current_workflow.bl_rna.properties[property_name].name  # Node title
+                        col.label(text=name + ":")
 
-                    # Set / get camera width
-                    if node["inputs"].get("camera_width", False):
-                        set_width = row.operator("comfy.set_camera_resolution", text="", icon="CAMERA_DATA")
-                        set_width.value = current_workflow.get(property_name, node["inputs"].get("default", 0))
-                        set_width.axis = "X"
-
-                        get_width = row.operator("comfy.get_camera_resolution", text="", icon="IMAGE_DATA")
-                        get_width.property_name = property_name
-                        get_width.axis = "X"
-
-                    # Set / get camera height
-                    if node["inputs"].get("camera_height", False):
-                        set_height = row.operator("comfy.set_camera_resolution", text="", icon="CAMERA_DATA")
-                        set_height.value = current_workflow.get(property_name, node["inputs"].get("default", 0))
-                        set_height.axis = "Y"
-
-                        get_width = row.operator("comfy.get_camera_resolution", text="", icon="IMAGE_DATA")
-                        get_width.property_name = property_name
-                        get_width.axis = "Y"
-
-                # Custom handling for 3D model inputs
-                elif node["class_type"] == "BlenderInputLoad3D":
-                    # Get the input name from the workflow properties
-                    name = current_workflow.bl_rna.properties[property_name].name  # Node title
-                    row = box.row(align=True)
-                    row.label(text=name + ":")
-
-                    # Prepare GLB file
-                    prepare_glb = row.operator("comfy.prepare_glb_file", text="glb", icon="MESH_DATA")
-                    prepare_glb.workflow_property = property_name
-
-                    # Prepare OBJ file
-                    prepare_obj = row.operator("comfy.prepare_obj_file", text="obj", icon="MESH_DATA")
-                    prepare_obj.workflow_property = property_name
-
-                    # File browser button
-                    file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
-                    file_browser.folder_path = inputs_folder
-                    file_browser.custom_label = "Open Inputs Folder"
-
-                    # Get the input file name from the workflow class
-                    input_filepath = getattr(current_workflow, property_name)
-                    input_filename = os.path.basename(input_filepath)
-
-                    # Display prepared 3D model
-                    if input_filename:
-                        # 3D model name with link
-                        row = box.row()
-                        input_name = row.operator("comfy.import_3d_model", text=input_filename, emboss=False, icon="MESH_DATA")
-                        input_name.filepath = input_filepath
-
-                        # Delete input button
-                        sub_row = row.row(align=True)
-                        delete_input = sub_row.operator("comfy.delete_input", text="", icon="TRASH")
-                        delete_input.filename = input_filename
-                        delete_input.filepath = input_filepath
-                        delete_input.workflow_property = property_name
-                        delete_input.type = "3d"
-
-                # Custom handling for image inputs
-                elif node["class_type"] == "BlenderInputLoadImage":
-                    # Get the input name from the workflow properties
-                    name = current_workflow.bl_rna.properties[property_name].name  # Node title
-                    row = box.row(align=True)
-                    row.label(text=name + ":")
-
-                    # Import button
-                    import_input_image = row.operator("comfy.import_input_image", text="", icon="IMPORT")
-                    import_input_image.workflow_property = property_name
-
-                    # Render view
-                    render_view = row.operator("comfy.render_view", text="", icon="OUTPUT")
-                    render_view.workflow_property = property_name
-
-                    # Render depth map
-                    render_depth = row.operator("comfy.render_depth_map", text="", icon="MATERIAL")
-                    render_depth.workflow_property = property_name
-
-                    # Render lineart
-                    render_lineart = row.operator("comfy.render_lineart", text="", icon="SHADING_WIRE")
-                    render_lineart.workflow_property = property_name
-
-                    # File browser button
-                    file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
-                    file_browser.folder_path = inputs_folder
-                    file_browser.custom_label = "Open Inputs Folder"
-
-                    # Get the input file name from the workflow class
-                    input_filepath = getattr(current_workflow, property_name)
-                    input_filename = os.path.basename(input_filepath)
-
-                    # Display imported input image if it exists
-                    if input_filename in bpy.data.images:
-                        row = box.row()
-
-                        # Image name with link
-                        input_name = row.operator("comfy.open_image_editor", text=input_filename, emboss=False, icon="IMAGE_DATA")
-                        input_name.filename = input_filename
-
-                        # Delete input button
-                        sub_row = row.row(align=True)
-                        delete_input = sub_row.operator("comfy.delete_input", text="", icon="TRASH")
-                        delete_input.filename = input_filename
-                        delete_input.filepath = input_filepath
-                        delete_input.workflow_property = property_name
-                        delete_input.type = "image"
-
-                        # Image preview
-                        bpy.data.images[input_filename].preview_ensure()
-                        preview = box.row()
-                        preview.template_icon(icon_value=bpy.data.images[input_filename].preview.icon_id, scale=5)
-
-                # Custom handling for seed inputs
-                elif node["class_type"] == "BlenderInputSeed":
-                    row = box.row(align=True)
-                    row.prop(current_workflow, property_name) # Random seed management to be implemented
-                    if addon_prefs.lock_seed:
-                        row.prop(addon_prefs, "lock_seed", text="", icon="LOCKED")
+                    # Create box for the group
+                    group_box = col.box()
+                    if node["inputs"].get("compact", False):
+                        group_col = group_box.column(align=True)
                     else:
-                        row.prop(addon_prefs, "lock_seed", text="", icon="UNLOCKED")
+                        group_col = group_box.column()
+
+                    # Display group inputs
+                    group_inputs = getattr(current_workflow, property_name)
+                    for input_key in group_inputs:
+                        group_property_name = f"node_{input_key}"
+                        self.display_input(context, current_workflow, group_col, group_property_name, inputs[str(input_key)])
 
                 else:
-                    # Default display for other input types
-                    box.prop(current_workflow, property_name)
+                    # Skip input if it belongs to a group
+                    if "group" not in node["inputs"]:
+                        self.display_input(context, current_workflow, self.layout, property_name, node)
 
             # Add run workflow button
-            col = box.column()
+            col = self.layout.column()
             col.scale_y = 1.5
             col.operator("comfy.run_workflow", text="Run Workflow", icon="PLAY")
+
+    def display_input(self, context, current_workflow, layout, property_name, node):
+        """Format the input for display in the panel."""
+
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+        inputs_folder = str(addon_prefs.inputs_folder)
+
+        # Custom handling for integer inputs
+        if node["class_type"] == "BlenderInputInt":
+            row = layout.row(align=True)
+            row.prop(current_workflow, property_name)
+
+            # Set / get camera width
+            if node["inputs"].get("camera_width", False):
+                set_width = row.operator("comfy.set_camera_resolution", text="", icon="CAMERA_DATA")
+                set_width.value = current_workflow.get(property_name, node["inputs"].get("default", 0))
+                set_width.axis = "X"
+
+                get_width = row.operator("comfy.get_camera_resolution", text="", icon="IMAGE_DATA")
+                get_width.property_name = property_name
+                get_width.axis = "X"
+
+            # Set / get camera height
+            if node["inputs"].get("camera_height", False):
+                set_height = row.operator("comfy.set_camera_resolution", text="", icon="CAMERA_DATA")
+                set_height.value = current_workflow.get(property_name, node["inputs"].get("default", 0))
+                set_height.axis = "Y"
+
+                get_width = row.operator("comfy.get_camera_resolution", text="", icon="IMAGE_DATA")
+                get_width.property_name = property_name
+                get_width.axis = "Y"
+
+        # Custom handling for 3D model inputs
+        elif node["class_type"] == "BlenderInputLoad3D":
+            # Get the input name from the workflow properties
+            name = current_workflow.bl_rna.properties[property_name].name  # Node title
+            row = layout.row(align=True)
+            row.label(text=name + ":")
+
+            # Prepare GLB file
+            prepare_glb = row.operator("comfy.prepare_glb_file", text="glb", icon="MESH_DATA")
+            prepare_glb.workflow_property = property_name
+
+            # Prepare OBJ file
+            prepare_obj = row.operator("comfy.prepare_obj_file", text="obj", icon="MESH_DATA")
+            prepare_obj.workflow_property = property_name
+
+            # File browser button
+            file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
+            file_browser.folder_path = inputs_folder
+            file_browser.custom_label = "Open Inputs Folder"
+
+            # Get the input file name from the workflow class
+            input_filepath = getattr(current_workflow, property_name)
+            input_filename = os.path.basename(input_filepath)
+
+            # Display prepared 3D model
+            if input_filename:
+                # 3D model name with link
+                row = layout.row()
+                input_name = row.operator("comfy.import_3d_model", text=input_filename, emboss=False, icon="MESH_DATA")
+                input_name.filepath = input_filepath
+
+                # Delete input button
+                sub_row = row.row(align=True)
+                delete_input = sub_row.operator("comfy.delete_input", text="", icon="TRASH")
+                delete_input.filename = input_filename
+                delete_input.filepath = input_filepath
+                delete_input.workflow_property = property_name
+                delete_input.type = "3d"
+
+        # Custom handling for image inputs
+        elif node["class_type"] == "BlenderInputLoadImage":
+            # Get the input name from the workflow properties
+            name = current_workflow.bl_rna.properties[property_name].name  # Node title
+            row = layout.row(align=True)
+            row.label(text=name + ":")
+
+            # Import button
+            import_input_image = row.operator("comfy.import_input_image", text="", icon="IMPORT")
+            import_input_image.workflow_property = property_name
+
+            # Render view
+            render_view = row.operator("comfy.render_view", text="", icon="OUTPUT")
+            render_view.workflow_property = property_name
+
+            # Render depth map
+            render_depth = row.operator("comfy.render_depth_map", text="", icon="MATERIAL")
+            render_depth.workflow_property = property_name
+
+            # Render lineart
+            render_lineart = row.operator("comfy.render_lineart", text="", icon="SHADING_WIRE")
+            render_lineart.workflow_property = property_name
+
+            # File browser button
+            file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
+            file_browser.folder_path = inputs_folder
+            file_browser.custom_label = "Open Inputs Folder"
+
+            # Get the input file name from the workflow class
+            input_filepath = getattr(current_workflow, property_name)
+            input_filename = os.path.basename(input_filepath)
+
+            # Display imported input image if it exists
+            if input_filename in bpy.data.images:
+                row = layout.row()
+
+                # Image name with link
+                input_name = row.operator("comfy.open_image_editor", text=input_filename, emboss=False, icon="IMAGE_DATA")
+                input_name.filename = input_filename
+
+                # Delete input button
+                sub_row = row.row(align=True)
+                delete_input = sub_row.operator("comfy.delete_input", text="", icon="TRASH")
+                delete_input.filename = input_filename
+                delete_input.filepath = input_filepath
+                delete_input.workflow_property = property_name
+                delete_input.type = "image"
+
+                # Image preview
+                bpy.data.images[input_filename].preview_ensure()
+                preview = layout.row()
+                preview.template_icon(icon_value=bpy.data.images[input_filename].preview.icon_id, scale=5)
+
+        # Custom handling for seed inputs
+        elif node["class_type"] == "BlenderInputSeed":
+            row = layout.row(align=True)
+            row.prop(current_workflow, property_name) # Random seed management to be implemented
+            if addon_prefs.lock_seed:
+                row.prop(addon_prefs, "lock_seed", text="", icon="LOCKED")
+            else:
+                row.prop(addon_prefs, "lock_seed", text="", icon="UNLOCKED")
+
+        else:
+            # Default display for other input types
+            layout.prop(current_workflow, property_name)
+
 
 def register():
     """Register the panel."""

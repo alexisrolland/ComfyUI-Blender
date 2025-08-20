@@ -11,6 +11,7 @@ from bpy.props import (
     EnumProperty,
     FloatProperty,
     IntProperty,
+    IntVectorProperty,
     StringProperty
 )
 
@@ -43,6 +44,23 @@ def check_workflow_file_exists(new_workflow_data, workflows_folder):
 def create_class_properties(inputs, keep_values=False):
     """Create properties for each input and output of the workflow."""
 
+    # Create a dictionary to extract input groups
+    # Expected format: {group_key: [node_keys]}
+    input_groups = {}
+    for key, node in inputs.items():
+        if node["class_type"].startswith("BlenderInput"):
+            if "group" not in node["inputs"]:
+                continue
+            group_key = node["inputs"]["group"][0]
+            if group_key not in input_groups:
+                input_groups[group_key] = []
+            input_groups[group_key].append(key)
+
+    # Sort node keys in each input group
+    for group_key in input_groups:
+        input_groups[group_key].sort(key=lambda k: inputs[k]["inputs"]["order"])
+
+    # Create properties
     properties = {}
     for key, node in inputs.items():
         property_name = f"node_{key}"
@@ -84,6 +102,15 @@ def create_class_properties(inputs, keep_values=False):
                 # step=node["inputs"].get("step", 1.0),
                 step=1,
                 precision=2
+            )
+            continue
+
+        # Group
+        if node["class_type"] == "BlenderInputGroup":
+            properties[property_name] = IntVectorProperty(
+                name=name,
+                size=len(input_groups[key]),
+                default=tuple(int(node_key) for node_key in input_groups[key])
             )
             continue
 
