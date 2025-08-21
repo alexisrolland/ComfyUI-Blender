@@ -108,9 +108,11 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
         # Custom handling for 3D model inputs
         elif node["class_type"] == "BlenderInputLoad3D":
+            box = layout.box()
+
             # Get the input name from the workflow properties
             name = current_workflow.bl_rna.properties[property_name].name  # Node title
-            row = layout.row(align=True)
+            row = box.row(align=True)
             row.label(text=name + ":")
 
             # Prepare GLB file
@@ -128,14 +130,15 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
             # Get the input file name from the workflow class
             input_filepath = getattr(current_workflow, property_name)
+            input_fullpath = os.path.join(inputs_folder, input_filepath)
             input_filename = os.path.basename(input_filepath)
 
             # Display prepared 3D model
             if input_filename:
                 # 3D model name with link
-                row = layout.row()
+                row = box.row()
                 input_name = row.operator("comfy.import_3d_model", text=input_filename, emboss=False, icon="MESH_DATA")
-                input_name.filepath = input_filepath
+                input_name.filepath = input_fullpath
 
                 # Delete input button
                 sub_row = row.row(align=True)
@@ -147,9 +150,11 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
         # Custom handling for image inputs
         elif node["class_type"] == "BlenderInputLoadImage":
+            box = layout.box()
+
             # Get the input name from the workflow properties
             name = current_workflow.bl_rna.properties[property_name].name  # Node title
-            row = layout.row(align=True)
+            row = box.row(align=True)
             row.label(text=name + ":")
 
             # Import button
@@ -179,7 +184,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
             # Display imported input image if it exists
             if input_filename in bpy.data.images:
-                row = layout.row()
+                row = box.row()
 
                 # Image name with link
                 input_name = row.operator("comfy.open_image_editor", text=input_filename, emboss=False, icon="IMAGE_DATA")
@@ -195,7 +200,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
                 # Image preview
                 bpy.data.images[input_filename].preview_ensure()
-                preview = layout.row()
+                preview = box.row()
                 preview.template_icon(icon_value=bpy.data.images[input_filename].preview.icon_id, scale=5)
 
         # Custom handling for seed inputs
