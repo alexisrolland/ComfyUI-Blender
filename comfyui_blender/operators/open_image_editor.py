@@ -34,10 +34,12 @@ class ComfyBlenderOperatorOpenImageEditor(bpy.types.Operator):
         space.image = bpy.data.images.get(self.filename)
         return {'FINISHED'}
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorOpenImageEditor)
+
 
 def unregister():
     """Unregister the operator."""

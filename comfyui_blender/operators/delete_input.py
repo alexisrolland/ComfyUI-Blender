@@ -35,7 +35,7 @@ class ComfyBlenderOperatorDeleteInput(bpy.types.Operator):
 
         # Title
         row = layout.row()
-        row.label(text="Delete Input")
+        row.label(text="Delete Input", icon="QUESTION")
         layout.separator(type="LINE")
 
         # Message
@@ -51,6 +51,7 @@ class ComfyBlenderOperatorDeleteInput(bpy.types.Operator):
         button_ok.workflow_property = self.workflow_property
         button_ok.type = self.type
         row.operator("comfy.delete_input_cancel", text="Cancel")
+
 
 class ComfyBlenderOperatorDeleteInputOk(bpy.types.Operator):
     """Confirm deletion."""
@@ -97,6 +98,7 @@ class ComfyBlenderOperatorDeleteInputOk(bpy.types.Operator):
 
         return {'FINISHED'}
 
+
 class ComfyBlenderOperatorDeleteInputCancel(bpy.types.Operator):
     """Cancel deletion."""
 
@@ -110,12 +112,14 @@ class ComfyBlenderOperatorDeleteInputCancel(bpy.types.Operator):
 
         return {'CANCELLED'}
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorDeleteInput)
     bpy.utils.register_class(ComfyBlenderOperatorDeleteInputOk)
     bpy.utils.register_class(ComfyBlenderOperatorDeleteInputCancel)
+
 
 def unregister():
     """Unregister the operator."""

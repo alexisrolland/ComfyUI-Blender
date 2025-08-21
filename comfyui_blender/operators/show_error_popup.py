@@ -21,24 +21,32 @@ class ComfyBlenderOperatorShowErrorPopup(bpy.types.Operator):
     def invoke(self, context, event):
         """Invoke the popup window."""
 
-        self.bl_label = "Execution Error"
-        return context.window_manager.invoke_props_dialog(self, width=400)
+        # Use invoke popup instead invoke props dialog to avoid blocking thread
+        # Invoke popup requires a custom OK / Cancel buttons
+        return context.window_manager.invoke_popup(self, width=300)
 
     def draw(self, context):
         """Customize the confirmation dialog."""
 
         layout = self.layout
-        col = layout.column(align=True)
 
-        # Wrap text to specified width
+        # Title
+        row = layout.row()
+        row.label(text="Execution Error", icon="ERROR")
+        layout.separator(type="LINE")
+
+        # Message
+        col = layout.column(align=True)
         wrapped_lines = textwrap.wrap(self.error_message, width=70)
         for line in wrapped_lines:
             col.label(text=line)
+
 
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorShowErrorPopup)
+
 
 def unregister():
     """Unregister the operator."""

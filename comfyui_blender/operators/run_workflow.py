@@ -75,6 +75,10 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
 
+            # Custom handling for group of inputs
+            elif node["class_type"] == "BlenderInputGroup":
+                continue
+
             # Custom handling for image input
             elif node["class_type"] == "BlenderInputLoadImage":
                 property_value = getattr(current_workflow, property_name)
@@ -135,10 +139,12 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         self.report({'INFO'}, "WebSocket listener started.")
         return {'FINISHED'}
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorRunWorkflow)
+
 
 def unregister():
     """Unregister the operator."""

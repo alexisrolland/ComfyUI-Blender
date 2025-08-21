@@ -14,10 +14,12 @@ class ComfyBlenderOperatorLockSeed(bpy.types.Operator):
         
         return {'FINISHED'}
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorLockSeed)
+
 
 def unregister():
     """Unregister the operator."""

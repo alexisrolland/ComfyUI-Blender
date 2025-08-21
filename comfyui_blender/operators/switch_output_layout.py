@@ -18,10 +18,12 @@ class ComfyBlenderSwitchOutputLayout(bpy.types.Operator):
         addon_prefs.outputs_layout = self.layout_type
         return {'FINISHED'}
 
+
 def register():
     """Register the panel."""
 
     bpy.utils.register_class(ComfyBlenderSwitchOutputLayout)
+
 
 def unregister():
     """Unregister the panel."""

@@ -21,10 +21,12 @@ class ComfyBlenderOperatorSetCameraResolution(bpy.types.Operator):
             context.scene.render.resolution_y = self.value
         return {'FINISHED'}
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorSetCameraResolution)
+
 
 def unregister():
     """Unregister the operator."""

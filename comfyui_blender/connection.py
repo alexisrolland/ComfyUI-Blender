@@ -83,137 +83,140 @@ def listen():
         # Process the message
         if isinstance(message, str) and message != "":
             message = json.loads(message)
+            data = message["data"]
             log.debug(f"Received websocket message: {message}")
 
-            # Reset progress bar to 0 when execution starts
-            if message["type"] == "execution_start":
-                data = message["data"]
+            # Filter on prompts that are specific to the client
+            if "prompt_id" in data.keys():
                 if data["prompt_id"] in queue.keys():
-                    queue[data["prompt_id"]].status = message["type"]
-                    workflow = ast.literal_eval(queue[data["prompt_id"]].workflow)
-                    queue[data["prompt_id"]].total_nb_nodes = len(workflow)
-                    addon_prefs.progress_value = 0.0
 
-            # Update cached nodes
-            if message["type"] == "execution_cached":
-                data = message["data"]
-                if data["prompt_id"] in queue.keys():
-                    queue[data["prompt_id"]].status = message["type"]
-                    queue[data["prompt_id"]].nb_nodes_cached = len(data["nodes"])
+                    # Reset progress bar to 0 when execution starts
+                    if message["type"] == "execution_start":
+                        queue[data["prompt_id"]].status = message["type"]
+                        workflow = ast.literal_eval(queue[data["prompt_id"]].workflow)
+                        queue[data["prompt_id"]].total_nb_nodes = len(workflow)
+                        addon_prefs.progress_value = 0.0
 
-            # Check if execution is complete
-            if message["type"] == "executing":
-                data = message["data"]
-                if data["prompt_id"] in queue.keys():
-                    if data["node"] is None:
-                        break
-                    queue[data["prompt_id"]].status = message["type"]
+                    # Update cached nodes
+                    if message["type"] == "execution_cached":
+                        queue[data["prompt_id"]].status = message["type"]
+                        queue[data["prompt_id"]].nb_nodes_cached = len(data["nodes"])
 
-            # Check if the message type is executed with outputs
-            if message["type"] == "executed":
-                data = message["data"]
-                if data["prompt_id"] in queue.keys():
-                    queue[data["prompt_id"]].status = message["type"]
+                    # Check if execution is complete
+                    if message["type"] == "executing":
+                        queue[data["prompt_id"]].status = message["type"]
+                        if data["node"] is None:
+                            break
 
-                    # Get outputs from the workflow
-                    key = data["node"]
-                    outputs = ast.literal_eval(queue[data["prompt_id"]].outputs)
+                    # Check if the message type is executed with outputs
+                    if message["type"] == "executed":
+                        queue[data["prompt_id"]].status = message["type"]
 
-                    # Check class type to retrieve 3D outputs
-                    if key in outputs and outputs[key]["class_type"] == "BlenderOutputDownload3D":
-                        for output in data["output"]["3d"]:
-                            download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                        # Get outputs from the workflow
+                        key = data["node"]
+                        outputs = ast.literal_eval(queue[data["prompt_id"]].outputs)
 
-                            # Add 3D model to outputs collection
-                            model = outputs_collection.add()
-                            model.name = os.path.join(output["subfolder"], output["filename"])
-                            model.filename = output["filename"]
-                            model.type = "3d"
+                        # Check class type to retrieve 3D outputs
+                        if key in outputs and outputs[key]["class_type"] == "BlenderOutputDownload3D":
+                            # Schedule adding 3D model to outputs collection on main thread
+                            def add_3d_output():
+                                for output in data["output"]["3d"]:
+                                    download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                                    model = outputs_collection.add()
+                                    model.name = output["filename"]
+                                    model.filepath = os.path.join(output["subfolder"], output["filename"])
+                                    model.type = "3d"
+
+                                # Force redraw of the UI
+                                for screen in bpy.data.screens:  # Iterate through all screens
+                                    for area in screen.areas:  # Access areas in each screen
+                                        if area.type == "VIEW_3D":  # Area of the add-on panel
+                                            area.tag_redraw()
+
+                            # Call function to add 3D model output
+                            bpy.app.timers.register(add_3d_output, first_interval=0.0)
+
+                        # Check class type to retrieve 3D outputs
+                        elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveGlb":
+                            # Schedule adding 3D model to outputs collection on main thread
+                            def add_3d_output():
+                                for output in data["output"]["3d"]:
+                                    download_file(output["filename"], output["subfolder"])
+                                    model = outputs_collection.add()
+                                    model.name = output["filename"]
+                                    model.filepath = os.path.join(output["subfolder"], output["filename"])
+                                    model.type = "3d"
+
+                                # Force redraw of the UI
+                                for screen in bpy.data.screens:  # Iterate through all screens
+                                    for area in screen.areas:  # Access areas in each screen
+                                        if area.type == "VIEW_3D":  # Area of the add-on panel
+                                            area.tag_redraw()
+
+                            # Call function to add 3D model output
+                            bpy.app.timers.register(add_3d_output, first_interval=0.0)
+
+                        # Check class type to retrieve image outputs
+                        elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
+                            for output in data["output"]["images"]:
+                                # Schedule adding output to collection on main thread
+                                def add_image_output(output=output):
+                                    image = outputs_collection.add()
+                                    image.name = output["filename"]
+                                    image.filepath = os.path.join(output["subfolder"], output["filename"])
+                                    image.type = "image"
+                                    return None
+
+                                # Download file and call function to add output to collection
+                                download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                                bpy.app.timers.register(add_image_output, first_interval=0.0)
 
                             # Force redraw of the UI
-                            for screen in bpy.data.screens:  # Iterate through all screens
-                                for area in screen.areas:  # Access areas in each screen
-                                    if area.type == "VIEW_3D":  # Area of the add-on panel
+                            for screen in bpy.data.screens:
+                                for area in screen.areas:
+                                    if area.type == "VIEW_3D":
                                         area.tag_redraw()
 
-                    # Check class type to retrieve 3D outputs
-                    elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveGlb":
-                        for output in data["output"]["3d"]:
-                            download_file(output["filename"], output["subfolder"])
+                    # Raise error message from ComfyUI server
+                    if message["type"] == "execution_error":
+                        # Reset progress and remove prompt from the queue when execution fails
+                        queue.remove(queue.find(data["prompt_id"]))
+                        addon_prefs.progress_value = 0.0
+                        error_message = data.get("exception_message", "Unknown error")
+                        error_message = f"Execution error from ComfyUI server: {error_message}"
 
-                            # Add 3D model to outputs collection
-                            model = outputs_collection.add()
-                            model.name = os.path.join(output["subfolder"], output["filename"])
-                            model.filename = output["filename"]
-                            model.type = "3d"
+                        # Schedule popup to run on main thread
+                        # Do not call the function directly since the thread is not the main thread
+                        def raise_error():
+                            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                            return None  # Stop the timer
 
-                            # Force redraw of the UI
-                            for screen in bpy.data.screens:  # Iterate through all screens
-                                for area in screen.areas:  # Access areas in each screen
-                                    if area.type == "VIEW_3D":  # Area of the add-on panel
-                                        area.tag_redraw()
+                        # Call function to raise error popup
+                        bpy.app.timers.register(raise_error, first_interval=0.0)
 
-                    # Check class type to retrieve image outputs
-                    elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
-                        for output in data["output"]["images"]:
-                            download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                    # Reset progress and remove prompt from the queue when execution is interrupted
+                    if message["type"] == "execution_interrupted":
+                        queue.remove(queue.find(data["prompt_id"]))
+                        addon_prefs.progress_value = 0.0
 
-                            # Add image to outputs collection
-                            image = outputs_collection.add()
-                            image.name = os.path.join(output["subfolder"], output["filename"])
-                            image.filename = output["filename"]
-                            image.type = "image"
+                    # Remove prompt from the queue when execution completes
+                    if message["type"] == "execution_success":
+                        queue.remove(queue.find(data["prompt_id"]))
+                        addon_prefs.progress_value = 1.0
 
-                            # Force redraw of the UI
-                            for screen in bpy.data.screens:  # Iterate through all screens
-                                for area in screen.areas:  # Access areas in each screen
-                                    if area.type == "VIEW_3D":  # Area of the add-on panel
-                                        area.tag_redraw()
+                    # Update progress bar
+                    if message["type"] == "progress_state":
+                        # Percentage of progress contribution per node
+                        total_nb_nodes = queue[data["prompt_id"]].get("total_nb_nodes", 0)
+                        nb_nodes_cached = queue[data["prompt_id"]].get("nb_nodes_cached", 0)
+                        nb_nodes_to_execute = total_nb_nodes - nb_nodes_cached
+                        node_contribution = 100 / nb_nodes_to_execute if nb_nodes_to_execute > 0 else 100
 
-            # Raise error message from ComfyUI server
-            if message["type"] == "execution_error":
-                data = message["data"]
-                if data["prompt_id"] in queue.keys():
-                    # Reset progress and remove prompt from the queue when execution fails
-                    queue.remove(queue.find(data["prompt_id"]))
-                    addon_prefs.progress_value = 0.0
-                    error_message = data.get("exception_message", "Unknown error")
-                    error_message = f"Execution error from ComfyUI server: {error_message}"
+                        # Get progress from executing nodes
+                        workflow_progress = 0
+                        for key, node in data["nodes"].items():
+                            node_progress = node["value"] / node["max"] * node_contribution
+                            workflow_progress += node_progress
 
-                    # Schedule popup to run on main thread
-                    # Do not call the function directly since the thread is not the main thread
-                    def raise_error():
-                        bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
-                        return None  # Stop the timer
-                    bpy.app.timers.register(raise_error, first_interval=0.0)
-
-            # Reset progress and remove prompt from the queue when execution is interrupted
-            if message["type"] == "execution_interrupted":
-                    queue.remove(queue.find(data["prompt_id"]))
-                    addon_prefs.progress_value = 0.0
-
-            # Remove prompt from the queue when execution completes
-            if message["type"] == "execution_success":
-                data = message["data"]
-                if data["prompt_id"] in queue.keys():
-                    queue.remove(queue.find(data["prompt_id"]))
-                    addon_prefs.progress_value = 1.0
-
-            # Update progress bar
-            if message["type"] == "progress_state":
-                data = message["data"]
-                if data["prompt_id"] in queue.keys():
-                    # Percentage of progress contribution per node
-                    total_nb_nodes = queue[data["prompt_id"]].get("total_nb_nodes", 0)
-                    nb_nodes_cached = queue[data["prompt_id"]].get("nb_nodes_cached", 0)
-                    nb_nodes_to_execute = total_nb_nodes - nb_nodes_cached
-                    node_contribution = 100 / nb_nodes_to_execute if nb_nodes_to_execute > 0 else 100
-
-                    # Get progress from executing nodes
-                    workflow_progress = 0
-                    for key, node in data["nodes"].items():
-                        node_progress = node["value"] / node["max"] * node_contribution
-                        workflow_progress += node_progress
-
-                    # Update progress value
-                    addon_prefs.progress_value = workflow_progress / 100.0
+                        # Update progress value
+                        addon_prefs.progress_value = workflow_progress / 100.0

@@ -60,10 +60,12 @@ class ComfyBlenderOperatorOpenFileBrowser(bpy.types.Operator):
         bpy.app.timers.register(set_directory, first_interval=0.1)
         return {'FINISHED'}
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorOpenFileBrowser)
+
 
 def unregister():
     """Unregister the operator."""

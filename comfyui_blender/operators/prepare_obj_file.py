@@ -81,10 +81,12 @@ class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
             os.remove(temp_filepath)
         return {'FINISHED'}
 
+
 def register():
     """Register the operator."""
 
     bpy.utils.register_class(ComfyBlenderOperatorPrepare3DModel)
+
 
 def unregister():
     """Unregister the operator."""
