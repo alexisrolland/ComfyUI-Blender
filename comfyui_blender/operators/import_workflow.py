@@ -59,8 +59,8 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
             # Set current workflow to load workflow
             addon_prefs.workflow = workflow_filename
 
-        # Import workflow from PNG file
-        elif self.filepath.lower().endswith(".png"):
+        # Import workflow from output files
+        elif self.filepath.lower().endswith((".glb", ".png")):
             # Extract workflow from the metadata of the file
             new_workflow_data = extract_workflow_from_metadata(self.filepath)
             if not new_workflow_data:
@@ -94,7 +94,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
             addon_prefs.workflow = workflow_filename
 
         else:
-            error_message = "Selected file is not a *.json."
+            error_message = "Selected file extension is not supported."
             log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}

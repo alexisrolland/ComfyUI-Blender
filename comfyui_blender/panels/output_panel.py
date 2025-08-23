@@ -128,6 +128,11 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         import_model = col.operator("comfy.import_3d_model", text="", icon="IMPORT")
                         import_model.filepath = full_path
 
+                        # Reload workflow button
+                        import_workflow = col.operator("comfy.import_workflow", text="", icon="NODETREE")
+                        import_workflow.filepath = full_path
+                        import_workflow.invoke_default = False
+
                         # Delete output button
                         delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
                         delete_output.name = output.name
@@ -172,7 +177,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
 
                         if image:
                             # Output name with link
-                            output_name = row_left.operator("comfy.open_image_editor", text=output.filename, emboss=False, icon="IMAGE_DATA")
+                            output_name = row_left.operator("comfy.open_image_editor", text=image.name, emboss=False, icon="IMAGE_DATA")
                             output_name.name = image.name
 
                             # Image editor button
@@ -199,6 +204,11 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         # Import 3D model button
                         import_model = row_right.operator("comfy.import_3d_model", text="", icon="IMPORT")
                         import_model.filepath = full_path
+
+                        # Reload workflow button
+                        import_workflow = row_right.operator("comfy.import_workflow", text="", icon="NODETREE")
+                        import_workflow.filepath = full_path
+                        import_workflow.invoke_default = False
 
                         # Delete output button
                         delete_output = row_right.operator("comfy.delete_output", text="", icon="TRASH")
