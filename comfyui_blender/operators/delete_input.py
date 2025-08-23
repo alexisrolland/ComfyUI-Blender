@@ -80,15 +80,18 @@ class ComfyBlenderOperatorDeleteInputOk(bpy.types.Operator):
             self.report({'INFO'}, f"Removed image from Blender data: {self.name}")
         
             # Delete image file
-            if os.path.exists(self.filepath):
-                os.remove(self.filepath)
-                self.report({'INFO'}, f"Deleted file: {self.filepath}")
+            # Do not delete file in case it is reused when reloading workflows
+            # if os.path.exists(self.filepath):
+            #     os.remove(self.filepath)
+            #     self.report({'INFO'}, f"Deleted file: {self.filepath}")
 
         if self.type == "3d":
+            pass
             # Delete 3D model file
-            if os.path.exists(self.filepath):
-                os.remove(self.filepath)
-                self.report({'INFO'}, f"Deleted file: {self.filepath}")
+            # Do not delete file in case it is reused when reloading workflows
+            # if os.path.exists(self.filepath):
+            #     os.remove(self.filepath)
+            #     self.report({'INFO'}, f"Deleted file: {self.filepath}")
         
         # Force redraw of the UI
         for screen in bpy.data.screens:  # Iterate through all screens
