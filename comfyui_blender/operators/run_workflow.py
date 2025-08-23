@@ -114,7 +114,13 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         url = get_server_url("/prompt")
         headers = {"Content-Type": "application/json"}
         headers = add_custom_headers(headers)
-        response = requests.post(url, json=data, headers=headers)
+        try:
+            response = requests.post(url, json=data, headers=headers)
+        except Exception as e:
+            error_message = f"Failed to send run workflow request to ComfyUI server: {addon_prefs.server_address}. {e}"
+            log.exception(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+            return {'CANCELLED'}
 
         # Raise an exception for bad status codes
         if response.status_code != 200:

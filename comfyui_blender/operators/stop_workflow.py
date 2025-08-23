@@ -1,9 +1,12 @@
 """Operator to stop the execution of a workflow on ComfyUI server."""
+import logging
 import requests
 
 import bpy
 
 from ..utils import add_custom_headers, get_server_url
+
+log = logging.getLogger("comfyui_blender")
 
 
 class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
@@ -16,11 +19,20 @@ class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
-        # Stop workflow execution on ComfyUI server
+        # Get add-on preferences
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+
+        # Send stop workflow execution to ComfyUI server
         url = get_server_url("/interrupt")
         headers = {"Content-Type": "application/json"}
         headers = add_custom_headers(headers)
-        response = requests.post(url, json={}, headers=headers)
+        try:
+            response = requests.post(url, json={}, headers=headers)
+        except Exception as e:
+            error_message = f"Failed to send stop workflow request to ComfyUI server: {addon_prefs.server_address}. {e}"
+            log.exception(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+            return {'CANCELLED'}
 
         # Raise an exception for bad status codes
         if response.status_code != 200:
