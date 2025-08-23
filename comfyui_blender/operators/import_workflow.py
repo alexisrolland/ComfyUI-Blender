@@ -1,5 +1,6 @@
 """Operator to import a workflow JSON file."""
 import json
+import logging
 import os
 import shutil
 
@@ -7,6 +8,8 @@ import bpy
 
 from ..utils import get_filepath
 from ..workflow import check_workflow_file_exists, extract_workflow_from_metadata
+
+log = logging.getLogger("comfyui_blender")
 
 
 class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
@@ -43,8 +46,11 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
                     # Copy the file to the workflows folder
                     shutil.copy(self.filepath, workflow_path)
                     self.report({'INFO'}, f"Workflow copied to: {workflow_path}")
+                except shutil.SameFileError as e:
+                    self.report({'INFO'}, f"Workflow is already in the inputs folder: {workflow_path}")
                 except Exception as e:
                     error_message = f"Failed to copy workflow file: {e}"
+                    log.exception(error_message)
                     bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
             else:
@@ -59,6 +65,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
             new_workflow_data = extract_workflow_from_metadata(self.filepath)
             if not new_workflow_data:
                 error_message = "No workflow found in the metadata."
+                log.error(error_message)
                 bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 return {'CANCELLED'}
 
@@ -77,6 +84,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
                     self.report({'INFO'}, f"Workflow saved to: {workflow_path}")
                 except Exception as e:
                     error_message = f"Failed to save workflow: {e}"
+                    log.exception(error_message)
                     bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
             else:
@@ -87,6 +95,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
 
         else:
             error_message = "Selected file is not a *.json."
+            log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
         return {'FINISHED'}

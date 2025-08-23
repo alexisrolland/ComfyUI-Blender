@@ -48,6 +48,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         # Verify workflow JSON file exists
         if not os.path.exists(workflow_path):
             error_message = f"Workflow file does not exist: {workflow_path}"
+            log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
@@ -72,6 +73,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                 else:
                     property_name = current_workflow.bl_rna.properties[property_name].name  # Node title
                     error_message = f"Input {property_name} is empty."
+                    log.error(error_message)
                     bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
 
@@ -87,6 +89,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                 else:
                     property_name = current_workflow.bl_rna.properties[property_name].name  # Node title
                     error_message = f"Input {property_name} is empty."
+                    log.error(error_message)
                     bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
 
@@ -114,11 +117,17 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         url = get_server_url("/prompt")
         headers = {"Content-Type": "application/json"}
         headers = add_custom_headers(headers)
-        response = requests.post(url, json=data, headers=headers)
+        try:
+            response = requests.post(url, json=data, headers=headers)
+        except Exception as e:
+            error_message = f"Failed to send run workflow request to ComfyUI server: {addon_prefs.server_address}. {e}"
+            log.exception(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+            return {'CANCELLED'}
 
-        # Raise an exception for bad status codes
         if response.status_code != 200:
             error_message = response.text
+            log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 

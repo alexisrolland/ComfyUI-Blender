@@ -61,7 +61,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
             flow = box.grid_flow(row_major=True, columns=2, even_columns=True, even_rows=True, align=True)
             for index, output in enumerate(reversed(outputs_collection)):
                 # Display output only if file still exists
-                full_path = os.path.join(outputs_folder, output.name)
+                full_path = os.path.join(outputs_folder, output.filepath)
                 if os.path.exists(full_path):
                     card = flow.column(align=True)
 
@@ -135,7 +135,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         delete_output.type = output.type
 
                         # Output name with link
-                        output_name = card.operator("comfy.import_3d_model", text=output.filename, emboss=False)
+                        output_name = card.operator("comfy.import_3d_model", text=output.name, emboss=False)
                         output_name.filepath = full_path
 
                 else:
@@ -149,7 +149,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
         elif addon_prefs.outputs_layout == "list":
             for index, output in enumerate(reversed(outputs_collection)):
                 # Display output only if file still exists
-                full_path = os.path.join(outputs_folder, output.name)
+                full_path = os.path.join(outputs_folder, output.filepath)
                 if os.path.exists(full_path):
                     row = box.row(align=True)
                     row_left = row.row(align=True)
@@ -193,7 +193,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                     # Display output of type 3d
                     elif output.type == "3d":
                         # Output name with link
-                        output_name = row_left.operator("comfy.import_3d_model", text=output.filename, emboss=False, icon="MESH_DATA")
+                        output_name = row_left.operator("comfy.import_3d_model", text=output.name, emboss=False, icon="MESH_DATA")
                         output_name.filepath = full_path
 
                         # Import 3D model button

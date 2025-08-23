@@ -1,18 +1,18 @@
 {
-  "id": "a4bc9489-299f-499a-b427-ef84a35c34f6",
+  "id": "8812a6b7-010a-4302-af82-8d9509e64966",
   "revision": 0,
-  "last_node_id": 24,
-  "last_link_id": 40,
+  "last_node_id": 8,
+  "last_link_id": 8,
   "nodes": [
     {
-      "id": 16,
+      "id": 1,
       "type": "Stable3DLoadModels",
       "pos": [
-        122.61805725097656,
-        -337.5390625
+        420,
+        -570
       ],
       "size": [
-        315,
+        270,
         126
       ],
       "flags": {},
@@ -24,57 +24,106 @@
           "name": "hi3dgen pipeline",
           "type": "HI3DGEN_PIPELINE",
           "links": [
-            31,
-            33
+            1,
+            5
           ]
         },
         {
           "name": "Normal predictor",
           "type": "STABLE3D_NORMAL",
           "links": [
-            32
+            4
           ]
         }
       ],
       "properties": {
+        "cnr_id": "comfyui-stable3dgen",
+        "ver": "1.0.0",
         "Node name for S&R": "Stable3DLoadModels"
       },
       "widgets_values": [
         "Stable-X/trellis-normal-v0-1",
         "Stable-X/yoso-normal-v1-8-1",
-        "ZhengPeng7/BiRefNet",
-        null
+        "ZhengPeng7/BiRefNet"
       ]
     },
     {
-      "id": 12,
-      "type": "Stable3DPreprocessImage",
+      "id": 2,
+      "type": "BlenderInputLoadImage",
       "pos": [
-        535.5403442382812,
-        -187.32595825195312
+        420,
+        -360
       ],
       "size": [
-        367.79998779296875,
-        74
+        270,
+        338
       ],
       "flags": {},
       "order": 2,
       "mode": 0,
       "inputs": [
         {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "Image",
+      "properties": {
+        "Node name for S&R": "BlenderInputLoadImage"
+      },
+      "widgets_values": [
+        "example.png",
+        2,
+        "image"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 3,
+      "type": "Stable3DPreprocessImage",
+      "pos": [
+        730,
+        -570
+      ],
+      "size": [
+        219.65097045898438,
+        66
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
           "name": "hi3dgen_pipeline",
           "type": "HI3DGEN_PIPELINE",
-          "link": 33
+          "link": 1
         },
         {
           "name": "normal_predictor",
           "type": "STABLE3D_NORMAL",
-          "link": 32
+          "link": 4
         },
         {
           "name": "image",
           "type": "IMAGE",
-          "link": 37
+          "link": 2
         }
       ],
       "outputs": [
@@ -82,31 +131,164 @@
           "name": "normal_images",
           "type": "IMAGE",
           "links": [
-            26,
-            27
+            3
           ]
         }
       ],
       "properties": {
+        "cnr_id": "comfyui-stable3dgen",
+        "ver": "1.0.0",
         "Node name for S&R": "Stable3DPreprocessImage"
       },
-      "widgets_values": [
-        null
-      ]
+      "widgets_values": []
     },
     {
-      "id": 19,
-      "type": "Preview3D",
+      "id": 4,
+      "type": "Stable3DGenerate3D",
       "pos": [
-        1478.064453125,
-        -362.6379699707031
+        1000,
+        -570
       ],
       "size": [
-        400,
-        334
+        288.08984375,
+        198
       ],
       "flags": {},
       "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "hi3dgen_pipeline",
+          "type": "HI3DGEN_PIPELINE",
+          "link": 5
+        },
+        {
+          "name": "normal_images",
+          "type": "IMAGE",
+          "link": 3
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mesh_file_path",
+          "type": "STRING",
+          "links": [
+            6,
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-stable3dgen",
+        "ver": "1.0.0",
+        "Node name for S&R": "Stable3DGenerate3D"
+      },
+      "widgets_values": [
+        -1,
+        "randomize",
+        3,
+        50,
+        3,
+        6
+      ]
+    },
+    {
+      "id": 5,
+      "type": "BlenderOutputDownload3D",
+      "pos": [
+        1330,
+        -570
+      ],
+      "size": [
+        222.00936889648438,
+        26
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model_file",
+          "type": "STRING",
+          "link": 6
+        }
+      ],
+      "outputs": [],
+      "title": "3D Model",
+      "properties": {
+        "Node name for S&R": "BlenderOutputDownload3D"
+      },
+      "widgets_values": [],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 6,
+      "type": "BlenderInputSeed",
+      "pos": [
+        730,
+        -420
+      ],
+      "size": [
+        220,
+        178
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "title": "Seed",
+      "properties": {
+        "Node name for S&R": "BlenderInputSeed"
+      },
+      "widgets_values": [
+        0,
+        1,
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 7,
+      "type": "Preview3D",
+      "pos": [
+        1330,
+        -480
+      ],
+      "size": [
+        400,
+        550
+      ],
+      "flags": {},
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -121,169 +303,39 @@
           "widget": {
             "name": "model_file"
           },
-          "link": 35
+          "link": 8
         }
       ],
       "outputs": [],
       "properties": {
-        "Node name for S&R": "Preview3D",
-        "Last Time Model File": "2025-08-11-095326_mesh.glb"
+        "cnr_id": "comfy-core",
+        "ver": "0.3.51",
+        "Node name for S&R": "Preview3D"
       },
       "widgets_values": [
-        "2025-08-11-095326_mesh.glb",
         "",
-        null
+        ""
       ]
     },
     {
-      "id": 11,
-      "type": "Stable3DGenerate3D",
+      "id": 8,
+      "type": "MarkdownNote",
       "pos": [
-        978.2960205078125,
-        -371.08160400390625
+        40,
+        -570
       ],
       "size": [
-        393,
-        198
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "hi3dgen_pipeline",
-          "type": "HI3DGEN_PIPELINE",
-          "link": 31
-        },
-        {
-          "name": "normal_images",
-          "type": "IMAGE",
-          "link": 27
-        }
-      ],
-      "outputs": [
-        {
-          "name": "mesh_file_path",
-          "type": "STRING",
-          "links": [
-            35,
-            40
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "Stable3DGenerate3D"
-      },
-      "widgets_values": [
-        1662275347,
-        "randomize",
-        3,
-        50,
-        3,
-        6,
-        null
-      ]
-    },
-    {
-      "id": 13,
-      "type": "PreviewImage",
-      "pos": [
-        732.9700927734375,
-        -10.469552993774414
-      ],
-      "size": [
-        210,
-        246
+        340,
+        230
       ],
       "flags": {},
       "order": 3,
       "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 26
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "Node name for S&R": "PreviewImage"
-      },
-      "widgets_values": [
-        null
-      ]
-    },
-    {
-      "id": 24,
-      "type": "BlenderOutputDownload3D",
-      "pos": [
-        1491.4105224609375,
-        -504.2081298828125
-      ],
-      "size": [
-        223.89999389648438,
-        34
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model_file",
-          "type": "STRING",
-          "link": 40
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "Node name for S&R": "BlenderOutputDownload3D"
-      },
-      "widgets_values": [
-        null
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 21,
-      "type": "BlenderInputLoadImage",
-      "pos": [
-        163.33412170410156,
-        -58.32684326171875
-      ],
-      "size": [
-        270,
-        338
-      ],
-      "flags": {},
-      "order": 1,
-      "mode": 0,
       "inputs": [],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            37
-          ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
-        }
-      ],
-      "title": "Image",
-      "properties": {
-        "Node name for S&R": "BlenderInputLoadImage",
-        "cnr_id": "comfyui-blender",
-        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9"
-      },
+      "outputs": [],
+      "properties": {},
       "widgets_values": [
-        "example.png",
-        2,
-        "image",
-        null
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -291,67 +343,67 @@
   ],
   "links": [
     [
-      26,
-      12,
-      0,
-      13,
-      0,
-      "IMAGE"
-    ],
-    [
-      27,
-      12,
-      0,
-      11,
       1,
-      "IMAGE"
-    ],
-    [
-      31,
-      16,
+      1,
       0,
-      11,
+      3,
       0,
       "HI3DGEN_PIPELINE"
     ],
     [
-      32,
-      16,
-      1,
-      12,
-      1,
-      "STABLE3D_NORMAL"
-    ],
-    [
-      33,
-      16,
+      2,
+      2,
       0,
-      12,
-      0,
-      "HI3DGEN_PIPELINE"
-    ],
-    [
-      35,
-      11,
-      0,
-      19,
-      1,
-      "STRING"
-    ],
-    [
-      37,
-      21,
-      0,
-      12,
+      3,
       2,
       "IMAGE"
     ],
     [
-      40,
-      11,
+      3,
+      3,
       0,
-      24,
+      4,
+      1,
+      "IMAGE"
+    ],
+    [
+      4,
+      1,
+      1,
+      3,
+      1,
+      "STABLE3D_NORMAL"
+    ],
+    [
+      5,
+      1,
       0,
+      4,
+      0,
+      "HI3DGEN_PIPELINE"
+    ],
+    [
+      6,
+      4,
+      0,
+      5,
+      0,
+      "STRING"
+    ],
+    [
+      7,
+      6,
+      0,
+      4,
+      2,
+      "INT"
+    ],
+    [
+      8,
+      4,
+      0,
+      7,
+      1,
       "STRING"
     ]
   ],
@@ -359,14 +411,17 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 1.1000000000000005,
+      "scale": 0.9090909090909091,
       "offset": [
-        120.82924088451281,
-        682.1411357114133
+        136.92833179360366,
+        806.3289538932319
       ]
     },
-    "frontendVersion": "1.21.7",
-    "ue_links": []
+    "frontendVersion": "1.25.9",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
   },
   "version": 0.4
 }

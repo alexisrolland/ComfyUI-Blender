@@ -1,7 +1,7 @@
 {
   "1": {
     "inputs": {
-      "value": "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
+      "value": "A high-end 3D render of a video game item, wooden treasure chest made of oak on a black background, featuring ultra-detailed textures and physically based rendering. The item is showcased with state-of-the-art shaders, realistic lighting, and intricate details that emphasize depth and material quality. The style is hyper-realistic, immersive, and visually stunning, capturing the essence of next-gen gaming graphics.",
       "order": 3,
       "default": "",
       "format_path": false
@@ -20,7 +20,11 @@
       "max": 1344,
       "step": 8,
       "camera_width": true,
-      "camera_height": false
+      "camera_height": false,
+      "group": [
+        "14",
+        0
+      ]
     },
     "class_type": "BlenderInputInt",
     "_meta": {
@@ -36,7 +40,11 @@
       "max": 1344,
       "step": 8,
       "camera_width": null,
-      "camera_height": true
+      "camera_height": true,
+      "group": [
+        "14",
+        0
+      ]
     },
     "class_type": "BlenderInputInt",
     "_meta": {
@@ -188,6 +196,17 @@
     "class_type": "BlenderOutputSaveImage",
     "_meta": {
       "title": "Save Image"
+    }
+  },
+  "14": {
+    "inputs": {
+      "order": 4,
+      "show_title": true,
+      "compact": true
+    },
+    "class_type": "BlenderInputGroup",
+    "_meta": {
+      "title": "Resolution"
     }
   }
 }

@@ -44,6 +44,7 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
         example_workflows = workflow_templates.get(custom_node_key, []) if custom_node_key else []
         if not example_workflows:
             error_message = f"Example workflows not found. The ComfyUI-Blender nodes may not be properly installed on the ComfyUI server."
+            log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
@@ -51,9 +52,17 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
         for workflow in example_workflows:
             self.report({'INFO'}, f"Downloading workflow: {workflow}")
             url = get_server_url(f"/api/workflow_templates/{custom_node_key}/{workflow}.json.api")
-            response = requests.get(url, headers=headers)
+            try:
+                response = requests.get(url, headers=headers)
+            except Exception as e:
+                error_message = f"Failed to download workflow from ComfyUI server: {addon_prefs.server_address}. {e}"
+                log.exception(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                return {'CANCELLED'}
+
             if response.status_code != 200:
-                error_message = f"Failed to download workflow: {url}"
+                error_message = f"Failed to download workflow from ComfyUI server: {url}"
+                log.error(error_message)
                 bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 continue
 
@@ -71,9 +80,9 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
                     with open(workflow_path, "w", encoding="utf-8") as file:
                         json.dump(workflow_data, file, indent=2, ensure_ascii=False)
                     self.report({'INFO'}, f"Workflow saved to: {workflow_path}")
-
                 except Exception as e:
                     error_message = f"Failed to save workflow: {e}"
+                    log.exception(error_message)
                     bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     continue
             else:

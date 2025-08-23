@@ -1,4 +1,4 @@
-# ComfyUI Blender
+# ComfyUI-Blender
 
 [![ComfyUI Registry](https://img.shields.io/badge/comfyui-registry-grey?labelColor=blue)](https://registry.comfy.org/nodes/comfyui-blender)
 [![Latest Release](https://img.shields.io/github/v/release/alexisrolland/ComfyUI-Blender)](https://github.com/alexisrolland/ComfyUI-Blender/releases/latest)
@@ -27,7 +27,7 @@ git clone https://github.com/alexisrolland/ComfyUI-Blender.git
 #### Remarks 
 > The custom nodes do not require additional Python dependencies. They are only used to define the inputs and outputs of the workflows to be displayed in the Blender add-on.
 
-> Ensure you have a recent version of ComfyUI. The add-on has has been developed based on ComfyUI `v0.3.49`. Some features such as the progress bar are not working properly on earlier versions.
+> Ensure you have a recent version of ComfyUI. The add-on has been developed based on ComfyUI `v0.3.49`. Some features such as the progress bar are not working properly on earlier versions.
 
 ### Install Blender Add-on
 
@@ -41,6 +41,10 @@ In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > sel
 
 ## Usage
 
+For complete details about the various features, refer to the **[DOCUMENTATION](https://github.com/alexisrolland/ComfyUI-Blender/wiki)**.
+
+In a nutshell:
+
 1. In ComfyUI, create a workflow using the Blender nodes (see workflow examples in this repository).
 
     * The Blender nodes are used to define the inputs and outputs to be displayed in the Blender add-on.
@@ -53,5 +57,3 @@ In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > sel
 3. In Blender, import the workflow JSON file (make sure it is in API format): Press `N` > `ComfyUI` > `Import Workflow`.
 
 4. Update the inputs and click on **Run Workflow**.
-
-For more details about the various features and use cases, refer to the **[DOCUMENTATION](https://github.com/alexisrolland/ComfyUI-Blender/wiki)**.

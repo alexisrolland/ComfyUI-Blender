@@ -1,9 +1,12 @@
 """Operator to delete a workflow JSON file."""
+import logging
 import os
 
 import bpy
 
 from ..workflow import get_workflow_list
+
+log = logging.getLogger("comfyui_blender")
 
 
 class ComfyBlenderOperatorDeleteWorkflow(bpy.types.Operator):
@@ -80,6 +83,7 @@ class ComfyBlenderOperatorDeleteWorkflowOk(bpy.types.Operator):
 
         except Exception as e:
             error_message = f"Failed to delete workflow {self.filepath}: {str(e)}"
+            log.exception(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
         return {'FINISHED'}

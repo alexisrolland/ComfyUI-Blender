@@ -20,7 +20,11 @@
       "max": 1344,
       "step": 8,
       "camera_width": true,
-      "camera_height": false
+      "camera_height": false,
+      "group": [
+        "19",
+        0
+      ]
     },
     "class_type": "BlenderInputInt",
     "_meta": {
@@ -36,7 +40,11 @@
       "max": 1344,
       "step": 8,
       "camera_width": false,
-      "camera_height": true
+      "camera_height": true,
+      "group": [
+        "19",
+        0
+      ]
     },
     "class_type": "BlenderInputInt",
     "_meta": {
@@ -235,6 +243,17 @@
     "class_type": "ConditioningZeroOut",
     "_meta": {
       "title": "ConditioningZeroOut"
+    }
+  },
+  "19": {
+    "inputs": {
+      "order": 4,
+      "show_title": true,
+      "compact": true
+    },
+    "class_type": "BlenderInputGroup",
+    "_meta": {
+      "title": "Resolution"
     }
   }
 }

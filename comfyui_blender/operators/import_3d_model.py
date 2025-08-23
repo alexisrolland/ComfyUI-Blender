@@ -1,7 +1,10 @@
 """Operator to import a 3D model into the scene."""
+import logging
 import os
 
 import bpy
+
+log = logging.getLogger("comfyui_blender")
 
 
 class ComfyBlenderOperatorImport3DModel(bpy.types.Operator):
@@ -35,6 +38,7 @@ class ComfyBlenderOperatorImport3DModel(bpy.types.Operator):
         #     bpy.ops.wm.collada_import(filepath=self.filepath)
         else:
             error_message = f"Unsupported file format: {ext}"
+            log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
         return {'FINISHED'}
