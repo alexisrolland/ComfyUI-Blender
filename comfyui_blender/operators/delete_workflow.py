@@ -1,10 +1,11 @@
 """Operator to delete a workflow JSON file."""
+import json
 import logging
 import os
 
 import bpy
 
-from ..workflow import get_workflow_list
+from ..workflow import get_workflow_list, parse_workflow_for_inputs
 
 log = logging.getLogger("comfyui_blender")
 
@@ -69,10 +70,31 @@ class ComfyBlenderOperatorDeleteWorkflowOk(bpy.types.Operator):
         """Execute the operator."""
 
         try:
+            # Load the workflow JSON file
+            if os.path.exists(self.filepath) and os.path.isfile(self.filepath):
+                with open(self.filepath, "r",  encoding="utf-8") as file:
+                    workflow = json.load(file)
+
+                # Get inputs from the workflow
+                inputs = parse_workflow_for_inputs(workflow)
+                current_workflow = context.scene.current_workflow
+
+                # Clear inputs from Blender data
+                for key, node in inputs.items():
+                    property_name = f"node_{key}"
+
+                    if hasattr(current_workflow, property_name):
+                        if node["class_type"] == "BlenderInputLoadImage":
+                            # Remove image from Blender's data
+                            image = getattr(current_workflow, property_name)
+                            if bpy.data.images.get(image):
+                                image = bpy.data.images.get(image)
+                                bpy.data.images.remove(image)
+
             if os.path.exists(self.filepath):
                 os.remove(self.filepath)
                 self.report({'INFO'}, f"Deleted workflow: {self.filepath}")
-                
+
                 # Get the updated workflow list and set to first workflow
                 addon_prefs = context.preferences.addons["comfyui_blender"].preferences
                 workflows = get_workflow_list(addon_prefs, context)
