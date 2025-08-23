@@ -1,58 +1,5 @@
 {
-  "11": {
-    "inputs": {
-      "seed": 1662275347,
-      "ss_guidance_strength": 3,
-      "ss_sampling_steps": 50,
-      "slat_guidance_strength": 3,
-      "slat_sampling_steps": 6,
-      "hi3dgen_pipeline": [
-        "16",
-        0
-      ],
-      "normal_images": [
-        "12",
-        0
-      ]
-    },
-    "class_type": "Stable3DGenerate3D",
-    "_meta": {
-      "title": "Stable-3D Generate 3D"
-    }
-  },
-  "12": {
-    "inputs": {
-      "hi3dgen_pipeline": [
-        "16",
-        0
-      ],
-      "normal_predictor": [
-        "16",
-        1
-      ],
-      "image": [
-        "21",
-        0
-      ]
-    },
-    "class_type": "Stable3DPreprocessImage",
-    "_meta": {
-      "title": "Stable-3D Preprocess Image"
-    }
-  },
-  "13": {
-    "inputs": {
-      "images": [
-        "12",
-        0
-      ]
-    },
-    "class_type": "PreviewImage",
-    "_meta": {
-      "title": "Preview Image"
-    }
-  },
-  "16": {
+  "1": {
     "inputs": {
       "trellis_model": "Stable-X/trellis-normal-v0-1",
       "normal_model": "Stable-X/yoso-normal-v1-8-1",
@@ -63,20 +10,7 @@
       "title": "Stable-3D Load Models"
     }
   },
-  "19": {
-    "inputs": {
-      "model_file": [
-        "11",
-        0
-      ],
-      "image": ""
-    },
-    "class_type": "Preview3D",
-    "_meta": {
-      "title": "Preview 3D"
-    }
-  },
-  "21": {
+  "2": {
     "inputs": {
       "image": "example.png",
       "order": 2
@@ -86,16 +20,74 @@
       "title": "Image"
     }
   },
-  "24": {
+  "3": {
+    "inputs": {
+      "hi3dgen_pipeline": [
+        "1",
+        0
+      ],
+      "normal_predictor": [
+        "1",
+        1
+      ],
+      "image": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "Stable3DPreprocessImage",
+    "_meta": {
+      "title": "Stable-3D Preprocess Image"
+    }
+  },
+  "4": {
+    "inputs": {
+      "seed": [
+        "6",
+        0
+      ],
+      "ss_guidance_strength": 3,
+      "ss_sampling_steps": 50,
+      "slat_guidance_strength": 3,
+      "slat_sampling_steps": 6,
+      "hi3dgen_pipeline": [
+        "1",
+        0
+      ],
+      "normal_images": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "Stable3DGenerate3D",
+    "_meta": {
+      "title": "Stable-3D Generate 3D"
+    }
+  },
+  "5": {
     "inputs": {
       "model_file": [
-        "11",
+        "4",
         0
       ]
     },
     "class_type": "BlenderOutputDownload3D",
     "_meta": {
-      "title": "Blender Output Download 3D"
+      "title": "3D Model"
+    }
+  },
+  "6": {
+    "inputs": {
+      "value": 0,
+      "order": 1,
+      "default": 0,
+      "min": 0,
+      "max": 2147483647,
+      "step": 1
+    },
+    "class_type": "BlenderInputSeed",
+    "_meta": {
+      "title": "Seed"
     }
   }
 }
