@@ -119,7 +119,7 @@ def listen():
                         # Check class type to retrieve 3D outputs
                         if key in outputs and outputs[key]["class_type"] == "BlenderOutputDownload3D":
                             # Schedule adding 3D model to outputs collection on main thread
-                            def add_3d_output():
+                            def add_3d_output(output=output):
                                 for output in data["output"]["3d"]:
                                     download_file(output["filename"], output["subfolder"], output.get("type", "output"))
                                     model = outputs_collection.add()
@@ -138,23 +138,23 @@ def listen():
 
                         # Check class type to retrieve 3D outputs
                         elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveGlb":
-                            # Schedule adding 3D model to outputs collection on main thread
-                            def add_3d_output():
-                                for output in data["output"]["3d"]:
-                                    download_file(output["filename"], output["subfolder"])
+                            for output in data["output"]["3d"]:
+                                # Schedule adding 3D model to outputs collection on main thread
+                                def add_3d_output(output=output):
                                     model = outputs_collection.add()
                                     model.name = output["filename"]
                                     model.filepath = os.path.join(output["subfolder"], output["filename"])
                                     model.type = "3d"
 
-                                # Force redraw of the UI
-                                for screen in bpy.data.screens:  # Iterate through all screens
-                                    for area in screen.areas:  # Access areas in each screen
-                                        if area.type == "VIEW_3D":  # Area of the add-on panel
-                                            area.tag_redraw()
+                                # Call function to add 3D model output
+                                download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                                bpy.app.timers.register(add_3d_output, first_interval=0.0)
 
-                            # Call function to add 3D model output
-                            bpy.app.timers.register(add_3d_output, first_interval=0.0)
+                            # Force redraw of the UI
+                            for screen in bpy.data.screens:
+                                for area in screen.areas:
+                                    if area.type == "VIEW_3D":
+                                        area.tag_redraw()
 
                         # Check class type to retrieve image outputs
                         elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
