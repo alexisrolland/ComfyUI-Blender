@@ -39,6 +39,7 @@ class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
 
             if response.status_code != 200:
                 error_message = f"Failed to upload file: {response.status_code} - {response.text}"
+                log.error(error_message)
                 bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 return {'CANCELLED'}
 
@@ -54,28 +55,32 @@ class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
             inputs_folder = str(addon_prefs.inputs_folder)
             input_subfolder = response.json()["subfolder"]
             input_filename = response.json()["name"]
-            input_fullpath = os.path.join(inputs_folder, input_subfolder, input_filename)
+            input_filepath = os.path.join(inputs_folder, input_subfolder, input_filename)
 
             # Create the input subfolder if it doesn't exist
             os.makedirs(os.path.join(inputs_folder, input_subfolder), exist_ok=True)
 
             try:
                 # Copy the file to the inputs folder
-                shutil.copy(self.filepath, input_fullpath)
-                self.report({'INFO'}, f"Input copied to: {input_fullpath}")
+                shutil.copy(self.filepath, input_filepath)
+                self.report({'INFO'}, f"Input file copied to: {input_filepath}")
+            except shutil.SameFileError as e:
+                self.report({'INFO'}, f"Input file is already in the inputs folder: {input_filepath}")
             except Exception as e:
                 error_message = f"Failed to copy input file: {e}"
+                log.exception(error_message)
                 bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 return {'CANCELLED'}
 
             # Load image in the data block
-            image = bpy.data.images.load(input_fullpath, check_existing=True)
+            image = bpy.data.images.load(input_filepath, check_existing=True)
 
             # Update the workflow property with the input file path as defined on the ComfyUI server
             current_workflow[self.workflow_property] = os.path.join(input_subfolder, input_filename)
 
         else:
             error_message = "Selected file is not a *.jpeg;*.jpg;*.png;*.webp."
+            log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
         return {'FINISHED'}

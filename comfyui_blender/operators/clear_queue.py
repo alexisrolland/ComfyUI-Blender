@@ -35,9 +35,9 @@ class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
-        # Raise an exception for bad status codes
         if response.status_code != 200:
             error_message = response.text
+            log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 

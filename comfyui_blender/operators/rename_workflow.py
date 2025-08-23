@@ -1,9 +1,12 @@
 """Operator to rename a workflow file."""
+import logging
 import os
 
 import bpy
 
 from ..utils import get_filepath
+
+log = logging.getLogger("comfyui_blender")
 
 
 class ComfyBlenderOperatorRenameWorkflow(bpy.types.Operator):
@@ -76,6 +79,7 @@ class ComfyBlenderOperatorRenameWorkflowOk(bpy.types.Operator):
             self.report({'INFO'}, f"Renamed workflow to: {new_filepath}")
         except Exception as e:
             error_message = f"Failed to rename workflow {current_filepath}: {str(e)}"
+            log.exception(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 

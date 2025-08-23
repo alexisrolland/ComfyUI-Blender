@@ -45,6 +45,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         scene = context.scene
         if not scene.camera:
             error_message = "No camera found"
+            log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
@@ -138,6 +139,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
             # Reset the scene to initial state
             self.reset_scene(context, **reset_params)
             error_message = f"Failed to upload file: {response.status_code} - {response.text}"
+            log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
@@ -160,11 +162,14 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         try:
             # Copy the file to the inputs folder
             shutil.copy(temp_filepath, input_filepath)
-            self.report({'INFO'}, f"Input copied to: {input_filepath}")
+            self.report({'INFO'}, f"Input file copied to: {input_filepath}")
+        except shutil.SameFileError as e:
+            self.report({'INFO'}, f"Input file is already in the inputs folder: {input_filepath}")
         except Exception as e:
             # Reset the scene to initial state
             self.reset_scene(context, **reset_params)
             error_message = f"Failed to copy input file: {e}"
+            log.exception(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 

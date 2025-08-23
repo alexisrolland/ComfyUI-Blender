@@ -27,6 +27,7 @@ class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
         selected_meshes = [obj for obj in context.selected_objects if obj.type == "MESH"]
         if not selected_meshes:
             error_message = f"Select at least one mesh object."
+            log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
@@ -49,6 +50,7 @@ class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
 
         if response.status_code != 200:
             error_message = f"Failed to upload file: {response.status_code} - {response.text}"
+            log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
@@ -64,10 +66,12 @@ class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
         try:
             # Copy the file to the inputs folder
             shutil.copy(temp_filepath, input_filepath)
-            self.report({'INFO'}, f"Input copied to: {input_filepath}")
-
+            self.report({'INFO'}, f"Input file copied to: {input_filepath}")
+        except shutil.SameFileError as e:
+            self.report({'INFO'}, f"Input file is already in the inputs folder: {input_filepath}")
         except Exception as e:
             error_message = f"Failed to copy input file: {e}"
+            log.exception(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
