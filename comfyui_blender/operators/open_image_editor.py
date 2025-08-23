@@ -9,7 +9,7 @@ class ComfyBlenderOperatorOpenImageEditor(bpy.types.Operator):
     bl_label = "Open Image"
     bl_description = "Open the image in Blender's image editor"
 
-    filename: bpy.props.StringProperty(name="File Name")
+    name: bpy.props.StringProperty(name="Name")
 
     def execute(self, context):
         """Execute the operator."""
@@ -31,7 +31,7 @@ class ComfyBlenderOperatorOpenImageEditor(bpy.types.Operator):
 
         # Access the image editor space and set the image
         space = image_editor_area.spaces[0]
-        space.image = bpy.data.images.get(self.filename)
+        space.image = bpy.data.images.get(self.name)
         return {'FINISHED'}
 
 

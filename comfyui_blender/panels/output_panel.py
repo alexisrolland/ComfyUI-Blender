@@ -90,7 +90,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                             # Image editor button
                             col = row.column(align=True)
                             image_editor = col.operator("comfy.open_image_editor", text="", icon="IMAGE")
-                            image_editor.filename = image.name
+                            image_editor.name = image.name
 
                             # Reload workflow button
                             import_workflow = col.operator("comfy.import_workflow", text="", icon="NODETREE")
@@ -105,7 +105,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
 
                             # Output name with link
                             output_name = card.operator("comfy.open_image_editor", text=image.name, emboss=False)
-                            output_name.filename = image.name
+                            output_name.name = image.name
 
                     # Display output of type 3d
                     elif output.type == "3d":
@@ -173,11 +173,11 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         if image:
                             # Output name with link
                             output_name = row_left.operator("comfy.open_image_editor", text=output.filename, emboss=False, icon="IMAGE_DATA")
-                            output_name.filename = image.name
+                            output_name.name = image.name
 
                             # Image editor button
                             image_editor = row_right.operator("comfy.open_image_editor", text="", icon="IMAGE")
-                            image_editor.filename = image.name
+                            image_editor.name = image.name
 
                             # Reload workflow button
                             import_workflow = row_right.operator("comfy.import_workflow", text="", icon="NODETREE")
