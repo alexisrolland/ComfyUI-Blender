@@ -29,13 +29,19 @@ def download_file(filename, subfolder, type="output"):
     except Exception as e:
         error_message = f"Failed to download file from ComfyUI server: {url}. {e}"
         log.exception(error_message)
-        bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+        raise error_message
+        # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+        # This triggers RuntimeError: Operator bpy.ops.comfy.show_error_popup.poll() Missing 'window' in context
+        # To be fixed in future release
         return
     
     if response.status_code != 200:
         error_message = error_message = f"Failed to download file from ComfyUI server: {url}."
         log.error(error_message)
-        bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+        raise error_message
+        # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+        # This triggers RuntimeError: Operator bpy.ops.comfy.show_error_popup.poll() Missing 'window' in context
+        # To be fixed in future release
         return
 
     # Save the file in the output folder
