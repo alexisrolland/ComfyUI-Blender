@@ -27,8 +27,14 @@ def download_file(filename, subfolder, type="output"):
         # Download with streaming to handle large files and avoid memory issues
         response = requests.get(url, params=params, headers=headers, stream=True)
     except Exception as e:
-        error_message = f"Failed to download file from ComfyUI server: {addon_prefs.server_address}. {e}"
+        error_message = f"Failed to download file from ComfyUI server: {url}. {e}"
         log.exception(error_message)
+        bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+        return
+    
+    if response.status_code != 200:
+        error_message = error_message = f"Failed to download file from ComfyUI server: {url}."
+        log.error(error_message)
         bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
         return
 
