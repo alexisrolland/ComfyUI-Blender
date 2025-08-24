@@ -11,7 +11,7 @@ class ComfyBlenderOperatorDeleteInput(bpy.types.Operator):
     bl_label = "Delete Input"
     bl_description = "Delete the input from the workflow."
 
-    name: bpy.props.StringProperty(name="File Name")
+    name: bpy.props.StringProperty(name="Name")
     filepath: bpy.props.StringProperty(name="File Path")
     workflow_property: bpy.props.StringProperty(name="Workflow Property")
     type: bpy.props.StringProperty(name="Type")
