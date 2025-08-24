@@ -227,8 +227,10 @@ def extract_workflow_from_metadata(filepath):
         else:
             return None
 
-    # Placeholder for OBJ metadata extraction
+    # OBJ metadata extraction
     if filepath.lower().endswith(".obj"):
+        # Placeholder for future implementation
+        # Reloading workflow from .obj files depends whether file is saved with metadata on ComfyUI server side
         return None
 
     # PNG metadata extraction
