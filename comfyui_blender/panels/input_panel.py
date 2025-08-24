@@ -63,7 +63,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                     group_inputs = getattr(current_workflow, property_name)
                     for input_key in group_inputs:
                         group_property_name = f"node_{input_key}"
-                        self.display_input(context, current_workflow, group_col, group_property_name, inputs[str(input_key)])
+                        self.display_input(context, current_workflow, group_col, group_property_name, inputs[str(input_key)], is_root=False)
 
                 else:
                     # Skip input if it belongs to a group
@@ -75,7 +75,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             col.scale_y = 1.5
             col.operator("comfy.run_workflow", text="Run Workflow", icon="PLAY")
 
-    def display_input(self, context, current_workflow, layout, property_name, node):
+    def display_input(self, context, current_workflow, layout, property_name, node, is_root=True):
         """Format the input for display in the panel."""
 
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
@@ -108,7 +108,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
         # Custom handling for 3D model inputs
         elif node["class_type"] == "BlenderInputLoad3D":
-            box = layout.box()
+            # Add box only for main layout
+            box = layout.box() if is_root else layout
 
             # Get the input name from the workflow properties
             name = current_workflow.bl_rna.properties[property_name].name  # Node title
@@ -150,7 +151,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
         # Custom handling for image inputs
         elif node["class_type"] == "BlenderInputLoadImage":
-            box = layout.box()
+            # Add box only for main layout
+            box = layout.box() if is_root else layout
 
             # Get the input name from the workflow properties
             name = current_workflow.bl_rna.properties[property_name].name  # Node title
