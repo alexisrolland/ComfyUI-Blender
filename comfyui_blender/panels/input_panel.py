@@ -137,8 +137,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             if input_name:
                 # 3D model name with link
                 row = box.row()
-                input_name = row.operator("comfy.import_3d_model", text=input_name, emboss=False, icon="MESH_DATA")
-                input_name.filepath = input_fullpath
+                input = row.operator("comfy.import_3d_model", text=input_name, emboss=False, icon="MESH_DATA")
+                input.filepath = input_fullpath
 
                 # Delete input button
                 sub_row = row.row(align=True)
