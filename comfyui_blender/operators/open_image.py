@@ -23,7 +23,7 @@ class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
         # Load image in the data block and open it in the image editor
         if self.filepath.lower().endswith((".jpeg", ".jpg", ".png", ".webp")):
             image = bpy.data.images.load(self.filepath, check_existing=True)
-            bpy.ops.comfy.open_image_editor(filename=image.name)
+            bpy.ops.comfy.open_image_editor(name=image.name)
 
         else:
             error_message = "Selected file is not a *.jpeg;*.jpg;*.png;*.webp."

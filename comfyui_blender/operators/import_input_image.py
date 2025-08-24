@@ -75,8 +75,8 @@ class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
             # Load image in the data block
             image = bpy.data.images.load(input_filepath, check_existing=True)
 
-            # Update the workflow property with the input file path as defined on the ComfyUI server
-            current_workflow[self.workflow_property] = os.path.join(input_subfolder, input_filename)
+            # Update the workflow property with the image name from the data block
+            current_workflow[self.workflow_property] = image.name
 
         else:
             error_message = "Selected file is not a *.jpeg;*.jpg;*.png;*.webp."

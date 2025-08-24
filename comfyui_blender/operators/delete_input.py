@@ -11,7 +11,7 @@ class ComfyBlenderOperatorDeleteInput(bpy.types.Operator):
     bl_label = "Delete Input"
     bl_description = "Delete the input from the workflow."
 
-    filename: bpy.props.StringProperty(name="File Name")
+    name: bpy.props.StringProperty(name="File Name")
     filepath: bpy.props.StringProperty(name="File Path")
     workflow_property: bpy.props.StringProperty(name="Workflow Property")
     type: bpy.props.StringProperty(name="Type")
@@ -41,12 +41,12 @@ class ComfyBlenderOperatorDeleteInput(bpy.types.Operator):
         # Message
         col = layout.column(align=True)
         col.label(text="Are you sure you want to delete:")
-        col.label(text=f"{self.filename}?")
+        col.label(text=f"{self.name}?")
 
         # Buttons
         row = layout.row()
         button_ok = row.operator("comfy.delete_input_ok", text="OK", depress=True)
-        button_ok.filename = self.filename
+        button_ok.name = self.name
         button_ok.filepath = self.filepath
         button_ok.workflow_property = self.workflow_property
         button_ok.type = self.type
@@ -61,7 +61,7 @@ class ComfyBlenderOperatorDeleteInputOk(bpy.types.Operator):
     bl_description = "Confirm the deletion of the input."
     bl_options = {'INTERNAL'}
 
-    filename: bpy.props.StringProperty(name="File Name")
+    name: bpy.props.StringProperty(name="File Name")
     filepath: bpy.props.StringProperty(name="File Path")
     workflow_property: bpy.props.StringProperty(name="Workflow Property")
     type: bpy.props.StringProperty(name="Type")
@@ -69,26 +69,29 @@ class ComfyBlenderOperatorDeleteInputOk(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
-        # Remove input file path from workflow
+        # Remove input from workflow
         context.scene.current_workflow[self.workflow_property] = ""
         self.report({'INFO'}, f"Removed input from workflow: {self.workflow_property}")
 
         if self.type == "image":
             # Remove image from Blender's data
-            image = bpy.data.images.get(self.filename)
+            image = bpy.data.images.get(self.name)
             bpy.data.images.remove(image)
-            self.report({'INFO'}, f"Removed image from Blender data: {self.filename}")
+            self.report({'INFO'}, f"Removed image from Blender data: {self.name}")
         
             # Delete image file
-            if os.path.exists(self.filepath):
-                os.remove(self.filepath)
-                self.report({'INFO'}, f"Deleted file: {self.filepath}")
+            # Do not delete file in case it is reused when reloading workflows
+            # if os.path.exists(self.filepath):
+            #     os.remove(self.filepath)
+            #     self.report({'INFO'}, f"Deleted file: {self.filepath}")
 
         if self.type == "3d":
+            pass
             # Delete 3D model file
-            if os.path.exists(self.filepath):
-                os.remove(self.filepath)
-                self.report({'INFO'}, f"Deleted file: {self.filepath}")
+            # Do not delete file in case it is reused when reloading workflows
+            # if os.path.exists(self.filepath):
+            #     os.remove(self.filepath)
+            #     self.report({'INFO'}, f"Deleted file: {self.filepath}")
         
         # Force redraw of the UI
         for screen in bpy.data.screens:  # Iterate through all screens

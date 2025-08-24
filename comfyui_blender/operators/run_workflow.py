@@ -83,9 +83,18 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
             # Custom handling for image input
             elif node["class_type"] == "BlenderInputLoadImage":
-                property_value = getattr(current_workflow, property_name)
-                if property_value:
-                    workflow[key]["inputs"]["image"] = property_value
+                # Get add-on preferences
+                addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+                inputs_folder = str(addon_prefs.inputs_folder)
+
+                # Get image relative path in the inputs folder
+                image = getattr(current_workflow, property_name)
+                image = bpy.data.images.get(image)
+                image_path = os.path.relpath(image.filepath, inputs_folder)
+
+                # Update the workflow with the relative path
+                if image_path:
+                    workflow[key]["inputs"]["image"] = image_path
                 else:
                     property_name = current_workflow.bl_rna.properties[property_name].name  # Node title
                     error_message = f"Input {property_name} is empty."

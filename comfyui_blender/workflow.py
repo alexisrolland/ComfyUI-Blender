@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import re
+import struct
 
 import bpy
 from bpy.props import (
@@ -166,42 +167,75 @@ def create_workflow_class(class_name, properties):
 
 def extract_workflow_from_metadata(filepath):
     """Extract workflow from the metadata of a file."""
-
-    def _chunk_iter(data):
-        """Iterate over PNG data chunks to extract metadata. This function was borrowed from:
-        https://blender.stackexchange.com/questions/35504/read-image-metadata-from-python"""
-
-        total_length = len(data)
-        end = 4
-
-        while(end + 8 < total_length):     
-            length = int.from_bytes(data[end + 4: end + 8], 'big')
-            begin_chunk_type = end + 8
-            begin_chunk_data = begin_chunk_type + 4
-            end = begin_chunk_data + length
-            yield (data[begin_chunk_type: begin_chunk_data], data[begin_chunk_data: end])
-
-    # Placeholder for GLB metadata extraction
-    if filepath.lower().endswith(".glb"):
-        return None
     
-    # Placeholder for OBJ metadata extraction
+    def _read_glb_metadata(filepath):
+        """Read .glb file metadata to extract JSON chunk"""
+
+        with open(filepath, "rb") as file:
+            header = file.read(12)
+            magic, version, length = struct.unpack("<4sII", header)
+            offset = 12
+            while offset < length:
+                chunk_header = file.read(8)
+                if len(chunk_header) < 8:
+                    break
+                chunk_len, chunk_type = struct.unpack("<I4s", chunk_header)
+                chunk_data = file.read(chunk_len)
+                if chunk_type == b"JSON":
+                    return json.loads(chunk_data.decode("utf-8"))
+                offset += 8 + chunk_len
+        return None
+
+    def _read_png_metadata(filepath):
+        """Read .png file metadata to extract JSON chunk"""
+
+        def _chunk_iter(data):
+            """Iterate over PNG data chunks to extract metadata. This function was borrowed from:
+            https://blender.stackexchange.com/questions/35504/read-image-metadata-from-python"""
+
+            total_length = len(data)
+            end = 4
+
+            while(end + 8 < total_length):     
+                length = int.from_bytes(data[end + 4: end + 8], 'big')
+                begin_chunk_type = end + 8
+                begin_chunk_data = begin_chunk_type + 4
+                end = begin_chunk_data + length
+                yield (data[begin_chunk_type: begin_chunk_data], data[begin_chunk_data: end])
+
+        with open(filepath, "rb") as file:
+            data = file.read()
+            for chunk_type, chunk_data in _chunk_iter(data):
+                if chunk_type == b'tEXt':
+                    key, value = chunk_data.decode("iso-8859-1").split("\0")
+                    try:
+                        return {key: json.loads(value)}
+                    except Exception as e:
+                        return None
+
+    # GLB metadata extraction
+    if filepath.lower().endswith(".glb"):
+        metadata = _read_glb_metadata(filepath)
+
+        # Add a flag to keep current values when reloading the workflow
+        # Instead of using the default values
+        if metadata.get("asset"):
+            metadata["prompt"] = json.loads(metadata["asset"]["extras"]["prompt"])
+            metadata["prompt"]["comfyui_blender"] = {}
+            metadata["prompt"]["comfyui_blender"]["keep_values"] = True
+            return metadata["prompt"]
+        else:
+            return None
+
+    # OBJ metadata extraction
     if filepath.lower().endswith(".obj"):
+        # Placeholder for future implementation
+        # Reloading workflow from .obj files depends whether file is saved with metadata on ComfyUI server side
         return None
 
     # PNG metadata extraction
     elif filepath.lower().endswith(".png"):
-        with open(filepath, "rb") as file:
-            data = file.read()
-
-        metadata = {}
-        for chunk_type, chunk_data in _chunk_iter(data):
-            if chunk_type == b'tEXt':
-                key, value = chunk_data.decode("iso-8859-1").split("\0")
-                try:
-                    metadata = {key: json.loads(value)}
-                except Exception as e:
-                    return None  # Return None if JSON parsing fails
+        metadata = _read_png_metadata(filepath)
 
         # Add a flag to keep current values when reloading the workflow
         # Instead of using the default values
@@ -322,14 +356,12 @@ def register_workflow_class(self, context):
                         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
                         inputs_folder = str(addon_prefs.inputs_folder)
                         input_filename = node["inputs"].get("image", "")
-                        input_filepath = os.path.join(inputs_folder, node["inputs"].get("image", ""))
+                        input_filepath = os.path.join(inputs_folder, input_filename)
 
-                        # Load image in the data block
+                        # Load image in the data block and update the workflow property
                         if os.path.exists(input_filepath):
-                            bpy.data.images.load(input_filepath, check_existing=True)
-
-                        # Update the workflow property with the input file path as defined on the ComfyUI server
-                        setattr(workflow_instance, property_name, input_filename)
+                            image = bpy.data.images.load(input_filepath, check_existing=True)
+                            setattr(workflow_instance, property_name, image.name)
 
                     else:
                         # Default handling for other input types
