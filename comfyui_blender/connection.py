@@ -119,6 +119,8 @@ def listen():
                         # Check class type to retrieve 3D outputs
                         if key in outputs and outputs[key]["class_type"] == "BlenderOutputDownload3D":
                             for output in data["output"]["3d"]:
+                                download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+
                                 # Schedule adding 3D model to outputs collection on main thread
                                 def add_3d_output(output=output):
                                     model = outputs_collection.add()
@@ -126,8 +128,7 @@ def listen():
                                     model.filepath = os.path.join(output["subfolder"], output["filename"])
                                     model.type = "3d"
 
-                                # Call function to add 3D model output
-                                download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                                # Call function to add output to collection
                                 bpy.app.timers.register(add_3d_output, first_interval=0.0)
                             
                             # Force redraw of the UI
@@ -139,6 +140,8 @@ def listen():
                         # Check class type to retrieve 3D outputs
                         elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveGlb":
                             for output in data["output"]["3d"]:
+                                download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+
                                 # Schedule adding 3D model to outputs collection on main thread
                                 def add_3d_output(output=output):
                                     model = outputs_collection.add()
@@ -146,8 +149,7 @@ def listen():
                                     model.filepath = os.path.join(output["subfolder"], output["filename"])
                                     model.type = "3d"
 
-                                # Call function to add 3D model output
-                                download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                                # Call function to add output to collection
                                 bpy.app.timers.register(add_3d_output, first_interval=0.0)
 
                             # Force redraw of the UI
@@ -159,6 +161,8 @@ def listen():
                         # Check class type to retrieve image outputs
                         elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
                             for output in data["output"]["images"]:
+                                download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+
                                 # Schedule adding output to collection on main thread
                                 def add_image_output(output=output):
                                     image = outputs_collection.add()
@@ -167,8 +171,7 @@ def listen():
                                     image.type = "image"
                                     return None
 
-                                # Download file and call function to add output to collection
-                                download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                                # Call function to add output to collection
                                 bpy.app.timers.register(add_image_output, first_interval=0.0)
 
                             # Force redraw of the UI
