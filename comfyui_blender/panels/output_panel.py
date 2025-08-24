@@ -189,7 +189,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                             image_editor.name = image.name
 
                             # Project material button
-                            project_material = col.operator("comfy.project_material", text="", icon="SHADING_TEXTURE")
+                            project_material = row_right.operator("comfy.project_material", text="", icon="SHADING_TEXTURE")
                             project_material.name = image.name
 
                             # Reload workflow button
