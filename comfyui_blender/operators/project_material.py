@@ -1,5 +1,7 @@
 """Operator to project an image as material on a mesh."""
 import logging
+import math
+
 import bpy
 
 log = logging.getLogger("comfyui_blender")
@@ -42,8 +44,11 @@ class ComfyBlenderOperatorProjectMaterial(bpy.types.Operator):
 
         # Create nodes
         texture = nodes.new(type="ShaderNodeTexImage")
-        texture.image = bpy.data.images.get(self.name)
         output = nodes.new(type="ShaderNodeOutputMaterial")
+
+        # Get image to use as texture
+        image = bpy.data.images.get(self.name)
+        texture.image = image
 
         # Link nodes
         links.new(texture.outputs["Color"], output.inputs["Surface"])
@@ -57,9 +62,18 @@ class ComfyBlenderOperatorProjectMaterial(bpy.types.Operator):
                 obj.data.materials.append(material)
 
             # Add a modifier to project the texture
-            modifier = obj.modifiers.new(name="UVProject", type="UV_PROJECT")
+            modifier = obj.modifiers.get("ProjectedMaterial")
+            if modifier is None or modifier.type != "UV_PROJECT":
+                modifier = obj.modifiers.new(name="ProjectedMaterial", type="UV_PROJECT")
             modifier.projector_count = 1
             modifier.projectors[0].object = camera
+
+            # Set aspect ratio based on image dimensions
+            width, height = image.size
+            gcd = math.gcd(width, height)  # Greatest common divisor
+            modifier.aspect_x = width // gcd
+            modifier.aspect_y = height // gcd
+
         return {'FINISHED'}
 
 
