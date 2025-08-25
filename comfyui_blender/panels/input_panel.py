@@ -25,55 +25,56 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
     def draw(self, context):
         """Draw the panel."""
 
-        # Get the selected workflow
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        workflows_folder = str(addon_prefs.workflows_folder)
-        workflow_filename = str(addon_prefs.workflow)
-        workflow_path = os.path.join(workflows_folder, workflow_filename)
-        current_workflow = context.scene.current_workflow
+        if hasattr(context.scene, "current_workflow"):
+            # Get the selected workflow
+            addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+            workflows_folder = str(addon_prefs.workflows_folder)
+            workflow_filename = str(addon_prefs.workflow)
+            workflow_path = os.path.join(workflows_folder, workflow_filename)
+            current_workflow = context.scene.current_workflow
 
-        # Load the workflow JSON file
-        if os.path.exists(workflow_path):
-            with open(workflow_path, "r",  encoding="utf-8") as file:
-                workflow = json.load(file)
+            # Load the workflow JSON file
+            if os.path.exists(workflow_path):
+                with open(workflow_path, "r",  encoding="utf-8") as file:
+                    workflow = json.load(file)
 
-            # Get sorted inputs from the workflow
-            inputs = w.parse_workflow_for_inputs(workflow)
+                # Get sorted inputs from the workflow
+                inputs = w.parse_workflow_for_inputs(workflow)
 
-            # Display workflow input properties
-            for key, node in inputs.items():
-                property_name = f"node_{key}"
+                # Display workflow input properties
+                for key, node in inputs.items():
+                    property_name = f"node_{key}"
 
-                # Custom handling for group of inputs
-                if node["class_type"] == "BlenderInputGroup":
-                    col = self.layout.column()
-                    if node["inputs"].get("show_title", False):
-                        # Get the input name from the workflow properties
-                        name = current_workflow.bl_rna.properties[property_name].name  # Node title
-                        col.label(text=name + ":")
+                    # Custom handling for group of inputs
+                    if node["class_type"] == "BlenderInputGroup":
+                        col = self.layout.column()
+                        if node["inputs"].get("show_title", False):
+                            # Get the input name from the workflow properties
+                            name = current_workflow.bl_rna.properties[property_name].name  # Node title
+                            col.label(text=name + ":")
 
-                    # Create box for the group
-                    group_box = col.box()
-                    if node["inputs"].get("compact", False):
-                        group_col = group_box.column(align=True)
+                        # Create box for the group
+                        group_box = col.box()
+                        if node["inputs"].get("compact", False):
+                            group_col = group_box.column(align=True)
+                        else:
+                            group_col = group_box.column()
+
+                        # Display group inputs
+                        group_inputs = getattr(current_workflow, property_name)
+                        for input_key in group_inputs:
+                            group_property_name = f"node_{input_key}"
+                            self.display_input(context, current_workflow, group_col, group_property_name, inputs[str(input_key)], is_root=False)
+
                     else:
-                        group_col = group_box.column()
+                        # Skip input if it belongs to a group
+                        if "group" not in node["inputs"]:
+                            self.display_input(context, current_workflow, self.layout, property_name, node)
 
-                    # Display group inputs
-                    group_inputs = getattr(current_workflow, property_name)
-                    for input_key in group_inputs:
-                        group_property_name = f"node_{input_key}"
-                        self.display_input(context, current_workflow, group_col, group_property_name, inputs[str(input_key)], is_root=False)
-
-                else:
-                    # Skip input if it belongs to a group
-                    if "group" not in node["inputs"]:
-                        self.display_input(context, current_workflow, self.layout, property_name, node)
-
-            # Add run workflow button
-            col = self.layout.column()
-            col.scale_y = 1.5
-            col.operator("comfy.run_workflow", text="Run Workflow", icon="PLAY")
+                # Add run workflow button
+                col = self.layout.column()
+                col.scale_y = 1.5
+                col.operator("comfy.run_workflow", text="Run Workflow", icon="PLAY")
 
     def display_input(self, context, current_workflow, layout, property_name, node, is_root=True):
         """Format the input for display in the panel."""
