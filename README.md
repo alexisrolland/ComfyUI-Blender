@@ -24,7 +24,10 @@ cd ./ComfyUI/custom_nodes
 git clone https://github.com/alexisrolland/ComfyUI-Blender.git
 ```
 
-#### Remarks 
+If the ComfyUI server runs on a different machine than the Blender client, it must be started with the argument `--listen`. See ComfyUI documentation: [Setting Up LAN Access for ComfyUI](https://docs.comfy.org/installation/comfyui_portable_windows#2-setting-up-lan-access-for-comfyui-portable).
+
+#### Remarks
+
 > The custom nodes do not require additional Python dependencies. They are only used to define the inputs and outputs of the workflows to be displayed in the Blender add-on.
 
 > Ensure you have a recent version of ComfyUI. The add-on has been developed based on ComfyUI `v0.3.49`. Some features such as the progress bar are not working properly on earlier versions.
@@ -34,6 +37,10 @@ git clone https://github.com/alexisrolland/ComfyUI-Blender.git
 Download the add-on package `comfyui_blender_[...].zip` from the **[LATEST RELEASE](https://github.com/alexisrolland/ComfyUI-Blender/releases)**.
 
 In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > select the zip package.
+
+Update the ComfyUI server address in the add-on preferences:
+
+![Screenshot Preferences](./screenshot_blender_preferences.jpg)
 
 #### Remarks
 
