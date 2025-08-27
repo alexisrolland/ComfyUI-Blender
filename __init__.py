@@ -1,5 +1,6 @@
 from .input_nodes import (
     BlenderInputBoolean,
+    BlenderInputCheckpointLoader,
     BlenderInputCombo,
     BlenderInputFloat,
     BlenderInputGroup,
@@ -20,6 +21,7 @@ from .output_nodes import (
 # NOTE: names should be globally unique
 NODE_CLASS_MAPPINGS = {
     "BlenderInputBoolean": BlenderInputBoolean,
+    "BlenderInputCheckpointLoader": BlenderInputCheckpointLoader,
     "BlenderInputCombo": BlenderInputCombo,
     "BlenderInputFloat": BlenderInputFloat,
     "BlenderInputGroup": BlenderInputGroup,
@@ -37,6 +39,7 @@ NODE_CLASS_MAPPINGS = {
 # A dictionary that contains the friendly/humanly readable titles for the nodes
 NODE_DISPLAY_NAME_MAPPINGS = {
     "BlenderInputBoolean": "Blender Input Boolean",
+    "BlenderInputCheckpointLoader": "Blender Input Checkpoint Loader",
     "BlenderInputCombo": "Blender Input Combo",
     "BlenderInputFloat": "Blender Input Float",
     "BlenderInputGroup": "Blender Input Group",

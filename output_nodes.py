@@ -7,7 +7,7 @@ from nodes import SaveImage
 
 class BlenderOutputDownload3D():
     """Node used by ComfyUI Blender add-on to capture a 3D output from a workflow."""
-    CATEGORY = "blender/outputs"
+    CATEGORY = "blender"
     FUNCTION = "execute"
     OUTPUT_NODE = True
     RETURN_TYPES = ()
@@ -32,7 +32,7 @@ class BlenderOutputDownload3D():
 
 class BlenderOutputSaveGlb(SaveGLB):
     """Node used by ComfyUI Blender add-on to GLB file output from a workflow."""
-    CATEGORY = "blender/outputs"
+    CATEGORY = "blender"
 
     @classmethod
     def INPUT_TYPES(s):
@@ -42,7 +42,7 @@ class BlenderOutputSaveGlb(SaveGLB):
 
 class BlenderOutputSaveImage(SaveImage):
     """Node used by ComfyUI Blender add-on to capture an image output from a workflow."""
-    CATEGORY = "blender/outputs"
+    CATEGORY = "blender"
 
     @classmethod
     def INPUT_TYPES(s):

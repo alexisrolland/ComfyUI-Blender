@@ -65,8 +65,12 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         for key, node in inputs.items():
             property_name = f"node_{key}"
 
+            # Custom handling for group of inputs
+            if node["class_type"] == "BlenderInputCheckpointLoader":
+                workflow[key]["inputs"]["ckpt_name"] = getattr(current_workflow, property_name)
+
             # Custom handling for 3D model input
-            if node["class_type"] == "BlenderInputLoad3D":
+            elif node["class_type"] == "BlenderInputLoad3D":
                 property_value = getattr(current_workflow, property_name)
                 if property_value:
                     workflow[key]["inputs"]["model_file"] = property_value

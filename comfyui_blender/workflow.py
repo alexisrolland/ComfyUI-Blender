@@ -7,6 +7,7 @@ import re
 import struct
 
 import bpy
+import requests
 from bpy.props import (
     BoolProperty,
     EnumProperty,
@@ -15,6 +16,8 @@ from bpy.props import (
     IntVectorProperty,
     StringProperty
 )
+
+from .utils import add_custom_headers, get_server_url
 
 log = logging.getLogger("comfyui_blender")
 
@@ -74,6 +77,41 @@ def create_class_properties(inputs, keep_values=False):
             properties[property_name] = BoolProperty(
                 name=name,
                 default=node["inputs"].get("default", False)
+            )
+            continue
+
+        # Checkpoint loader
+        if node["class_type"] == "BlenderInputCheckpointLoader":
+            # Get list of checkpoints from the ComfyUI server
+            url = get_server_url("/models/checkpoints")
+            headers = {"Content-Type": "application/json"}
+            headers = add_custom_headers(headers)
+            try:
+                response = requests.get(url, headers=headers, stream=True)
+            except Exception as e:
+                error_message = f"Failed to get list of checkpoints from ComfyUI server: {url}. {e}"
+                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                log.exception(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                continue
+
+            if response.status_code != 200:
+                error_message = error_message = f"Failed to get list of checkpoints from ComfyUI server: {url}."
+                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                log.error(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                continue
+
+            # If default value not in list, set to first item in the list
+            default = node["inputs"].get("default", "")
+            items = response.json()
+            if default not in items:
+                default = items[0]
+
+            properties[property_name] = EnumProperty(
+                name=name,
+                default=default,
+                items=[(i, i, "") for i in items]
             )
             continue
 
