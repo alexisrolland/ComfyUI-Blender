@@ -16,7 +16,7 @@
         278
       ],
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "inputs": [
         {
@@ -62,7 +62,7 @@
         146
       ],
       "flags": {},
-      "order": 2,
+      "order": 4,
       "mode": 0,
       "inputs": [
         {
@@ -96,6 +96,7 @@
           ]
         }
       ],
+      "title": "Model",
       "properties": {
         "Node name for S&R": "BlenderInputCheckpointLoader"
       },
@@ -119,7 +120,7 @@
         106
       ],
       "flags": {},
-      "order": 0,
+      "order": 1,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -256,7 +257,7 @@
         178
       ],
       "flags": {},
-      "order": 3,
+      "order": 2,
       "mode": 0,
       "inputs": [
         {
@@ -666,7 +667,7 @@
         240
       ],
       "flags": {},
-      "order": 4,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [],
