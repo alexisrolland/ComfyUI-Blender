@@ -7,7 +7,7 @@ class ComfyBlenderOperatorOpenImageEditor(bpy.types.Operator):
 
     bl_idname = "comfy.open_image_editor"
     bl_label = "Open Image"
-    bl_description = "Open the image in Blender's image editor"
+    bl_description = "Open the image in Blender's image editor."
 
     name: bpy.props.StringProperty(name="Name")
 

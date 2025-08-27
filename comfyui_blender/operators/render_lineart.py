@@ -16,7 +16,7 @@ class ComfyBlenderOperatorRenderLineart(bpy.types.Operator):
 
     bl_idname = "comfy.render_lineart"
     bl_label = "Render Lineart"
-    bl_description = "Render a lineart from the camera."
+    bl_description = "Render a lineart from the camera and upload it to the ComfyUI server."
 
     workflow_property: bpy.props.StringProperty(name="Workflow Property")
     temp_filename = "blender_lineart"

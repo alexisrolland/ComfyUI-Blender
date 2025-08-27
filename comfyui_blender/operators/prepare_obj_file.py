@@ -15,7 +15,7 @@ class ComfyBlenderOperatorPrepare3DModel(bpy.types.Operator):
 
     bl_idname = "comfy.prepare_obj_file"
     bl_label = "Prepare OBJ file"
-    bl_description = "Prepare an OBJ file to import it on the ComfyUI server"
+    bl_description = "Prepare an OBJ file to import it on the ComfyUI server."
 
     workflow_property: bpy.props.StringProperty(name="Workflow Property")
     temp_filename = "blender_3d_model.obj"

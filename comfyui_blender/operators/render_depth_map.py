@@ -15,7 +15,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
 
     bl_idname = "comfy.render_depth_map"
     bl_label = "Render Depth Map"
-    bl_description = "Render a depth map from the camera."
+    bl_description = "Render a depth map from the camera and upload it to the ComfyUI server."
 
     workflow_property: bpy.props.StringProperty(name="Workflow Property")
     temp_filename = "blender_depth_map"

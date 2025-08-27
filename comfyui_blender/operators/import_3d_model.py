@@ -12,7 +12,7 @@ class ComfyBlenderOperatorImport3DModel(bpy.types.Operator):
 
     bl_idname = "comfy.import_3d_model"
     bl_label = "Import 3D Model"
-    bl_description = "Import 3D model into the scene"
+    bl_description = "Import 3D model into the scene."
 
     filepath: bpy.props.StringProperty(name="File Path", subtype="FILE_PATH")
 

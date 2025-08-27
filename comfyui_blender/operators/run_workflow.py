@@ -20,7 +20,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
     bl_idname = "comfy.run_workflow"
     bl_label = "Run Workflow"
-    bl_description = "Send the workflow to the ComfyUI server"
+    bl_description = "Send the workflow to the ComfyUI server."
 
     def execute(self, context):
         """Execute the operator."""

@@ -161,7 +161,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             row.label(text=name + ":")
 
             # Import button
-            import_input_image = row.operator("comfy.import_input_image", text="", icon="IMPORT")
+            import_input_image = row.operator("comfy.import_input_image", text="", icon="EXPORT")
             import_input_image.workflow_property = property_name
 
             # Render view

@@ -16,7 +16,7 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
 
     bl_idname = "comfy.download_example_workflows"
     bl_label = "Download Example Workflows"
-    bl_description = "Download example workflows from the ComfyUI server"
+    bl_description = "Download example workflows from the ComfyUI server."
 
     # If the custom node name has been changed on the ComfyUI server, we won't be able to download workflows.
     custom_node_name = "ComfyUI-Blender"

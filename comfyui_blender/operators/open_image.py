@@ -11,7 +11,7 @@ class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
 
     bl_idname = "comfy.open_image"
     bl_label = "Open Image"
-    bl_description = "Load and open an image"
+    bl_description = "Load and open an image."
 
     filepath: bpy.props.StringProperty(name="File Path", subtype="FILE_PATH")
     filter_glob: bpy.props.StringProperty(name="File Filter", default="*.jpeg;*.jpg;*.png;*.webp")

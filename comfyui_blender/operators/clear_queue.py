@@ -14,7 +14,7 @@ class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
 
     bl_idname = "comfy.clear_queue"
     bl_label = "Clear Queue"
-    bl_description = "Remove all pending workflows from ComfyUI server queue"
+    bl_description = "Remove all pending workflows from ComfyUI server queue."
 
     def execute(self, context):
         """Execute the operator."""

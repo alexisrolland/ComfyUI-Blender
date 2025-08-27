@@ -8,7 +8,7 @@ class ComfyBlenderOperatorSelectFolder(bpy.types.Operator):
 
     bl_idname = "comfy.select_folder"
     bl_label = "Select Folder"
-    bl_description = "Select a folder"
+    bl_description = "Select a folder."
 
     directory: StringProperty(name="Directory", subtype="DIR_PATH")
     target_property: StringProperty(name="Target Property")
