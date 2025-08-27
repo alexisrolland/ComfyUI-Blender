@@ -6,7 +6,7 @@
 This respository contains both custom nodes to be installed on the ComfyUI server and the Blender add-on to send workflows to the ComfyUI server. They can be used as follow:
 
 * Create a workflow in ComfyUI **with the Blender nodes**.
-* Run the workflow to test it and confirm it executes properly.
+* Run the workflow to confirm it executes properly.
 * Export the workflow **in API format**.
 * Import the workflow in the Blender add-on
 
