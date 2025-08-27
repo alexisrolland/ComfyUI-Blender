@@ -9,7 +9,8 @@ from .input_nodes import (
     BlenderInputLoadImage,
     BlenderInputSeed,
     BlenderInputString,
-    BlenderInputStringMultiline
+    BlenderInputStringMultiline,
+    BlenderInputUnetLoader
 )
 from .output_nodes import (
     BlenderOutputDownload3D,
@@ -31,6 +32,7 @@ NODE_CLASS_MAPPINGS = {
     "BlenderInputSeed": BlenderInputSeed,
     "BlenderInputString": BlenderInputString,
     "BlenderInputStringMultiline": BlenderInputStringMultiline,
+    "BlenderInputUnetLoader": BlenderInputUnetLoader,
     "BlenderOutputDownload3D": BlenderOutputDownload3D,
     "BlenderOutputSaveGlb": BlenderOutputSaveGlb,
     "BlenderOutputSaveImage": BlenderOutputSaveImage
@@ -39,7 +41,7 @@ NODE_CLASS_MAPPINGS = {
 # A dictionary that contains the friendly/humanly readable titles for the nodes
 NODE_DISPLAY_NAME_MAPPINGS = {
     "BlenderInputBoolean": "Blender Input Boolean",
-    "BlenderInputCheckpointLoader": "Blender Input Checkpoint Loader",
+    "BlenderInputCheckpointLoader": "Blender Input Load Checkpoint",
     "BlenderInputCombo": "Blender Input Combo",
     "BlenderInputFloat": "Blender Input Float",
     "BlenderInputGroup": "Blender Input Group",
@@ -49,6 +51,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "BlenderInputSeed": "Blender Input Seed",
     "BlenderInputString": "Blender Input String",
     "BlenderInputStringMultiline": "Blender Input String Multiline",
+    "BlenderInputUnetLoader": "Blender Input Load Diffusion Model",
     "BlenderOutputDownload3D": "Blender Output Download 3D",
     "BlenderOutputSaveGlb": "Blender Output Save GLB",
     "BlenderOutputSaveImage": "Blender Output Save Image"

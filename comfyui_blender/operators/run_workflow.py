@@ -124,6 +124,10 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     seed = random.randint(min, max)
                     setattr(current_workflow, property_name, seed)
 
+            # Custom handling for group of inputs
+            if node["class_type"] == "BlenderInputUnetLoader":
+                workflow[key]["inputs"]["unet_name"] = getattr(current_workflow, property_name)
+
             else:
                 # Default handling for other input types
                 workflow[key]["inputs"]["value"] = getattr(current_workflow, property_name)
