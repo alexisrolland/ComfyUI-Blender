@@ -62,7 +62,7 @@
         146
       ],
       "flags": {},
-      "order": 3,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -102,7 +102,7 @@
         "Node name for S&R": "BlenderInputCheckpointLoader"
       },
       "widgets_values": [
-        "compvis\\depthfm-v1_fp16.safetensors",
+        "visitor01\\raymnants-v3.0.safetensors",
         2,
         "visitor01\\raymnants-v3.0.safetensors"
       ],
@@ -114,7 +114,7 @@
       "type": "BlenderInputGroup",
       "pos": [
         370,
-        1330
+        1370
       ],
       "size": [
         270,
@@ -151,7 +151,7 @@
       "type": "BlenderInputInt",
       "pos": [
         680,
-        1260
+        1300
       ],
       "size": [
         210,
@@ -201,7 +201,7 @@
       "type": "BlenderInputInt",
       "pos": [
         680,
-        1550
+        1590
       ],
       "size": [
         210,
@@ -371,7 +371,8 @@
         "cnr_id": "comfy-core",
         "ver": "0.3.42",
         "Node name for S&R": "VAEDecode"
-      }
+      },
+      "widgets_values": []
     },
     {
       "id": 9,
@@ -616,7 +617,7 @@
         180
       ],
       "flags": {},
-      "order": 5,
+      "order": 2,
       "mode": 0,
       "inputs": [
         {
@@ -664,7 +665,7 @@
         58
       ],
       "flags": {},
-      "order": 2,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -747,7 +748,7 @@
         154
       ],
       "flags": {},
-      "order": 6,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -794,7 +795,7 @@
         240
       ],
       "flags": {},
-      "order": 7,
+      "order": 6,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -980,10 +981,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.620921323059155,
+      "scale": 0.5615270015332786,
       "offset": [
-        431.05082480484873,
-        -455.99086682012046
+        457.63646710852345,
+        -341.7247619628905
       ]
     },
     "frontendVersion": "1.25.10",

@@ -13,7 +13,7 @@
   },
   "2": {
     "inputs": {
-      "ckpt_name": "compvis\\depthfm-v1_fp16.safetensors",
+      "ckpt_name": "visitor01\\raymnants-v3.0.safetensors",
       "order": 2,
       "default": "visitor01\\raymnants-v3.0.safetensors"
     },

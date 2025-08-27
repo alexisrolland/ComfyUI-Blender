@@ -11,61 +11,28 @@
       "title": "Prompt"
     }
   },
-  "5": {
+  "2": {
     "inputs": {
-      "value": "visitor01/raymnants-v3.0.safetensors",
+      "ckpt_name": "visitor01\\raymnants-v3.0.safetensors",
       "order": 2,
-      "default": "",
-      "format_path": "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
-      "list": "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors"
+      "default": "visitor01\\raymnants-v3.0.safetensors"
     },
-    "class_type": "BlenderInputCombo",
+    "class_type": "BlenderInputCheckpointLoader",
     "_meta": {
       "title": "Model"
     }
   },
-  "6": {
+  "3": {
     "inputs": {
-      "text": [
-        "1",
-        0
-      ],
-      "clip": [
-        "9",
-        1
-      ]
+      "image": "example.png",
+      "order": 4
     },
-    "class_type": "CLIPTextEncode",
+    "class_type": "BlenderInputLoadImage",
     "_meta": {
-      "title": "CLIP Text Encode (Prompt)"
+      "title": "Image"
     }
   },
-  "7": {
-    "inputs": {
-      "text": "",
-      "clip": [
-        "9",
-        1
-      ]
-    },
-    "class_type": "CLIPTextEncode",
-    "_meta": {
-      "title": "CLIP Text Encode (Prompt)"
-    }
-  },
-  "9": {
-    "inputs": {
-      "ckpt_name": [
-        "5",
-        0
-      ]
-    },
-    "class_type": "CheckpointLoaderSimple",
-    "_meta": {
-      "title": "Load Checkpoint"
-    }
-  },
-  "10": {
+  "4": {
     "inputs": {
       "value": 0,
       "order": 1,
@@ -79,98 +46,7 @@
       "title": "Seed"
     }
   },
-  "11": {
-    "inputs": {
-      "seed": [
-        "10",
-        0
-      ],
-      "steps": 20,
-      "cfg": 8,
-      "sampler_name": "dpmpp_2m",
-      "scheduler": "karras",
-      "denoise": [
-        "16",
-        0
-      ],
-      "model": [
-        "9",
-        0
-      ],
-      "positive": [
-        "6",
-        0
-      ],
-      "negative": [
-        "7",
-        0
-      ],
-      "latent_image": [
-        "15",
-        0
-      ]
-    },
-    "class_type": "KSampler",
-    "_meta": {
-      "title": "KSampler"
-    }
-  },
-  "12": {
-    "inputs": {
-      "samples": [
-        "11",
-        0
-      ],
-      "vae": [
-        "9",
-        2
-      ]
-    },
-    "class_type": "VAEDecode",
-    "_meta": {
-      "title": "VAE Decode"
-    }
-  },
-  "13": {
-    "inputs": {
-      "filename_prefix": "blender",
-      "images": [
-        "12",
-        0
-      ]
-    },
-    "class_type": "BlenderOutputSaveImage",
-    "_meta": {
-      "title": "Save Image"
-    }
-  },
-  "14": {
-    "inputs": {
-      "image": "example.png",
-      "order": 4
-    },
-    "class_type": "BlenderInputLoadImage",
-    "_meta": {
-      "title": "Input Image"
-    }
-  },
-  "15": {
-    "inputs": {
-      "pixels": [
-        "14",
-        0
-      ],
-      "vae": [
-        "9",
-        2
-      ]
-    },
-    "class_type": "VAEEncode",
-    "_meta": {
-      "title": "VAE Encode"
-    }
-  },
-  "16": {
+  "5": {
     "inputs": {
       "value": 0.5000000000000001,
       "order": 5,
@@ -181,6 +57,116 @@
     "class_type": "BlenderInputFloat",
     "_meta": {
       "title": "Denoise"
+    }
+  },
+  "6": {
+    "inputs": {
+      "samples": [
+        "7",
+        0
+      ],
+      "vae": [
+        "2",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "7": {
+    "inputs": {
+      "seed": [
+        "4",
+        0
+      ],
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": [
+        "5",
+        0
+      ],
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "10",
+        0
+      ],
+      "negative": [
+        "9",
+        0
+      ],
+      "latent_image": [
+        "11",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "8": {
+    "inputs": {
+      "filename_prefix": "blender",
+      "images": [
+        "6",
+        0
+      ]
+    },
+    "class_type": "BlenderOutputSaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "9": {
+    "inputs": {
+      "text": "",
+      "clip": [
+        "2",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "10": {
+    "inputs": {
+      "text": [
+        "1",
+        0
+      ],
+      "clip": [
+        "2",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "11": {
+    "inputs": {
+      "pixels": [
+        "3",
+        0
+      ],
+      "vae": [
+        "2",
+        2
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode"
     }
   }
 }
