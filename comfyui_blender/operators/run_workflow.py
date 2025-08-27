@@ -66,8 +66,9 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
             property_name = f"node_{key}"
 
             # Custom handling for group of inputs
-            if node["class_type"] == "BlenderInputCheckpointLoader":
-                workflow[key]["inputs"]["ckpt_name"] = getattr(current_workflow, property_name)
+            if node["class_type"] == "BlenderInputGroup":
+                # Do nothing, groups are just containers
+                continue
 
             # Custom handling for 3D model input
             elif node["class_type"] == "BlenderInputLoad3D":
@@ -81,11 +82,15 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
 
-            # Custom handling for group of inputs
-            elif node["class_type"] == "BlenderInputGroup":
-                continue
+            # Custom handling for load checkpoint input
+            elif node["class_type"] == "BlenderInputLoadCheckpoint":
+                workflow[key]["inputs"]["ckpt_name"] = getattr(current_workflow, property_name)
 
-            # Custom handling for image input
+            # Custom handling for load diffusion model input
+            elif node["class_type"] == "BlenderInputLoadDiffusionModel":
+                workflow[key]["inputs"]["unet_name"] = getattr(current_workflow, property_name)
+
+            # Custom handling for load image input
             elif node["class_type"] == "BlenderInputLoadImage":
                 # Get add-on preferences
                 addon_prefs = context.preferences.addons["comfyui_blender"].preferences
@@ -112,6 +117,10 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
 
+            # Custom handling for load LoRA input
+            elif node["class_type"] == "BlenderInputLoadLora":
+                workflow[key]["inputs"]["lora_name"] = getattr(current_workflow, property_name)
+
             # Custom handling for seed inputs
             elif node["class_type"] == "BlenderInputSeed":
                 seed = getattr(current_workflow, property_name)
@@ -123,10 +132,6 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     max = current_workflow.bl_rna.properties[property_name].hard_max
                     seed = random.randint(min, max)
                     setattr(current_workflow, property_name, seed)
-
-            # Custom handling for group of inputs
-            if node["class_type"] == "BlenderInputUnetLoader":
-                workflow[key]["inputs"]["unet_name"] = getattr(current_workflow, property_name)
 
             else:
                 # Default handling for other input types

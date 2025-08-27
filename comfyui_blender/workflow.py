@@ -80,41 +80,6 @@ def create_class_properties(inputs, keep_values=False):
             )
             continue
 
-        # Checkpoint loader
-        if node["class_type"] == "BlenderInputCheckpointLoader":
-            # Get list of checkpoints from the ComfyUI server
-            url = get_server_url("/models/checkpoints")
-            headers = {"Content-Type": "application/json"}
-            headers = add_custom_headers(headers)
-            try:
-                response = requests.get(url, headers=headers, stream=True)
-            except Exception as e:
-                error_message = f"Failed to get list of checkpoints from ComfyUI server: {url}. {e}"
-                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
-                log.exception(error_message)
-                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
-                continue
-
-            if response.status_code != 200:
-                error_message = error_message = f"Failed to get list of checkpoints from ComfyUI server: {url}."
-                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
-                log.error(error_message)
-                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
-                continue
-
-            # If default value not in list, set to first item in the list
-            default = node["inputs"].get("default", "")
-            items = response.json()
-            if default not in items:
-                default = items[0]
-
-            properties[property_name] = EnumProperty(
-                name=name,
-                default=default,
-                items=[(i, i, "") for i in items]
-            )
-            continue
-
         # Combo box
         if node["class_type"] == "BlenderInputCombo":
             # If default value not in list, set to first item in the list
@@ -168,28 +133,44 @@ def create_class_properties(inputs, keep_values=False):
         if node["class_type"] in ("BlenderInputLoad3D", "BlenderInputLoadImage"):
             properties[property_name] = StringProperty(name=name)
             continue
-        
-        # Seed
-        if node["class_type"] == "BlenderInputSeed":
-            properties[property_name] = IntProperty(
+
+        # Load checkpoint
+        if node["class_type"] == "BlenderInputLoadCheckpoint":
+            # Get list of checkpoints from the ComfyUI server
+            url = get_server_url("/models/checkpoints")
+            headers = {"Content-Type": "application/json"}
+            headers = add_custom_headers(headers)
+            try:
+                response = requests.get(url, headers=headers, stream=True)
+            except Exception as e:
+                error_message = f"Failed to get list of checkpoints from ComfyUI server: {url}. {e}"
+                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                log.exception(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                continue
+
+            if response.status_code != 200:
+                error_message = error_message = f"Failed to get list of checkpoints from ComfyUI server: {url}."
+                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                log.error(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                continue
+
+            # If default value not in list, set to first item in the list
+            default = node["inputs"].get("default", "")
+            items = response.json()
+            if default not in items:
+                default = items[0]
+
+            properties[property_name] = EnumProperty(
                 name=name,
-                default=node["inputs"].get("default", 0),
-                min=node["inputs"].get("min", 0),
-                max=node["inputs"].get("max", 2147483647),
-                step=node["inputs"].get("step", 1)
+                default=default,
+                items=[(i, i, "") for i in items]
             )
             continue
 
-        # String and String multiline
-        if node["class_type"] in ("BlenderInputString", "BlenderInputStringMultiline"):
-            properties[property_name] = StringProperty(
-                name=name,
-                default=node["inputs"].get("default", "")
-            )
-            continue
-
-        # Checkpoint loader
-        if node["class_type"] == "BlenderInputUnetLoader":
+        # Load diffusion model
+        if node["class_type"] == "BlenderInputLoadDiffusionModel":
             # Get list of diffusion models from the ComfyUI server
             url = get_server_url("/models/diffusion_models")
             headers = {"Content-Type": "application/json"}
@@ -220,6 +201,60 @@ def create_class_properties(inputs, keep_values=False):
                 name=name,
                 default=default,
                 items=[(i, i, "") for i in items]
+            )
+            continue
+        
+        # Load LoRA
+        if node["class_type"] == "BlenderInputLoadLora":
+            # Get list of loras from the ComfyUI server
+            url = get_server_url("/models/loras")
+            headers = {"Content-Type": "application/json"}
+            headers = add_custom_headers(headers)
+            try:
+                response = requests.get(url, headers=headers, stream=True)
+            except Exception as e:
+                error_message = f"Failed to get list of LoRAs from ComfyUI server: {url}. {e}"
+                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                log.exception(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                continue
+
+            if response.status_code != 200:
+                error_message = error_message = f"Failed to get list of LoRAs from ComfyUI server: {url}."
+                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                log.error(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                continue
+
+            # If default value not in list, set to first item in the list
+            default = node["inputs"].get("default", "")
+            items = response.json()
+            if default not in items:
+                default = items[0]
+
+            properties[property_name] = EnumProperty(
+                name=name,
+                default=default,
+                items=[(i, i, "") for i in items]
+            )
+            continue
+
+        # Seed
+        if node["class_type"] == "BlenderInputSeed":
+            properties[property_name] = IntProperty(
+                name=name,
+                default=node["inputs"].get("default", 0),
+                min=node["inputs"].get("min", 0),
+                max=node["inputs"].get("max", 2147483647),
+                step=node["inputs"].get("step", 1)
+            )
+            continue
+
+        # String and String multiline
+        if node["class_type"] in ("BlenderInputString", "BlenderInputStringMultiline"):
+            properties[property_name] = StringProperty(
+                name=name,
+                default=node["inputs"].get("default", "")
             )
             continue
     return properties

@@ -3,7 +3,7 @@ import os
 import folder_paths
 from comfy_extras.nodes_primitive import Boolean, Float, Int, String, StringMultiline
 from comfy.comfy_types.node_typing import IO
-from nodes import CheckpointLoaderSimple, LoadImage, UNETLoader
+from nodes import CheckpointLoaderSimple, LoadImage, LoraLoaderModelOnly, UNETLoader
 
 # Enforce min/max int and float according to Blender limitation
 MIN_FLOAT = -2147483648.00
@@ -30,27 +30,6 @@ class BlenderInputBoolean(Boolean):
 
     def execute(self, value: bool, order: int, default: bool, **kwargs) -> tuple[bool]:
         return (value,)
-
-class BlenderInputCheckpointLoader(CheckpointLoaderSimple):
-    """Node used by ComfyUI Blender add-on to select a model name from the checkpoints folder of the ComfyUI server."""
-    CATEGORY = "blender"
-    FUNCTION = "execute"
-
-    @classmethod
-    def INPUT_TYPES(s):
-        INPUT_TYPES = super().INPUT_TYPES()
-        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
-        INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
-
-        # Create optional input key
-        if not INPUT_TYPES.get("optional", None):
-            INPUT_TYPES["optional"] = {}
-        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
-        return INPUT_TYPES
-
-    def execute(self, ckpt_name, order: int, default: str, **kwargs):
-        ckpt_name = str(os.path.normpath(ckpt_name))
-        return super().load_checkpoint(ckpt_name)
 
 class BlenderInputCombo(String):
     """Node used by ComfyUI Blender add-on to input a value from a combo box in a workflow."""
@@ -173,6 +152,48 @@ class BlenderInputLoad3D():
     def execute(self, model_file, order, **kwargs):
         return (model_file,)
 
+class BlenderInputLoadCheckpoint(CheckpointLoaderSimple):
+    """Node used by ComfyUI Blender add-on to select a model name from the checkpoints folder of the ComfyUI server."""
+    CATEGORY = "blender"
+    FUNCTION = "execute"
+
+    @classmethod
+    def INPUT_TYPES(s):
+        INPUT_TYPES = super().INPUT_TYPES()
+        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
+        INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
+
+        # Create optional input key
+        if not INPUT_TYPES.get("optional", None):
+            INPUT_TYPES["optional"] = {}
+        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
+        return INPUT_TYPES
+
+    def execute(self, ckpt_name, order: int, default: str, **kwargs):
+        ckpt_name = str(os.path.normpath(ckpt_name))
+        return super().load_checkpoint(ckpt_name)
+
+class BlenderInputLoadDiffusionModel(UNETLoader):
+    """Node used by ComfyUI Blender add-on to select a model name from the diffusion models folder of the ComfyUI server."""
+    CATEGORY = "blender"
+    FUNCTION = "execute"
+
+    @classmethod
+    def INPUT_TYPES(s):
+        INPUT_TYPES = super().INPUT_TYPES()
+        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
+        INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
+
+        # Create optional input key
+        if not INPUT_TYPES.get("optional", None):
+            INPUT_TYPES["optional"] = {}
+        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
+        return INPUT_TYPES
+
+    def execute(self, unet_name, weight_dtype, order: int, default: str, **kwargs):
+        unet_name = str(os.path.normpath(unet_name))
+        return super().load_unet(unet_name, weight_dtype)
+
 class BlenderInputLoadImage(LoadImage):
     """Node used by ComfyUI Blender add-on to input an image in a workflow."""
     CATEGORY = "blender"
@@ -195,6 +216,27 @@ class BlenderInputLoadImage(LoadImage):
     @classmethod
     def IS_CHANGED(s, image, order, **kwargs):
         return super().IS_CHANGED(image)
+
+class BlenderInputLoadLora(LoraLoaderModelOnly):
+    """Node used by ComfyUI Blender add-on to select a LoRA model name from the loras folder of the ComfyUI server."""
+    CATEGORY = "blender"
+    FUNCTION = "execute"
+
+    @classmethod
+    def INPUT_TYPES(s):
+        INPUT_TYPES = super().INPUT_TYPES()
+        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
+        INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
+
+        # Create optional input key
+        if not INPUT_TYPES.get("optional", None):
+            INPUT_TYPES["optional"] = {}
+        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
+        return INPUT_TYPES
+
+    def execute(self, model, lora_name, strength_model, order: int, default: str, **kwargs):
+        lora_name = str(os.path.normpath(lora_name))
+        return super().load_lora_model_only(model, lora_name, strength_model)
 
 class BlenderInputSeed(Int):
     """Node used by ComfyUI Blender add-on to input a seed value in a workflow."""
@@ -261,24 +303,3 @@ class BlenderInputStringMultiline(StringMultiline):
     def execute(self, value: str, order: int, default: str, format_path: bool, **kwargs) -> tuple[str]:
         value = str(os.path.normpath(value)) if format_path else value
         return (value,)
-
-class BlenderInputUnetLoader(UNETLoader):
-    """Node used by ComfyUI Blender add-on to select a model name from the diffusion models folder of the ComfyUI server."""
-    CATEGORY = "blender"
-    FUNCTION = "execute"
-
-    @classmethod
-    def INPUT_TYPES(s):
-        INPUT_TYPES = super().INPUT_TYPES()
-        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
-        INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
-
-        # Create optional input key
-        if not INPUT_TYPES.get("optional", None):
-            INPUT_TYPES["optional"] = {}
-        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
-        return INPUT_TYPES
-
-    def execute(self, unet_name, weight_dtype, order: int, default: str, **kwargs):
-        unet_name = str(os.path.normpath(unet_name))
-        return super().load_unet(unet_name, weight_dtype)
