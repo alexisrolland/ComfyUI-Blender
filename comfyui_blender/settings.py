@@ -44,24 +44,30 @@ def update_progress(self, context):
 def update_project_folders(self, context):
     """Callback to update workflows, inputs and outputs folders according to the project base folder."""
 
-    # Set workflows folder
-    workflows_folder = os.path.join(self.base_folder, "workflows")
-    os.makedirs(workflows_folder, exist_ok=True)
-    self.workflows_folder = workflows_folder
+    try:
+        # Set workflows folder
+        workflows_folder = os.path.join(self.base_folder, "workflows")
+        os.makedirs(workflows_folder, exist_ok=True)
+        self.workflows_folder = workflows_folder
 
-    # Set inputs folder
-    inputs_folder = os.path.join(self.base_folder, "inputs")
-    os.makedirs(inputs_folder, exist_ok=True)
-    self.inputs_folder = inputs_folder
+        # Set inputs folder
+        inputs_folder = os.path.join(self.base_folder, "inputs")
+        os.makedirs(inputs_folder, exist_ok=True)
+        self.inputs_folder = inputs_folder
 
-    # Set outputs folder
-    outputs_folder = os.path.join(self.base_folder, "outputs")
-    os.makedirs(outputs_folder, exist_ok=True)
-    self.outputs_folder = outputs_folder
+        # Set outputs folder
+        outputs_folder = os.path.join(self.base_folder, "outputs")
+        os.makedirs(outputs_folder, exist_ok=True)
+        self.outputs_folder = outputs_folder
+    except Exception as e:
+        error_message = f"Failed to create project folders. {e}"
+        log.exception(error_message)
+        bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
 
 
 def update_project_folders_delayed():
     """Delayed update of folders when use_blend_file_location is enabled."""
+
     try:
         project_settings = bpy.context.scene.comfyui_project_settings
         if project_settings.use_blend_file_location:

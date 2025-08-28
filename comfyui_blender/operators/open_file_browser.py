@@ -12,7 +12,7 @@ class ComfyBlenderOperatorOpenFileBrowser(bpy.types.Operator):
     folder_path: bpy.props.StringProperty(name="Folder Path")
     custom_label: bpy.props.StringProperty(
         name="Custom Label",
-        description="Custom label for the operator",
+        description="Custom label for the operator.",
         options={'HIDDEN'}
     )
 

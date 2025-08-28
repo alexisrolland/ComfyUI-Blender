@@ -9,7 +9,7 @@ class ComfyBlenderOperatorShowErrorPopup(bpy.types.Operator):
 
     bl_idname = "comfy.show_error_popup"
     bl_label = "Execution Error"
-    bl_description = "Display an error popup window"
+    bl_description = "Display an error popup window."
 
     error_message: bpy.props.StringProperty(name="Error Message")
 

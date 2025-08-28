@@ -3,7 +3,7 @@ import os
 import folder_paths
 from comfy_extras.nodes_primitive import Boolean, Float, Int, String, StringMultiline
 from comfy.comfy_types.node_typing import IO
-from nodes import LoadImage
+from nodes import CheckpointLoaderSimple, LoadImage, LoraLoaderModelOnly, UNETLoader
 
 # Enforce min/max int and float according to Blender limitation
 MIN_FLOAT = -2147483648.00
@@ -14,7 +14,7 @@ MAX_INT = 2147483647
 
 class BlenderInputBoolean(Boolean):
     """Node used by ComfyUI Blender add-on to input a boolean in a workflow."""
-    CATEGORY = "blender/inputs"
+    CATEGORY = "blender"
 
     @classmethod
     def INPUT_TYPES(s):
@@ -33,7 +33,7 @@ class BlenderInputBoolean(Boolean):
 
 class BlenderInputCombo(String):
     """Node used by ComfyUI Blender add-on to input a value from a combo box in a workflow."""
-    CATEGORY = "blender/inputs"
+    CATEGORY = "blender"
     RETURN_TYPES = (IO.ANY,)
 
     @classmethod
@@ -56,7 +56,7 @@ class BlenderInputCombo(String):
 
 class BlenderInputFloat(Float):
     """Node used by ComfyUI Blender add-on to input a float in a workflow."""
-    CATEGORY = "blender/inputs"
+    CATEGORY = "blender"
 
     @classmethod
     def INPUT_TYPES(s):
@@ -80,7 +80,7 @@ class BlenderInputFloat(Float):
 
 class BlenderInputGroup():
     """Node used by ComfyUI Blender add-on to group inputs in the inputs panel."""
-    CATEGORY = "blender/inputs"
+    CATEGORY = "blender"
     FUNCTION = "execute"
     RETURN_TYPES = ("GROUP",)
     RETURN_NAMES = ("group",)
@@ -98,7 +98,7 @@ class BlenderInputGroup():
 
 class BlenderInputInt(Int):
     """Node used by ComfyUI Blender add-on to input an integer in a workflow."""
-    CATEGORY = "blender/inputs"
+    CATEGORY = "blender"
 
     @classmethod
     def INPUT_TYPES(s):
@@ -123,7 +123,7 @@ class BlenderInputInt(Int):
 
 class BlenderInputLoad3D():
     """Node used by ComfyUI Blender add-on to input a 3D asset in a workflow."""
-    CATEGORY = "blender/inputs"
+    CATEGORY = "blender"
     FUNCTION = "execute"
     RETURN_TYPES = (IO.ANY,)
 
@@ -152,9 +152,51 @@ class BlenderInputLoad3D():
     def execute(self, model_file, order, **kwargs):
         return (model_file,)
 
+class BlenderInputLoadCheckpoint(CheckpointLoaderSimple):
+    """Node used by ComfyUI Blender add-on to select a model name from the checkpoints folder of the ComfyUI server."""
+    CATEGORY = "blender"
+    FUNCTION = "execute"
+
+    @classmethod
+    def INPUT_TYPES(s):
+        INPUT_TYPES = super().INPUT_TYPES()
+        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
+        INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
+
+        # Create optional input key
+        if not INPUT_TYPES.get("optional", None):
+            INPUT_TYPES["optional"] = {}
+        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
+        return INPUT_TYPES
+
+    def execute(self, ckpt_name, order: int, default: str, **kwargs):
+        ckpt_name = str(os.path.normpath(ckpt_name))
+        return super().load_checkpoint(ckpt_name)
+
+class BlenderInputLoadDiffusionModel(UNETLoader):
+    """Node used by ComfyUI Blender add-on to select a model name from the diffusion models folder of the ComfyUI server."""
+    CATEGORY = "blender"
+    FUNCTION = "execute"
+
+    @classmethod
+    def INPUT_TYPES(s):
+        INPUT_TYPES = super().INPUT_TYPES()
+        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
+        INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
+
+        # Create optional input key
+        if not INPUT_TYPES.get("optional", None):
+            INPUT_TYPES["optional"] = {}
+        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
+        return INPUT_TYPES
+
+    def execute(self, unet_name, weight_dtype, order: int, default: str, **kwargs):
+        unet_name = str(os.path.normpath(unet_name))
+        return super().load_unet(unet_name, weight_dtype)
+
 class BlenderInputLoadImage(LoadImage):
     """Node used by ComfyUI Blender add-on to input an image in a workflow."""
-    CATEGORY = "blender/inputs"
+    CATEGORY = "blender"
     FUNCTION = "execute"
 
     @classmethod
@@ -175,9 +217,30 @@ class BlenderInputLoadImage(LoadImage):
     def IS_CHANGED(s, image, order, **kwargs):
         return super().IS_CHANGED(image)
 
+class BlenderInputLoadLora(LoraLoaderModelOnly):
+    """Node used by ComfyUI Blender add-on to select a LoRA model name from the loras folder of the ComfyUI server."""
+    CATEGORY = "blender"
+    FUNCTION = "execute"
+
+    @classmethod
+    def INPUT_TYPES(s):
+        INPUT_TYPES = super().INPUT_TYPES()
+        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
+        INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
+
+        # Create optional input key
+        if not INPUT_TYPES.get("optional", None):
+            INPUT_TYPES["optional"] = {}
+        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
+        return INPUT_TYPES
+
+    def execute(self, model, lora_name, strength_model, order: int, default: str, **kwargs):
+        lora_name = str(os.path.normpath(lora_name))
+        return super().load_lora_model_only(model, lora_name, strength_model)
+
 class BlenderInputSeed(Int):
     """Node used by ComfyUI Blender add-on to input a seed value in a workflow."""
-    CATEGORY = "blender/inputs"
+    CATEGORY = "blender"
     FUNCTION = "execute"
 
     @classmethod
@@ -201,7 +264,7 @@ class BlenderInputSeed(Int):
 
 class BlenderInputString(String):
     """Node used by ComfyUI Blender add-on to input a string in a workflow."""
-    CATEGORY = "blender/inputs"
+    CATEGORY = "blender"
 
     @classmethod
     def INPUT_TYPES(s):
@@ -222,7 +285,7 @@ class BlenderInputString(String):
 
 class BlenderInputStringMultiline(StringMultiline):
     """Node used by ComfyUI Blender add-on to input a multiline string in a workflow."""
-    CATEGORY = "blender/inputs"
+    CATEGORY = "blender"
 
     @classmethod
     def INPUT_TYPES(s):

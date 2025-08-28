@@ -20,7 +20,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
     bl_idname = "comfy.run_workflow"
     bl_label = "Run Workflow"
-    bl_description = "Send the workflow to the ComfyUI server"
+    bl_description = "Send the workflow to the ComfyUI server."
 
     def execute(self, context):
         """Execute the operator."""
@@ -65,8 +65,13 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         for key, node in inputs.items():
             property_name = f"node_{key}"
 
+            # Custom handling for group of inputs
+            if node["class_type"] == "BlenderInputGroup":
+                # Do nothing, groups are just containers
+                continue
+
             # Custom handling for 3D model input
-            if node["class_type"] == "BlenderInputLoad3D":
+            elif node["class_type"] == "BlenderInputLoad3D":
                 property_value = getattr(current_workflow, property_name)
                 if property_value:
                     workflow[key]["inputs"]["model_file"] = property_value
@@ -77,11 +82,15 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
 
-            # Custom handling for group of inputs
-            elif node["class_type"] == "BlenderInputGroup":
-                continue
+            # Custom handling for load checkpoint input
+            elif node["class_type"] == "BlenderInputLoadCheckpoint":
+                workflow[key]["inputs"]["ckpt_name"] = getattr(current_workflow, property_name)
 
-            # Custom handling for image input
+            # Custom handling for load diffusion model input
+            elif node["class_type"] == "BlenderInputLoadDiffusionModel":
+                workflow[key]["inputs"]["unet_name"] = getattr(current_workflow, property_name)
+
+            # Custom handling for load image input
             elif node["class_type"] == "BlenderInputLoadImage":
                 # Get add-on preferences
                 addon_prefs = context.preferences.addons["comfyui_blender"].preferences
@@ -107,6 +116,10 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     log.error(error_message)
                     bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
+
+            # Custom handling for load LoRA input
+            elif node["class_type"] == "BlenderInputLoadLora":
+                workflow[key]["inputs"]["lora_name"] = getattr(current_workflow, property_name)
 
             # Custom handling for seed inputs
             elif node["class_type"] == "BlenderInputSeed":

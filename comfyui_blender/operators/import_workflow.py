@@ -17,7 +17,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
 
     bl_idname = "comfy.import_workflow"
     bl_label = "Import Workflow"
-    bl_description = "Import a workflow JSON file"
+    bl_description = "Import a workflow JSON file."
 
     filepath: bpy.props.StringProperty(name="File Path", subtype="FILE_PATH")
     filter_glob: bpy.props.StringProperty(name="File Filter", default="*.glb;*.json;*.png;")

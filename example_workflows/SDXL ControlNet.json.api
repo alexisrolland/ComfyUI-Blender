@@ -13,47 +13,64 @@
   },
   "2": {
     "inputs": {
-      "value": 1024,
+      "ckpt_name": "visitor01\\raymnants-v3.0.safetensors",
+      "order": 2,
+      "default": "visitor01\\raymnants-v3.0.safetensors"
+    },
+    "class_type": "BlenderInputCheckpointLoader",
+    "_meta": {
+      "title": "Model"
+    }
+  },
+  "3": {
+    "inputs": {
       "order": 4,
+      "show_title": true,
+      "compact": true
+    },
+    "class_type": "BlenderInputGroup",
+    "_meta": {
+      "title": "Resolution"
+    }
+  },
+  "4": {
+    "inputs": {
+      "value": 1024,
+      "order": 1,
       "default": 1024,
       "min": 768,
       "max": 1344,
       "step": 8,
       "camera_width": true,
-      "camera_height": false
+      "camera_height": false,
+      "group": [
+        "3",
+        0
+      ]
     },
     "class_type": "BlenderInputInt",
     "_meta": {
       "title": "Width"
     }
   },
-  "3": {
+  "5": {
     "inputs": {
       "value": 1024,
-      "order": 5,
+      "order": 2,
       "default": 1024,
       "min": 768,
       "max": 1344,
       "step": 8,
       "camera_width": false,
-      "camera_height": true
+      "camera_height": true,
+      "group": [
+        "3",
+        0
+      ]
     },
     "class_type": "BlenderInputInt",
     "_meta": {
       "title": "Height"
-    }
-  },
-  "5": {
-    "inputs": {
-      "value": "visitor01/raymnants-v3.0.safetensors",
-      "order": 2,
-      "default": "",
-      "format_path": "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
-      "list": "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors"
-    },
-    "class_type": "BlenderInputCombo",
-    "_meta": {
-      "title": "Model"
     }
   },
   "6": {
@@ -63,7 +80,7 @@
         0
       ],
       "clip": [
-        "9",
+        "2",
         1
       ]
     },
@@ -76,7 +93,7 @@
     "inputs": {
       "text": "",
       "clip": [
-        "9",
+        "2",
         1
       ]
     },
@@ -87,12 +104,74 @@
   },
   "8": {
     "inputs": {
-      "width": [
+      "samples": [
+        "10",
+        0
+      ],
+      "vae": [
+        "2",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "9": {
+    "inputs": {
+      "filename_prefix": "blender",
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "BlenderOutputSaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "10": {
+    "inputs": {
+      "seed": [
+        "13",
+        0
+      ],
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
         "2",
         0
       ],
+      "positive": [
+        "12",
+        0
+      ],
+      "negative": [
+        "12",
+        1
+      ],
+      "latent_image": [
+        "11",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "11": {
+    "inputs": {
+      "width": [
+        "4",
+        0
+      ],
       "height": [
-        "3",
+        "5",
         0
       ],
       "batch_size": 1
@@ -102,107 +181,10 @@
       "title": "Empty Latent Image"
     }
   },
-  "9": {
-    "inputs": {
-      "ckpt_name": [
-        "5",
-        0
-      ]
-    },
-    "class_type": "CheckpointLoaderSimple",
-    "_meta": {
-      "title": "Load Checkpoint"
-    }
-  },
-  "10": {
-    "inputs": {
-      "value": 0,
-      "order": 1,
-      "default": 0,
-      "min": 1,
-      "max": 2147483647,
-      "step": 1
-    },
-    "class_type": "BlenderInputSeed",
-    "_meta": {
-      "title": "Seed"
-    }
-  },
-  "11": {
-    "inputs": {
-      "seed": [
-        "10",
-        0
-      ],
-      "steps": 20,
-      "cfg": 8,
-      "sampler_name": "dpmpp_2m",
-      "scheduler": "karras",
-      "denoise": 1,
-      "model": [
-        "9",
-        0
-      ],
-      "positive": [
-        "15",
-        0
-      ],
-      "negative": [
-        "15",
-        1
-      ],
-      "latent_image": [
-        "8",
-        0
-      ]
-    },
-    "class_type": "KSampler",
-    "_meta": {
-      "title": "KSampler"
-    }
-  },
   "12": {
     "inputs": {
-      "samples": [
-        "11",
-        0
-      ],
-      "vae": [
-        "9",
-        2
-      ]
-    },
-    "class_type": "VAEDecode",
-    "_meta": {
-      "title": "VAE Decode"
-    }
-  },
-  "13": {
-    "inputs": {
-      "filename_prefix": "blender",
-      "images": [
-        "12",
-        0
-      ]
-    },
-    "class_type": "BlenderOutputSaveImage",
-    "_meta": {
-      "title": "Save Image"
-    }
-  },
-  "14": {
-    "inputs": {
-      "control_net_name": "xinsir\\controlnet-union-sdxl-1.0-promax.safetensors"
-    },
-    "class_type": "ControlNetLoader",
-    "_meta": {
-      "title": "Load ControlNet Model"
-    }
-  },
-  "15": {
-    "inputs": {
       "strength": [
-        "18",
+        "16",
         0
       ],
       "start_percent": 0,
@@ -220,8 +202,12 @@
         0
       ],
       "image": [
-        "16",
+        "15",
         0
+      ],
+      "vae": [
+        "2",
+        2
       ]
     },
     "class_type": "ControlNetApplyAdvanced",
@@ -229,7 +215,30 @@
       "title": "Apply ControlNet"
     }
   },
-  "16": {
+  "13": {
+    "inputs": {
+      "value": 0,
+      "order": 1,
+      "default": 0,
+      "min": 1,
+      "max": 2147483647,
+      "step": 1
+    },
+    "class_type": "BlenderInputSeed",
+    "_meta": {
+      "title": "Seed"
+    }
+  },
+  "14": {
+    "inputs": {
+      "control_net_name": "xinsir\\controlnet-union-sdxl-1.0-promax.safetensors"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
+  },
+  "15": {
     "inputs": {
       "image": "depth_map.png",
       "order": 6
@@ -239,7 +248,7 @@
       "title": "ControlNet Image"
     }
   },
-  "18": {
+  "16": {
     "inputs": {
       "value": 1.0000000000000002,
       "order": 7,

@@ -15,7 +15,7 @@ class ComfyBlenderOperatorDeleteWorkflow(bpy.types.Operator):
 
     bl_idname = "comfy.delete_workflow"
     bl_label = "Delete Workflow"
-    bl_description = "Delete a workflow JSON file from the workflows folder"
+    bl_description = "Delete a workflow JSON file from the workflows folder."
 
     filename: bpy.props.StringProperty(name="File Name")
     filepath: bpy.props.StringProperty(name="File Path")
