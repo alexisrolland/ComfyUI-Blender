@@ -60,8 +60,10 @@ In a nutshell:
 
 ![Screenshot ComfyUI](./screenshot_comfyui.png)
 
-2. Export the workflow JSON file **in API format**: `Workflow` > `Export (API)`.
+2. Run the workflow to confirm it executes properly.
 
-3. In Blender, import the workflow JSON file (make sure it is in API format): Press `N` > `ComfyUI` > `Import Workflow`.
+3. Export the workflow JSON file **in API format**: Top Left Menu > `File` > `Export (API)`.
+
+4. In Blender, import the workflow JSON file (make sure it is in API format): Press `N` > `ComfyUI` > `Import Workflow`.
 
 4. Update the inputs and click on **Run Workflow**.
