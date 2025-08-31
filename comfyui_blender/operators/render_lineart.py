@@ -94,7 +94,7 @@ class ComfyBlenderOperatorRenderLineart(bpy.types.Operator):
         output_file_node.file_slots[0].format.file_format = "PNG"
 
         # Link nodes
-        tree.links.new(rlayers_node.outputs["GreasePencil"], output_file_node.inputs["Image"])
+        tree.links.new(rlayers_node.outputs[2], output_file_node.inputs[0])  # From output socket GreasePencil to input socket Image
 
         # Calculate position behind the camera
         camera_location = scene.camera.location.copy()
@@ -102,7 +102,7 @@ class ComfyBlenderOperatorRenderLineart(bpy.types.Operator):
         gpencil_location = camera_location + camera_backward * 5  # 5 units behind camera
 
         # Add a new grease pencil object
-        bpy.ops.object.grease_pencil_add(type="STROKE", radius=1, align="WORLD", location=gpencil_location, scale=(1, 1, 1))
+        bpy.ops.object.grease_pencil_add(type="STROKE", align="WORLD", location=gpencil_location, scale=(1, 1, 1))
         gpencil = context.object
         white_material = bpy.data.materials["White"]
         gpencil.data.materials[0] = white_material
@@ -114,7 +114,7 @@ class ComfyBlenderOperatorRenderLineart(bpy.types.Operator):
         lineart_modifier.source_type = "SCENE"
         lineart_modifier.target_layer = "Color"
         lineart_modifier.target_material = white_material
-        lineart_modifier.thickness = 10
+        lineart_modifier.radius = 0.015
 
         # Render the scene
         bpy.ops.render.render(write_still=True)
