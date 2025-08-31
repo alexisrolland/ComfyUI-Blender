@@ -64,7 +64,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         # Create nodes
         rlayers_node = tree.nodes.new(type="CompositorNodeRLayers")
         output_file_node = tree.nodes.new(type="CompositorNodeOutputFile")
-        tree.links.new(rlayers_node.outputs["Image"], output_file_node.inputs["Image"])
+        tree.links.new(rlayers_node.outputs[0], output_file_node.inputs[0])  # From output socket Image to input socket Image
         output_file_node.base_path = temp_folder
         output_file_node.file_slots[0].path = self.temp_filename
         output_file_node.file_slots[0].format.file_format = "PNG"

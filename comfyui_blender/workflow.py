@@ -146,14 +146,16 @@ def create_class_properties(inputs, keep_values=False):
                 error_message = f"Failed to get list of checkpoints from ComfyUI server: {url}. {e}"
                 properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
                 log.exception(error_message)
-                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                # This crashes Blender upon starting if the ComfyUI server is not reachable
+                # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 continue
 
             if response.status_code != 200:
                 error_message = error_message = f"Failed to get list of checkpoints from ComfyUI server: {url}."
                 properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
                 log.error(error_message)
-                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                # This crashes Blender upon starting if the ComfyUI server is not reachable
+                # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 continue
 
             # If default value not in list, set to first item in the list
@@ -181,14 +183,16 @@ def create_class_properties(inputs, keep_values=False):
                 error_message = f"Failed to get list of diffusion models from ComfyUI server: {url}. {e}"
                 properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
                 log.exception(error_message)
-                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                # This crashes Blender upon starting if the ComfyUI server is not reachable
+                # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 continue
 
             if response.status_code != 200:
                 error_message = error_message = f"Failed to get list of diffusion models from ComfyUI server: {url}."
                 properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
                 log.error(error_message)
-                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                # This crashes Blender upon starting if the ComfyUI server is not reachable
+                # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 continue
 
             # If default value not in list, set to first item in the list
@@ -216,14 +220,16 @@ def create_class_properties(inputs, keep_values=False):
                 error_message = f"Failed to get list of LoRAs from ComfyUI server: {url}. {e}"
                 properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
                 log.exception(error_message)
-                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                # This crashes Blender upon starting if the ComfyUI server is not reachable
+                # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 continue
 
             if response.status_code != 200:
                 error_message = error_message = f"Failed to get list of LoRAs from ComfyUI server: {url}."
                 properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
                 log.error(error_message)
-                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                # This crashes Blender upon starting if the ComfyUI server is not reachable
+                # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 continue
 
             # If default value not in list, set to first item in the list
@@ -327,13 +333,14 @@ def extract_workflow_from_metadata(filepath):
 
         # Add a flag to keep current values when reloading the workflow
         # Instead of using the default values
-        if metadata.get("asset"):
-            metadata["prompt"] = json.loads(metadata["asset"]["extras"]["prompt"])
-            metadata["prompt"]["comfyui_blender"] = {}
-            metadata["prompt"]["comfyui_blender"]["keep_values"] = True
-            return metadata["prompt"]
-        else:
-            return None
+        if metadata:
+            if metadata.get("asset"):
+                metadata["prompt"] = json.loads(metadata["asset"]["extras"]["prompt"])
+                metadata["prompt"]["comfyui_blender"] = {}
+                metadata["prompt"]["comfyui_blender"]["keep_values"] = True
+                return metadata["prompt"]
+            else:
+                return None
 
     # OBJ metadata extraction
     if filepath.lower().endswith(".obj"):
@@ -347,12 +354,13 @@ def extract_workflow_from_metadata(filepath):
 
         # Add a flag to keep current values when reloading the workflow
         # Instead of using the default values
-        if metadata.get("prompt"):
-            metadata["prompt"]["comfyui_blender"] = {}
-            metadata["prompt"]["comfyui_blender"]["keep_values"] = True
-            return metadata["prompt"]
-        else:
-            return None
+        if metadata:
+            if metadata.get("prompt"):
+                metadata["prompt"]["comfyui_blender"] = {}
+                metadata["prompt"]["comfyui_blender"]["keep_values"] = True
+                return metadata["prompt"]
+            else:
+                return None
 
     # File type is not supported
     else:

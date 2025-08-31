@@ -91,8 +91,8 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         output_file_node.file_slots[0].format.file_format = "PNG"
 
         # Link nodes
-        tree.links.new(rlayers_node.outputs["Depth"], map_range_node.inputs["Value"])
-        tree.links.new(map_range_node.outputs["Value"], output_file_node.inputs["Image"])
+        tree.links.new(rlayers_node.outputs[2], map_range_node.inputs[0])  # From output socket Depth to input socket Value
+        tree.links.new(map_range_node.outputs[0], output_file_node.inputs[0])  # From output socket Value to input socket Image
 
         # Get closest and furthest vertices from the camera
         cam_location = scene.camera.matrix_world.translation
