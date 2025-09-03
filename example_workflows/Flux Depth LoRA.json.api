@@ -105,7 +105,7 @@
         0
       ],
       "model": [
-        "15",
+        "17",
         0
       ]
     },
@@ -214,14 +214,14 @@
       "title": "Save Image"
     }
   },
-  "15": {
+  "17": {
     "inputs": {
       "unet_name": "visitor01\\rayflux-v1.0.safetensors",
       "weight_dtype": "default",
       "order": 2,
       "default": "visitor01\\rayflux-v1.0.safetensors"
     },
-    "class_type": "BlenderInputUnetLoader",
+    "class_type": "BlenderInputLoadDiffusionModel",
     "_meta": {
       "title": "Model"
     }

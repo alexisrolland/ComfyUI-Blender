@@ -1,4 +1,4 @@
-"""Operator to import an input image."""
+"""Operator to upload an input image."""
 import logging
 import os
 import shutil
@@ -10,12 +10,12 @@ from ..utils import upload_file
 log = logging.getLogger("comfyui_blender")
 
 
-class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
-    """Operator to import an input image."""
+class ComfyBlenderOperatorUploadInputImage(bpy.types.Operator):
+    """Operator to upload an input image."""
 
-    bl_idname = "comfy.import_input_image"
-    bl_label = "Import Input Image"
-    bl_description = "Import an input image and upload it to the ComfyUI server."
+    bl_idname = "comfy.upload_input_image"
+    bl_label = "Upload Input Image"
+    bl_description = "Upload an input image to the ComfyUI server."
 
     filepath: bpy.props.StringProperty(name="File Path", subtype="FILE_PATH")
     filter_glob: bpy.props.StringProperty(name="File Filter", default="*.jpeg;*.jpg;*.png;*.webp")
@@ -103,10 +103,10 @@ class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
 def register():
     """Register the operator."""
 
-    bpy.utils.register_class(ComfyBlenderOperatorImportInputImage)
+    bpy.utils.register_class(ComfyBlenderOperatorUploadInputImage)
 
 
 def unregister():
     """Unregister the operator."""
 
-    bpy.utils.unregister_class(ComfyBlenderOperatorImportInputImage)
+    bpy.utils.unregister_class(ComfyBlenderOperatorUploadInputImage)

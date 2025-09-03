@@ -109,13 +109,16 @@ def create_class_properties(inputs, keep_values=False):
             )
             continue
 
-        # Group
+        # Group, if the group is empty (not connected to any other node), create a dummy property
         if node["class_type"] == "BlenderInputGroup":
-            properties[property_name] = IntVectorProperty(
-                name=name,
-                size=len(input_groups[key]),
-                default=tuple(int(node_key) for node_key in input_groups[key])
-            )
+            if input_groups:
+                properties[property_name] = IntVectorProperty(
+                    name=name,
+                    size=len(input_groups[key]),
+                    default=tuple(int(node_key) for node_key in input_groups[key])
+                )
+            else:
+                properties[property_name] = IntVectorProperty(name=name, size=1, default=(-1,))
             continue
 
         # Integer

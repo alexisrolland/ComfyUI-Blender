@@ -63,8 +63,11 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                         # Display group inputs
                         group_inputs = getattr(current_workflow, property_name)
                         for input_key in group_inputs:
-                            group_property_name = f"node_{input_key}"
-                            self.display_input(context, current_workflow, group_col, group_property_name, inputs[str(input_key)], is_root=False)
+                            # Empty groups without children nodes have a dummy key -1
+                            # Skip the dummy key
+                            if input_key > 0:
+                                group_property_name = f"node_{input_key}"
+                                self.display_input(context, current_workflow, group_col, group_property_name, inputs[str(input_key)], is_root=False)
 
                     else:
                         # Skip input if it belongs to a group
@@ -160,9 +163,9 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             row = box.row(align=True)
             row.label(text=name + ":")
 
-            # Import button
-            import_input_image = row.operator("comfy.import_input_image", text="", icon="EXPORT")
-            import_input_image.workflow_property = property_name
+            # Upload button
+            upload_input_image = row.operator("comfy.upload_input_image", text="", icon="EXPORT")
+            upload_input_image.workflow_property = property_name
 
             # Render view
             render_view = row.operator("comfy.render_view", text="", icon="OUTPUT")

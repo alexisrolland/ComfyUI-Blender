@@ -10,7 +10,7 @@ from .operators import (
     download_example_workflows,
     get_camera_resolution,
     import_3d_model,
-    import_input_image,
+    import_image,
     import_workflow,
     lock_seed,
     open_file_browser,
@@ -28,7 +28,8 @@ from .operators import (
     set_camera_resolution,
     show_error_popup,
     stop_workflow,
-    switch_output_layout
+    switch_output_layout,
+    upload_input_image
 )
 from .panels import (
     file_browser_panel,
@@ -43,7 +44,7 @@ from . import settings
 bl_info = {
     "name": "ComfyUI Blender",
     "author": "Alexis ROLLAND",
-    "version": (0, 17, 0),
+    "version": (0, 18, 0),
     "blender": (4, 5, 0),
     "location": "View3D > Sidebar > ComfyUI",
     "description": "Blender add-on to send requests to a ComfyUI server.",
@@ -72,7 +73,7 @@ def register():
     download_example_workflows.register()
     get_camera_resolution.register()
     import_3d_model.register()
-    import_input_image.register()
+    import_image.register()
     import_workflow.register()
     lock_seed.register()
     open_file_browser.register()
@@ -91,6 +92,7 @@ def register():
     show_error_popup.register()
     stop_workflow.register()
     switch_output_layout.register()
+    upload_input_image.register()
 
     # Panels
     file_browser_panel.register()
@@ -118,7 +120,7 @@ def unregister():
     download_example_workflows.unregister()
     get_camera_resolution.unregister()
     import_3d_model.unregister()
-    import_input_image.unregister()
+    import_image.unregister()
     import_workflow.unregister()
     lock_seed.unregister()
     open_file_browser.unregister()
@@ -137,6 +139,7 @@ def unregister():
     show_error_popup.unregister()
     stop_workflow.unregister()
     switch_output_layout.unregister()
+    upload_input_image.unregister()
 
     # Panels
     file_browser_panel.unregister()

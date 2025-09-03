@@ -92,6 +92,10 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                             image_editor = col.operator("comfy.open_image_editor", text="", icon="IMAGE")
                             image_editor.name = image.name
 
+                            # Import image button
+                            import_image = col.operator("comfy.import_image", text="", icon="IMPORT")
+                            import_image.name = image.name
+
                             # Project material button
                             project_material = col.operator("comfy.project_material", text="", icon="SHADING_TEXTURE")
                             project_material.name = image.name
@@ -187,6 +191,10 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                             # Image editor button
                             image_editor = row_right.operator("comfy.open_image_editor", text="", icon="IMAGE")
                             image_editor.name = image.name
+
+                            # Import image button
+                            import_image = row_right.operator("comfy.import_image", text="", icon="IMPORT")
+                            import_image.name = image.name
 
                             # Project material button
                             project_material = row_right.operator("comfy.project_material", text="", icon="SHADING_TEXTURE")

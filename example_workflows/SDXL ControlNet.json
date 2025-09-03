@@ -1,8 +1,8 @@
 {
   "id": "e78d6f4a-35c7-4a49-838d-500789244757",
   "revision": 0,
-  "last_node_id": 17,
-  "last_link_id": 21,
+  "last_node_id": 18,
+  "last_link_id": 26,
   "nodes": [
     {
       "id": 1,
@@ -46,65 +46,6 @@
         3,
         "",
         false
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 2,
-      "type": "BlenderInputCheckpointLoader",
-      "pos": [
-        590,
-        1020
-      ],
-      "size": [
-        304.5953063964844,
-        146
-      ],
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            15
-          ]
-        },
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "links": [
-            16,
-            17
-          ]
-        },
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [
-            18,
-            19
-          ]
-        }
-      ],
-      "title": "Model",
-      "properties": {
-        "Node name for S&R": "BlenderInputCheckpointLoader"
-      },
-      "widgets_values": [
-        "visitor01\\raymnants-v3.0.safetensors",
-        2,
-        "visitor01\\raymnants-v3.0.safetensors"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -264,7 +205,7 @@
         {
           "name": "clip",
           "type": "CLIP",
-          "link": 16
+          "link": 23
         },
         {
           "name": "text",
@@ -311,7 +252,7 @@
         {
           "name": "clip",
           "type": "CLIP",
-          "link": 17
+          "link": 24
         }
       ],
       "outputs": [
@@ -355,7 +296,7 @@
         {
           "name": "vae",
           "type": "VAE",
-          "link": 19
+          "link": 25
         }
       ],
       "outputs": [
@@ -426,7 +367,7 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 15
+          "link": 22
         },
         {
           "name": "positive",
@@ -567,7 +508,7 @@
           "name": "vae",
           "shape": 7,
           "type": "VAE",
-          "link": 18
+          "link": 26
         },
         {
           "name": "strength",
@@ -805,6 +746,65 @@
       ],
       "color": "#432",
       "bgcolor": "#653"
+    },
+    {
+      "id": 18,
+      "type": "BlenderInputLoadCheckpoint",
+      "pos": [
+        610,
+        1020
+      ],
+      "size": [
+        292.1470642089844,
+        146
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            22
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            23,
+            24
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            25,
+            26
+          ]
+        }
+      ],
+      "title": "Model",
+      "properties": {
+        "Node name for S&R": "BlenderInputLoadCheckpoint"
+      },
+      "widgets_values": [
+        "visitor01\\raymnants-v3.0.safetensors",
+        2,
+        "visitor01\\raymnants-v3.0.safetensors"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
     }
   ],
   "links": [
@@ -921,46 +921,6 @@
       "FLOAT"
     ],
     [
-      15,
-      2,
-      0,
-      10,
-      0,
-      "MODEL"
-    ],
-    [
-      16,
-      2,
-      1,
-      6,
-      0,
-      "CLIP"
-    ],
-    [
-      17,
-      2,
-      1,
-      7,
-      0,
-      "CLIP"
-    ],
-    [
-      18,
-      2,
-      2,
-      12,
-      4,
-      "VAE"
-    ],
-    [
-      19,
-      2,
-      2,
-      8,
-      1,
-      "VAE"
-    ],
-    [
       20,
       4,
       0,
@@ -975,16 +935,56 @@
       11,
       1,
       "INT"
+    ],
+    [
+      22,
+      18,
+      0,
+      10,
+      0,
+      "MODEL"
+    ],
+    [
+      23,
+      18,
+      1,
+      6,
+      0,
+      "CLIP"
+    ],
+    [
+      24,
+      18,
+      1,
+      7,
+      0,
+      "CLIP"
+    ],
+    [
+      25,
+      18,
+      2,
+      8,
+      1,
+      "VAE"
+    ],
+    [
+      26,
+      18,
+      2,
+      12,
+      4,
+      "VAE"
     ]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.5615270015332786,
+      "scale": 0.9090909090909091,
       "offset": [
-        457.63646710852345,
-        -341.7247619628905
+        -120.16403133517088,
+        -551.9551908182377
       ]
     },
     "frontendVersion": "1.25.10",

@@ -1,8 +1,8 @@
 {
   "id": "9408e489-314f-4772-93f2-2f10808b352e",
   "revision": 0,
-  "last_node_id": 16,
-  "last_link_id": 18,
+  "last_node_id": 17,
+  "last_link_id": 19,
   "nodes": [
     {
       "id": 1,
@@ -271,7 +271,7 @@
         58
       ],
       "flags": {},
-      "order": 7,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -294,56 +294,6 @@
       ]
     },
     {
-      "id": 8,
-      "type": "BlenderInputLoadImage",
-      "pos": [
-        890,
-        1030
-      ],
-      "size": [
-        210,
-        350
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            15
-          ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
-        }
-      ],
-      "title": "Depth Map",
-      "properties": {
-        "Node name for S&R": "BlenderInputLoadImage",
-        "cnr_id": "comfyui-blender",
-        "ver": "e5f69ef0b1450e0e1c96ba3156ed690fd8e7f9da"
-      },
-      "widgets_values": [
-        "depth_map.png",
-        4,
-        "image"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 9,
       "type": "LoraLoaderModelOnly",
       "pos": [
@@ -361,7 +311,7 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 16
+          "link": 19
         },
         {
           "name": "strength_model",
@@ -650,8 +600,8 @@
       "bgcolor": "#653"
     },
     {
-      "id": 15,
-      "type": "BlenderInputUnetLoader",
+      "id": 17,
+      "type": "BlenderInputLoadDiffusionModel",
       "pos": [
         720,
         300
@@ -676,13 +626,13 @@
           "name": "MODEL",
           "type": "MODEL",
           "links": [
-            16
+            19
           ]
         }
       ],
       "title": "Model",
       "properties": {
-        "Node name for S&R": "BlenderInputUnetLoader"
+        "Node name for S&R": "BlenderInputLoadDiffusionModel"
       },
       "widgets_values": [
         "visitor01\\rayflux-v1.0.safetensors",
@@ -697,8 +647,8 @@
       "id": 16,
       "type": "MarkdownNote",
       "pos": [
-        260,
-        410
+        350,
+        420
       ],
       "size": [
         340,
@@ -712,6 +662,56 @@
       "properties": {},
       "widgets_values": [
         "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 8,
+      "type": "BlenderInputLoadImage",
+      "pos": [
+        890,
+        1030
+      ],
+      "size": [
+        210,
+        350
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            15
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "Depth Map",
+      "properties": {
+        "Node name for S&R": "BlenderInputLoadImage",
+        "cnr_id": "comfyui-blender",
+        "ver": "e5f69ef0b1450e0e1c96ba3156ed690fd8e7f9da"
+      },
+      "widgets_values": [
+        "depth_map.png",
+        4,
+        "image"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -839,14 +839,6 @@
       "IMAGE"
     ],
     [
-      16,
-      15,
-      0,
-      9,
-      0,
-      "MODEL"
-    ],
-    [
       17,
       5,
       0,
@@ -861,6 +853,14 @@
       13,
       1,
       "VAE"
+    ],
+    [
+      19,
+      17,
+      0,
+      9,
+      0,
+      "MODEL"
     ]
   ],
   "groups": [],
