@@ -11,17 +11,6 @@
       "title": "Prompt"
     }
   },
-  "2": {
-    "inputs": {
-      "ckpt_name": "visitor01\\raymnants-v3.0.safetensors",
-      "order": 2,
-      "default": "visitor01\\raymnants-v3.0.safetensors"
-    },
-    "class_type": "BlenderInputCheckpointLoader",
-    "_meta": {
-      "title": "Model"
-    }
-  },
   "3": {
     "inputs": {
       "order": 4,
@@ -80,7 +69,7 @@
         0
       ],
       "clip": [
-        "2",
+        "18",
         1
       ]
     },
@@ -93,7 +82,7 @@
     "inputs": {
       "text": "",
       "clip": [
-        "2",
+        "18",
         1
       ]
     },
@@ -109,7 +98,7 @@
         0
       ],
       "vae": [
-        "2",
+        "18",
         2
       ]
     },
@@ -143,7 +132,7 @@
       "scheduler": "karras",
       "denoise": 1,
       "model": [
-        "2",
+        "18",
         0
       ],
       "positive": [
@@ -206,7 +195,7 @@
         0
       ],
       "vae": [
-        "2",
+        "18",
         2
       ]
     },
@@ -259,6 +248,17 @@
     "class_type": "BlenderInputFloat",
     "_meta": {
       "title": "ControlNet Strength"
+    }
+  },
+  "18": {
+    "inputs": {
+      "ckpt_name": "visitor01\\raymnants-v3.0.safetensors",
+      "order": 2,
+      "default": "visitor01\\raymnants-v3.0.safetensors"
+    },
+    "class_type": "BlenderInputLoadCheckpoint",
+    "_meta": {
+      "title": "Model"
     }
   }
 }

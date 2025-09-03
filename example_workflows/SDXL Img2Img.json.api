@@ -11,17 +11,6 @@
       "title": "Prompt"
     }
   },
-  "2": {
-    "inputs": {
-      "ckpt_name": "visitor01\\raymnants-v3.0.safetensors",
-      "order": 2,
-      "default": "visitor01\\raymnants-v3.0.safetensors"
-    },
-    "class_type": "BlenderInputCheckpointLoader",
-    "_meta": {
-      "title": "Model"
-    }
-  },
   "3": {
     "inputs": {
       "image": "example.png",
@@ -66,7 +55,7 @@
         0
       ],
       "vae": [
-        "2",
+        "13",
         2
       ]
     },
@@ -90,7 +79,7 @@
         0
       ],
       "model": [
-        "2",
+        "13",
         0
       ],
       "positive": [
@@ -128,7 +117,7 @@
     "inputs": {
       "text": "",
       "clip": [
-        "2",
+        "13",
         1
       ]
     },
@@ -144,7 +133,7 @@
         0
       ],
       "clip": [
-        "2",
+        "13",
         1
       ]
     },
@@ -158,15 +147,22 @@
       "pixels": [
         "3",
         0
-      ],
-      "vae": [
-        "2",
-        2
       ]
     },
     "class_type": "VAEEncode",
     "_meta": {
       "title": "VAE Encode"
+    }
+  },
+  "13": {
+    "inputs": {
+      "ckpt_name": "visitor01\\raymnants-v3.0.safetensors",
+      "order": 2,
+      "default": "visitor01\\raymnants-v3.0.safetensors"
+    },
+    "class_type": "BlenderInputLoadCheckpoint",
+    "_meta": {
+      "title": "Model"
     }
   }
 }

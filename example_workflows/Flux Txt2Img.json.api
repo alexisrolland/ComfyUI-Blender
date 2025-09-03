@@ -51,19 +51,6 @@
       "title": "Height"
     }
   },
-  "5": {
-    "inputs": {
-      "value": "visitor01/rayflux-v1.0.safetensors",
-      "order": 2,
-      "default": "",
-      "format_path": "albedobond/albedobase-xl-v2.1.safetensors\nvisitor01/raymnants-v3.0.safetensors",
-      "list": "black-forest-labs/flux1-dev.safetensors\nvisitor01/rayflux-photoplus.safetensors\nvisitor01/rayflux-v1.0.safetensors"
-    },
-    "class_type": "BlenderInputCombo",
-    "_meta": {
-      "title": "Model"
-    }
-  },
   "6": {
     "inputs": {
       "text": [
@@ -136,7 +123,7 @@
       "scheduler": "beta",
       "denoise": 1,
       "model": [
-        "14",
+        "20",
         0
       ],
       "positive": [
@@ -184,19 +171,6 @@
     "class_type": "BlenderOutputSaveImage",
     "_meta": {
       "title": "Save Image"
-    }
-  },
-  "14": {
-    "inputs": {
-      "unet_name": [
-        "5",
-        0
-      ],
-      "weight_dtype": "default"
-    },
-    "class_type": "UNETLoader",
-    "_meta": {
-      "title": "Load Diffusion Model"
     }
   },
   "15": {
@@ -254,6 +228,18 @@
     "class_type": "BlenderInputGroup",
     "_meta": {
       "title": "Resolution"
+    }
+  },
+  "20": {
+    "inputs": {
+      "unet_name": "visitor01\\rayflux-v1.0.safetensors",
+      "weight_dtype": "default",
+      "order": 2,
+      "default": "visitor01\\rayflux-v1.0.safetensors"
+    },
+    "class_type": "BlenderInputLoadDiffusionModel",
+    "_meta": {
+      "title": "Model"
     }
   }
 }

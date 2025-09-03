@@ -1,8 +1,8 @@
 {
   "id": "00000000-0000-0000-0000-000000000000",
   "revision": 0,
-  "last_node_id": 12,
-  "last_link_id": 14,
+  "last_node_id": 13,
+  "last_link_id": 18,
   "nodes": [
     {
       "id": 1,
@@ -46,65 +46,6 @@
         3,
         "",
         false
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 2,
-      "type": "BlenderInputCheckpointLoader",
-      "pos": [
-        440,
-        1400
-      ],
-      "size": [
-        304.5953063964844,
-        146
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            7
-          ]
-        },
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "links": [
-            11,
-            12
-          ]
-        },
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [
-            9,
-            10
-          ]
-        }
-      ],
-      "title": "Model",
-      "properties": {
-        "Node name for S&R": "BlenderInputCheckpointLoader"
-      },
-      "widgets_values": [
-        "visitor01\\raymnants-v3.0.safetensors",
-        2,
-        "visitor01\\raymnants-v3.0.safetensors"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -277,7 +218,7 @@
         {
           "name": "vae",
           "type": "VAE",
-          "link": 10
+          "link": 18
         }
       ],
       "outputs": [
@@ -314,7 +255,7 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 7
+          "link": 15
         },
         {
           "name": "positive",
@@ -418,13 +359,13 @@
         88
       ],
       "flags": {},
-      "order": 7,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
           "name": "clip",
           "type": "CLIP",
-          "link": 12
+          "link": 17
         }
       ],
       "outputs": [
@@ -457,13 +398,13 @@
         88
       ],
       "flags": {},
-      "order": 6,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
           "name": "clip",
           "type": "CLIP",
-          "link": 11
+          "link": 16
         },
         {
           "name": "text",
@@ -504,7 +445,7 @@
         46
       ],
       "flags": {},
-      "order": 8,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -515,7 +456,7 @@
         {
           "name": "vae",
           "type": "VAE",
-          "link": 9
+          "link": null
         }
       ],
       "outputs": [
@@ -553,6 +494,64 @@
       "properties": {},
       "widgets_values": [
         "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 13,
+      "type": "BlenderInputLoadCheckpoint",
+      "pos": [
+        450,
+        1400
+      ],
+      "size": [
+        292.1470642089844,
+        146
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            15
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            16,
+            17
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            18
+          ]
+        }
+      ],
+      "title": "Model",
+      "properties": {
+        "Node name for S&R": "BlenderInputLoadCheckpoint"
+      },
+      "widgets_values": [
+        "visitor01\\raymnants-v3.0.safetensors",
+        2,
+        "visitor01\\raymnants-v3.0.safetensors"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -608,52 +607,12 @@
       "STRING"
     ],
     [
-      7,
-      2,
-      0,
-      7,
-      0,
-      "MODEL"
-    ],
-    [
       8,
       3,
       0,
       11,
       0,
       "IMAGE"
-    ],
-    [
-      9,
-      2,
-      2,
-      11,
-      1,
-      "VAE"
-    ],
-    [
-      10,
-      2,
-      2,
-      6,
-      1,
-      "VAE"
-    ],
-    [
-      11,
-      2,
-      1,
-      10,
-      0,
-      "CLIP"
-    ],
-    [
-      12,
-      2,
-      1,
-      9,
-      0,
-      "CLIP"
     ],
     [
       13,
@@ -670,6 +629,38 @@
       7,
       5,
       "FLOAT"
+    ],
+    [
+      15,
+      13,
+      0,
+      7,
+      0,
+      "MODEL"
+    ],
+    [
+      16,
+      13,
+      1,
+      10,
+      0,
+      "CLIP"
+    ],
+    [
+      17,
+      13,
+      1,
+      9,
+      0,
+      "CLIP"
+    ],
+    [
+      18,
+      13,
+      2,
+      6,
+      1,
+      "VAE"
     ]
   ],
   "groups": [],

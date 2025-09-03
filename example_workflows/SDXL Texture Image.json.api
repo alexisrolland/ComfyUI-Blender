@@ -11,17 +11,6 @@
       "title": "Prompt"
     }
   },
-  "2": {
-    "inputs": {
-      "ckpt_name": "visitor01\\raymnants-v3.0.safetensors",
-      "order": 2,
-      "default": "visitor01\\raymnants-v3.0.safetensors"
-    },
-    "class_type": "BlenderInputCheckpointLoader",
-    "_meta": {
-      "title": "Model"
-    }
-  },
   "3": {
     "inputs": {
       "order": 4,
@@ -170,7 +159,7 @@
     "inputs": {
       "text": "",
       "clip": [
-        "2",
+        "16",
         1
       ]
     },
@@ -186,7 +175,7 @@
         0
       ],
       "clip": [
-        "2",
+        "16",
         1
       ]
     },
@@ -200,7 +189,7 @@
       "tiling": "enable",
       "copy_model": "Make a copy",
       "model": [
-        "2",
+        "16",
         0
       ]
     },
@@ -214,13 +203,24 @@
       "tiling": "enable",
       "copy_vae": "Make a copy",
       "vae": [
-        "2",
+        "16",
         2
       ]
     },
     "class_type": "MakeCircularVAE",
     "_meta": {
       "title": "Make Circular VAE"
+    }
+  },
+  "16": {
+    "inputs": {
+      "ckpt_name": "visitor01\\raymnants-v3.0.safetensors",
+      "order": 2,
+      "default": "visitor01\\raymnants-v3.0.safetensors"
+    },
+    "class_type": "BlenderInputLoadCheckpoint",
+    "_meta": {
+      "title": "Model"
     }
   }
 }
