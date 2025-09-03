@@ -56,6 +56,9 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
                 bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 import_failures += 1
                 continue
+
+        # Clear selected files for the next run
+        self.files.clear()
         return {'CANCELLED'} if import_failures > 0 else {'FINISHED'}
 
     def invoke(self, context, event):
