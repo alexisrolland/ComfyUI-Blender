@@ -51,7 +51,7 @@ class ComfyBlenderOperatorProjectMaterial(bpy.types.Operator):
         texture.image = image
 
         # Link nodes
-        links.new(texture.outputs["Color"], output.inputs["Surface"])
+        links.new(texture.outputs[0], output.inputs[0])  # From output socket Color to input socket Surface
 
         # Loop on each selected mesh
         for obj in selected_meshes:
