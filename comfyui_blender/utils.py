@@ -10,6 +10,19 @@ import bpy
 log = logging.getLogger("comfyui_blender")
 
 
+def contains_non_latin(s):
+    """Check if the string contains any non-Latin characters."""
+
+    latin_ranges = (
+        (0x0041, 0x005A),  # A-Z
+        (0x0061, 0x007A),  # a-z
+        (0x00C0, 0x00D6),  # À-Ö (Latin-1 Supplement)
+        (0x00D8, 0x00F6),  # Ø-ö
+        (0x00F8, 0x00FF),  # ø-ÿ
+    )
+    return any(not any(start <= ord(char) <= end for start, end in latin_ranges) and ord(char) > 127 for char in s)
+
+
 def download_file(filename, subfolder, type="output"):
     """Download a file from the ComfyUI server."""
 

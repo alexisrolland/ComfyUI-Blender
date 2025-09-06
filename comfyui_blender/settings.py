@@ -372,72 +372,79 @@ class AddonPreferences(bpy.types.AddonPreferences):
 
         layout = self.layout
 
-        # Client Id and server address
-        layout.label(text="Server:")
-        layout.prop(self, "client_id")
-        layout.prop(self, "server_address")
+        # Check Blender version
+        if bpy.app.version >= (4, 5, 0):
+            # Client Id and server address
+            layout.label(text="Server:")
+            layout.prop(self, "client_id")
+            layout.prop(self, "server_address")
 
-        # Custom HTTP headers
-        row = layout.row()
-        split = row.split(factor=0.85)
-        split.label(text="Custom HTTP Headers:")
-        sub_row = split.row()
-        sub_row.operator("comfy.add_http_header", icon="ADD", text="Add")
-        col = layout.column()
-
-        for index, header in enumerate(self.http_headers):
-            # Key column
-            row = col.row()
-            split = row.split(factor=0.4)
-            split.prop(header, "key", text="", placeholder="Key")
-
-            # Value column
+            # Custom HTTP headers
+            row = layout.row()
+            split = row.split(factor=0.85)
+            split.label(text="Custom HTTP Headers:")
             sub_row = split.row()
-            sub_row.prop(header, "value", text="", placeholder="Value")
-            remove_header = sub_row.operator("comfy.remove_http_header", icon="TRASH", text="")
-            remove_header.index = index
+            sub_row.operator("comfy.add_http_header", icon="ADD", text="Add")
+            col = layout.column()
 
-        # Debug mode
-        layout.prop(self, "debug_mode")
+            for index, header in enumerate(self.http_headers):
+                # Key column
+                row = col.row()
+                split = row.split(factor=0.4)
+                split.prop(header, "key", text="", placeholder="Key")
 
-        # Folders
-        layout.label(text="Folders:")
+                # Value column
+                sub_row = split.row()
+                sub_row.prop(header, "value", text="", placeholder="Value")
+                remove_header = sub_row.operator("comfy.remove_http_header", icon="TRASH", text="")
+                remove_header.index = index
 
-        # Get project settings
-        project_settings = bpy.context.scene.comfyui_project_settings
-        use_file_loc = project_settings.use_blend_file_location
+            # Debug mode
+            layout.prop(self, "debug_mode")
 
-        # Base folder
-        row = layout.row(align=True)
-        row.prop(self, "base_folder", text="Base Folder", emboss=not use_file_loc)
-        if not use_file_loc:
-            select_base_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
-            select_base_folder.target_property = "base_folder"
+            # Folders
+            layout.label(text="Folders:")
 
-        # Create box for subfolders
-        box = layout.box()
-        col = box.column(align=True)
+            # Get project settings
+            project_settings = bpy.context.scene.comfyui_project_settings
+            use_file_loc = project_settings.use_blend_file_location
 
-        # Inputs folder
-        row = col.row(align=True)
-        row.prop(self, "inputs_folder", text="Inputs", emboss=not use_file_loc)
-        if not use_file_loc:
-            select_inputs_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
-            select_inputs_folder.target_property = "inputs_folder"
+            # Base folder
+            row = layout.row(align=True)
+            row.prop(self, "base_folder", text="Base Folder", emboss=not use_file_loc)
+            if not use_file_loc:
+                select_base_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
+                select_base_folder.target_property = "base_folder"
 
-        # Outputs folder
-        row = col.row(align=True)
-        row.prop(self, "outputs_folder", text="Outputs", emboss=not use_file_loc)
-        if not use_file_loc:
-            select_outputs_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
-            select_outputs_folder.target_property = "outputs_folder"
-        
-        # Workflows folder
-        row = col.row(align=True)
-        row.prop(self, "workflows_folder", text="Workflows", emboss=not use_file_loc)
-        if not use_file_loc:
-            select_workflows_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
-            select_workflows_folder.target_property = "workflows_folder"
+            # Create box for subfolders
+            box = layout.box()
+            col = box.column(align=True)
+
+            # Inputs folder
+            row = col.row(align=True)
+            row.prop(self, "inputs_folder", text="Inputs", emboss=not use_file_loc)
+            if not use_file_loc:
+                select_inputs_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
+                select_inputs_folder.target_property = "inputs_folder"
+
+            # Outputs folder
+            row = col.row(align=True)
+            row.prop(self, "outputs_folder", text="Outputs", emboss=not use_file_loc)
+            if not use_file_loc:
+                select_outputs_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
+                select_outputs_folder.target_property = "outputs_folder"
+            
+            # Workflows folder
+            row = col.row(align=True)
+            row.prop(self, "workflows_folder", text="Workflows", emboss=not use_file_loc)
+            if not use_file_loc:
+                select_workflows_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
+                select_workflows_folder.target_property = "workflows_folder"
+        else:
+            col = layout.column(align=True)
+            col.label(text=f"ComfyUI Blender requires Blender 4.5 or higher.")
+            col.label(text=f"Current Blender version: {'.'.join(map(str, bpy.app.version))}")
+            col.label(text="Please update Blender to use this add-on.")
 
 
 def register():

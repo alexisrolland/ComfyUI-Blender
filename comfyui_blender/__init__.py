@@ -1,12 +1,16 @@
 """ComfyUI Blender Add-on"""
 from .menus import (
-    file_browser_menu
+    connection_menu,
+    file_browser_menu,
+    output_menu
 )
 from .operators import (
     clear_queue,
+    connect_to_server,
     delete_input,
     delete_output,
     delete_workflow,
+    disconnect_from_server,
     download_example_workflows,
     get_camera_resolution,
     import_3d_model,
@@ -26,7 +30,9 @@ from .operators import (
     run_workflow,
     select_folder,
     set_camera_resolution,
+    show_connection_menu,
     show_error_popup,
+    show_output_menu,
     stop_workflow,
     switch_output_layout,
     upload_input_image
@@ -44,7 +50,7 @@ from . import settings
 bl_info = {
     "name": "ComfyUI Blender",
     "author": "Alexis ROLLAND",
-    "version": (1, 0, 0),
+    "version": (1, 1, 0),
     "blender": (4, 5, 0),
     "location": "View3D > Sidebar > ComfyUI",
     "description": "Blender add-on to send requests to a ComfyUI server.",
@@ -63,13 +69,17 @@ def register():
     settings.register()
 
     # Menus
+    connection_menu.register()
     file_browser_menu.register()
+    output_menu.register()
 
     # Operators
     clear_queue.register()
+    connect_to_server.register()
     delete_input.register()
     delete_output.register()
     delete_workflow.register()
+    disconnect_from_server.register()
     download_example_workflows.register()
     get_camera_resolution.register()
     import_3d_model.register()
@@ -89,7 +99,9 @@ def register():
     run_workflow.register()
     select_folder.register()
     set_camera_resolution.register()
+    show_connection_menu.register()
     show_error_popup.register()
+    show_output_menu.register()
     stop_workflow.register()
     switch_output_layout.register()
     upload_input_image.register()
@@ -110,13 +122,17 @@ def unregister():
     settings.unregister()
 
     # Menus
+    connection_menu.unregister()
     file_browser_menu.unregister()
+    output_menu.unregister()
 
     # Operators
     clear_queue.unregister()
+    connect_to_server.unregister()
     delete_input.unregister()
     delete_output.unregister()
     delete_workflow.unregister()
+    disconnect_from_server.unregister()
     download_example_workflows.unregister()
     get_camera_resolution.unregister()
     import_3d_model.unregister()
@@ -136,7 +152,9 @@ def unregister():
     run_workflow.unregister()
     select_folder.unregister()
     set_camera_resolution.unregister()
+    show_connection_menu.unregister()
     show_error_popup.unregister()
+    show_output_menu.unregister()
     stop_workflow.unregister()
     switch_output_layout.unregister()
     upload_input_image.unregister()

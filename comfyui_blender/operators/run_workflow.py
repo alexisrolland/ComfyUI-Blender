@@ -4,11 +4,9 @@ import logging
 import os
 import random
 import requests
-import threading
 
 import bpy
 
-from .. import connection
 from .. import workflow as w
 from ..utils import add_custom_headers, get_server_url
 
@@ -30,20 +28,6 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         workflows_folder = str(addon_prefs.workflows_folder)
         workflow_filename = str(addon_prefs.workflow)
         workflow_path = os.path.join(workflows_folder, workflow_filename)
-
-        # Try to establish WebSocket connection with ComfyUI server first
-        if not connection.WS_CONNECTION:
-            self.report({'INFO'}, "Connecting to server...")
-            try:
-                connection.connect()
-                self.report({'INFO'}, "Connection established.")
-            except Exception as e:
-                error_message = f"Failed to connect to ComfyUI server: {addon_prefs.server_address}. {e}"
-                log.exception(error_message)
-                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
-                return {'CANCELLED'}
-        else:
-            self.report({'INFO'}, "Reusing existing connection.")
 
         # Verify workflow JSON file exists
         if not os.path.exists(workflow_path):
@@ -169,11 +153,6 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         prompt.workflow = str(workflow)
         prompt.outputs = str(outputs)
         prompt.status = "pending"
-
-        # Start the WebSocket listener in a separate thread
-        listener_thread = threading.Thread(target=connection.listen, args=(), daemon=True)
-        listener_thread.start()
-        self.report({'INFO'}, "WebSocket listener started.")
         return {'FINISHED'}
 
 

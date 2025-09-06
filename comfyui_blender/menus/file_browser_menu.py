@@ -29,10 +29,12 @@ def draw_file_browser_menu(self, context):
             import_workflow.filepath = filepath
             import_workflow.invoke_default = False
 
+
 def register():
     """Register the panel."""
 
     bpy.types.FILEBROWSER_MT_context_menu.append(draw_file_browser_menu)
+
 
 def unregister():
     """Unregister the panel."""

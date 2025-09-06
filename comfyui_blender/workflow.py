@@ -17,7 +17,7 @@ from bpy.props import (
     StringProperty
 )
 
-from .utils import add_custom_headers, get_server_url
+from .utils import add_custom_headers, contains_non_latin, get_server_url
 
 log = logging.getLogger("comfyui_blender")
 
@@ -386,7 +386,7 @@ def get_workflow_list(self, context):
 
     if os.path.exists(workflows_folder) and os.path.isdir(workflows_folder):
         for file in sorted(os.listdir(workflows_folder)):
-            if file.endswith(".json"):
+            if file.endswith(".json") and not contains_non_latin(file):
                 filepath = os.path.join(workflows_folder, file)
                 workflows.append((file, file, filepath))
 
