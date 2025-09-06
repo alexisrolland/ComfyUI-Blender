@@ -92,24 +92,17 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                             image_editor = col.operator("comfy.open_image_editor", text="", icon="IMAGE")
                             image_editor.name = image.name
 
-                            # Import image button
-                            import_image = col.operator("comfy.import_image", text="", icon="IMPORT")
-                            import_image.name = image.name
-
-                            # Project material button
-                            project_material = col.operator("comfy.project_material", text="", icon="SHADING_TEXTURE")
-                            project_material.name = image.name
-
-                            # Reload workflow button
-                            import_workflow = col.operator("comfy.import_workflow", text="", icon="NODETREE")
-                            import_workflow.filepath = image.filepath
-                            import_workflow.invoke_default = False
-
                             # Delete output button
                             delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
                             delete_output.name = output.name
                             delete_output.filepath = output.filepath
                             delete_output.type = output.type
+
+                            # Output menu button
+                            output_menu = col.operator("comfy.show_output_menu", text="", icon="DOWNARROW_HLT")
+                            output_menu.output_type = output.type
+                            output_menu.output_name = image.name
+                            output_menu.output_filepath = image.filepath
 
                             # Output name with link
                             output_name = card.operator("comfy.open_image_editor", text=image.name, emboss=False)
@@ -136,16 +129,17 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         import_model = col.operator("comfy.import_3d_model", text="", icon="IMPORT")
                         import_model.filepath = full_path
 
-                        # Reload workflow button
-                        import_workflow = col.operator("comfy.import_workflow", text="", icon="NODETREE")
-                        import_workflow.filepath = full_path
-                        import_workflow.invoke_default = False
-
                         # Delete output button
                         delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
                         delete_output.name = output.name
                         delete_output.filepath = output.filepath
                         delete_output.type = output.type
+
+                        # Output menu button
+                        output_menu = col.operator("comfy.show_output_menu", text="", icon="DOWNARROW_HLT")
+                        output_menu.output_type = output.type
+                        output_menu.output_name = output.name
+                        output_menu.output_filepath = full_path
 
                         # Output name with link
                         output_name = card.operator("comfy.import_3d_model", text=output.name, emboss=False)
@@ -192,24 +186,17 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                             image_editor = row_right.operator("comfy.open_image_editor", text="", icon="IMAGE")
                             image_editor.name = image.name
 
-                            # Import image button
-                            import_image = row_right.operator("comfy.import_image", text="", icon="IMPORT")
-                            import_image.name = image.name
-
-                            # Project material button
-                            project_material = row_right.operator("comfy.project_material", text="", icon="SHADING_TEXTURE")
-                            project_material.name = image.name
-
-                            # Reload workflow button
-                            import_workflow = row_right.operator("comfy.import_workflow", text="", icon="NODETREE")
-                            import_workflow.filepath = image.filepath
-                            import_workflow.invoke_default = False
-
                             # Delete output button
                             delete_output = row_right.operator("comfy.delete_output", text="", icon="TRASH")
                             delete_output.name = output.name
                             delete_output.filepath = output.filepath
                             delete_output.type = output.type
+
+                            # Output menu button
+                            output_menu = row_right.operator("comfy.show_output_menu", text="", icon="DOWNARROW_HLT")
+                            output_menu.output_type = output.type
+                            output_menu.output_name = image.name
+                            output_menu.output_filepath = image.filepath
 
                     # Display output of type 3d
                     elif output.type == "3d":
@@ -221,16 +208,17 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         import_model = row_right.operator("comfy.import_3d_model", text="", icon="IMPORT")
                         import_model.filepath = full_path
 
-                        # Reload workflow button
-                        import_workflow = row_right.operator("comfy.import_workflow", text="", icon="NODETREE")
-                        import_workflow.filepath = full_path
-                        import_workflow.invoke_default = False
-
                         # Delete output button
                         delete_output = row_right.operator("comfy.delete_output", text="", icon="TRASH")
                         delete_output.name = output.name
                         delete_output.filepath = output.filepath
                         delete_output.type = output.type
+
+                        # Output menu button
+                        output_menu = row_right.operator("comfy.show_output_menu", text="", icon="DOWNARROW_HLT")
+                        output_menu.output_type = output.type
+                        output_menu.output_name = output.name
+                        output_menu.output_filepath = full_path
 
                 else:
                     # If the file does not exist anymore, remove it from the outputs collection

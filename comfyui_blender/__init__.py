@@ -1,6 +1,7 @@
 """ComfyUI Blender Add-on"""
 from .menus import (
-    file_browser_menu
+    file_browser_menu,
+    output_menu
 )
 from .operators import (
     clear_queue,
@@ -27,6 +28,7 @@ from .operators import (
     select_folder,
     set_camera_resolution,
     show_error_popup,
+    show_output_menu,
     stop_workflow,
     switch_output_layout,
     upload_input_image
@@ -64,6 +66,7 @@ def register():
 
     # Menus
     file_browser_menu.register()
+    output_menu.register()
 
     # Operators
     clear_queue.register()
@@ -90,6 +93,7 @@ def register():
     select_folder.register()
     set_camera_resolution.register()
     show_error_popup.register()
+    show_output_menu.register()
     stop_workflow.register()
     switch_output_layout.register()
     upload_input_image.register()
@@ -111,6 +115,7 @@ def unregister():
 
     # Menus
     file_browser_menu.unregister()
+    output_menu.unregister()
 
     # Operators
     clear_queue.unregister()
@@ -137,6 +142,7 @@ def unregister():
     select_folder.unregister()
     set_camera_resolution.unregister()
     show_error_popup.unregister()
+    show_output_menu.unregister()
     stop_workflow.unregister()
     switch_output_layout.unregister()
     upload_input_image.unregister()
