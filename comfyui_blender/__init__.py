@@ -1,13 +1,16 @@
 """ComfyUI Blender Add-on"""
 from .menus import (
+    connection_menu,
     file_browser_menu,
     output_menu
 )
 from .operators import (
     clear_queue,
+    connect_to_server,
     delete_input,
     delete_output,
     delete_workflow,
+    disconnect_from_server,
     download_example_workflows,
     get_camera_resolution,
     import_3d_model,
@@ -27,6 +30,7 @@ from .operators import (
     run_workflow,
     select_folder,
     set_camera_resolution,
+    show_connection_menu,
     show_error_popup,
     show_output_menu,
     stop_workflow,
@@ -65,14 +69,17 @@ def register():
     settings.register()
 
     # Menus
+    connection_menu.register()
     file_browser_menu.register()
     output_menu.register()
 
     # Operators
     clear_queue.register()
+    connect_to_server.register()
     delete_input.register()
     delete_output.register()
     delete_workflow.register()
+    disconnect_from_server.register()
     download_example_workflows.register()
     get_camera_resolution.register()
     import_3d_model.register()
@@ -92,6 +99,7 @@ def register():
     run_workflow.register()
     select_folder.register()
     set_camera_resolution.register()
+    show_connection_menu.register()
     show_error_popup.register()
     show_output_menu.register()
     stop_workflow.register()
@@ -114,14 +122,17 @@ def unregister():
     settings.unregister()
 
     # Menus
+    connection_menu.unregister()
     file_browser_menu.unregister()
     output_menu.unregister()
 
     # Operators
     clear_queue.unregister()
+    connect_to_server.unregister()
     delete_input.unregister()
     delete_output.unregister()
     delete_workflow.unregister()
+    disconnect_from_server.unregister()
     download_example_workflows.unregister()
     get_camera_resolution.unregister()
     import_3d_model.unregister()
@@ -141,6 +152,7 @@ def unregister():
     run_workflow.unregister()
     select_folder.unregister()
     set_camera_resolution.unregister()
+    show_connection_menu.unregister()
     show_error_popup.unregister()
     show_output_menu.unregister()
     stop_workflow.unregister()

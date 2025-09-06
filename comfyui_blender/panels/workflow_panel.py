@@ -27,9 +27,14 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
         project_settings = bpy.context.scene.comfyui_project_settings
         row.prop(project_settings, "use_blend_file_location")
 
-        # Buttons to open preferences
+        # Buttons to connect to server
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        row.label(icon="INTERNET") if addon_prefs.connection_status else row.label(icon="INTERNET_OFFLINE")
+        if addon_prefs.connection_status:
+            row.operator("comfy.show_connection_menu", text="Connected", icon="INTERNET")
+        else:
+            row.operator("comfy.show_connection_menu", text="Disconnected", icon="INTERNET_OFFLINE")
+
+        # Buttons to open preferences
         row.operator("preferences.addon_show", text="", icon="PREFERENCES").module = "comfyui_blender"
 
         # Get workflows information

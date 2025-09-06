@@ -3,6 +3,7 @@ import ast
 import json
 import logging
 import os
+import threading
 import time
 
 import bpy
@@ -16,7 +17,8 @@ log = logging.getLogger("comfyui_blender")
 
 # Global variable to manage the WebSocket connection
 WS_CONNECTION = None
-WS_LISTENING = False
+WS_LISTENER_THREAD = None
+
 
 def connect():
     """Connect to the WebSocket server."""
@@ -30,30 +32,42 @@ def connect():
     headers = add_custom_headers()
     url = get_websocket_url("/ws", params=params)
 
-    # Establish the WebSocket connection
-    global WS_CONNECTION
+    global WS_CONNECTION, WS_LISTENER_THREAD
     WS_CONNECTION = websocket.WebSocket()
     try:
+        # Establish the WebSocket connection
         WS_CONNECTION.connect(url, headers=headers)
+
+        # Start the WebSocket listener in a separate thread
+        WS_LISTENER_THREAD = threading.Thread(target=listen, daemon=True)
+        WS_LISTENER_THREAD.start()
     except Exception as e:
         WS_CONNECTION = None
         raise e
-
+    
     # Update connection status
+    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
     addon_prefs.connection_status = True
+
 
 def disconnect():
     """Disconnect from the WebSocket server."""
 
-    global WS_CONNECTION, WS_LISTENING
-    WS_LISTENING = False
+    global WS_CONNECTION
     if WS_CONNECTION:
         WS_CONNECTION.close()
         WS_CONNECTION = None
-
+    
+    # Wait for listener thread to finish
+    global WS_LISTENER_THREAD
+    if WS_LISTENER_THREAD:
+        WS_LISTENER_THREAD.join(timeout=5.0)
+        WS_LISTENER_THREAD = None
+    
     # Update connection status
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
     addon_prefs.connection_status = False
+
 
 def listen():
     """Listening function to receive and process messages from the WebSocket server."""
@@ -66,12 +80,9 @@ def listen():
     project_settings = bpy.context.scene.comfyui_project_settings
     outputs_collection = project_settings.outputs_collection
 
-    # Get WebSocket connection
-    global WS_CONNECTION, WS_LISTENING
-    WS_LISTENING = True
-
     # Start listening for messages
-    while WS_LISTENING:
+    global WS_CONNECTION, WS_LISTENER_THREAD
+    while WS_LISTENER_THREAD:
         try:
             message = WS_CONNECTION.recv()
         except Exception as e:
