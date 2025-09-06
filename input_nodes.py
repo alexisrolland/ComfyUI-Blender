@@ -1,9 +1,11 @@
 import os
 
 import folder_paths
+from comfy_api.latest import io
 from comfy_extras.nodes_primitive import Boolean, Float, Int, String, StringMultiline
 from comfy.comfy_types.node_typing import IO
 from nodes import CheckpointLoaderSimple, LoadImage, LoraLoaderModelOnly, UNETLoader
+
 
 # Enforce min/max int and float according to Blender limitation
 MIN_FLOAT = -2147483648.00
@@ -11,115 +13,142 @@ MIN_INT = -2147483648
 MAX_FLOAT = 2147483647.00
 MAX_INT = 2147483647
 
+# Static variables for standard inputs
+TOOLTIP_ORDER = "Position of the input in the Blender add-on."
+TOOLTIP_DEFAULT = "Default value of the input in the Blender add-on."
+TOOLTIP_FORMAT_PATH = "If the string value is a file path, format it to be compatible with the operating system where ComfyUI is running."
+TOOLTIP_MIN = "Minimum value of the input in the Blender add-on."
+TOOLTIP_MAX = "Maximum value of the input in the Blender add-on."
+TOOLTIP_STEP = "Step size of the input in the Blender add-on."
+
 
 class BlenderInputBoolean(Boolean):
-    """Node used by ComfyUI Blender add-on to input a boolean in a workflow."""
-    CATEGORY = "blender"
+    """Display a boolean input in the Blender add-on."""
 
     @classmethod
-    def INPUT_TYPES(s):
-        INPUT_TYPES = super().INPUT_TYPES()
-        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
-        INPUT_TYPES["required"]["default"] = (IO.BOOLEAN, {})
+    def define_schema(cls):
+        schema = super().define_schema()
+        schema.node_id="BlenderInputBoolean"
+        schema.display_name="Blender Input Boolean"
+        schema.description="Display a boolean input in the Blender add-on."
+        schema.category = "blender"
+        schema.inputs.append(io.Custom("GROUP").Input("group", optional=True))
+        schema.inputs.append(io.Int.Input("order", tooltip=TOOLTIP_ORDER, default=0, min=MIN_INT, max=MAX_INT, control_after_generate=False))
+        schema.inputs.append(io.Boolean.Input("default", tooltip=TOOLTIP_DEFAULT, default=False))
+        return schema
 
-        # Create optional input key
-        if not INPUT_TYPES.get("optional", None):
-            INPUT_TYPES["optional"] = {}
-        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
-        return INPUT_TYPES
+    @classmethod
+    def execute(cls, value: bool, order: int, default: bool, **kwargs) -> io.NodeOutput:
+        return io.NodeOutput(value)
 
-    def execute(self, value: bool, order: int, default: bool, **kwargs) -> tuple[bool]:
-        return (value,)
 
 class BlenderInputCombo(String):
-    """Node used by ComfyUI Blender add-on to input a value from a combo box in a workflow."""
-    CATEGORY = "blender"
-    RETURN_TYPES = (IO.ANY,)
+    """Display a combo box input in the Blender add-on."""
 
     @classmethod
-    def INPUT_TYPES(s):
-        INPUT_TYPES = super().INPUT_TYPES()
-        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
-        INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
-        INPUT_TYPES["required"]["format_path"] = (IO.BOOLEAN, {"default": False, "tooltip": "If the string value is a file path, format it to be compatible with the operating system where ComfyUI is running."})
-        INPUT_TYPES["required"]["list"] = (IO.STRING, {"default": "", "multiline": True})
+    def define_schema(cls):
+        schema = super().define_schema()
+        schema.node_id="BlenderInputCombo"
+        schema.display_name="Blender Input Combo Box"
+        schema.description="Display a combo box input in the Blender add-on."
+        schema.category = "blender"
+        schema.inputs.append(io.Custom("GROUP").Input("group", optional=True))
+        schema.inputs.append(io.Int.Input("order", default=0, min=MIN_INT, max=MAX_INT, control_after_generate=False, tooltip=TOOLTIP_ORDER))
+        schema.inputs.append(io.String.Input("default", default="", tooltip=TOOLTIP_DEFAULT))
+        schema.inputs.append(io.Boolean.Input("format_path", default=False, tooltip=TOOLTIP_FORMAT_PATH))
+        schema.inputs.append(io.String.Input("list", default="", multiline=True, tooltip="list of values displayed in the combo box in the Blender add-on (one item per line)."))
+        schema.outputs = [io.AnyType.Output()]
+        return schema
 
-        # Create optional input key
-        if not INPUT_TYPES.get("optional", None):
-            INPUT_TYPES["optional"] = {}
-        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
-        return INPUT_TYPES
-
-    def execute(self, value: str, order: int, default: str, format_path: bool, list: str, **kwargs) -> tuple[str]:
+    @classmethod
+    def execute(cls, value: str, order: int, default: str, format_path: bool, list: str, **kwargs) -> io.NodeOutput:
         value = str(os.path.normpath(value)) if format_path else value
-        return (value,)
+        return io.NodeOutput(value)
+
 
 class BlenderInputFloat(Float):
-    """Node used by ComfyUI Blender add-on to input a float in a workflow."""
-    CATEGORY = "blender"
+    """Display a float input in the Blender add-on."""
 
     @classmethod
-    def INPUT_TYPES(s):
-        INPUT_TYPES = super().INPUT_TYPES()
-        INPUT_TYPES["required"]["value"] = (IO.FLOAT, {"default": 0.00, "min": MIN_FLOAT, "max": MAX_FLOAT, "step": 0.01})
-        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
-        INPUT_TYPES["required"]["default"] = (IO.FLOAT, {"default": 0.00, "min": MIN_FLOAT, "max": MAX_FLOAT, "step": 0.01})
-        INPUT_TYPES["required"]["min"] = (IO.FLOAT, {"default": MIN_FLOAT, "min": MIN_FLOAT, "max": MAX_FLOAT, "step": 0.01})
-        INPUT_TYPES["required"]["max"] = (IO.FLOAT, {"default": MAX_FLOAT, "min": MIN_FLOAT, "max": MAX_FLOAT, "step": 0.01})
+    def define_schema(cls):
+        schema = super().define_schema()
+        schema.node_id="BlenderInputFloat"
+        schema.display_name="Blender Input Float"
+        schema.description="Display a float input in the Blender add-on."
+        schema.category = "blender"
+        schema.inputs.append(io.Custom("GROUP").Input("group", optional=True))
+        schema.inputs.append(io.Int.Input("order", default=0, min=MIN_INT, max=MAX_INT, control_after_generate=False, tooltip=TOOLTIP_ORDER))
+        schema.inputs.append(io.Float.Input("default", default=0.0, tooltip=TOOLTIP_DEFAULT))
+        schema.inputs.append(io.Float.Input("min", default=MIN_FLOAT, min=MIN_FLOAT, max=MAX_FLOAT, step=0.01, tooltip=TOOLTIP_MIN))
+        schema.inputs.append(io.Float.Input("max", default=MAX_FLOAT, min=MIN_FLOAT, max=MAX_FLOAT, step=0.01, tooltip=TOOLTIP_MAX))
         # Step size is weird in Blender, value of 1 gives a step of 0.1, so I'm deactivating it for now
-        # INPUT_TYPES["required"]["step"] = (IO.FLOAT, {"default": 0.01, "min": 0.01, "max": MAX_FLOAT, "step": 0.01})
+        # schema.inputs.append(io.Float.Input("step", default=0.01, min=0.01, max=MAX_FLOAT, step=0.01, tooltip=TOOLTIP_STEP))
 
-        # Create optional input key
-        if not INPUT_TYPES.get("optional", None):
-            INPUT_TYPES["optional"] = {}
-        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
-        return INPUT_TYPES
-
-    def execute(self, value: float, order: int, default: float, min: float, max: float, **kwargs) -> tuple[int]:
-        return (value,)
-
-class BlenderInputGroup():
-    """Node used by ComfyUI Blender add-on to group inputs in the inputs panel."""
-    CATEGORY = "blender"
-    FUNCTION = "execute"
-    RETURN_TYPES = ("GROUP",)
-    RETURN_NAMES = ("group",)
+        # Overwrite value input to overwrite min/max/step
+        for i, input in enumerate(schema.inputs):
+            if input.id == "value":
+                schema.inputs[i] = io.Float.Input("value", default=0.0, min=MIN_FLOAT, max=MAX_FLOAT, step=0.01)
+                break
+        return schema
 
     @classmethod
-    def INPUT_TYPES(s):
-        INPUT_TYPES = {"required": {}}
-        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
-        INPUT_TYPES["required"]["show_title"] = (IO.BOOLEAN, {"default": False, "tooltip": "Display the node title as a label in the Blender add-on."})
-        INPUT_TYPES["required"]["compact"] = (IO.BOOLEAN, {"default": False, "tooltip": "Display inputs as a compact list in the Blender add-on."})
-        return INPUT_TYPES
+    def execute(cls, value: float, order: int, default: float, min: float, max: float, **kwargs) -> io.NodeOutput:
+        return io.NodeOutput(value)
 
-    def execute(self, order, show_title, compact):
-        return (True,)
+
+class BlenderInputGroup(io.ComfyNode):
+    """Group inputs into a box in the Blender add-on."""
+
+    @classmethod
+    def define_schema(cls):
+        return io.Schema(
+            node_id="BlenderInputGroup",
+            display_name="Blender Input Group",
+            description="Group inputs into a box in the Blender add-on.",
+            category="blender",
+            inputs=[
+                io.Int.Input("order", default=0, min=MIN_INT, max=MAX_INT, control_after_generate=False, tooltip=TOOLTIP_ORDER),
+                io.Boolean.Input("show_title", default=False, tooltip="Display the node title as a label in the Blender add-on."),
+                io.Boolean.Input("compact", default=False, tooltip="Display inputs with a compact layout in the Blender add-on.")
+            ],
+            outputs=[io.Custom("GROUP").Output("group", display_name="group")]
+        )
+
+    @classmethod
+    def execute(cls, order: int, show_title: bool, compact: bool) -> io.NodeOutput:
+        return io.NodeOutput(True)
+
 
 class BlenderInputInt(Int):
-    """Node used by ComfyUI Blender add-on to input an integer in a workflow."""
-    CATEGORY = "blender"
+    """Display an integer input in the Blender add-on."""
 
     @classmethod
-    def INPUT_TYPES(s):
-        INPUT_TYPES = super().INPUT_TYPES()
-        INPUT_TYPES["required"]["value"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
-        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
-        INPUT_TYPES["required"]["default"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "step": 1})
-        INPUT_TYPES["required"]["min"] = (IO.INT, {"default": MIN_INT, "min": MIN_INT, "max": MAX_INT, "step": 1})
-        INPUT_TYPES["required"]["max"] = (IO.INT, {"default": MAX_INT, "min": MIN_INT, "max": MAX_INT, "step": 1})
-        INPUT_TYPES["required"]["step"] = (IO.INT, {"default": 1, "min": 1, "max": MAX_INT, "step": 1})
-        INPUT_TYPES["required"]["camera_width"] = (IO.BOOLEAN, {"default": False, "tooltip": "Display a button to set/get the camera width."})
-        INPUT_TYPES["required"]["camera_height"] = (IO.BOOLEAN, {"default": False, "tooltip": "Display a button to set/get the camera height."})
+    def define_schema(cls):
+        schema = super().define_schema()
+        schema.node_id="BlenderInputInt"
+        schema.display_name="Blender Input Integer"
+        schema.description="Display an integer input in the Blender add-on."
+        schema.category = "blender"
+        schema.inputs.append(io.Custom("GROUP").Input("group", optional=True))
+        schema.inputs.append(io.Int.Input("order", default=0, min=MIN_INT, max=MAX_INT, control_after_generate=False, tooltip=TOOLTIP_ORDER))
+        schema.inputs.append(io.Int.Input("default", default=0, tooltip=TOOLTIP_DEFAULT))
+        schema.inputs.append(io.Int.Input("min", default=MIN_INT, min=MIN_INT, max=MAX_INT, step=1, tooltip=TOOLTIP_MIN))
+        schema.inputs.append(io.Int.Input("max", default=MAX_INT, min=MIN_INT, max=MAX_INT, step=1, tooltip=TOOLTIP_MAX))
+        schema.inputs.append(io.Int.Input("step", default=1, min=1, max=MAX_INT, step=1, tooltip=TOOLTIP_STEP))
+        schema.inputs.append(io.Boolean.Input("camera_width", default=False, tooltip="Display a button to set/get the camera width."))
+        schema.inputs.append(io.Boolean.Input("camera_height", default=False, tooltip="Display a button to set/get the camera height."))
 
-        # Create optional input key
-        if not INPUT_TYPES.get("optional", None):
-            INPUT_TYPES["optional"] = {}
-        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
-        return INPUT_TYPES
+        # Overwrite value input to remove control_after_generate and overwrite min/max/step
+        for i, input in enumerate(schema.inputs):
+            if input.id == "value":
+                schema.inputs[i] = io.Int.Input("value", default=0, min=MIN_INT, max=MAX_INT, step=1, control_after_generate=False)
+                break
+        return schema
 
-    def execute(self, value: int, order: int, default: int, min: int, max: int, step: int, camera_width: bool, camera_height: bool, **kwargs) -> tuple[int]:
-        return (value,)
+    @classmethod
+    def execute(cls, value: int, order: int, default: int, min: int, max: int, step: int, camera_width: bool, camera_height: bool, **kwargs) -> io.NodeOutput:
+        return io.NodeOutput(value)
+
 
 class BlenderInputLoad3D():
     """Node used by ComfyUI Blender add-on to input a 3D asset in a workflow."""
@@ -152,6 +181,7 @@ class BlenderInputLoad3D():
     def execute(self, model_file, order, **kwargs):
         return (model_file,)
 
+
 class BlenderInputLoadCheckpoint(CheckpointLoaderSimple):
     """Node used by ComfyUI Blender add-on to select a model name from the checkpoints folder of the ComfyUI server."""
     CATEGORY = "blender"
@@ -173,6 +203,7 @@ class BlenderInputLoadCheckpoint(CheckpointLoaderSimple):
         ckpt_name = str(os.path.normpath(ckpt_name))
         return super().load_checkpoint(ckpt_name)
 
+
 class BlenderInputLoadDiffusionModel(UNETLoader):
     """Node used by ComfyUI Blender add-on to select a model name from the diffusion models folder of the ComfyUI server."""
     CATEGORY = "blender"
@@ -193,6 +224,7 @@ class BlenderInputLoadDiffusionModel(UNETLoader):
     def execute(self, unet_name, weight_dtype, order: int, default: str, **kwargs):
         unet_name = str(os.path.normpath(unet_name))
         return super().load_unet(unet_name, weight_dtype)
+
 
 class BlenderInputLoadImage(LoadImage):
     """Node used by ComfyUI Blender add-on to input an image in a workflow."""
@@ -217,6 +249,7 @@ class BlenderInputLoadImage(LoadImage):
     def IS_CHANGED(s, image, order, **kwargs):
         return super().IS_CHANGED(image)
 
+
 class BlenderInputLoadLora(LoraLoaderModelOnly):
     """Node used by ComfyUI Blender add-on to select a LoRA model name from the loras folder of the ComfyUI server."""
     CATEGORY = "blender"
@@ -238,68 +271,75 @@ class BlenderInputLoadLora(LoraLoaderModelOnly):
         lora_name = str(os.path.normpath(lora_name))
         return super().load_lora_model_only(model, lora_name, strength_model)
 
+
 class BlenderInputSeed(Int):
-    """Node used by ComfyUI Blender add-on to input a seed value in a workflow."""
-    CATEGORY = "blender"
-    FUNCTION = "execute"
+    """Display a seed input in the Blender add-on."""
 
     @classmethod
-    def INPUT_TYPES(s):
-        INPUT_TYPES = super().INPUT_TYPES()
-        INPUT_TYPES["required"]["value"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
-        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
-        INPUT_TYPES["required"]["default"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "step": 1})
-        INPUT_TYPES["required"]["min"] = (IO.INT, {"default": 0, "min": 0, "max": MAX_INT, "step": 1})
-        INPUT_TYPES["required"]["max"] = (IO.INT, {"default": MAX_INT, "min": MIN_INT, "max": MAX_INT, "step": 1})
-        INPUT_TYPES["required"]["step"] = (IO.INT, {"default": 1, "min": 1, "max": MAX_INT, "step": 1})
+    def define_schema(cls):
+        schema = super().define_schema()
+        schema.node_id="BlenderInputSeed"
+        schema.display_name="Blender Input Seed"
+        schema.description="Display seed input in the Blender add-on."
+        schema.category = "blender"
+        schema.inputs.append(io.Custom("GROUP").Input("group", optional=True))
+        schema.inputs.append(io.Int.Input("order", default=0, min=MIN_INT, max=MAX_INT, control_after_generate=False, tooltip=TOOLTIP_ORDER))
+        schema.inputs.append(io.Int.Input("default", default=0, tooltip=TOOLTIP_DEFAULT))
+        schema.inputs.append(io.Int.Input("min", default=MIN_INT, min=MIN_INT, max=MAX_INT, step=1, tooltip=TOOLTIP_MIN))
+        schema.inputs.append(io.Int.Input("max", default=MAX_INT, min=MIN_INT, max=MAX_INT, step=1, tooltip=TOOLTIP_MAX))
+        schema.inputs.append(io.Int.Input("step", default=1, min=1, max=MAX_INT, step=1, tooltip=TOOLTIP_STEP))
 
-        # Create optional input key
-        if not INPUT_TYPES.get("optional", None):
-            INPUT_TYPES["optional"] = {}
-        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
-        return INPUT_TYPES
+        # Overwrite value input to remove control_after_generate and overwrite min/max/step
+        for i, input in enumerate(schema.inputs):
+            if input.id == "value":
+                schema.inputs[i] = io.Int.Input("value", default=0, min=MIN_INT, max=MAX_INT, step=1, control_after_generate=False)
+                break
+        return schema
 
-    def execute(self, value: int, order: int, default: int, min: int, max: int, step: int, **kwargs) -> tuple[int]:
-        return (value,)
+    @classmethod
+    def execute(cls, value: int, order: int, default: int, min: int, max: int, step: int, **kwargs) -> io.NodeOutput:
+        return io.NodeOutput(value)
+
 
 class BlenderInputString(String):
-    """Node used by ComfyUI Blender add-on to input a string in a workflow."""
-    CATEGORY = "blender"
+    """Display a string input in the Blender add-on."""
 
     @classmethod
-    def INPUT_TYPES(s):
-        INPUT_TYPES = super().INPUT_TYPES()
-        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
-        INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": ""})
-        INPUT_TYPES["required"]["format_path"] = (IO.BOOLEAN, {"default": False, "tooltip": "If the string value is a file path, format it to be compatible with the operating system where ComfyUI is running."})
+    def define_schema(cls):
+        schema = super().define_schema()
+        schema.node_id="BlenderInputString"
+        schema.display_name="Blender Input String"
+        schema.description="Display a string input in the Blender add-on."
+        schema.category = "blender"
+        schema.inputs.append(io.Custom("GROUP").Input("group", optional=True))
+        schema.inputs.append(io.Int.Input("order", default=0, min=MIN_INT, max=MAX_INT, control_after_generate=False, tooltip=TOOLTIP_ORDER))
+        schema.inputs.append(io.String.Input("default", default="", tooltip=TOOLTIP_DEFAULT))
+        schema.inputs.append(io.Boolean.Input("format_path", default=False, tooltip=TOOLTIP_FORMAT_PATH))
+        return schema
 
-        # Create optional input key
-        if not INPUT_TYPES.get("optional", None):
-            INPUT_TYPES["optional"] = {}
-        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
-        return INPUT_TYPES
-
-    def execute(self, value: str, order: int, default: str, format_path: bool, **kwargs) -> tuple[str]:
+    @classmethod
+    def execute(cls, value: str, order: int, default: str, format_path: bool, **kwargs) -> io.NodeOutput:
         value = str(os.path.normpath(value)) if format_path else value
-        return (value,)
+        return io.NodeOutput(value)
+
 
 class BlenderInputStringMultiline(StringMultiline):
-    """Node used by ComfyUI Blender add-on to input a multiline string in a workflow."""
-    CATEGORY = "blender"
+    """Display a string input in the Blender add-on."""
 
     @classmethod
-    def INPUT_TYPES(s):
-        INPUT_TYPES = super().INPUT_TYPES()
-        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
-        INPUT_TYPES["required"]["default"] = (IO.STRING, {"default": "", "multiline": True})
-        INPUT_TYPES["required"]["format_path"] = (IO.BOOLEAN, {"default": False, "tooltip": "If the string value is a file path, format it to be compatible with the operating system where ComfyUI is running."})
+    def define_schema(cls):
+        schema = super().define_schema()
+        schema.node_id="BlenderInputStringMultiline"
+        schema.display_name="Blender Input String Multiline"
+        schema.description="Display a string input in the Blender add-on."
+        schema.category = "blender"
+        schema.inputs.append(io.Custom("GROUP").Input("group", optional=True))
+        schema.inputs.append(io.Int.Input("order", default=0, min=MIN_INT, max=MAX_INT, control_after_generate=False, tooltip=TOOLTIP_ORDER))
+        schema.inputs.append(io.String.Input("default", default="", tooltip=TOOLTIP_DEFAULT))
+        schema.inputs.append(io.Boolean.Input("format_path", default=False, tooltip=TOOLTIP_FORMAT_PATH))
+        return schema
 
-        # Create optional input key
-        if not INPUT_TYPES.get("optional", None):
-            INPUT_TYPES["optional"] = {}
-        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
-        return INPUT_TYPES
-
-    def execute(self, value: str, order: int, default: str, format_path: bool, **kwargs) -> tuple[str]:
+    @classmethod
+    def execute(cls, value: str, order: int, default: str, format_path: bool, **kwargs) -> io.NodeOutput:
         value = str(os.path.normpath(value)) if format_path else value
-        return (value,)
+        return io.NodeOutput(value)
