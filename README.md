@@ -33,6 +33,10 @@ If the ComfyUI server runs on a different machine than the Blender client, it mu
 
 ### Install Blender Add-on
 
+> **Make sure you have a recent version of Blender.**
+> The add-on has been developed for Blender `v4.5` and above.
+> Some features such as the lineart rendering do not work on earlier versions.
+
 Download the add-on package `comfyui_blender_[...].zip` from the **[LATEST RELEASE](https://github.com/alexisrolland/ComfyUI-Blender/releases)**.
 
 In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > select the zip package.
@@ -40,10 +44,6 @@ In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > sel
 Update the ComfyUI server address in the add-on preferences:
 
 ![Screenshot Preferences](./screenshot_blender_preferences.jpg)
-
-#### Remarks
-
-> Ensure you have a recent version of Blender. The add-on has been developed for Blender `v4.5` and above. Some features such as the lineart rendering are not working properly on earlier versions.
 
 ## Usage
 
