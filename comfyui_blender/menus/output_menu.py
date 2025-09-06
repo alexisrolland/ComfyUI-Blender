@@ -17,7 +17,6 @@ class ComfyBlenderOutputMenu(bpy.types.Menu):
         output_type = context.scene.comfyui_menu_output_type
         output_name = context.scene.comfyui_menu_output_name
         output_filepath = context.scene.comfyui_menu_output_filepath
-        print(f"Output Menu: type={output_type}, name={output_name}, filepath={output_filepath}")
 
         # Import image button
         row = layout.row()
