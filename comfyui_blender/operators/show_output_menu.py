@@ -34,6 +34,7 @@ def register():
     bpy.types.Scene.comfyui_menu_output_type = bpy.props.StringProperty()
     bpy.types.Scene.comfyui_menu_output_name = bpy.props.StringProperty()
     bpy.types.Scene.comfyui_menu_output_filepath = bpy.props.StringProperty()
+
     bpy.utils.register_class(ComfyBlenderOperatorShowOutputMenu)
 
 
@@ -41,6 +42,11 @@ def unregister():
     """Unregister the operator."""
 
     bpy.utils.unregister_class(ComfyBlenderOperatorShowOutputMenu)
-    del bpy.types.Scene.comfyui_menu_output_type
-    del bpy.types.Scene.comfyui_menu_output_name
-    del bpy.types.Scene.comfyui_menu_output_filepath
+
+    # Check if attributes exist before deleting them
+    if hasattr(bpy.types.Scene, "comfyui_menu_output_type"):
+        del bpy.types.Scene.comfyui_menu_output_type
+    if hasattr(bpy.types.Scene, "comfyui_menu_output_name"):
+        del bpy.types.Scene.comfyui_menu_output_name
+    if hasattr(bpy.types.Scene, "comfyui_menu_output_filepath"):
+        del bpy.types.Scene.comfyui_menu_output_filepath
