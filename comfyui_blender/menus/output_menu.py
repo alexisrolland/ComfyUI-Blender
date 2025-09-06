@@ -1,6 +1,4 @@
 """Context menu to provide custom actions for outputs."""
-import os
-
 import bpy
 
 
