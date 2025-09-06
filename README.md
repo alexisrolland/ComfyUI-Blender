@@ -18,6 +18,9 @@ The Blender add-on UI is automatically generated according to the input and outp
 
 ### Install ComfyUI Custom Nodes
 
+> **Ensure you have the latest version of ComfyUI.**
+> At the time of writing this, the latest version was ComfyUI `v0.3.57`. This version required to update some of the ComfyUI-Blender nodes to the custom node schema v3. Making them incompatible with earlier versions of ComfyUI.
+
 Install the custom nodes on your ComfyUI server. They can be installed from the ComfyUI Manager or by cloning this repository:
 
 ```shell
@@ -26,12 +29,6 @@ git clone https://github.com/alexisrolland/ComfyUI-Blender.git
 ```
 
 If the ComfyUI server runs on a different machine than the Blender client, it must be started with the argument `--listen`. See ComfyUI documentation: [Setting Up LAN Access for ComfyUI](https://docs.comfy.org/installation/comfyui_portable_windows#2-setting-up-lan-access-for-comfyui-portable).
-
-#### Remarks
-
-> The custom nodes do not require additional Python dependencies. They are only used to define the inputs and outputs of the workflows to be displayed in the Blender add-on.
-
-> Ensure you have a recent version of ComfyUI. The add-on has been developed based on ComfyUI `v0.3.49`. Some features such as the progress bar are not working properly on earlier versions.
 
 ### Install Blender Add-on
 
