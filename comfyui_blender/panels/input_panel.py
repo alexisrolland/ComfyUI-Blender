@@ -34,7 +34,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             current_workflow = context.scene.current_workflow
 
             # Load the workflow JSON file
-            if os.path.exists(workflow_path):
+            if os.path.exists(workflow_path) and os.path.isfile(workflow_path):
                 with open(workflow_path, "r",  encoding="utf-8") as file:
                     workflow = json.load(file)
 
@@ -65,7 +65,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                         for input_key in group_inputs:
                             # Empty groups without children nodes have a dummy key -1
                             # Skip the dummy key
-                            if input_key > 0:
+                            if int(input_key) > 0:
                                 group_property_name = f"node_{input_key}"
                                 self.display_input(context, current_workflow, group_col, group_property_name, inputs[str(input_key)], is_root=False)
 

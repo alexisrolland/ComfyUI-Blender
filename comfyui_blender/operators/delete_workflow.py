@@ -100,7 +100,7 @@ class ComfyBlenderOperatorDeleteWorkflowOk(bpy.types.Operator):
                 workflows = get_workflow_list(addon_prefs, context)
                 addon_prefs.workflow = workflows[0][0]  # First tuple's first element (filename)
             else:
-                self.report({'WARNING'}, f"Workflow file not found: {self.filepath}")
+                self.report({'ERROR'}, f"Workflow file not found: {self.filepath}")
                 return {'CANCELLED'}
 
         except Exception as e:

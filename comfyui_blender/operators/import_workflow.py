@@ -6,7 +6,7 @@ import shutil
 
 import bpy
 
-from ..utils import get_filepath
+from ..utils import get_filepath, contains_non_latin
 from ..workflow import check_workflow_file_exists, extract_workflow_from_metadata
 
 log = logging.getLogger("comfyui_blender")
@@ -36,8 +36,22 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
         selected_files = []
         if getattr(self, "files", None) and len(self.files) > 0:
             for file in self.files:
-                selected_files.append(os.path.join(self.directory, file.name))
+                # Check for non-latin characters in file name
+                # Non-latin characters cause issues with Blender dropdown menus
+                if not contains_non_latin(file.name):
+                    selected_files.append(os.path.join(self.directory, file.name))
+                else:
+                    self.report({'ERROR'}, f"Could not import workflow. File name contains non-latin characters: {file.name}")
+                    log.error(f"Could not import workflow. File name contains non-latin characters: {file.name}")
         elif self.filepath:
+            # Check for non-latin characters in file name
+            # Non-latin characters cause issues with Blender dropdown menus
+            filename = os.path.basename(self.filepath)
+            if not contains_non_latin(filename):
+                selected_files.append(self.filepath)
+            else:
+                self.report({'ERROR'}, f"Could not import workflow. File name contains non-latin characters: {filename}")
+                log.error(f"Could not import workflow. File name contains non-latin characters: {filename}")
             selected_files.append(self.filepath)
         else:
             self.report({'ERROR'}, "No file selected.")
