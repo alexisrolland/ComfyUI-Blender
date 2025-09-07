@@ -22,7 +22,7 @@ The Blender add-on UI is automatically generated according to the input and outp
 > At the time of writing this, the latest version was ComfyUI `v0.3.57`.
 > That version of ComfyUI required to update some of the ComfyUI-Blender nodes to the custom node schema v3. Making them incompatible with earlier versions of ComfyUI.
 
-Install the custom nodes on your ComfyUI server. They can be installed from the ComfyUI Manager or by cloning this repository:
+The custom nodes can be installed from the ComfyUI Manager or by cloning this repository:
 
 ```shell
 cd ./ComfyUI/custom_nodes
