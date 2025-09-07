@@ -14,15 +14,17 @@ The Blender add-on UI is automatically generated according to the input and outp
 
 ![Screenshot Blender](./screenshot_blender.jpg)
 
-## Getting Started
+## Setup
 
-### Install ComfyUI Custom Nodes
+Step-by-step guide for installing the ComfyUI-Blender add-on. If you are new to ComfyUI, refer to the original [ComfyUI](https://github.com/comfyanonymous/ComfyUI) repository to get started.
 
-> **Make you have the latest version of ComfyUI.**
+### ComfyUI Setup
+
+> **Make sure you have the latest version of ComfyUI.**
 > At the time of writing this, the latest version was ComfyUI `v0.3.57`.
 > That version of ComfyUI required to update some of the ComfyUI-Blender nodes to the custom node schema v3. Making them incompatible with earlier versions of ComfyUI.
 
-The custom nodes can be installed from the ComfyUI Manager or by cloning this repository:
+Install the ComfyUI-Blender nodes from the [ComfyUI-Manager](https://github.com/Comfy-Org/ComfyUI-Manager) or by cloning this repository in the custom nodes folder of ComfyUI:
 
 ```shell
 cd ./ComfyUI/custom_nodes
@@ -41,9 +43,11 @@ Download the add-on package `comfyui_blender_[...].zip` from the **[LATEST RELEA
 
 In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > select the zip package.
 
+![Install Blender Add-on](https://github.com/alexisrolland/ComfyUI-Blender-Doc/blob/main/assets/install_blender_addon.png)
+
 Update the ComfyUI server address in the add-on preferences:
 
-![Screenshot Preferences](./screenshot_blender_preferences.jpg)
+![Update Server Address](https://github.com/alexisrolland/ComfyUI-Blender-Doc/blob/main/assets/update_server_address.png)
 
 ## Usage
 
