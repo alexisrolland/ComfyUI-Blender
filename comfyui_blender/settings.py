@@ -464,8 +464,11 @@ def register():
     bpy.utils.register_class(ProjectSettingsPropertyGroup)
     bpy.types.Scene.comfyui_project_settings = bpy.props.PointerProperty(type=ProjectSettingsPropertyGroup)
 
-    # Force the update of the workflow property to trigger the registration of the selected workflow class
+    # Reset connection status when add-on is reloaded
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+    addon_prefs.connection_status = False
+
+    # Force the update of the workflow property to trigger the registration of the selected workflow class
     addon_prefs.workflow = addon_prefs.workflow
 
     # Check if use_blend_file_location is enabled and update folders accordingly

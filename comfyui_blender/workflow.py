@@ -48,6 +48,8 @@ def check_workflow_file_exists(new_workflow_data, workflows_folder):
 def create_class_properties(inputs, keep_values=False):
     """Create properties for each input and output of the workflow."""
 
+    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+
     # Create a dictionary to extract input groups
     # Expected format: {group_key: [node_keys]}
     input_groups = {}
@@ -139,114 +141,129 @@ def create_class_properties(inputs, keep_values=False):
 
         # Load checkpoint
         if node["class_type"] == "BlenderInputLoadCheckpoint":
-            # Get list of checkpoints from the ComfyUI server
-            url = get_server_url("/models/checkpoints")
-            headers = {"Content-Type": "application/json"}
-            headers = add_custom_headers(headers)
-            try:
-                response = requests.get(url, headers=headers, stream=True)
-            except Exception as e:
-                error_message = f"Failed to get list of checkpoints from ComfyUI server: {url}. {e}"
-                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
-                log.exception(error_message)
-                # This crashes Blender upon starting if the ComfyUI server is not reachable
-                # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+            if addon_prefs.connection_status:
+                # Get list of checkpoints from the ComfyUI server
+                url = get_server_url("/models/checkpoints")
+                headers = {"Content-Type": "application/json"}
+                headers = add_custom_headers(headers)
+                try:
+                    response = requests.get(url, headers=headers, stream=True)
+                except Exception as e:
+                    error_message = f"Failed to get list of checkpoints from ComfyUI server: {url}. {e}"
+                    properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                    log.exception(error_message)
+                    # This crashes Blender upon starting if the ComfyUI server is not reachable
+                    # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                    continue
+
+                if response.status_code != 200:
+                    error_message = error_message = f"Failed to get list of checkpoints from ComfyUI server: {url}."
+                    properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                    log.error(error_message)
+                    # This crashes Blender upon starting if the ComfyUI server is not reachable
+                    # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                    continue
+
+                # If default value not in list, set to first item in the list
+                default = node["inputs"].get("default", "")
+                items = response.json()
+                if default not in items:
+                    default = items[0]
+
+                properties[property_name] = EnumProperty(
+                    name=name,
+                    default=default,
+                    items=[(i, i, "") for i in items]
+                )
                 continue
-
-            if response.status_code != 200:
-                error_message = error_message = f"Failed to get list of checkpoints from ComfyUI server: {url}."
-                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
-                log.error(error_message)
-                # This crashes Blender upon starting if the ComfyUI server is not reachable
-                # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+            else:
+                message = "Add-on not connect to the ComfyUI server."
+                properties[property_name] = StringProperty(name=name, default=message)
                 continue
-
-            # If default value not in list, set to first item in the list
-            default = node["inputs"].get("default", "")
-            items = response.json()
-            if default not in items:
-                default = items[0]
-
-            properties[property_name] = EnumProperty(
-                name=name,
-                default=default,
-                items=[(i, i, "") for i in items]
-            )
-            continue
 
         # Load diffusion model
         if node["class_type"] == "BlenderInputLoadDiffusionModel":
-            # Get list of diffusion models from the ComfyUI server
-            url = get_server_url("/models/diffusion_models")
-            headers = {"Content-Type": "application/json"}
-            headers = add_custom_headers(headers)
-            try:
-                response = requests.get(url, headers=headers, stream=True)
-            except Exception as e:
-                error_message = f"Failed to get list of diffusion models from ComfyUI server: {url}. {e}"
-                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
-                log.exception(error_message)
-                # This crashes Blender upon starting if the ComfyUI server is not reachable
-                # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+            if addon_prefs.connection_status:
+                # Get list of diffusion models from the ComfyUI server
+                url = get_server_url("/models/diffusion_models")
+                headers = {"Content-Type": "application/json"}
+                headers = add_custom_headers(headers)
+                try:
+                    response = requests.get(url, headers=headers, stream=True)
+                except Exception as e:
+                    error_message = f"Failed to get list of diffusion models from ComfyUI server: {url}. {e}"
+                    properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                    log.exception(error_message)
+                    # This crashes Blender upon starting if the ComfyUI server is not reachable
+                    # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                    continue
+
+                if response.status_code != 200:
+                    error_message = error_message = f"Failed to get list of diffusion models from ComfyUI server: {url}."
+                    properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                    log.error(error_message)
+                    # This crashes Blender upon starting if the ComfyUI server is not reachable
+                    # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                    continue
+
+                # If default value not in list, set to first item in the list
+                default = node["inputs"].get("default", "")
+                items = response.json()
+                if default not in items:
+                    default = items[0]
+
+                properties[property_name] = EnumProperty(
+                    name=name,
+                    default=default,
+                    items=[(i, i, "") for i in items]
+                )
                 continue
-
-            if response.status_code != 200:
-                error_message = error_message = f"Failed to get list of diffusion models from ComfyUI server: {url}."
-                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
-                log.error(error_message)
-                # This crashes Blender upon starting if the ComfyUI server is not reachable
-                # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+            else:
+                message = "Add-on not connect to the ComfyUI server."
+                properties[property_name] = StringProperty(name=name, default=message)
                 continue
-
-            # If default value not in list, set to first item in the list
-            default = node["inputs"].get("default", "")
-            items = response.json()
-            if default not in items:
-                default = items[0]
-
-            properties[property_name] = EnumProperty(
-                name=name,
-                default=default,
-                items=[(i, i, "") for i in items]
-            )
-            continue
         
         # Load LoRA
         if node["class_type"] == "BlenderInputLoadLora":
-            # Get list of loras from the ComfyUI server
-            url = get_server_url("/models/loras")
-            headers = {"Content-Type": "application/json"}
-            headers = add_custom_headers(headers)
-            try:
-                response = requests.get(url, headers=headers, stream=True)
-            except Exception as e:
-                error_message = f"Failed to get list of LoRAs from ComfyUI server: {url}. {e}"
-                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
-                log.exception(error_message)
-                # This crashes Blender upon starting if the ComfyUI server is not reachable
-                # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+            if addon_prefs.connection_status:
+                # Get list of loras from the ComfyUI server
+                url = get_server_url("/models/loras")
+                headers = {"Content-Type": "application/json"}
+                headers = add_custom_headers(headers)
+                try:
+                    response = requests.get(url, headers=headers, stream=True)
+                except Exception as e:
+                    error_message = f"Failed to get list of LoRAs from ComfyUI server: {url}. {e}"
+                    properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                    log.exception(error_message)
+                    # This crashes Blender upon starting if the ComfyUI server is not reachable
+                    # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                    continue
+
+                if response.status_code != 200:
+                    error_message = error_message = f"Failed to get list of LoRAs from ComfyUI server: {url}."
+                    properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                    log.error(error_message)
+                    # This crashes Blender upon starting if the ComfyUI server is not reachable
+                    # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                    continue
+
+                # If default value not in list, set to first item in the list
+                default = node["inputs"].get("default", "")
+                items = response.json()
+                if default not in items:
+                    default = items[0]
+
+                properties[property_name] = EnumProperty(
+                    name=name,
+                    default=default,
+                    items=[(i, i, "") for i in items]
+                )
                 continue
-
-            if response.status_code != 200:
-                error_message = error_message = f"Failed to get list of LoRAs from ComfyUI server: {url}."
-                properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
-                log.error(error_message)
-                # This crashes Blender upon starting if the ComfyUI server is not reachable
-                # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+            else:
+                message = "Add-on not connect to the ComfyUI server."
+                properties[property_name] = StringProperty(name=name, default=message)
                 continue
-
-            # If default value not in list, set to first item in the list
-            default = node["inputs"].get("default", "")
-            items = response.json()
-            if default not in items:
-                default = items[0]
-
-            properties[property_name] = EnumProperty(
-                name=name,
-                default=default,
-                items=[(i, i, "") for i in items]
-            )
-            continue
 
         # Seed
         if node["class_type"] == "BlenderInputSeed":

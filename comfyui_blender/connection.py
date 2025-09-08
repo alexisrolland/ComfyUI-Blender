@@ -4,7 +4,6 @@ import json
 import logging
 import os
 import threading
-import time
 
 import bpy
 from ._vendor import websocket
@@ -41,29 +40,36 @@ def connect():
         # Start the WebSocket listener in a separate thread
         WS_LISTENER_THREAD = threading.Thread(target=listen, daemon=True)
         WS_LISTENER_THREAD.start()
+
+        # Update connection status
+        # And force refresh of the current workflow to reload inputs that need to query the ComfyUI server
+        # For instance Load Checkpoint, Load Diffusion Model, Load LoRA...
+        addon_prefs.connection_status = True
+        addon_prefs.workflow = addon_prefs.workflow
+
     except Exception as e:
         WS_CONNECTION = None
+        WS_LISTENER_THREAD = None
+        addon_prefs.connection_status = False
         raise e
-    
-    # Update connection status
-    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-    addon_prefs.connection_status = True
 
 
 def disconnect():
     """Disconnect from the WebSocket server."""
 
+    # Terminate the listening thread
+    global WS_LISTENER_THREAD
+    if WS_LISTENER_THREAD:
+        if WS_LISTENER_THREAD != threading.current_thread():
+            WS_LISTENER_THREAD.join(timeout=1.0)
+        WS_LISTENER_THREAD = None
+
+    # Close the WebSocket connection
     global WS_CONNECTION
     if WS_CONNECTION:
         WS_CONNECTION.close()
         WS_CONNECTION = None
-    
-    # Wait for listener thread to finish
-    global WS_LISTENER_THREAD
-    if WS_LISTENER_THREAD:
-        WS_LISTENER_THREAD.join(timeout=5.0)
-        WS_LISTENER_THREAD = None
-    
+
     # Update connection status
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
     addon_prefs.connection_status = False
@@ -86,9 +92,8 @@ def listen():
         try:
             message = WS_CONNECTION.recv()
         except Exception as e:
-            time.sleep(1)
-            log.debug(f"WebSocket connection error. Trying to reconnect...")
-            connect()  # Try to reconnect
+            log.error(f"WebSocket connection interrupted: {e}")
+            disconnect()  # The disconnect function will also set WS_LISTENER_THREAD to None
             continue
 
         # Process the message
@@ -173,6 +178,7 @@ def listen():
                         elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
                             for output in data["output"]["images"]:
                                 download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                                print(f"Downloaded image: {output['filename']}")
 
                                 # Schedule adding output to collection on main thread
                                 def add_image_output(output=output):
@@ -184,6 +190,7 @@ def listen():
 
                                 # Call function to add output to collection
                                 bpy.app.timers.register(add_image_output, first_interval=0.0)
+                                print("Executed add_image_output")
 
                             # Force redraw of the UI
                             for screen in bpy.data.screens:

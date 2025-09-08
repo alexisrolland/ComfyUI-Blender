@@ -45,6 +45,7 @@ from .panels import (
 )
 from . import hooks
 from . import settings
+from .connection import disconnect
 
 
 bl_info = {
@@ -114,6 +115,9 @@ def register():
 
 def unregister():
     """Unregister add-on preferences, operators, and panels."""
+
+    # Ensure WebSocket connection is closed and listening thread is stopped
+    disconnect()
 
     # Hooks
     hooks.register()
