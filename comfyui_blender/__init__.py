@@ -45,12 +45,13 @@ from .panels import (
 )
 from . import hooks
 from . import settings
+from .connection import disconnect
 
 
 bl_info = {
     "name": "ComfyUI Blender",
     "author": "Alexis ROLLAND",
-    "version": (1, 1, 0),
+    "version": (1, 1, 1),
     "blender": (4, 5, 0),
     "location": "View3D > Sidebar > ComfyUI",
     "description": "Blender add-on to send requests to a ComfyUI server.",
@@ -114,6 +115,9 @@ def register():
 
 def unregister():
     """Unregister add-on preferences, operators, and panels."""
+
+    # Ensure WebSocket connection is closed and listening thread is stopped
+    disconnect()
 
     # Hooks
     hooks.register()
