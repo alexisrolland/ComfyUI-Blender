@@ -35,7 +35,9 @@ def connect():
     WS_CONNECTION = websocket.WebSocket()
     try:
         # Establish the WebSocket connection
+        log.debug(f"Create WebSocket connection with server address: {url}")
         WS_CONNECTION.connect(url, headers=headers)
+        log.debug(f"WebSocket connection established: {WS_CONNECTION}")
 
         # Start the WebSocket listener in a separate thread
         WS_LISTENER_THREAD = threading.Thread(target=listen, daemon=True)
@@ -61,14 +63,18 @@ def disconnect():
     global WS_LISTENER_THREAD
     if WS_LISTENER_THREAD:
         if WS_LISTENER_THREAD != threading.current_thread():
+            log.debug(f"Terminating listening thread: {WS_LISTENER_THREAD}")
             WS_LISTENER_THREAD.join(timeout=1.0)
-        WS_LISTENER_THREAD = None
+            WS_LISTENER_THREAD = None
+            log.debug(f"Listening thread terminated")
 
     # Close the WebSocket connection
     global WS_CONNECTION
     if WS_CONNECTION:
+        log.debug(f"Closing WebSocket connection: {WS_CONNECTION}")
         WS_CONNECTION.close()
         WS_CONNECTION = None
+        log.debug(f"WebSocket connection closed")
 
     # Update connection status
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
@@ -92,8 +98,8 @@ def listen():
         try:
             message = WS_CONNECTION.recv()
         except Exception as e:
-            log.error(f"WebSocket connection interrupted: {e}")
             disconnect()  # The disconnect function will also set WS_LISTENER_THREAD to None
+            log.error(f"WebSocket connection interrupted: {e}")
             continue
 
         # Process the message
@@ -178,7 +184,6 @@ def listen():
                         elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
                             for output in data["output"]["images"]:
                                 download_file(output["filename"], output["subfolder"], output.get("type", "output"))
-                                print(f"Downloaded image: {output['filename']}")
 
                                 # Schedule adding output to collection on main thread
                                 def add_image_output(output=output):
@@ -190,7 +195,6 @@ def listen():
 
                                 # Call function to add output to collection
                                 bpy.app.timers.register(add_image_output, first_interval=0.0)
-                                print("Executed add_image_output")
 
                             # Force redraw of the UI
                             for screen in bpy.data.screens:
