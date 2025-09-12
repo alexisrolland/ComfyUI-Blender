@@ -16,7 +16,7 @@ The Blender add-on UI is automatically generated according to the input and outp
 
 ## Setup
 
-Step-by-step guide for installing the ComfyUI-Blender add-on. If you are new to ComfyUI, refer to the original [ComfyUI](https://github.com/comfyanonymous/ComfyUI) repository to get started.
+If you are new to ComfyUI, refer to the original [ComfyUI](https://github.com/comfyanonymous/ComfyUI) repository to get started.
 
 ### ComfyUI Setup
 
