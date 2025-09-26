@@ -36,7 +36,7 @@ class ComfyBlenderOperatorProjectMaterial(bpy.types.Operator):
             return {'CANCELLED'}
 
         # Create a new material with the image texture
-        material = bpy.data.materials.new(name="ProjectedMaterial")
+        material = bpy.data.materials.new(name="Projected Material")
         material.use_nodes = True
         nodes = material.node_tree.nodes
         links = material.node_tree.links
@@ -60,12 +60,15 @@ class ComfyBlenderOperatorProjectMaterial(bpy.types.Operator):
                 obj.data.materials[0] = material
             else:
                 obj.data.materials.append(material)
+            
+            # Create new UV map for the projection
+            uv_map = obj.data.uv_layers.new(name="Projected UV")
+            uv_map.active_render = True
 
-            # Add a modifier to project the texture
-            modifier = obj.modifiers.get("ProjectedMaterial")
-            if modifier is None or modifier.type != "UV_PROJECT":
-                modifier = obj.modifiers.new(name="ProjectedMaterial", type="UV_PROJECT")
+            # Add modifier to project the texture
+            modifier = obj.modifiers.new(name="Projected Material", type="UV_PROJECT")
             modifier.projector_count = 1
+            modifier.uv_layer = uv_map.name
             modifier.projectors[0].object = camera
 
             # Set aspect ratio based on image dimensions
