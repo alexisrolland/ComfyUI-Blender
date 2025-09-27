@@ -164,9 +164,15 @@ def create_class_properties(inputs, keep_values=False):
                     # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     continue
 
+                items = response.json()
+                if not items:
+                    error_message = error_message = f"There is no checkpoint on the ComfyUI server: {url}."
+                    properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                    log.error(error_message)
+                    continue
+
                 # If default value not in list, set to first item in the list
                 default = node["inputs"].get("default", "")
-                items = response.json()
                 if default not in items:
                     default = items[0]
 
@@ -206,9 +212,15 @@ def create_class_properties(inputs, keep_values=False):
                     # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     continue
 
+                items = response.json()
+                if not items:
+                    error_message = error_message = f"There is no diffusion model on the ComfyUI server: {url}."
+                    properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                    log.error(error_message)
+                    continue
+
                 # If default value not in list, set to first item in the list
                 default = node["inputs"].get("default", "")
-                items = response.json()
                 if default not in items:
                     default = items[0]
 
@@ -248,9 +260,15 @@ def create_class_properties(inputs, keep_values=False):
                     # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     continue
 
+                items = response.json()
+                if not items:
+                    error_message = error_message = f"There is no LoRA on the ComfyUI server: {url}."
+                    properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                    log.error(error_message)
+                    continue
+
                 # If default value not in list, set to first item in the list
                 default = node["inputs"].get("default", "")
-                items = response.json()
                 if default not in items:
                     default = items[0]
 
