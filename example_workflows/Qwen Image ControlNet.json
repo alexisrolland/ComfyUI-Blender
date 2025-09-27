@@ -1,22 +1,22 @@
 {
   "id": "00000000-0000-0000-0000-000000000000",
   "revision": 0,
-  "last_node_id": 27,
-  "last_link_id": 32,
+  "last_node_id": 24,
+  "last_link_id": 28,
   "nodes": [
     {
       "id": 1,
       "type": "UNETLoader",
       "pos": [
-        1130,
-        770
+        -70,
+        70
       ],
       "size": [
         270,
         82
       ],
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -24,13 +24,13 @@
           "name": "MODEL",
           "type": "MODEL",
           "links": [
-            2
+            1
           ]
         }
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.52",
+        "ver": "0.3.60",
         "Node name for S&R": "UNETLoader"
       },
       "widgets_values": [
@@ -39,80 +39,11 @@
       ]
     },
     {
-      "id": 2,
-      "type": "CLIPLoader",
-      "pos": [
-        1440,
-        970
-      ],
-      "size": [
-        270,
-        106
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "links": [
-            1
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.52",
-        "Node name for S&R": "CLIPLoader"
-      },
-      "widgets_values": [
-        "alibaba\\qwen_2.5_vl_7b_fp8_scaled.safetensors",
-        "qwen_image",
-        "default"
-      ]
-    },
-    {
       "id": 3,
-      "type": "VAELoader",
+      "type": "ModelSamplingAuraFlow",
       "pos": [
-        1130,
-        640
-      ],
-      "size": [
-        270,
-        58
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [
-            4,
-            27
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.52",
-        "Node name for S&R": "VAELoader"
-      },
-      "widgets_values": [
-        "alibaba\\qwen_image_vae.safetensors"
-      ]
-    },
-    {
-      "id": 4,
-      "type": "ModelPatchLoader",
-      "pos": [
-        1130,
-        920
+        550,
+        70
       ],
       "size": [
         270,
@@ -123,18 +54,15 @@
       "mode": 0,
       "inputs": [
         {
-          "name": "name",
-          "type": "COMBO",
-          "widget": {
-            "name": "name"
-          },
-          "link": 30
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
         }
       ],
       "outputs": [
         {
-          "name": "MODEL_PATCH",
-          "type": "MODEL_PATCH",
+          "name": "MODEL",
+          "type": "MODEL",
           "links": [
             3
           ]
@@ -142,101 +70,134 @@
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.52",
-        "Node name for S&R": "ModelPatchLoader"
+        "ver": "0.3.60",
+        "Node name for S&R": "ModelSamplingAuraFlow"
       },
       "widgets_values": [
-        "alibaba\\qwen_image_depth_diffsynth_controlnet.safetensors"
-      ]
-    },
-    {
-      "id": 5,
-      "type": "CLIPTextEncode",
-      "pos": [
-        1740,
-        970
-      ],
-      "size": [
-        210.29940795898438,
-        88
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 1
-        },
-        {
-          "name": "text",
-          "type": "STRING",
-          "widget": {
-            "name": "text"
-          },
-          "link": 21
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            13,
-            14
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.52",
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        ""
+        3.1
       ]
     },
     {
       "id": 6,
-      "type": "QwenImageDiffsynthControlnet",
+      "type": "BlenderInputGroup",
       "pos": [
-        1440,
-        770
+        -380,
+        420
       ],
       "size": [
         270,
-        140
+        106
       ],
       "flags": {},
-      "order": 17,
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "group",
+          "type": "GROUP",
+          "links": [
+            4,
+            5
+          ]
+        }
+      ],
+      "title": "Prompts",
+      "properties": {
+        "Node name for S&R": "BlenderInputGroup"
+      },
+      "widgets_values": [
+        2,
+        false,
+        false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 8,
+      "type": "BlenderInputString",
+      "pos": [
+        -70,
+        620
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
-          "name": "model",
-          "type": "MODEL",
-          "link": 2
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "title": "Negative Prompt",
+      "properties": {
+        "Node name for S&R": "BlenderInputString"
+      },
+      "widgets_values": [
+        "",
+        2,
+        "",
+        false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 15,
+      "type": "ControlNetApplyAdvanced",
+      "pos": [
+        550,
+        240
+      ],
+      "size": [
+        270,
+        186
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 14
         },
         {
-          "name": "model_patch",
-          "type": "MODEL_PATCH",
-          "link": 3
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 15
         },
         {
-          "name": "vae",
-          "type": "VAE",
-          "link": 4
+          "name": "control_net",
+          "type": "CONTROL_NET",
+          "link": 16
         },
         {
           "name": "image",
           "type": "IMAGE",
-          "link": 5
+          "link": 17
         },
         {
-          "name": "mask",
+          "name": "vae",
           "shape": 7,
-          "type": "MASK",
-          "link": null
+          "type": "VAE",
+          "link": 28
         },
         {
           "name": "strength",
@@ -244,167 +205,49 @@
           "widget": {
             "name": "strength"
           },
-          "link": 19
+          "link": 18
         }
       ],
       "outputs": [
         {
-          "name": "MODEL",
-          "type": "MODEL",
+          "name": "positive",
+          "type": "CONDITIONING",
           "links": [
-            6
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.52",
-        "Node name for S&R": "QwenImageDiffsynthControlnet"
-      },
-      "widgets_values": [
-        1
-      ]
-    },
-    {
-      "id": 7,
-      "type": "BlenderInputLoadImage",
-      "pos": [
-        1130,
-        1040
-      ],
-      "size": [
-        270,
-        410
-      ],
-      "flags": {},
-      "order": 12,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": 31
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            5
+            12
           ]
         },
         {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
-        }
-      ],
-      "title": "Image",
-      "properties": {
-        "Node name for S&R": "BlenderInputLoadImage"
-      },
-      "widgets_values": [
-        "example.png",
-        2,
-        "image"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 8,
-      "type": "LoraLoaderModelOnly",
-      "pos": [
-        1740,
-        800
-      ],
-      "size": [
-        210,
-        82
-      ],
-      "flags": {},
-      "order": 18,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 6
-        }
-      ],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
+          "name": "negative",
+          "type": "CONDITIONING",
           "links": [
-            7
+            13
           ]
         }
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.52",
-        "Node name for S&R": "LoraLoaderModelOnly"
+        "ver": "0.3.60",
+        "Node name for S&R": "ControlNetApplyAdvanced"
       },
       "widgets_values": [
-        "alibaba\\Qwen-Image-Lightning-4steps-V1.0.safetensors",
+        1,
+        0,
         1
       ]
     },
     {
-      "id": 9,
-      "type": "ModelSamplingAuraFlow",
-      "pos": [
-        1980,
-        830
-      ],
-      "size": [
-        210,
-        58
-      ],
-      "flags": {},
-      "order": 19,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 7
-        }
-      ],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            10
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.52",
-        "Node name for S&R": "ModelSamplingAuraFlow"
-      },
-      "widgets_values": [
-        3
-      ]
-    },
-    {
-      "id": 10,
+      "id": 19,
       "type": "EmptySD3LatentImage",
       "pos": [
-        1980,
-        1150
+        550,
+        500
       ],
       "size": [
-        210,
+        270,
         106
       ],
       "flags": {},
-      "order": 15,
+      "order": 19,
       "mode": 0,
       "inputs": [
         {
@@ -413,7 +256,7 @@
           "widget": {
             "name": "width"
           },
-          "link": 16
+          "link": 21
         },
         {
           "name": "height",
@@ -421,7 +264,7 @@
           "widget": {
             "name": "height"
           },
-          "link": 17
+          "link": 22
         }
       ],
       "outputs": [
@@ -429,113 +272,176 @@
           "name": "LATENT",
           "type": "LATENT",
           "links": [
-            11
+            23
           ]
         }
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.52",
+        "ver": "0.3.60",
         "Node name for S&R": "EmptySD3LatentImage"
       },
       "widgets_values": [
-        1024,
-        1024,
+        1328,
+        1328,
         1
       ]
     },
     {
-      "id": 11,
-      "type": "KSampler",
+      "id": 10,
+      "type": "CLIPTextEncode",
       "pos": [
-        2220,
-        830
+        250,
+        420
       ],
       "size": [
         270,
-        262
+        88
       ],
       "flags": {},
-      "order": 20,
+      "order": 18,
       "mode": 0,
       "inputs": [
         {
-          "name": "model",
-          "type": "MODEL",
-          "link": 10
+          "name": "clip",
+          "type": "CLIP",
+          "link": 9
         },
         {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 13
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 15
-        },
-        {
-          "name": "latent_image",
-          "type": "LATENT",
-          "link": 11
-        },
-        {
-          "name": "seed",
-          "type": "INT",
+          "name": "text",
+          "type": "STRING",
           "widget": {
-            "name": "seed"
+            "name": "text"
           },
-          "link": 20
+          "link": 8
         }
       ],
       "outputs": [
         {
-          "name": "LATENT",
-          "type": "LATENT",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
           "links": [
-            8
+            15
           ]
         }
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.52",
-        "Node name for S&R": "KSampler"
+        "ver": "0.3.60",
+        "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        990989037183036,
-        "randomize",
-        8,
-        1,
-        "res_multistep",
-        "simple",
-        1
+        ""
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 11,
+      "type": "ControlNetLoader",
+      "pos": [
+        250,
+        590
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CONTROL_NET",
+          "type": "CONTROL_NET",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "ControlNetLoader"
+      },
+      "widgets_values": [
+        "instantx\\Qwen-Image-ControlNet-Union.safetensors"
       ]
     },
     {
-      "id": 12,
+      "id": 9,
+      "type": "CLIPTextEncode",
+      "pos": [
+        240,
+        240
+      ],
+      "size": [
+        270,
+        88
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 6
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 21,
       "type": "VAEDecode",
       "pos": [
-        2510,
-        830
+        1190,
+        200
       ],
       "size": [
         140,
         46
       ],
       "flags": {},
-      "order": 21,
+      "order": 22,
       "mode": 0,
       "inputs": [
         {
           "name": "samples",
           "type": "LATENT",
-          "link": 8
+          "link": 24
         },
         {
           "name": "vae",
           "type": "VAE",
-          "link": 27
+          "link": 25
         }
       ],
       "outputs": [
@@ -543,36 +449,36 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            12
+            26
           ]
         }
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.52",
+        "ver": "0.3.60",
         "Node name for S&R": "VAEDecode"
       },
       "widgets_values": []
     },
     {
-      "id": 13,
+      "id": 22,
       "type": "BlenderOutputSaveImage",
       "pos": [
-        2670,
-        830
+        1370,
+        200
       ],
       "size": [
-        220,
-        282
+        272.6714782714844,
+        270
       ],
       "flags": {},
-      "order": 22,
+      "order": 23,
       "mode": 0,
       "inputs": [
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 12
+          "link": 26
         }
       ],
       "outputs": [],
@@ -587,276 +493,15 @@
       "bgcolor": "#653"
     },
     {
-      "id": 14,
-      "type": "ConditioningZeroOut",
-      "pos": [
-        1980,
-        970
-      ],
-      "size": [
-        210,
-        26
-      ],
-      "flags": {},
-      "order": 14,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "conditioning",
-          "type": "CONDITIONING",
-          "link": 14
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            15
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.52",
-        "Node name for S&R": "ConditioningZeroOut"
-      },
-      "widgets_values": []
-    },
-    {
-      "id": 15,
-      "type": "BlenderInputInt",
-      "pos": [
-        1740,
-        1150
-      ],
-      "size": [
-        210,
-        226
-      ],
-      "flags": {},
-      "order": 9,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": 18
-        }
-      ],
-      "outputs": [
-        {
-          "name": "INT",
-          "type": "INT",
-          "links": [
-            16
-          ]
-        }
-      ],
-      "title": "Width",
-      "properties": {
-        "Node name for S&R": "BlenderInputInt"
-      },
-      "widgets_values": [
-        1328,
-        1,
-        1328,
-        928,
-        1664,
-        1,
-        true,
-        false
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 16,
-      "type": "BlenderInputInt",
-      "pos": [
-        1740,
-        1450
-      ],
-      "size": [
-        210,
-        226
-      ],
-      "flags": {},
-      "order": 10,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": 28
-        }
-      ],
-      "outputs": [
-        {
-          "name": "INT",
-          "type": "INT",
-          "links": [
-            17
-          ]
-        }
-      ],
-      "title": "Height",
-      "properties": {
-        "Node name for S&R": "BlenderInputInt"
-      },
-      "widgets_values": [
-        1328,
-        2,
-        1328,
-        928,
-        1664,
-        1,
-        false,
-        true
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 17,
-      "type": "BlenderInputGroup",
-      "pos": [
-        1440,
-        1580
-      ],
-      "size": [
-        270,
-        106
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "group",
-          "type": "GROUP",
-          "links": [
-            18,
-            28
-          ]
-        }
-      ],
-      "title": "Resolution",
-      "properties": {
-        "Node name for S&R": "BlenderInputGroup"
-      },
-      "widgets_values": [
-        3,
-        true,
-        true
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 19,
-      "type": "BlenderInputFloat",
-      "pos": [
-        1130,
-        1530
-      ],
-      "size": [
-        270,
-        154
-      ],
-      "flags": {},
-      "order": 13,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": 32
-        }
-      ],
-      "outputs": [
-        {
-          "name": "FLOAT",
-          "type": "FLOAT",
-          "links": [
-            19
-          ]
-        }
-      ],
-      "title": "Strength",
-      "properties": {
-        "Node name for S&R": "BlenderInputFloat"
-      },
-      "widgets_values": [
-        1,
-        3,
-        1,
-        0.1,
-        1
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 20,
-      "type": "BlenderInputStringMultiline",
-      "pos": [
-        1440,
-        1150
-      ],
-      "size": [
-        270,
-        360
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            21
-          ]
-        }
-      ],
-      "title": "Prompt",
-      "properties": {
-        "Node name for S&R": "BlenderInputStringMultiline",
-        "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
-      },
-      "widgets_values": [
-        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
-        2,
-        "",
-        false
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 21,
+      "id": 23,
       "type": "BlenderInputSeed",
       "pos": [
-        1980,
-        1320
+        550,
+        680
       ],
       "size": [
-        210,
-        180
+        270,
+        178
       ],
       "flags": {},
       "order": 3,
@@ -874,21 +519,19 @@
           "name": "INT",
           "type": "INT",
           "links": [
-            20
+            27
           ]
         }
       ],
       "title": "Seed",
       "properties": {
-        "Node name for S&R": "BlenderInputSeed",
-        "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "Node name for S&R": "BlenderInputSeed"
       },
       "widgets_values": [
         0,
         1,
         0,
-        0,
+        -2147483648,
         2147483647,
         1
       ],
@@ -896,56 +539,149 @@
       "bgcolor": "#653"
     },
     {
-      "id": 25,
-      "type": "BlenderInputCombo",
+      "id": 12,
+      "type": "BlenderInputGroup",
       "pos": [
-        690,
-        940
+        -70,
+        820
       ],
       "size": [
-        400,
-        200
+        270,
+        106
       ],
       "flags": {},
-      "order": 11,
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "group",
+          "type": "GROUP",
+          "links": [
+            10,
+            11
+          ]
+        }
+      ],
+      "title": "ControlNet",
+      "properties": {
+        "Node name for S&R": "BlenderInputGroup"
+      },
+      "widgets_values": [
+        4,
+        true,
+        true
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 7,
+      "type": "BlenderInputString",
+      "pos": [
+        -70,
+        420
+      ],
+      "size": [
+        270,
+        130
+      ],
+      "flags": {},
+      "order": 10,
       "mode": 0,
       "inputs": [
         {
           "name": "group",
           "shape": 7,
           "type": "GROUP",
-          "link": 29
+          "link": 4
         }
       ],
       "outputs": [
         {
-          "name": "*",
-          "type": "*",
+          "name": "STRING",
+          "type": "STRING",
           "links": [
-            30
+            7
           ]
         }
       ],
-      "title": "Model",
+      "title": "Prompt",
       "properties": {
-        "Node name for S&R": "BlenderInputCombo"
+        "Node name for S&R": "BlenderInputString"
       },
       "widgets_values": [
-        "alibaba/qwen_image_depth_diffsynth_controlnet.safetensors",
+        "High quality CG render of a glass cube containing magma. The cube has a metallic frame made of dark iron with rivets.",
         1,
-        "alibaba/qwen_image_depth_diffsynth_controlnet.safetensors",
-        true,
-        "alibaba/qwen_image_canny_diffsynth_controlnet.safetensors\nalibaba/qwen_image_depth_diffsynth_controlnet.safetensors"
+        "High quality CG render of a glass cube containing magma. The cube has a metallic frame made of dark iron with rivets.",
+        false
       ],
       "color": "#432",
       "bgcolor": "#653"
     },
     {
-      "id": 26,
+      "id": 24,
+      "type": "MarkdownNote",
+      "pos": [
+        -450,
+        70
+      ],
+      "size": [
+        340,
+        240
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 20,
+      "type": "VAELoader",
+      "pos": [
+        250,
+        1130
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            25,
+            28
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "alibaba\\qwen_image_vae.safetensors"
+      ]
+    },
+    {
+      "id": 16,
       "type": "BlenderInputGroup",
       "pos": [
-        390,
-        940
+        -60,
+        1480
       ],
       "size": [
         270,
@@ -960,18 +696,65 @@
           "name": "group",
           "type": "GROUP",
           "links": [
-            29,
-            31,
-            32
+            19,
+            20
           ]
         }
       ],
-      "title": "ControlNet",
+      "title": "Resolution",
       "properties": {
         "Node name for S&R": "BlenderInputGroup"
       },
       "widgets_values": [
-        4,
+        3,
+        true,
+        true
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 17,
+      "type": "BlenderInputInt",
+      "pos": [
+        250,
+        1480
+      ],
+      "size": [
+        270,
+        226
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            21
+          ]
+        }
+      ],
+      "title": "Width",
+      "properties": {
+        "Node name for S&R": "BlenderInputInt"
+      },
+      "widgets_values": [
+        1328,
+        1,
+        1328,
+        -2147483648,
+        2147483647,
+        1,
         true,
         false
       ],
@@ -979,254 +762,528 @@
       "bgcolor": "#653"
     },
     {
-      "id": 27,
-      "type": "MarkdownNote",
+      "id": 18,
+      "type": "BlenderInputInt",
       "pos": [
-        750,
-        620
+        250,
+        1770
       ],
       "size": [
-        340,
-        230
+        270,
+        226
       ],
       "flags": {},
-      "order": 6,
+      "order": 15,
       "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            22
+          ]
+        }
+      ],
+      "title": "Height",
+      "properties": {
+        "Node name for S&R": "BlenderInputInt"
+      },
       "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+        1328,
+        2,
+        1328,
+        -2147483648,
+        2147483647,
+        1,
+        false,
+        true
       ],
       "color": "#432",
       "bgcolor": "#653"
+    },
+    {
+      "id": 14,
+      "type": "BlenderInputFloat",
+      "pos": [
+        250,
+        1260
+      ],
+      "size": [
+        270,
+        154
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": 11
+        }
+      ],
+      "outputs": [
+        {
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": [
+            18
+          ]
+        }
+      ],
+      "title": "Strength",
+      "properties": {
+        "Node name for S&R": "BlenderInputFloat"
+      },
+      "widgets_values": [
+        1,
+        2,
+        1,
+        -2147483648,
+        2147483647
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 13,
+      "type": "BlenderInputLoadImage",
+      "pos": [
+        250,
+        730
+      ],
+      "size": [
+        270,
+        338
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            17
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "Image",
+      "properties": {
+        "Node name for S&R": "BlenderInputLoadImage"
+      },
+      "widgets_values": [
+        "blender_depth_map0001.png",
+        1,
+        "image"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 2,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        240,
+        70
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "alibaba\\Qwen-Image-Lightning-8steps-V1.0.safetensors",
+        1
+      ]
+    },
+    {
+      "id": 5,
+      "type": "CLIPLoader",
+      "pos": [
+        -70,
+        240
+      ],
+      "size": [
+        270,
+        106
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            6,
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "alibaba\\qwen_2.5_vl_7b_fp8_scaled.safetensors",
+        "qwen_image",
+        "default"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "KSampler",
+      "pos": [
+        880,
+        200
+      ],
+      "size": [
+        270,
+        262
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 12
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 13
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 23
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            24
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        391477711640611,
+        "randomize",
+        8,
+        1,
+        "ddim",
+        "kl_optimal",
+        1
+      ]
     }
   ],
   "links": [
     [
       1,
+      1,
+      0,
       2,
       0,
+      "MODEL"
+    ],
+    [
+      2,
+      2,
+      0,
+      3,
+      0,
+      "MODEL"
+    ],
+    [
+      3,
+      3,
+      0,
+      4,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      6,
+      0,
+      7,
+      0,
+      "GROUP"
+    ],
+    [
       5,
+      6,
+      0,
+      8,
+      0,
+      "GROUP"
+    ],
+    [
+      6,
+      5,
+      0,
+      9,
       0,
       "CLIP"
     ],
     [
-      2,
-      1,
-      0,
-      6,
-      0,
-      "MODEL"
-    ],
-    [
-      3,
-      4,
-      0,
-      6,
-      1,
-      "MODEL_PATCH"
-    ],
-    [
-      4,
-      3,
-      0,
-      6,
-      2,
-      "VAE"
-    ],
-    [
-      5,
+      7,
       7,
       0,
-      6,
-      3,
-      "IMAGE"
-    ],
-    [
-      6,
-      6,
-      0,
-      8,
-      0,
-      "MODEL"
-    ],
-    [
-      7,
-      8,
-      0,
       9,
-      0,
-      "MODEL"
-    ],
-    [
-      8,
-      11,
-      0,
-      12,
-      0,
-      "LATENT"
-    ],
-    [
-      10,
-      9,
-      0,
-      11,
-      0,
-      "MODEL"
-    ],
-    [
-      11,
-      10,
-      0,
-      11,
-      3,
-      "LATENT"
-    ],
-    [
-      12,
-      12,
-      0,
-      13,
-      0,
-      "IMAGE"
-    ],
-    [
-      13,
-      5,
-      0,
-      11,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      14,
-      5,
-      0,
-      14,
-      0,
-      "CONDITIONING"
-    ],
-    [
-      15,
-      14,
-      0,
-      11,
-      2,
-      "CONDITIONING"
-    ],
-    [
-      16,
-      15,
-      0,
-      10,
-      0,
-      "INT"
-    ],
-    [
-      17,
-      16,
-      0,
-      10,
-      1,
-      "INT"
-    ],
-    [
-      18,
-      17,
-      0,
-      15,
-      0,
-      "GROUP"
-    ],
-    [
-      19,
-      19,
-      0,
-      6,
-      5,
-      "FLOAT"
-    ],
-    [
-      20,
-      21,
-      0,
-      11,
-      4,
-      "INT"
-    ],
-    [
-      21,
-      20,
-      0,
-      5,
       1,
       "STRING"
     ],
     [
-      27,
-      3,
+      8,
+      8,
       0,
+      10,
+      1,
+      "STRING"
+    ],
+    [
+      9,
+      5,
+      0,
+      10,
+      0,
+      "CLIP"
+    ],
+    [
+      10,
       12,
+      0,
+      13,
+      0,
+      "GROUP"
+    ],
+    [
+      11,
+      12,
+      0,
+      14,
+      0,
+      "GROUP"
+    ],
+    [
+      12,
+      15,
+      0,
+      4,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      13,
+      15,
+      1,
+      4,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      14,
+      9,
+      0,
+      15,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      15,
+      10,
+      0,
+      15,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      16,
+      11,
+      0,
+      15,
+      2,
+      "CONTROL_NET"
+    ],
+    [
+      17,
+      13,
+      0,
+      15,
+      3,
+      "IMAGE"
+    ],
+    [
+      18,
+      14,
+      0,
+      15,
+      5,
+      "FLOAT"
+    ],
+    [
+      19,
+      16,
+      0,
+      17,
+      0,
+      "GROUP"
+    ],
+    [
+      20,
+      16,
+      0,
+      18,
+      0,
+      "GROUP"
+    ],
+    [
+      21,
+      17,
+      0,
+      19,
+      0,
+      "INT"
+    ],
+    [
+      22,
+      18,
+      0,
+      19,
+      1,
+      "INT"
+    ],
+    [
+      23,
+      19,
+      0,
+      4,
+      3,
+      "LATENT"
+    ],
+    [
+      24,
+      4,
+      0,
+      21,
+      0,
+      "LATENT"
+    ],
+    [
+      25,
+      20,
+      0,
+      21,
       1,
       "VAE"
     ],
     [
-      28,
-      17,
-      0,
-      16,
-      0,
-      "GROUP"
-    ],
-    [
-      29,
       26,
+      21,
       0,
-      25,
+      22,
       0,
-      "GROUP"
+      "IMAGE"
     ],
     [
-      30,
-      25,
+      27,
+      23,
       0,
       4,
-      0,
-      "COMBO"
+      4,
+      "INT"
     ],
     [
-      31,
-      26,
+      28,
+      20,
       0,
-      7,
-      0,
-      "GROUP"
-    ],
-    [
-      32,
-      26,
-      0,
-      19,
-      0,
-      "GROUP"
+      15,
+      4,
+      "VAE"
     ]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.6934334949441662,
+      "scale": 0.7810065777412513,
       "offset": [
-        -310.2904779785263,
-        -359.7511978191328
+        516.151221557615,
+        39.941959061165775
       ]
     },
-    "frontendVersion": "1.25.10",
-    "VHS_latentpreview": false,
-    "VHS_latentpreviewrate": 0,
-    "VHS_MetadataImage": true,
-    "VHS_KeepIntermediate": true
+    "frontendVersion": "1.26.13"
   },
   "version": 0.4
 }

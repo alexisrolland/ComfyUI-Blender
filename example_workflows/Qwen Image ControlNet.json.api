@@ -11,6 +11,66 @@
   },
   "2": {
     "inputs": {
+      "lora_name": "alibaba\\Qwen-Image-Lightning-8steps-V1.0.safetensors",
+      "strength_model": 1,
+      "model": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "3": {
+    "inputs": {
+      "shift": 3.1,
+      "model": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingAuraFlow",
+    "_meta": {
+      "title": "ModelSamplingAuraFlow"
+    }
+  },
+  "4": {
+    "inputs": {
+      "seed": [
+        "23",
+        0
+      ],
+      "steps": 8,
+      "cfg": 1,
+      "sampler_name": "ddim",
+      "scheduler": "kl_optimal",
+      "denoise": 1,
+      "model": [
+        "3",
+        0
+      ],
+      "positive": [
+        "15",
+        0
+      ],
+      "negative": [
+        "15",
+        1
+      ],
+      "latent_image": [
+        "19",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "5": {
+    "inputs": {
       "clip_name": "alibaba\\qwen_2.5_vl_7b_fp8_scaled.safetensors",
       "type": "qwen_image",
       "device": "default"
@@ -20,35 +80,57 @@
       "title": "Load CLIP"
     }
   },
-  "3": {
+  "6": {
     "inputs": {
-      "vae_name": "alibaba\\qwen_image_vae.safetensors"
+      "order": 2,
+      "show_title": false,
+      "compact": false
     },
-    "class_type": "VAELoader",
+    "class_type": "BlenderInputGroup",
     "_meta": {
-      "title": "Load VAE"
+      "title": "Prompts"
     }
   },
-  "4": {
+  "7": {
     "inputs": {
-      "name": [
-        "25",
+      "value": "High quality CG render of a glass cube containing magma. The cube has a metallic frame made of dark iron with rivets.",
+      "order": 1,
+      "default": "High quality CG render of a glass cube containing magma. The cube has a metallic frame made of dark iron with rivets.",
+      "format_path": false,
+      "group": [
+        "6",
         0
       ]
     },
-    "class_type": "ModelPatchLoader",
+    "class_type": "BlenderInputString",
     "_meta": {
-      "title": "ModelPatchLoader"
+      "title": "Prompt"
     }
   },
-  "5": {
+  "8": {
+    "inputs": {
+      "value": "",
+      "order": 2,
+      "default": "",
+      "format_path": false,
+      "group": [
+        "6",
+        0
+      ]
+    },
+    "class_type": "BlenderInputString",
+    "_meta": {
+      "title": "Negative Prompt"
+    }
+  },
+  "9": {
     "inputs": {
       "text": [
-        "20",
+        "7",
         0
       ],
       "clip": [
-        "2",
+        "5",
         0
       ]
     },
@@ -57,40 +139,48 @@
       "title": "CLIP Text Encode (Prompt)"
     }
   },
-  "6": {
+  "10": {
     "inputs": {
-      "strength": [
-        "19",
+      "text": [
+        "8",
         0
       ],
-      "model": [
-        "1",
-        0
-      ],
-      "model_patch": [
-        "4",
-        0
-      ],
-      "vae": [
-        "3",
-        0
-      ],
-      "image": [
-        "7",
+      "clip": [
+        "5",
         0
       ]
     },
-    "class_type": "QwenImageDiffsynthControlnet",
+    "class_type": "CLIPTextEncode",
     "_meta": {
-      "title": "QwenImageDiffsynthControlnet"
+      "title": "CLIP Text Encode (Prompt)"
     }
   },
-  "7": {
+  "11": {
     "inputs": {
-      "image": "example.png",
-      "order": 2,
+      "control_net_name": "instantx\\Qwen-Image-ControlNet-Union.safetensors"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
+  },
+  "12": {
+    "inputs": {
+      "order": 4,
+      "show_title": true,
+      "compact": true
+    },
+    "class_type": "BlenderInputGroup",
+    "_meta": {
+      "title": "ControlNet"
+    }
+  },
+  "13": {
+    "inputs": {
+      "image": "blender_depth_map0001.png",
+      "order": 1,
       "group": [
-        "26",
+        "12",
         0
       ]
     },
@@ -99,165 +189,58 @@
       "title": "Image"
     }
   },
-  "8": {
+  "14": {
     "inputs": {
-      "lora_name": "alibaba\\Qwen-Image-Lightning-4steps-V1.0.safetensors",
-      "strength_model": 1,
-      "model": [
-        "6",
-        0
-      ]
-    },
-    "class_type": "LoraLoaderModelOnly",
-    "_meta": {
-      "title": "LoraLoaderModelOnly"
-    }
-  },
-  "9": {
-    "inputs": {
-      "shift": 3,
-      "model": [
-        "8",
-        0
-      ]
-    },
-    "class_type": "ModelSamplingAuraFlow",
-    "_meta": {
-      "title": "ModelSamplingAuraFlow"
-    }
-  },
-  "10": {
-    "inputs": {
-      "width": [
-        "15",
-        0
-      ],
-      "height": [
-        "16",
-        0
-      ],
-      "batch_size": 1
-    },
-    "class_type": "EmptySD3LatentImage",
-    "_meta": {
-      "title": "EmptySD3LatentImage"
-    }
-  },
-  "11": {
-    "inputs": {
-      "seed": [
-        "21",
-        0
-      ],
-      "steps": 8,
-      "cfg": 1,
-      "sampler_name": "res_multistep",
-      "scheduler": "simple",
-      "denoise": 1,
-      "model": [
-        "9",
-        0
-      ],
-      "positive": [
-        "5",
-        0
-      ],
-      "negative": [
-        "14",
-        0
-      ],
-      "latent_image": [
-        "10",
-        0
-      ]
-    },
-    "class_type": "KSampler",
-    "_meta": {
-      "title": "KSampler"
-    }
-  },
-  "12": {
-    "inputs": {
-      "samples": [
-        "11",
-        0
-      ],
-      "vae": [
-        "3",
-        0
-      ]
-    },
-    "class_type": "VAEDecode",
-    "_meta": {
-      "title": "VAE Decode"
-    }
-  },
-  "13": {
-    "inputs": {
-      "filename_prefix": "blender",
-      "images": [
+      "value": 1,
+      "order": 2,
+      "default": 1,
+      "min": -2147483648,
+      "max": 2147483647,
+      "group": [
         "12",
         0
       ]
     },
-    "class_type": "BlenderOutputSaveImage",
+    "class_type": "BlenderInputFloat",
     "_meta": {
-      "title": "Save Image"
-    }
-  },
-  "14": {
-    "inputs": {
-      "conditioning": [
-        "5",
-        0
-      ]
-    },
-    "class_type": "ConditioningZeroOut",
-    "_meta": {
-      "title": "ConditioningZeroOut"
+      "title": "Strength"
     }
   },
   "15": {
     "inputs": {
-      "value": 1328,
-      "order": 1,
-      "default": 1328,
-      "min": 928,
-      "max": 1664,
-      "step": 1,
-      "camera_width": true,
-      "camera_height": false,
-      "group": [
-        "17",
+      "strength": [
+        "14",
+        0
+      ],
+      "start_percent": 0,
+      "end_percent": 1,
+      "positive": [
+        "9",
+        0
+      ],
+      "negative": [
+        "10",
+        0
+      ],
+      "control_net": [
+        "11",
+        0
+      ],
+      "image": [
+        "13",
+        0
+      ],
+      "vae": [
+        "20",
         0
       ]
     },
-    "class_type": "BlenderInputInt",
+    "class_type": "ControlNetApplyAdvanced",
     "_meta": {
-      "title": "Width"
+      "title": "Apply ControlNet"
     }
   },
   "16": {
-    "inputs": {
-      "value": 1328,
-      "order": 2,
-      "default": 1328,
-      "min": 928,
-      "max": 1664,
-      "step": 1,
-      "camera_width": false,
-      "camera_height": true,
-      "group": [
-        "17",
-        0
-      ]
-    },
-    "class_type": "BlenderInputInt",
-    "_meta": {
-      "title": "Height"
-    }
-  },
-  "17": {
     "inputs": {
       "order": 3,
       "show_title": true,
@@ -268,75 +251,113 @@
       "title": "Resolution"
     }
   },
-  "19": {
+  "17": {
     "inputs": {
-      "value": 1,
-      "order": 3,
-      "default": 1,
-      "min": 0.1,
-      "max": 1,
+      "value": 1328,
+      "order": 1,
+      "default": 1328,
+      "min": -2147483648,
+      "max": 2147483647,
+      "step": 1,
+      "camera_width": true,
+      "camera_height": false,
       "group": [
-        "26",
+        "16",
         0
       ]
     },
-    "class_type": "BlenderInputFloat",
+    "class_type": "BlenderInputInt",
     "_meta": {
-      "title": "Strength"
+      "title": "Width"
+    }
+  },
+  "18": {
+    "inputs": {
+      "value": 1328,
+      "order": 2,
+      "default": 1328,
+      "min": -2147483648,
+      "max": 2147483647,
+      "step": 1,
+      "camera_width": false,
+      "camera_height": true,
+      "group": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "BlenderInputInt",
+    "_meta": {
+      "title": "Height"
+    }
+  },
+  "19": {
+    "inputs": {
+      "width": [
+        "17",
+        0
+      ],
+      "height": [
+        "18",
+        0
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptySD3LatentImage",
+    "_meta": {
+      "title": "EmptySD3LatentImage"
     }
   },
   "20": {
     "inputs": {
-      "value": "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
-      "order": 2,
-      "default": "",
-      "format_path": false
+      "vae_name": "alibaba\\qwen_image_vae.safetensors"
     },
-    "class_type": "BlenderInputStringMultiline",
+    "class_type": "VAELoader",
     "_meta": {
-      "title": "Prompt"
+      "title": "Load VAE"
     }
   },
   "21": {
     "inputs": {
+      "samples": [
+        "4",
+        0
+      ],
+      "vae": [
+        "20",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "22": {
+    "inputs": {
+      "filename_prefix": "blender",
+      "images": [
+        "21",
+        0
+      ]
+    },
+    "class_type": "BlenderOutputSaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "23": {
+    "inputs": {
       "value": 0,
       "order": 1,
       "default": 0,
-      "min": 0,
+      "min": -2147483648,
       "max": 2147483647,
       "step": 1
     },
     "class_type": "BlenderInputSeed",
     "_meta": {
       "title": "Seed"
-    }
-  },
-  "25": {
-    "inputs": {
-      "value": "alibaba/qwen_image_depth_diffsynth_controlnet.safetensors",
-      "order": 1,
-      "default": "alibaba/qwen_image_depth_diffsynth_controlnet.safetensors",
-      "format_path": true,
-      "list": "alibaba/qwen_image_canny_diffsynth_controlnet.safetensors\nalibaba/qwen_image_depth_diffsynth_controlnet.safetensors",
-      "group": [
-        "26",
-        0
-      ]
-    },
-    "class_type": "BlenderInputCombo",
-    "_meta": {
-      "title": "Model"
-    }
-  },
-  "26": {
-    "inputs": {
-      "order": 4,
-      "show_title": true,
-      "compact": false
-    },
-    "class_type": "BlenderInputGroup",
-    "_meta": {
-      "title": "ControlNet"
     }
   }
 }
