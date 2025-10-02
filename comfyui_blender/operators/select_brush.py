@@ -1,11 +1,11 @@
-"""Operator to select the mask painting brush."""
+"""Operator to select the custom brush."""
 import os
 
 import bpy
 
 
-class ComfyBlenderOperatorSelectMaskBrush(bpy.types.Operator):
-    """Operator to select the mask painting brush."""
+class ComfyBlenderOperatorSelectBrush(bpy.types.Operator):
+    """Operator to select the custom brush."""
 
     bl_idname = "comfy.select_brush"
     bl_label = "Select Brush"
@@ -29,15 +29,17 @@ class ComfyBlenderOperatorSelectMaskBrush(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
+        # Set image editor to paint mode
         context.space_data.ui_mode = "PAINT"
 
+        # Get brush or create it if it doesn't exist
         brush_name = "Mask Brush"
         if brush_name not in bpy.data.brushes:
             brush = bpy.data.brushes.new(name=brush_name, mode="TEXTURE_PAINT")
         else:
             brush = bpy.data.brushes[brush_name]
 
-        # Configure brush for mask painting
+        # Configure brush
         context.scene.tool_settings.unified_paint_settings.use_unified_size = False
         context.scene.tool_settings.unified_paint_settings.use_unified_strength = False
         brush.blend = self.blend_mode
@@ -47,11 +49,11 @@ class ComfyBlenderOperatorSelectMaskBrush(bpy.types.Operator):
         # Mark brush as an asset if not already marked
         if not brush.asset_data:
             brush.asset_mark()
-            brush.asset_data.description = "Brush for mask painting with alpha."
+            brush.asset_data.description = "Brush for painting or erasing alpha channel."
 
             # Get icon path
             addon_folder = os.path.dirname(os.path.dirname(__file__))
-            icon_path = os.path.join(addon_folder, "assets", "icon_paint_mask.png")
+            icon_path = os.path.join(addon_folder, "assets", "icon_brush_asset.png")
 
             # Override the context to load the custom preview
             # This is necessary because bpy.ops.ed.lib_id_load_custom_preview
@@ -63,7 +65,7 @@ class ComfyBlenderOperatorSelectMaskBrush(bpy.types.Operator):
         bpy.ops.brush.asset_activate(
             asset_library_type="LOCAL",
             asset_library_identifier="",
-            relative_asset_identifier=os.path.join("Brush", f"{brush_name}")  #f"Brush\\{brush_name}" 
+            relative_asset_identifier=os.path.join("Brush", f"{brush_name}")
         )
         return {'FINISHED'}
 
