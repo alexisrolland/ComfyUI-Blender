@@ -9,6 +9,7 @@ from .input_nodes import (
     BlenderInputLoadDiffusionModel,
     BlenderInputLoadImage,
     BlenderInputLoadLora,
+    BlenderInputLoadMask,
     BlenderInputSeed,
     BlenderInputString,
     BlenderInputStringMultiline
@@ -32,6 +33,7 @@ NODE_CLASS_MAPPINGS = {
     "BlenderInputLoadDiffusionModel": BlenderInputLoadDiffusionModel,
     "BlenderInputLoadImage": BlenderInputLoadImage,
     "BlenderInputLoadLora": BlenderInputLoadLora,
+    "BlenderInputLoadMask": BlenderInputLoadMask,
     "BlenderInputSeed": BlenderInputSeed,
     "BlenderInputString": BlenderInputString,
     "BlenderInputStringMultiline": BlenderInputStringMultiline,
@@ -52,6 +54,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "BlenderInputLoadDiffusionModel": "Blender Input Load Diffusion Model",
     "BlenderInputLoadImage": "Blender Input Load Image",
     "BlenderInputLoadLora": "Blender Input Load LoRA",
+    "BlenderInputLoadMask": "Blender Input Load Mask",
     "BlenderInputSeed": "Blender Input Seed",
     "BlenderInputString": "Blender Input String",
     "BlenderInputStringMultiline": "Blender Input String Multiline",

@@ -215,6 +215,51 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 preview = box.row()
                 preview.template_icon(icon_value=bpy.data.images[image.name].preview.icon_id, scale=5)
 
+        # Custom handling for mask inputs
+        # Mask inputs are images with alpha channel
+        elif node["class_type"] == "BlenderInputLoadMask":
+            # Add box only for main layout
+            box = layout.box() if is_root else layout
+
+            # Get the input name from the workflow properties
+            name = current_workflow.bl_rna.properties[property_name].name  # Node title
+            row = box.row(align=True)
+            row.label(text=name + ":")
+
+            # Upload button
+            upload_input_image = row.operator("comfy.upload_input_image", text="", icon="EXPORT")
+            upload_input_image.workflow_property = property_name
+
+            # File browser button
+            file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
+            file_browser.folder_path = inputs_folder
+            file_browser.custom_label = "Open Inputs Folder"
+
+            # Get input image from the workflow property
+            image = getattr(current_workflow, property_name)
+            image = bpy.data.images.get(image)
+
+            # Display input image
+            if image:
+                row = box.row()
+
+                # Image name with link
+                input_name = row.operator("comfy.open_image_editor", text=image.name, emboss=False, icon="IMAGE_DATA")
+                input_name.name = image.name
+
+                # Delete input button
+                sub_row = row.row(align=True)
+                delete_input = sub_row.operator("comfy.delete_input", text="", icon="TRASH")
+                delete_input.name = image.name
+                delete_input.filepath = image.filepath
+                delete_input.workflow_property = property_name
+                delete_input.type = "image"
+
+                # Image preview
+                bpy.data.images[image.name].preview_ensure()
+                preview = box.row()
+                preview.template_icon(icon_value=bpy.data.images[image.name].preview.icon_id, scale=5)
+
         # Custom handling for seed inputs
         elif node["class_type"] == "BlenderInputSeed":
             row = layout.row(align=True)
