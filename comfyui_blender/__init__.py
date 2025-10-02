@@ -63,6 +63,7 @@ bl_info = {
     "category": "3D View",
 }
 
+
 def register():
     """Register add-on preferences, operators, and panels."""
 
@@ -118,6 +119,7 @@ def register():
     input_panel.register()
     output_panel.register()
     paint_panel.register()
+
 
 def unregister():
     """Unregister add-on preferences, operators, and panels."""

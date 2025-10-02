@@ -30,7 +30,7 @@
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.52",
+        "ver": "0.3.60",
         "Node name for S&R": "UNETLoader"
       },
       "widgets_values": [
@@ -77,6 +77,7 @@
           ]
         }
       ],
+      "title": "Prompts",
       "properties": {
         "cnr_id": "comfy-core",
         "ver": "0.3.52",
@@ -110,6 +111,7 @@
           ]
         }
       ],
+      "title": "Negative Prompt",
       "properties": {
         "cnr_id": "comfy-core",
         "ver": "0.3.52",
@@ -144,7 +146,7 @@
       ],
       "outputs": [
         {
-          "name": "CONDITIONING",
+          "name": "positive",
           "type": "CONDITIONING",
           "links": [
             33
@@ -216,7 +218,7 @@
         350
       ],
       "flags": {},
-      "order": 12,
+      "order": 18,
       "mode": 0,
       "inputs": [
         {
@@ -228,19 +230,13 @@
       ],
       "outputs": [
         {
-          "name": "IMAGE",
-          "type": "IMAGE",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
           "links": [
             35
           ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
         }
       ],
-      "title": "Image",
       "properties": {
         "cnr_id": "comfyui-blender",
         "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
@@ -251,8 +247,8 @@
         2,
         "image"
       ],
-      "color": "#432",
-      "bgcolor": "#653"
+      "color": "#322",
+      "bgcolor": "#533"
     },
     {
       "id": 8,
@@ -546,6 +542,7 @@
           ]
         }
       ],
+      "title": "Seed",
       "properties": {
         "cnr_id": "comfy-core",
         "ver": "0.3.59",
@@ -571,10 +568,10 @@
       "flags": {},
       "order": 11,
       "mode": 0,
-      "inputs": [
+      "inputs": [],
+      "outputs": [
         {
           "name": "group",
-          "shape": 7,
           "type": "GROUP",
           "link": 15
         }
@@ -883,7 +880,7 @@
           "name": "CONTROL_NET",
           "type": "CONTROL_NET",
           "links": [
-            30
+            18
           ]
         }
       ],
@@ -924,6 +921,11 @@
           "links": [
             20
           ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
         }
       ],
       "properties": {
@@ -966,8 +968,66 @@
       "widgets_values": [
         "blender"
       ],
-      "color": "#432",
-      "bgcolor": "#653"
+      "size": [
+        270,
+        262
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 12
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 13
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 23
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            24
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        391477711640611,
+        "randomize",
+        8,
+        1,
+        "ddim",
+        "kl_optimal",
+        1
+      ]
     }
   ],
   "links": [
@@ -977,7 +1037,7 @@
       0,
       2,
       0,
-      "CLIP"
+      "MODEL"
     ],
     [
       2,
@@ -1004,8 +1064,8 @@
       "INT"
     ],
     [
-      10,
       9,
+      5,
       0,
       5,
       1,
@@ -1045,7 +1105,7 @@
     ],
     [
       15,
-      14,
+      10,
       0,
       11,
       0,
@@ -1097,7 +1157,7 @@
       0,
       22,
       1,
-      "VAE"
+      "INT"
     ],
     [
       28,
