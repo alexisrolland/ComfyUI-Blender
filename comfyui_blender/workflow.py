@@ -135,7 +135,7 @@ def create_class_properties(inputs, keep_values=False):
             continue
 
         # Load 3D and Load image
-        if node["class_type"] in ("BlenderInputLoad3D", "BlenderInputLoadImage"):
+        if node["class_type"] in ("BlenderInputLoad3D", "BlenderInputLoadImage", "BlenderInputLoadMask"):
             properties[property_name] = StringProperty(name=name)
             continue
 

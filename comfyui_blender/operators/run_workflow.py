@@ -75,7 +75,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                 workflow[key]["inputs"]["unet_name"] = getattr(current_workflow, property_name)
 
             # Custom handling for load image input
-            elif node["class_type"] == "BlenderInputLoadImage":
+            elif node["class_type"] in ("BlenderInputLoadImage", "BlenderInputLoadMask"):
                 # Get add-on preferences
                 addon_prefs = context.preferences.addons["comfyui_blender"].preferences
                 inputs_folder = str(addon_prefs.inputs_folder)

@@ -28,7 +28,9 @@ from .operators import (
     render_lineart,
     render_view,
     run_workflow,
+    select_brush,
     select_folder,
+    send_to_input,
     set_camera_resolution,
     show_connection_menu,
     show_error_popup,
@@ -41,6 +43,7 @@ from .panels import (
     file_browser_panel,
     input_panel,
     output_panel,
+    paint_panel,
     workflow_panel
 )
 from . import hooks
@@ -98,7 +101,9 @@ def register():
     render_lineart.register()
     render_view.register()
     run_workflow.register()
+    select_brush.register()
     select_folder.register()
+    send_to_input.register()
     set_camera_resolution.register()
     show_connection_menu.register()
     show_error_popup.register()
@@ -112,6 +117,7 @@ def register():
     workflow_panel.register()
     input_panel.register()
     output_panel.register()
+    paint_panel.register()
 
 def unregister():
     """Unregister add-on preferences, operators, and panels."""
@@ -154,7 +160,9 @@ def unregister():
     render_lineart.unregister()
     render_view.unregister()
     run_workflow.unregister()
+    select_brush.unregister()
     select_folder.unregister()
+    send_to_input.unregister()
     set_camera_resolution.unregister()
     show_connection_menu.unregister()
     show_error_popup.unregister()
@@ -168,3 +176,4 @@ def unregister():
     workflow_panel.unregister()
     input_panel.unregister()
     output_panel.unregister()
+    paint_panel.unregister()
