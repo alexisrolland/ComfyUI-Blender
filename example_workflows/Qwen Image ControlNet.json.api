@@ -1,136 +1,36 @@
 {
   "1": {
     "inputs": {
-      "unet_name": "alibaba\\qwen_image_fp8_e4m3fn.safetensors",
-      "weight_dtype": "default"
-    },
-    "class_type": "UNETLoader",
-    "_meta": {
-      "title": "Load Diffusion Model"
-    }
-  },
-  "2": {
-    "inputs": {
-      "lora_name": "alibaba\\Qwen-Image-Lightning-8steps-V1.0.safetensors",
-      "strength_model": 1,
-      "model": [
-        "1",
-        0
-      ]
+      "clip_name": "alibaba\\qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "type": "qwen_image",
+      "device": "default"
     },
     "class_type": "LoraLoaderModelOnly",
     "_meta": {
       "title": "LoraLoaderModelOnly"
     }
   },
-  "3": {
+  "2": {
     "inputs": {
-      "shift": 3.1,
-      "model": [
-        "2",
+      "text": [
+        "21",
+        0
+      ],
+      "clip": [
+        "1",
         0
       ]
-    },
-    "class_type": "ModelSamplingAuraFlow",
-    "_meta": {
-      "title": "ModelSamplingAuraFlow"
-    }
-  },
-  "4": {
-    "inputs": {
-      "seed": [
-        "23",
-        0
-      ],
-      "steps": 8,
-      "cfg": 1,
-      "sampler_name": "ddim",
-      "scheduler": "kl_optimal",
-      "denoise": 1,
-      "model": [
-        "3",
-        0
-      ],
-      "positive": [
-        "15",
-        0
-      ],
-      "negative": [
-        "15",
-        1
-      ],
-      "latent_image": [
-        "19",
-        0
-      ]
-    },
-    "class_type": "KSampler",
-    "_meta": {
-      "title": "KSampler"
-    }
-  },
-  "5": {
-    "inputs": {
-      "clip_name": "alibaba\\qwen_2.5_vl_7b_fp8_scaled.safetensors",
-      "type": "qwen_image",
-      "device": "default"
     },
     "class_type": "CLIPLoader",
     "_meta": {
       "title": "Load CLIP"
     }
   },
-  "6": {
+  "4": {
     "inputs": {
-      "order": 2,
-      "show_title": false,
-      "compact": false
-    },
-    "class_type": "BlenderInputGroup",
-    "_meta": {
-      "title": "Prompts"
-    }
-  },
-  "7": {
-    "inputs": {
-      "value": "High quality CG render of a glass cube containing magma. The cube has a metallic frame made of dark iron with rivets.",
-      "order": 1,
-      "default": "High quality CG render of a glass cube containing magma. The cube has a metallic frame made of dark iron with rivets.",
-      "format_path": false,
-      "group": [
-        "6",
-        0
-      ]
-    },
-    "class_type": "BlenderInputString",
-    "_meta": {
-      "title": "Prompt"
-    }
-  },
-  "8": {
-    "inputs": {
-      "value": "",
-      "order": 2,
-      "default": "",
-      "format_path": false,
-      "group": [
-        "6",
-        0
-      ]
-    },
-    "class_type": "BlenderInputString",
-    "_meta": {
-      "title": "Negative Prompt"
-    }
-  },
-  "9": {
-    "inputs": {
-      "text": [
-        "7",
-        0
-      ],
-      "clip": [
-        "5",
+      "shift": 3.1,
+      "model": [
+        "19",
         0
       ]
     },
@@ -139,14 +39,14 @@
       "title": "CLIP Text Encode (Prompt)"
     }
   },
-  "10": {
+  "5": {
     "inputs": {
-      "text": [
+      "width": [
         "8",
         0
       ],
-      "clip": [
-        "5",
+      "height": [
+        "9",
         0
       ]
     },
@@ -155,32 +55,11 @@
       "title": "CLIP Text Encode (Prompt)"
     }
   },
-  "11": {
+  "6": {
     "inputs": {
-      "control_net_name": "instantx\\Qwen-Image-ControlNet-Union.safetensors"
-    },
-    "class_type": "ControlNetLoader",
-    "_meta": {
-      "title": "Load ControlNet Model"
-    }
-  },
-  "12": {
-    "inputs": {
-      "order": 4,
-      "show_title": true,
-      "compact": true
-    },
-    "class_type": "BlenderInputGroup",
-    "_meta": {
-      "title": "ControlNet"
-    }
-  },
-  "13": {
-    "inputs": {
-      "image": "blender_depth_map0001.png",
-      "order": 1,
-      "group": [
-        "12",
+      "filename_prefix": "blender",
+      "images": [
+        "22",
         0
       ]
     },
@@ -189,15 +68,10 @@
       "title": "Image"
     }
   },
-  "14": {
+  "7": {
     "inputs": {
-      "value": 1,
-      "order": 2,
-      "default": 1,
-      "min": -2147483648,
-      "max": 2147483647,
-      "group": [
-        "12",
+      "conditioning": [
+        "2",
         0
       ]
     },
@@ -206,7 +80,7 @@
       "title": "Strength"
     }
   },
-  "15": {
+  "8": {
     "inputs": {
       "strength": [
         "14",
@@ -262,7 +136,7 @@
       "camera_width": true,
       "camera_height": false,
       "group": [
-        "16",
+        "10",
         0
       ]
     },
@@ -271,7 +145,7 @@
       "title": "Width"
     }
   },
-  "18": {
+  "9": {
     "inputs": {
       "value": 1328,
       "order": 2,
@@ -282,7 +156,7 @@
       "camera_width": false,
       "camera_height": true,
       "group": [
-        "16",
+        "10",
         0
       ]
     },
@@ -291,10 +165,26 @@
       "title": "Height"
     }
   },
-  "19": {
+  "10": {
     "inputs": {
-      "width": [
-        "17",
+      "order": 3,
+      "show_title": true,
+      "compact": true
+    },
+    "class_type": "BlenderInputGroup",
+    "_meta": {
+      "title": "Resolution"
+    }
+  },
+  "11": {
+    "inputs": {
+      "value": 1,
+      "order": 3,
+      "default": 1,
+      "min": 0.1,
+      "max": 1,
+      "group": [
+        "14",
         0
       ],
       "height": [
@@ -308,23 +198,122 @@
       "title": "EmptySD3LatentImage"
     }
   },
+  "12": {
+    "inputs": {
+      "value": 0,
+      "order": 1,
+      "default": 0,
+      "min": 0,
+      "max": 2147483647,
+      "step": 1
+    },
+    "class_type": "BlenderInputSeed",
+    "_meta": {
+      "title": "Seed"
+    }
+  },
+  "14": {
+    "inputs": {
+      "order": 4,
+      "show_title": true,
+      "compact": false
+    },
+    "class_type": "BlenderInputGroup",
+    "_meta": {
+      "title": "ControlNet"
+    }
+  },
+  "17": {
+    "inputs": {
+      "unet_name": "alibaba\\qwen_image_fp8_e4m3fn.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "18": {
+    "inputs": {
+      "image": "blender_depth_map0001.png",
+      "order": 2,
+      "group": [
+        "14",
+        0
+      ]
+    },
+    "class_type": "BlenderInputLoadImage",
+    "_meta": {
+      "title": "Image"
+    }
+  },
+  "19": {
+    "inputs": {
+      "lora_name": "alibaba\\Qwen-Image-Lightning-4steps-V1.0.safetensors",
+      "strength_model": 1,
+      "model": [
+        "17",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
   "20": {
     "inputs": {
-      "vae_name": "alibaba\\qwen_image_vae.safetensors"
+      "seed": [
+        "12",
+        0
+      ],
+      "steps": 4,
+      "cfg": 1,
+      "sampler_name": "res_multistep",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "4",
+        0
+      ],
+      "positive": [
+        "27",
+        0
+      ],
+      "negative": [
+        "27",
+        1
+      ],
+      "latent_image": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "21": {
+    "inputs": {
+      "value": "photograph of a wooden treasure chest made of oak on a black background, featuring ultra-detailed textures and material for physically based rendering. The item is showcased with state-of-the-art shaders, realistic lighting, and intricate details that emphasize depth and material quality. The style is hyper-realistic, immersive, and visually stunning, capturing the essence of next-gen gaming 3D graphics.",
+      "order": 2,
+      "default": "",
+      "format_path": false
     },
     "class_type": "VAELoader",
     "_meta": {
       "title": "Load VAE"
     }
   },
-  "21": {
+  "22": {
     "inputs": {
       "samples": [
-        "4",
+        "20",
         0
       ],
       "vae": [
-        "20",
+        "24",
         0
       ]
     },
@@ -333,31 +322,56 @@
       "title": "VAE Decode"
     }
   },
+  "24": {
+    "inputs": {
+      "vae_name": "alibaba\\qwen_image_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
   "22": {
     "inputs": {
-      "filename_prefix": "blender",
-      "images": [
-        "21",
+      "control_net_name": "instantx\\Qwen-Image-ControlNet-Union.safetensors"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
+  },
+  "27": {
+    "inputs": {
+      "strength": [
+        "11",
+        0
+      ],
+      "start_percent": 0,
+      "end_percent": 1,
+      "positive": [
+        "2",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "control_net": [
+        "25",
+        0
+      ],
+      "image": [
+        "18",
+        0
+      ],
+      "vae": [
+        "24",
         0
       ]
     },
-    "class_type": "BlenderOutputSaveImage",
+    "class_type": "ControlNetApplyAdvanced",
     "_meta": {
-      "title": "Save Image"
-    }
-  },
-  "23": {
-    "inputs": {
-      "value": 0,
-      "order": 1,
-      "default": 0,
-      "min": -2147483648,
-      "max": 2147483647,
-      "step": 1
-    },
-    "class_type": "BlenderInputSeed",
-    "_meta": {
-      "title": "Seed"
+      "title": "Apply ControlNet"
     }
   }
 }
