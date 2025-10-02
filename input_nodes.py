@@ -230,6 +230,7 @@ class BlenderInputLoadImage(LoadImage):
     """Node used by ComfyUI Blender add-on to input an image in a workflow."""
     CATEGORY = "blender"
     FUNCTION = "execute"
+    RETURN_TYPES = ("IMAGE",)
 
     @classmethod
     def INPUT_TYPES(s):
@@ -243,7 +244,9 @@ class BlenderInputLoadImage(LoadImage):
         return INPUT_TYPES
     
     def execute(self, image, order, **kwargs):
-        return super().load_image(image)
+        result = super().load_image(image)
+        result = result[:-1]  # Remove the mask output from the tuple
+        return result
 
     @classmethod
     def IS_CHANGED(s, image, order, **kwargs):
@@ -270,6 +273,33 @@ class BlenderInputLoadLora(LoraLoaderModelOnly):
     def execute(self, model, lora_name, strength_model, order: int, default: str, **kwargs):
         lora_name = str(os.path.normpath(lora_name))
         return super().load_lora_model_only(model, lora_name, strength_model)
+
+
+class BlenderInputLoadMask(LoadImage):
+    """Node used by ComfyUI Blender add-on to input a mask in a workflow."""
+    CATEGORY = "blender"
+    FUNCTION = "execute"
+    RETURN_TYPES = ("MASK",)
+
+    @classmethod
+    def INPUT_TYPES(s):
+        INPUT_TYPES = super().INPUT_TYPES()
+        INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
+
+        # Create optional input key
+        if not INPUT_TYPES.get("optional", None):
+            INPUT_TYPES["optional"] = {}
+        INPUT_TYPES["optional"]["group"] = ("GROUP", {"forceInput":True})
+        return INPUT_TYPES
+    
+    def execute(self, image, order, **kwargs):
+        result = super().load_image(image)
+        result = result[1:]  # Remove the image output from the tuple
+        return result
+
+    @classmethod
+    def IS_CHANGED(s, image, order, **kwargs):
+        return super().IS_CHANGED(image)
 
 
 class BlenderInputSeed(Int):
