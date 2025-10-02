@@ -109,8 +109,7 @@ class ComfyBlenderOperatorSendImageToInput(bpy.types.Operator):
             is_used = False  # Flag to check if the image is used in any other input
             for input in possible_inputs:
                 if input[0] != self.workflow_property:
-                    other_input = getattr(current_workflow, input[0])
-                    if bpy.data.images.get(other_input) == image:
+                    if getattr(current_workflow, input[0]) == image.name:
                         is_used = True
                         break
             if not is_used:
