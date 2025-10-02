@@ -215,7 +215,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 preview = box.row()
                 preview.template_icon(icon_value=bpy.data.images[image.name].preview.icon_id, scale=5)
 
-        # Custom handling for image inputs
+        # Custom handling for mask inputs
+        # Mask inputs are images with alpha channel
         elif node["class_type"] == "BlenderInputLoadMask":
             # Add box only for main layout
             box = layout.box() if is_root else layout
