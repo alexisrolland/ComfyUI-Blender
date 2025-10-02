@@ -29,9 +29,6 @@ class ComfyBlenderOperatorSelectBrush(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
-        # Set image editor to paint mode
-        context.space_data.ui_mode = "PAINT"
-
         # Get brush or create it if it doesn't exist
         brush_name = "Mask Brush"
         if brush_name not in bpy.data.brushes:
@@ -67,16 +64,19 @@ class ComfyBlenderOperatorSelectBrush(bpy.types.Operator):
             asset_library_identifier="",
             relative_asset_identifier=os.path.join("Brush", f"{brush_name}")
         )
+
+        # Switch image editor to paint mode
+        context.space_data.ui_mode = "PAINT"
         return {'FINISHED'}
 
 
 def register():
     """Register the operator."""
 
-    bpy.utils.register_class(ComfyBlenderOperatorSelectMaskBrush)
+    bpy.utils.register_class(ComfyBlenderOperatorSelectBrush)
 
 
 def unregister():
     """Unregister the operator."""
 
-    bpy.utils.unregister_class(ComfyBlenderOperatorSelectMaskBrush)
+    bpy.utils.unregister_class(ComfyBlenderOperatorSelectBrush)
