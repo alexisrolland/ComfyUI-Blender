@@ -100,11 +100,21 @@ class ComfyBlenderOperatorSendImageToInput(bpy.types.Operator):
             return {'CANCELLED'}
 
         # Delete the previous input image from Blender's data
+        # Only if the image is not used in any of the workflow inputs
         current_workflow = scene.current_workflow
         previous_input = getattr(current_workflow, self.workflow_property)
         if bpy.data.images.get(previous_input):
             image = bpy.data.images.get(previous_input)
-            bpy.data.images.remove(image)
+            possible_inputs = get_target_inputs(self, context)
+            is_used = False  # Flag to check if the image is used in any other input
+            for input in possible_inputs:
+                if input[0] != self.workflow_property:
+                    other_input = getattr(current_workflow, input[0])
+                    if bpy.data.images.get(other_input) == image:
+                        is_used = True
+                        break
+            if not is_used:
+                bpy.data.images.remove(image)
 
         # Build input file paths
         inputs_folder = str(addon_prefs.inputs_folder)
