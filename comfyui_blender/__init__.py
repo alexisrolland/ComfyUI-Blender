@@ -49,6 +49,7 @@ from .panels import (
 from . import hooks
 from . import settings
 from .connection import disconnect
+from .connection_krita import disconnect as disconnect_krita
 
 
 bl_info = {
@@ -124,6 +125,7 @@ def unregister():
 
     # Ensure WebSocket connection is closed and listening thread is stopped
     disconnect()
+    disconnect_krita()
 
     # Hooks
     hooks.register()

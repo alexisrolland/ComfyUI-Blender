@@ -14,6 +14,7 @@ from bpy.props import (
 )
 
 from .connection import disconnect
+from .connection_krita import disconnect as disconnect_krita
 from .workflow import get_workflow_list, register_workflow_class
 
 
@@ -82,6 +83,7 @@ def update_server_address(self, context):
 
     # Reset current connection
     disconnect()
+    disconnect_krita()
 
     # Ensure the server address ends without a slash.
     while self.server_address.endswith("/"):
@@ -183,6 +185,13 @@ class ProjectSettingsPropertyGroup(bpy.types.PropertyGroup):
         type=OutputPropertyGroup
     )
 
+    # Outputs from Krita
+    krita_outputs_collection: CollectionProperty(
+        name="Krita Outputs Collection",
+        description="Collection of generated outputs from Krita.",
+        type=OutputPropertyGroup
+    )
+
     use_blend_file_location: BoolProperty(
         name="Use .blend File Location",
         description="Save workflows, inputs and outputs in the same folder as the current .blend file instead of the add-on data folder.",
@@ -270,6 +279,7 @@ class AddonPreferences(bpy.types.AddonPreferences):
         default=False,
         update=toggle_debug_mode
     )
+
     # Connection status
     # This is used to indicate if the Blender add-on is connected to the ComfyUI server via WebSocket
     connection_status: BoolProperty(
@@ -367,6 +377,29 @@ class AddonPreferences(bpy.types.AddonPreferences):
         items=[("list", "List", "Display outputs in a list"), ("thumbnail", "Thumbnail", "Display outputs as thumbnails")],
     )
 
+    # Synchronize with Krita
+    sync_krita: BoolProperty(
+        name="Synchronize with Krita AI Diffusion",
+        description="Activate the synchronization of outputs with Krita AI Diffusion.",
+        default=False
+    )
+
+    # Client Id used to identify a Krita AI diffusion client
+    # This is used to connect to the ComfyUI server via WebSocket
+    krita_client_id: StringProperty(
+        name="Krita Client Id",
+        description="Unique identifier of Krita AI diffusion client."
+    )
+
+    # Krita connection status
+    # This is used to indicate if the Blender add-on is connected to the ComfyUI server via WebSocket
+    # In particular if the add-on listen to outputs from the Krita AI Diffusion client
+    krita_connection_status: BoolProperty(
+        name="Krita Connection Status",
+        description="Indicate if the Blender add-on is listening to the generations from the Krita AI Diffusion client.",
+        default=False
+    )
+
     def draw(self, context):
         """Draw the panel."""
 
@@ -440,6 +473,24 @@ class AddonPreferences(bpy.types.AddonPreferences):
             if not use_file_loc:
                 select_workflows_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
                 select_workflows_folder.target_property = "workflows_folder"
+            
+            # Krita
+            layout.label(text="Krita:")
+
+            # Sync with Krita
+            layout.prop(self, "sync_krita")
+            if self.sync_krita:
+                row = layout.row()
+                row.prop(self, "krita_client_id")
+
+                # Buttons to connect to server
+                if self.krita_connection_status:
+                    disconnect = row.operator("comfy.show_connection_menu", text="Connected", icon="INTERNET")
+                    disconnect.client_id = self.krita_client_id
+                else:
+                    connect = row.operator("comfy.show_connection_menu", text="Disconnected", icon="INTERNET_OFFLINE")
+                    connect.client_id = self.krita_client_id
+
         else:
             col = layout.column(align=True)
             col.label(text=f"ComfyUI Blender requires Blender 4.5 or higher.")
@@ -495,5 +546,3 @@ def unregister():
     # Unregister operators
     bpy.utils.unregister_class(RemoveHttpHeader)
     bpy.utils.unregister_class(AddHttpHeader)
-    
-    

@@ -5,6 +5,7 @@ import bpy
 from bpy.app.handlers import persistent
 
 from .connection import disconnect
+from .connection_krita import disconnect as disconnect_krita
 
 log = logging.getLogger("comfyui_blender")
 
@@ -15,6 +16,7 @@ def load_pre_handler(scene, depsgraph):
 
     # Ensure previous connection is closed and listening thread is stopped
     disconnect()
+    disconnect_krita()
 
 
 @persistent
@@ -61,6 +63,9 @@ def unregister():
     """Unregister handlers."""
 
     if disconnect in bpy.app.handlers.load_pre:
+        bpy.app.handlers.load_pre.remove(load_pre_handler)
+    
+    if disconnect_krita in bpy.app.handlers.load_pre:
         bpy.app.handlers.load_pre.remove(load_pre_handler)
 
     if load_post_handler in bpy.app.handlers.load_post:

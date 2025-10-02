@@ -30,9 +30,11 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
         # Buttons to connect to server
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         if addon_prefs.connection_status:
-            row.operator("comfy.show_connection_menu", text="Connected", icon="INTERNET")
+            disconnect = row.operator("comfy.show_connection_menu", text="Connected", icon="INTERNET")
+            disconnect.client_id = addon_prefs.client_id
         else:
-            row.operator("comfy.show_connection_menu", text="Disconnected", icon="INTERNET_OFFLINE")
+            connect = row.operator("comfy.show_connection_menu", text="Disconnected", icon="INTERNET_OFFLINE")
+            connect.client_id = addon_prefs.client_id
 
         # Buttons to open preferences
         row.operator("preferences.addon_show", text="", icon="PREFERENCES").module = "comfyui_blender"
