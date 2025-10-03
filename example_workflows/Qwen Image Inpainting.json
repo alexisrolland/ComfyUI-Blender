@@ -2,7 +2,7 @@
   "id": "52eee213-7c50-44fa-a502-d5a1443fc81a",
   "revision": 0,
   "last_node_id": 20,
-  "last_link_id": 26,
+  "last_link_id": 27,
   "nodes": [
     {
       "id": 1,
@@ -324,50 +324,6 @@
       "widgets_values": []
     },
     {
-      "id": 15,
-      "type": "BlenderInputSeed",
-      "pos": [
-        1030,
-        800
-      ],
-      "size": [
-        270,
-        178
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "INT",
-          "type": "INT",
-          "links": null
-        }
-      ],
-      "title": "Seed",
-      "properties": {
-        "Node name for S&R": "BlenderInputSeed"
-      },
-      "widgets_values": [
-        0,
-        1,
-        0,
-        0,
-        2147483647,
-        1
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 10,
       "type": "ControlNetInpaintingAliMamaApply",
       "pos": [
@@ -533,7 +489,7 @@
         60
       ],
       "flags": {},
-      "order": 5,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -568,7 +524,7 @@
         318
       ],
       "flags": {},
-      "order": 6,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -655,7 +611,7 @@
         318
       ],
       "flags": {},
-      "order": 7,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -784,7 +740,7 @@
         240
       ],
       "flags": {},
-      "order": 8,
+      "order": 7,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -829,6 +785,14 @@
           "name": "latent_image",
           "type": "LATENT",
           "link": 19
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": 27
         }
       ],
       "outputs": [
@@ -854,6 +818,52 @@
         "simple",
         1
       ]
+    },
+    {
+      "id": 15,
+      "type": "BlenderInputSeed",
+      "pos": [
+        1030,
+        800
+      ],
+      "size": [
+        270,
+        178
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            27
+          ]
+        }
+      ],
+      "title": "Seed",
+      "properties": {
+        "Node name for S&R": "BlenderInputSeed"
+      },
+      "widgets_values": [
+        0,
+        1,
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
     }
   ],
   "links": [
@@ -1056,19 +1066,31 @@
       19,
       0,
       "IMAGE"
+    ],
+    [
+      27,
+      15,
+      0,
+      16,
+      4,
+      "INT"
     ]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.5731555463737223,
+      "scale": 0.6304711010110947,
       "offset": [
-        506.0956950392974,
-        177.38291981025702
+        479.4158257725072,
+        98.56561005027146
       ]
     },
-    "frontendVersion": "1.26.13"
+    "frontendVersion": "1.26.13",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
   },
   "version": 0.4
 }
