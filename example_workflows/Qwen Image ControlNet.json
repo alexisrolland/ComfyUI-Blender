@@ -30,7 +30,7 @@
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.60",
+        "ver": "0.3.52",
         "Node name for S&R": "UNETLoader"
       },
       "widgets_values": [
@@ -77,7 +77,6 @@
           ]
         }
       ],
-      "title": "Prompts",
       "properties": {
         "cnr_id": "comfy-core",
         "ver": "0.3.52",
@@ -111,7 +110,6 @@
           ]
         }
       ],
-      "title": "Negative Prompt",
       "properties": {
         "cnr_id": "comfy-core",
         "ver": "0.3.52",
@@ -146,7 +144,7 @@
       ],
       "outputs": [
         {
-          "name": "positive",
+          "name": "CONDITIONING",
           "type": "CONDITIONING",
           "links": [
             33
@@ -193,9 +191,9 @@
       ],
       "title": "Prompt",
       "properties": {
+        "Node name for S&R": "BlenderInputStringMultiline",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
-        "Node name for S&R": "BlenderInputStringMultiline"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
       },
       "widgets_values": [
         "photograph of a wooden treasure chest made of oak on a black background, featuring ultra-detailed textures and material for physically based rendering. The item is showcased with state-of-the-art shaders, realistic lighting, and intricate details that emphasize depth and material quality. The style is hyper-realistic, immersive, and visually stunning, capturing the essence of next-gen gaming 3D graphics.",
@@ -205,50 +203,6 @@
       ],
       "color": "#432",
       "bgcolor": "#653"
-    },
-    {
-      "id": 18,
-      "type": "BlenderInputLoadImage",
-      "pos": [
-        2180,
-        1370
-      ],
-      "size": [
-        210,
-        350
-      ],
-      "flags": {},
-      "order": 18,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": 18
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            35
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderInputLoadImage"
-      },
-      "widgets_values": [
-        "blender_depth_map0001.png",
-        2,
-        "image"
-      ],
-      "color": "#322",
-      "bgcolor": "#533"
     },
     {
       "id": 8,
@@ -283,9 +237,9 @@
       ],
       "title": "Width",
       "properties": {
+        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderInputInt"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
         1328,
@@ -333,9 +287,9 @@
       ],
       "title": "Height",
       "properties": {
+        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderInputInt"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
         1328,
@@ -383,9 +337,9 @@
       ],
       "title": "Seed",
       "properties": {
+        "Node name for S&R": "BlenderInputSeed",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
-        "Node name for S&R": "BlenderInputSeed"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
       },
       "widgets_values": [
         0,
@@ -425,9 +379,9 @@
       ],
       "title": "ControlNet",
       "properties": {
+        "Node name for S&R": "BlenderInputGroup",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderInputGroup"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
         4,
@@ -464,9 +418,9 @@
       ],
       "title": "Resolution",
       "properties": {
+        "Node name for S&R": "BlenderInputGroup",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderInputGroup"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
         3,
@@ -542,7 +496,6 @@
           ]
         }
       ],
-      "title": "Seed",
       "properties": {
         "cnr_id": "comfy-core",
         "ver": "0.3.59",
@@ -568,10 +521,10 @@
       "flags": {},
       "order": 11,
       "mode": 0,
-      "inputs": [],
-      "outputs": [
+      "inputs": [
         {
           "name": "group",
+          "shape": 7,
           "type": "GROUP",
           "link": 15
         }
@@ -587,9 +540,9 @@
       ],
       "title": "Strength",
       "properties": {
+        "Node name for S&R": "BlenderInputFloat",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderInputFloat"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
         1,
@@ -817,7 +770,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        403794437611540,
+        767770585844765,
         "randomize",
         4,
         1,
@@ -880,7 +833,7 @@
           "name": "CONTROL_NET",
           "type": "CONTROL_NET",
           "links": [
-            18
+            30
           ]
         }
       ],
@@ -921,11 +874,6 @@
           "links": [
             20
           ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
         }
       ],
       "properties": {
@@ -961,73 +909,65 @@
       "outputs": [],
       "title": "Save Image",
       "properties": {
+        "Node name for S&R": "BlenderOutputSaveImage",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderOutputSaveImage"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
         "blender"
       ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 18,
+      "type": "BlenderInputLoadImage",
+      "pos": [
+        2180,
+        1370
+      ],
       "size": [
-        270,
-        262
+        210,
+        350
       ],
       "flags": {},
-      "order": 21,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
-          "name": "model",
-          "type": "MODEL",
-          "link": 3
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 12
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 13
-        },
-        {
-          "name": "latent_image",
-          "type": "LATENT",
-          "link": 23
-        },
-        {
-          "name": "seed",
-          "type": "INT",
-          "widget": {
-            "name": "seed"
-          },
-          "link": 27
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": 18
         }
       ],
       "outputs": [
         {
-          "name": "LATENT",
-          "type": "LATENT",
+          "name": "IMAGE",
+          "type": "IMAGE",
           "links": [
-            24
+            35
           ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
         }
       ],
+      "title": "Image",
       "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.60",
-        "Node name for S&R": "KSampler"
+        "Node name for S&R": "BlenderInputLoadImage",
+        "cnr_id": "comfyui-blender",
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
-        391477711640611,
-        "randomize",
-        8,
-        1,
-        "ddim",
-        "kl_optimal",
-        1
-      ]
+        "example.png",
+        2,
+        "image"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
     }
   ],
   "links": [
@@ -1037,7 +977,7 @@
       0,
       2,
       0,
-      "MODEL"
+      "CLIP"
     ],
     [
       2,
@@ -1064,8 +1004,8 @@
       "INT"
     ],
     [
+      10,
       9,
-      5,
       0,
       5,
       1,
@@ -1105,7 +1045,7 @@
     ],
     [
       15,
-      10,
+      14,
       0,
       11,
       0,
@@ -1157,7 +1097,7 @@
       0,
       22,
       1,
-      "INT"
+      "VAE"
     ],
     [
       28,
@@ -1238,11 +1178,11 @@
     "ds": {
       "scale": 0.7627768444385838,
       "offset": [
-        -1413.1413472018655,
-        -716.9201099703884
+        -1140.4534680186794,
+        -678.9011268150401
       ]
     },
-    "frontendVersion": "1.25.11"
+    "frontendVersion": "1.26.13"
   },
   "version": 0.4
 }

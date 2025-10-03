@@ -5,9 +5,9 @@
       "type": "qwen_image",
       "device": "default"
     },
-    "class_type": "LoraLoaderModelOnly",
+    "class_type": "CLIPLoader",
     "_meta": {
-      "title": "LoraLoaderModelOnly"
+      "title": "Load CLIP"
     }
   },
   "2": {
@@ -21,9 +21,9 @@
         0
       ]
     },
-    "class_type": "CLIPLoader",
+    "class_type": "CLIPTextEncode",
     "_meta": {
-      "title": "Load CLIP"
+      "title": "CLIP Text Encode (Prompt)"
     }
   },
   "4": {
@@ -34,9 +34,9 @@
         0
       ]
     },
-    "class_type": "CLIPTextEncode",
+    "class_type": "ModelSamplingAuraFlow",
     "_meta": {
-      "title": "CLIP Text Encode (Prompt)"
+      "title": "ModelSamplingAuraFlow"
     }
   },
   "5": {
@@ -48,11 +48,12 @@
       "height": [
         "9",
         0
-      ]
+      ],
+      "batch_size": 1
     },
-    "class_type": "CLIPTextEncode",
+    "class_type": "EmptySD3LatentImage",
     "_meta": {
-      "title": "CLIP Text Encode (Prompt)"
+      "title": "EmptySD3LatentImage"
     }
   },
   "6": {
@@ -63,9 +64,9 @@
         0
       ]
     },
-    "class_type": "BlenderInputLoadImage",
+    "class_type": "BlenderOutputSaveImage",
     "_meta": {
-      "title": "Image"
+      "title": "Save Image"
     }
   },
   "7": {
@@ -75,63 +76,18 @@
         0
       ]
     },
-    "class_type": "BlenderInputFloat",
+    "class_type": "ConditioningZeroOut",
     "_meta": {
-      "title": "Strength"
+      "title": "ConditioningZeroOut"
     }
   },
   "8": {
     "inputs": {
-      "strength": [
-        "14",
-        0
-      ],
-      "start_percent": 0,
-      "end_percent": 1,
-      "positive": [
-        "9",
-        0
-      ],
-      "negative": [
-        "10",
-        0
-      ],
-      "control_net": [
-        "11",
-        0
-      ],
-      "image": [
-        "13",
-        0
-      ],
-      "vae": [
-        "20",
-        0
-      ]
-    },
-    "class_type": "ControlNetApplyAdvanced",
-    "_meta": {
-      "title": "Apply ControlNet"
-    }
-  },
-  "16": {
-    "inputs": {
-      "order": 3,
-      "show_title": true,
-      "compact": true
-    },
-    "class_type": "BlenderInputGroup",
-    "_meta": {
-      "title": "Resolution"
-    }
-  },
-  "17": {
-    "inputs": {
       "value": 1328,
       "order": 1,
       "default": 1328,
-      "min": -2147483648,
-      "max": 2147483647,
+      "min": 928,
+      "max": 1664,
       "step": 1,
       "camera_width": true,
       "camera_height": false,
@@ -150,8 +106,8 @@
       "value": 1328,
       "order": 2,
       "default": 1328,
-      "min": -2147483648,
-      "max": 2147483647,
+      "min": 928,
+      "max": 1664,
       "step": 1,
       "camera_width": false,
       "camera_height": true,
@@ -186,16 +142,11 @@
       "group": [
         "14",
         0
-      ],
-      "height": [
-        "18",
-        0
-      ],
-      "batch_size": 1
+      ]
     },
-    "class_type": "EmptySD3LatentImage",
+    "class_type": "BlenderInputFloat",
     "_meta": {
-      "title": "EmptySD3LatentImage"
+      "title": "Strength"
     }
   },
   "12": {
@@ -235,7 +186,7 @@
   },
   "18": {
     "inputs": {
-      "image": "blender_depth_map0001.png",
+      "image": "example.png",
       "order": 2,
       "group": [
         "14",
@@ -301,9 +252,9 @@
       "default": "",
       "format_path": false
     },
-    "class_type": "VAELoader",
+    "class_type": "BlenderInputStringMultiline",
     "_meta": {
-      "title": "Load VAE"
+      "title": "Prompt"
     }
   },
   "22": {
@@ -331,7 +282,7 @@
       "title": "Load VAE"
     }
   },
-  "22": {
+  "25": {
     "inputs": {
       "control_net_name": "instantx\\Qwen-Image-ControlNet-Union.safetensors"
     },
