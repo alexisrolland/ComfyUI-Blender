@@ -1,6 +1,7 @@
 """Context menu to provide custom actions for outputs."""
 import bpy
 
+from ..workflow import get_current_workflow_target_inputs
 
 class ComfyBlenderOutputMenu(bpy.types.Menu):
     """Context menu to provide custom actions for outputs."""
@@ -34,6 +35,15 @@ class ComfyBlenderOutputMenu(bpy.types.Menu):
         import_workflow = row.operator("comfy.import_workflow", text="Import Workflow", icon="NODETREE")
         import_workflow.filepath = output_filepath
         import_workflow.invoke_default = False
+
+        # Send to input
+        layout.separator(type="LINE")
+        layout.label(text="Send to Input", icon="IMAGE_DATA")
+        target_inputs = get_current_workflow_target_inputs(self, context)
+        for input in target_inputs:
+            send_to_input = layout.operator("comfy.send_to_input", text=input[1])  # input name
+            send_to_input.name = output_name
+            send_to_input.workflow_property = input[0]  # input property_name
 
 
 def register():

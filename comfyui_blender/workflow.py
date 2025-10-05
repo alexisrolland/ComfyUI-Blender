@@ -45,7 +45,8 @@ def check_workflow_file_exists(new_workflow_data, workflows_folder):
             if new_hash == existing_hash:
                 return filename
 
-def create_class_properties(inputs, keep_values=False):
+
+def create_class_properties(inputs):
     """Create properties for each input and output of the workflow."""
 
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
@@ -303,6 +304,7 @@ def create_class_properties(inputs, keep_values=False):
             continue
     return properties
 
+
 def create_workflow_class(class_name, properties):
     """Create a new PropertyGroup class for a workflow."""
 
@@ -316,6 +318,7 @@ def create_workflow_class(class_name, properties):
     # Manually add the annotations attribute
     new_class.__annotations__ = {prop_name: properties[prop_name] for prop_name in properties}
     return new_class
+
 
 def extract_workflow_from_metadata(filepath):
     """Extract workflow from the metadata of a file."""
@@ -404,6 +407,40 @@ def extract_workflow_from_metadata(filepath):
     else:
         return None
 
+
+def get_current_workflow_target_inputs(self, context):
+    """
+    Function to get the list of image/mask inputs from the current workflow.
+    This list is typically used to send image/mask to the target inputs.
+    """
+
+    # List of inputs to send the image to
+    target_inputs = []
+    addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+    if hasattr(context.scene, "current_workflow"):
+        # Get the selected workflow
+        workflows_folder = str(addon_prefs.workflows_folder)
+        workflow_filename = str(addon_prefs.workflow)
+        workflow_path = os.path.join(workflows_folder, workflow_filename)
+
+        # Load the workflow JSON file
+        if os.path.exists(workflow_path) and os.path.isfile(workflow_path):
+            with open(workflow_path, "r",  encoding="utf-8") as file:
+                workflow = json.load(file)
+
+            # Get sorted inputs from the workflow
+            inputs = parse_workflow_for_inputs(workflow)
+
+            # Get workflow inputs of type load image or load mask
+            for key, node in inputs.items():
+                if node["class_type"] in ("BlenderInputLoadImage", "BlenderInputLoadMask"):
+                    property_name = f"node_{key}"
+                    metadata = node.get("_meta", {})
+                    name = metadata.get("title", f"Node {key}")
+                    target_inputs.append((property_name, name, ""))
+    return target_inputs
+
+
 def get_workflow_class_name(workflow_filename):
     """Generate a class name from the workflow file name."""
 
@@ -411,6 +448,7 @@ def get_workflow_class_name(workflow_filename):
     class_name = f"wkf_{workflow_name}"
     class_name = re.sub(r"[^a-zA-Z0-9_]", "_", class_name).lower()
     return class_name
+
 
 def get_workflow_list(self, context):
     """Return a list of workflow JSON files from the workflows folder."""
@@ -429,6 +467,7 @@ def get_workflow_list(self, context):
     if not workflows:
         workflows = [("none", "None", "No workflow available")]
     return workflows
+
 
 def parse_workflow_for_inputs(workflow):
     """Parse a workflow dictionary and extract nodes with 'class_type' starting with 'BlenderInput...'."""
@@ -449,6 +488,7 @@ def parse_workflow_for_inputs(workflow):
         sorted_inputs = {key: inputs[key] for key in sorted_keys}
     return sorted_inputs
 
+
 def parse_workflow_for_outputs(workflow):
     """Parse a workflow dictionary and extract nodes with 'class_type' starting with 'BlenderOutput...'."""
 
@@ -459,6 +499,7 @@ def parse_workflow_for_outputs(workflow):
             if class_type.startswith("BlenderOutput"):
                 outputs[key]=node
     return outputs
+
 
 def register_workflow_class(self, context):
     """Wrapper function to register a workflow class."""

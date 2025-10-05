@@ -20,13 +20,11 @@ class ComfyBlenderPanelPaintMask(bpy.types.Panel):
     def draw(self, context):
         """Draw the panel."""
 
-        layout = self.layout
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         if addon_prefs.connection_status:
-
             # Select brush section
-            layout.label(text="Select Brush:")
-            box = layout.box()
+            self.layout.label(text="Select Brush:")
+            box = self.layout.box()
 
             # Button to select the mask painting brush
             row = box.row()
@@ -52,17 +50,18 @@ class ComfyBlenderPanelPaintMask(bpy.types.Panel):
                     row.prop(context.tool_settings.image_paint.brush, "strength", text="")
 
             # Add target input selection
-            row = layout.row()
+            row = self.layout.row()
             row.label(text="Target Input:")
             row.prop(context.scene, "comfyui_target_input", text="")
-            send_input = layout.operator("comfy.send_to_input", text="Send Image to Input", icon="EXPERIMENTAL")
+            send_input = self.layout.operator("comfy.send_to_input", text="Send Image to Input", icon="EXPERIMENTAL")
+            send_input.name = context.edit_image.name if context.edit_image else ""
             send_input.workflow_property = context.scene.comfyui_target_input
 
             # Button to reload the image from disk
-            layout.operator("image.reload", text="Reset Image", icon="FILE_REFRESH")
+            self.layout.operator("image.reload", text="Reset Image", icon="FILE_REFRESH")
 
         else:
-            box = layout.box()
+            box = self.layout.box()
             box.label(text="Connect to the ComfyUI server to edit the image.")
 
 def register():

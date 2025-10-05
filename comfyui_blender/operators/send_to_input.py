@@ -6,40 +6,10 @@ import shutil
 
 import bpy
 
-from .. import workflow as w
+from ..workflow import get_current_workflow_target_inputs
 from ..utils import upload_file
 
 log = logging.getLogger("comfyui_blender")
-
-
-def get_target_inputs(self, context):
-    """Function to get the list of inputs to send to."""
-
-    # List of inputs to send the image to
-    target_inputs = []
-    addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-    if hasattr(context.scene, "current_workflow"):
-        # Get the selected workflow
-        workflows_folder = str(addon_prefs.workflows_folder)
-        workflow_filename = str(addon_prefs.workflow)
-        workflow_path = os.path.join(workflows_folder, workflow_filename)
-
-        # Load the workflow JSON file
-        if os.path.exists(workflow_path) and os.path.isfile(workflow_path):
-            with open(workflow_path, "r",  encoding="utf-8") as file:
-                workflow = json.load(file)
-
-            # Get sorted inputs from the workflow
-            inputs = w.parse_workflow_for_inputs(workflow)
-
-            # Get workflow inputs of type load image or load mask
-            for key, node in inputs.items():
-                if node["class_type"] in ("BlenderInputLoadImage", "BlenderInputLoadMask"):
-                    property_name = f"node_{key}"
-                    metadata = node.get("_meta", {})
-                    name = metadata.get("title", f"Node {key}")
-                    target_inputs.append((property_name, name, ""))
-    return target_inputs
 
 
 class ComfyBlenderOperatorSendImageToInput(bpy.types.Operator):
@@ -47,19 +17,19 @@ class ComfyBlenderOperatorSendImageToInput(bpy.types.Operator):
 
     bl_idname = "comfy.send_to_input"
     bl_label = "Send to Input"
-    bl_description = "Send the image opened in the editor to the workflow target input."
+    bl_description = "Send the image to the target input of the current workflow."
 
+    name: bpy.props.StringProperty(name="Name")
     workflow_property: bpy.props.StringProperty(name="Workflow Property")
     temp_filename = "blender_input.png"
 
     def execute(self, context):
         """Execute the operator."""
 
-        # Get the current image from the image editor
-        scene = context.scene
-        image = context.edit_image
+        # Get image
+        image = bpy.data.images.get(self.name)
         if not image:
-            error_message = "No image found in the image editor"
+            error_message = f"Image not found in Blender data"
             log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
@@ -101,11 +71,11 @@ class ComfyBlenderOperatorSendImageToInput(bpy.types.Operator):
 
         # Delete the previous input image from Blender's data
         # Only if the image is not used in any of the workflow inputs
-        current_workflow = scene.current_workflow
+        current_workflow = context.scene.current_workflow
         previous_input = getattr(current_workflow, self.workflow_property)
         if bpy.data.images.get(previous_input):
             image = bpy.data.images.get(previous_input)
-            possible_inputs = get_target_inputs(self, context)
+            possible_inputs = get_current_workflow_target_inputs(self, context)
             is_used = False  # Flag to check if the image is used in any other input
             for input in possible_inputs:
                 if input[0] != self.workflow_property:
@@ -155,7 +125,7 @@ def register():
     bpy.types.Scene.comfyui_target_input = bpy.props.EnumProperty(
         name="Target Input",
         description="Target input to send to",
-        items=get_target_inputs
+        items=get_current_workflow_target_inputs
     )
 
     bpy.utils.register_class(ComfyBlenderOperatorSendImageToInput)
