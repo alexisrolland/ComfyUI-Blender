@@ -1,4 +1,4 @@
-"""Operator to load open an image."""
+"""Operator to load an image from disk and open it in the image editor."""
 import logging
 
 import bpy
@@ -11,7 +11,7 @@ class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
 
     bl_idname = "comfy.open_image"
     bl_label = "Open Image"
-    bl_description = "Load and open an image."
+    bl_description = "Load an image from disk and open it in the image editor."
 
     filepath: bpy.props.StringProperty(name="File Path", subtype="FILE_PATH")
     filter_glob: bpy.props.StringProperty(name="File Filter", default="*.jpeg;*.jpg;*.png;*.webp")
