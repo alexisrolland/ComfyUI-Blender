@@ -32,6 +32,7 @@ class ComfyBlenderOperatorOpenImageEditor(bpy.types.Operator):
         # Access the image editor space and set the image
         space = image_editor_area.spaces[0]
         space.image = bpy.data.images.get(self.name)
+        space.image.reload()  # Reload the image to remove any mask previously painted
         return {'FINISHED'}
 
 

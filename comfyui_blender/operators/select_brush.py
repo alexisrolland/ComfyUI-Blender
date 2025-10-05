@@ -9,7 +9,7 @@ class ComfyBlenderOperatorSelectBrush(bpy.types.Operator):
 
     bl_idname = "comfy.select_brush"
     bl_label = "Select Brush"
-    bl_description = "Select custom brush."
+    bl_description = "Select a custom brush."
 
     blend_mode: bpy.props.StringProperty(name="Blend Mode")
     custom_label: bpy.props.StringProperty(

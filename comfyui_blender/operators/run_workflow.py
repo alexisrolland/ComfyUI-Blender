@@ -54,6 +54,10 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                 # Do nothing, groups are just containers
                 continue
 
+            # Custom handling for sampler input
+            elif node["class_type"] == "BlenderInputSampler":
+                workflow[key]["inputs"]["sampler_name"] = getattr(current_workflow, property_name)
+
             # Custom handling for 3D model input
             elif node["class_type"] == "BlenderInputLoad3D":
                 property_value = getattr(current_workflow, property_name)

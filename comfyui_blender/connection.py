@@ -76,9 +76,10 @@ def disconnect():
         WS_CONNECTION = None
         log.debug(f"WebSocket connection closed")
 
-    # Update connection status
+    # Update connection status and force refresh of the workflow panel
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
     addon_prefs.connection_status = False
+    addon_prefs.workflow = addon_prefs.workflow
 
 
 def listen():

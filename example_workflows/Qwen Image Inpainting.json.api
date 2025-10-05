@@ -90,7 +90,7 @@
   },
   "8": {
     "inputs": {
-      "control_net_name": "instantx\\Qwen-Image-InstantX-ControlNet-Inpainting.safetensors"
+      "control_net_name": "instantx\\Qwen-Image-ControlNet-Inpainting.safetensors"
     },
     "class_type": "ControlNetLoader",
     "_meta": {
