@@ -4,12 +4,10 @@ import os
 import bpy
 
 
-class ComfyBlenderPanelWorkflow(bpy.types.Panel):
-    """Panel to display workflows."""
+class ComfyBlenderPanelWorkflowBase(bpy.types.Panel):
+    """Panel to display workflows options."""
 
     bl_label = "Workflow"
-    bl_idname = "COMFY_PT_Workflow"
-    bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "ComfyUI"
 
@@ -79,12 +77,28 @@ class ComfyBlenderPanelWorkflow(bpy.types.Panel):
         sub_row.operator("comfy.stop_workflow", text="", icon="CANCEL")
         sub_row.operator("comfy.clear_queue", text="", icon="SEQ_SEQUENCER")
 
+
+class ComfyBlenderPanelWorkflow3DViewer(ComfyBlenderPanelWorkflowBase, bpy.types.Panel):
+    """Class to display the panel in the 3D viewer."""
+
+    bl_idname = "COMFY_PT_Workflow_3DViewer"
+    bl_space_type = "VIEW_3D"
+
+
+class ComfyBlenderPanelWorkflowImageEditor(ComfyBlenderPanelWorkflowBase, bpy.types.Panel):
+    """Class to display the panel in the image editor."""
+
+    bl_idname = "COMFY_PT_Workflow_ImageEditor"
+    bl_space_type = "IMAGE_EDITOR"
+
 def register():
     """Register the panel."""
 
-    bpy.utils.register_class(ComfyBlenderPanelWorkflow)
+    bpy.utils.register_class(ComfyBlenderPanelWorkflow3DViewer)
+    bpy.utils.register_class(ComfyBlenderPanelWorkflowImageEditor)
 
 def unregister():
     """Unregister the panel."""
 
-    bpy.utils.unregister_class(ComfyBlenderPanelWorkflow)
+    bpy.utils.unregister_class(ComfyBlenderPanelWorkflow3DViewer)
+    bpy.utils.unregister_class(ComfyBlenderPanelWorkflowImageEditor)
