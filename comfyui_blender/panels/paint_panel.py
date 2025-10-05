@@ -50,10 +50,10 @@ class ComfyBlenderPanelPaintMask(bpy.types.Panel):
                     row.prop(context.tool_settings.image_paint.brush, "strength", text="")
 
             # Add target input selection
-            row = self.layout.row()
-            row.label(text="Target Input:")
+            row = self.layout.row(align=True)
+            row.label(text="Send to Input:")
             row.prop(context.scene, "comfyui_target_input", text="")
-            send_input = self.layout.operator("comfy.send_to_input", text="Send Image to Input", icon="EXPERIMENTAL")
+            send_input = row.operator("comfy.send_to_input", text="", icon="INDIRECT_ONLY_OFF")
             send_input.name = context.edit_image.name if context.edit_image else ""
             send_input.workflow_property = context.scene.comfyui_target_input
 
