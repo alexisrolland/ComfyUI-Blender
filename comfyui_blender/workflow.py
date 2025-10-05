@@ -135,24 +135,6 @@ def create_class_properties(inputs):
             )
             continue
 
-        # Sampler
-        if node["class_type"] == "BlenderInputSampler":
-            # Fetch the list dynamically from the ComfyUI server
-            # Pending on PR: https://github.com/comfyanonymous/ComfyUI/pull/10197
-            items = ["ddim", "ddpm", "deis", "dpm_2", "dpm_2_ancestral", "dpm_adaptive", "dpm_fast", "dpmpp_2m", "dpmpp_2m_cfg_pp", "dpmpp_2m_sde", "dpmpp_2m_sde_gpu", "dpmpp_2m_sde_heun", "dpmpp_2m_sde_heun_gpu", "dpmpp_2s_ancestral", "dpmpp_2s_ancestral_cfg_pp", "dpmpp_3m_sde", "dpmpp_3m_sde_gpu", "dpmpp_sde", "dpmpp_sde_gpu", "er_sde", "euler", "euler_ancestral", "euler_ancestral_cfg_pp", "euler_cfg_pp", "gradient_estimation", "gradient_estimation_cfg_pp", "heun", "heunpp2", "ipndm", "ipndm_v", "lcm", "lms", "res_multistep", "res_multistep_ancestral", "res_multistep_ancestral_cfg_pp", "res_multistep_cfg_pp", "sa_solver", "sa_solver_pece", "seeds_2", "seeds_3", "uni_pc", "uni_pc_bh2"]
-
-            # If default value not in list, set to first item in the list
-            default = node["inputs"].get("default", "")
-            if default not in items:
-                default = items[0]
-
-            properties[property_name] = EnumProperty(
-                name=name,
-                default=default,
-                items=[(i, i, "") for i in items]
-            )
-            continue
-
         # Load 3D and Load image
         if node["class_type"] in ("BlenderInputLoad3D", "BlenderInputLoadImage", "BlenderInputLoadMask"):
             properties[property_name] = StringProperty(name=name)
@@ -301,6 +283,23 @@ def create_class_properties(inputs):
                 message = "Add-on not connect to the ComfyUI server."
                 properties[property_name] = StringProperty(name=name, default=message)
                 continue
+
+        # Sampler
+        if node["class_type"] == "BlenderInputSampler":
+            # We should fetch the list dynamically from the ComfyUI server, pending on PR: https://github.com/comfyanonymous/ComfyUI/pull/10197
+            items = ["ddim", "ddpm", "deis", "dpm_2", "dpm_2_ancestral", "dpm_adaptive", "dpm_fast", "dpmpp_2m", "dpmpp_2m_cfg_pp", "dpmpp_2m_sde", "dpmpp_2m_sde_gpu", "dpmpp_2m_sde_heun", "dpmpp_2m_sde_heun_gpu", "dpmpp_2s_ancestral", "dpmpp_2s_ancestral_cfg_pp", "dpmpp_3m_sde", "dpmpp_3m_sde_gpu", "dpmpp_sde", "dpmpp_sde_gpu", "er_sde", "euler", "euler_ancestral", "euler_ancestral_cfg_pp", "euler_cfg_pp", "gradient_estimation", "gradient_estimation_cfg_pp", "heun", "heunpp2", "ipndm", "ipndm_v", "lcm", "lms", "res_multistep", "res_multistep_ancestral", "res_multistep_ancestral_cfg_pp", "res_multistep_cfg_pp", "sa_solver", "sa_solver_pece", "seeds_2", "seeds_3", "uni_pc", "uni_pc_bh2"]
+
+            # If default value not in list, set to first item in the list
+            default = node["inputs"].get("default", "")
+            if default not in items:
+                default = items[0]
+
+            properties[property_name] = EnumProperty(
+                name=name,
+                default=default,
+                items=[(i, i, "") for i in items]
+            )
+            continue
 
         # Seed
         if node["class_type"] == "BlenderInputSeed":
