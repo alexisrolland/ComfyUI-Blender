@@ -338,7 +338,7 @@ class BlenderInputSeed(Int):
         schema.inputs.append(io.Custom("GROUP").Input("group", optional=True))
         schema.inputs.append(io.Int.Input("order", default=0, min=MIN_INT, max=MAX_INT, control_after_generate=False, tooltip=TOOLTIP_ORDER))
         schema.inputs.append(io.Int.Input("default", default=0, tooltip=TOOLTIP_DEFAULT))
-        schema.inputs.append(io.Int.Input("min", default=MIN_INT, min=MIN_INT, max=MAX_INT, step=1, tooltip=TOOLTIP_MIN))
+        schema.inputs.append(io.Int.Input("min", default=0, min=0, max=MAX_INT, step=1, tooltip=TOOLTIP_MIN))
         schema.inputs.append(io.Int.Input("max", default=MAX_INT, min=MIN_INT, max=MAX_INT, step=1, tooltip=TOOLTIP_MAX))
         schema.inputs.append(io.Int.Input("step", default=1, min=1, max=MAX_INT, step=1, tooltip=TOOLTIP_STEP))
 
