@@ -5,80 +5,6 @@
   "last_link_id": 27,
   "nodes": [
     {
-      "id": 1,
-      "type": "UNETLoader",
-      "pos": [
-        450,
-        260
-      ],
-      "size": [
-        270,
-        82
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            1
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.60",
-        "Node name for S&R": "UNETLoader"
-      },
-      "widgets_values": [
-        "alibaba\\qwen_image_fp8_e4m3fn.safetensors",
-        "default"
-      ]
-    },
-    {
-      "id": 2,
-      "type": "LoraLoaderModelOnly",
-      "pos": [
-        760,
-        260
-      ],
-      "size": [
-        260,
-        82
-      ],
-      "flags": {},
-      "order": 9,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 1
-        }
-      ],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            2
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.60",
-        "Node name for S&R": "LoraLoaderModelOnly"
-      },
-      "widgets_values": [
-        "alibaba\\Qwen-Image-Lightning-4steps-V1.0.safetensors",
-        1
-      ]
-    },
-    {
       "id": 4,
       "type": "CLIPLoader",
       "pos": [
@@ -90,7 +16,7 @@
         106
       ],
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -126,7 +52,7 @@
         88
       ],
       "flags": {},
-      "order": 11,
+      "order": 10,
       "mode": 0,
       "inputs": [
         {
@@ -175,7 +101,7 @@
         88
       ],
       "flags": {},
-      "order": 10,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -205,39 +131,6 @@
       "bgcolor": "#533"
     },
     {
-      "id": 8,
-      "type": "ControlNetLoader",
-      "pos": [
-        640,
-        750
-      ],
-      "size": [
-        260,
-        60
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "CONTROL_NET",
-          "type": "CONTROL_NET",
-          "links": [
-            8
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.60",
-        "Node name for S&R": "ControlNetLoader"
-      },
-      "widgets_values": [
-        "instantx\\Qwen-Image-InstantX-ControlNet-Inpainting.safetensors"
-      ]
-    },
-    {
       "id": 5,
       "type": "BlenderInputStringMultiline",
       "pos": [
@@ -249,7 +142,7 @@
         200
       ],
       "flags": {},
-      "order": 3,
+      "order": 1,
       "mode": 0,
       "inputs": [
         {
@@ -270,6 +163,8 @@
       ],
       "title": "Prompt",
       "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
         "Node name for S&R": "BlenderInputStringMultiline"
       },
       "widgets_values": [
@@ -335,7 +230,7 @@
         206
       ],
       "flags": {},
-      "order": 14,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
@@ -450,7 +345,7 @@
         58
       ],
       "flags": {},
-      "order": 13,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {
@@ -478,41 +373,6 @@
       ]
     },
     {
-      "id": 9,
-      "type": "VAELoader",
-      "pos": [
-        640,
-        880
-      ],
-      "size": [
-        260,
-        60
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [
-            9,
-            13,
-            21
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.60",
-        "Node name for S&R": "VAELoader"
-      },
-      "widgets_values": [
-        "alibaba\\wan_2.1_vae.safetensors"
-      ]
-    },
-    {
       "id": 11,
       "type": "BlenderInputLoadImage",
       "pos": [
@@ -524,7 +384,7 @@
         318
       ],
       "flags": {},
-      "order": 5,
+      "order": 2,
       "mode": 0,
       "inputs": [
         {
@@ -547,6 +407,8 @@
       ],
       "title": "Image",
       "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
         "Node name for S&R": "BlenderInputLoadImage"
       },
       "widgets_values": [
@@ -611,7 +473,7 @@
         318
       ],
       "flags": {},
-      "order": 6,
+      "order": 3,
       "mode": 0,
       "inputs": [
         {
@@ -634,6 +496,8 @@
       ],
       "title": "Mask",
       "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
         "Node name for S&R": "BlenderInputLoadMask"
       },
       "widgets_values": [
@@ -720,33 +584,12 @@
       "outputs": [],
       "title": "Save Image",
       "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
         "Node name for S&R": "BlenderOutputSaveImage"
       },
       "widgets_values": [
         "blender"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 20,
-      "type": "MarkdownNote",
-      "pos": [
-        -50,
-        260
-      ],
-      "size": [
-        340,
-        240
-      ],
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -810,7 +653,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        90207848890365,
+        377863748761423,
         "randomize",
         4,
         1,
@@ -831,7 +674,7 @@
         178
       ],
       "flags": {},
-      "order": 8,
+      "order": 4,
       "mode": 0,
       "inputs": [
         {
@@ -852,6 +695,8 @@
       ],
       "title": "Seed",
       "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
         "Node name for S&R": "BlenderInputSeed"
       },
       "widgets_values": [
@@ -861,6 +706,171 @@
         0,
         2147483647,
         1
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [
+        450,
+        260
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "alibaba\\qwen_image_fp8_e4m3fn.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        760,
+        260
+      ],
+      "size": [
+        260,
+        82
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "alibaba\\Qwen-Image-Lightning-4steps-V1.0.safetensors",
+        1
+      ]
+    },
+    {
+      "id": 8,
+      "type": "ControlNetLoader",
+      "pos": [
+        640,
+        750
+      ],
+      "size": [
+        260,
+        60
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CONTROL_NET",
+          "type": "CONTROL_NET",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "ControlNetLoader"
+      },
+      "widgets_values": [
+        "instantx\\Qwen-Image-ControlNet-Inpainting.safetensors"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "VAELoader",
+      "pos": [
+        640,
+        880
+      ],
+      "size": [
+        260,
+        60
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            9,
+            13,
+            21
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.60",
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "alibaba\\wan_2.1_vae.safetensors"
+      ]
+    },
+    {
+      "id": 20,
+      "type": "MarkdownNote",
+      "pos": [
+        -40,
+        210
+      ],
+      "size": [
+        340,
+        300
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -1080,10 +1090,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.6304711010110947,
+      "scale": 0.9230727389903443,
       "offset": [
-        479.4158257725072,
-        98.56561005027146
+        99.05178167340729,
+        -132.40265604021954
       ]
     },
     "frontendVersion": "1.26.13",
