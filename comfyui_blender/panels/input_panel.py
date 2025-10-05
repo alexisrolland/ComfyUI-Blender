@@ -83,7 +83,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
         else:
             # Create a box with grid flow for all outputs
             box = layout.box()
-            box.label(text="Connect to the ComfyUI server to run the workflow.")
+            box.label(text="Connect to the ComfyUI server to display workflow inputs.")
 
     def display_input(self, context, current_workflow, layout, property_name, node, is_root=True):
         """Format the input for display in the panel."""

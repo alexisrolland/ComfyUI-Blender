@@ -39,11 +39,17 @@ class ComfyBlenderOutputMenu(bpy.types.Menu):
         # Send to input
         layout.separator(type="LINE")
         layout.label(text="Send to Input", icon="IMAGE_DATA")
-        target_inputs = get_current_workflow_target_inputs(self, context)
-        for input in target_inputs:
-            send_to_input = layout.operator("comfy.send_to_input", text=input[1])  # input name
-            send_to_input.name = output_name
-            send_to_input.workflow_property = input[0]  # input property_name
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+        if addon_prefs.connection_status:
+            target_inputs = get_current_workflow_target_inputs(self, context)
+            for input in target_inputs:
+                row = layout.row()
+                row.enabled = output_type == "image"
+                send_to_input = row.operator("comfy.send_to_input", text=input[1])  # Target input name
+                send_to_input.name = output_name
+                send_to_input.workflow_property = input[0]  # Target input property_name
+        else:
+            layout.label(text="Connect to the ComfyUI server to display workflow inputs.")
 
 
 def register():
