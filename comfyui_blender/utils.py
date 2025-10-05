@@ -10,6 +10,18 @@ import bpy
 log = logging.getLogger("comfyui_blender")
 
 
+def add_custom_headers(headers=None):
+    """Compose the URL for a ComfyUI WebSocket server route."""
+
+    if headers is None:
+        headers = {}
+    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+    for header in addon_prefs.http_headers:
+        if header.key:
+            headers[header.key] = header.value
+    return headers
+
+
 def contains_non_latin(s):
     """Check if the string contains any non-Latin characters."""
 
@@ -84,6 +96,30 @@ def get_filepath(filename, folder):
     return filename, filepath
 
 
+def get_server_url(route=None, params=None):
+    """Compose the URL for a ComfyUI server route."""
+
+    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+    server_address = addon_prefs.server_address
+    if route:
+        server_url = urljoin(server_address, quote(route))
+    if params:
+        server_url = f"{server_url}?{urlencode(params)}"
+    return server_url
+
+
+def get_websocket_url(route=None, params=None):
+    """Compose the URL for a ComfyUI WebSocket server route."""
+
+    url = get_server_url(route=route, params=params)
+    # Replace http with ws and https with wss
+    if "https://" in url:
+        url = url.replace("https://", "wss://")
+    elif "http://" in url:
+        url = url.replace("http://", "ws://")
+    return url
+
+
 # This method has been replaced by the operator show_error_message
 # The operator provides a OK button to ensure the popup does not disappear immediately
 def show_error_popup(message):
@@ -130,39 +166,3 @@ def upload_file(filepath, type, subfolder=None, overwrite=False):
     headers = add_custom_headers()
     response = requests.post(url, files=files, data=data, headers=headers)
     return response
-
-
-def get_server_url(route=None, params=None):
-    """Compose the URL for a ComfyUI server route."""
-
-    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-    server_address = addon_prefs.server_address
-    if route:
-        server_url = urljoin(server_address, quote(route))
-    if params:
-        server_url = f"{server_url}?{urlencode(params)}"
-    return server_url
-
-
-def get_websocket_url(route=None, params=None):
-    """Compose the URL for a ComfyUI WebSocket server route."""
-
-    url = get_server_url(route=route, params=params)
-    # Replace http with ws and https with wss
-    if "https://" in url:
-        url = url.replace("https://", "wss://")
-    elif "http://" in url:
-        url = url.replace("http://", "ws://")
-    return url
-
-
-def add_custom_headers(headers=None):
-    """Compose the URL for a ComfyUI WebSocket server route."""
-
-    if headers is None:
-        headers = {}
-    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-    for header in addon_prefs.http_headers:
-        if header.key:
-            headers[header.key] = header.value
-    return headers
