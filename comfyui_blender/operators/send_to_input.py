@@ -1,6 +1,5 @@
 """Operator to send the image opened in the editor to a workflow input."""
 import logging
-import json
 import os
 import shutil
 
