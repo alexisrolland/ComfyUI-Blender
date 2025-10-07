@@ -110,7 +110,8 @@ def update_use_blend_file_location(self, context):
     update_project_folders(addon_prefs, context)
 
     # Force the update of the workflow property to refresh the input panel
-    addon_prefs.workflow = addon_prefs.workflow
+    if addon_prefs.workflow:
+        addon_prefs.workflow = addon_prefs.workflow
 
 
 # Operators
@@ -469,7 +470,8 @@ def register():
     addon_prefs.connection_status = False
 
     # Force the update of the workflow property to trigger the registration of the selected workflow class
-    addon_prefs.workflow = addon_prefs.workflow
+    if addon_prefs.workflow:
+        addon_prefs.workflow = addon_prefs.workflow
 
     # Check if use_blend_file_location is enabled and update folders accordingly
     # Use a timer to check and update folders after Blender is fully loaded

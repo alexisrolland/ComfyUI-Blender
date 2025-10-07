@@ -47,7 +47,8 @@ def connect():
         # And force refresh of the current workflow to reload inputs that need to query the ComfyUI server
         # For instance Load Checkpoint, Load Diffusion Model, Load LoRA...
         addon_prefs.connection_status = True
-        addon_prefs.workflow = addon_prefs.workflow
+        if addon_prefs.workflow:
+            addon_prefs.workflow = addon_prefs.workflow
 
     except Exception as e:
         WS_CONNECTION = None
@@ -79,7 +80,8 @@ def disconnect():
     # Update connection status and force refresh of the workflow panel
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
     addon_prefs.connection_status = False
-    addon_prefs.workflow = addon_prefs.workflow
+    if addon_prefs.workflow:
+        addon_prefs.workflow = addon_prefs.workflow
 
 
 def listen():
