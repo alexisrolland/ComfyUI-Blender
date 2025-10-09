@@ -136,8 +136,8 @@ def create_class_properties(inputs):
             )
             continue
 
-        # Load 3D and Load image
-        if node["class_type"] in ("BlenderInputLoad3D", "BlenderInputLoadMask"):
+        # Load 3D
+        if node["class_type"] == "BlenderInputLoad3D":
             properties[property_name] = StringProperty(name=name)
             continue
 
@@ -237,12 +237,11 @@ def create_class_properties(inputs):
                 properties[property_name] = StringProperty(name=name, default=message)
                 continue
 
-        # Load 3D and Load image
-        if node["class_type"] == "BlenderInputLoadImage":
+        # Load image and load mask
+        if node["class_type"] in ("BlenderInputLoadImage", "BlenderInputLoadMask"):
             properties[property_name] = PointerProperty(
                 name=name,
-                type=bpy.types.Image,
-                update=on_update_image
+                type=bpy.types.Image
             )
             continue
 
