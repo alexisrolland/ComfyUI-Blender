@@ -71,18 +71,17 @@ class ComfyBlenderOperatorSendImageToInput(bpy.types.Operator):
         # Delete the previous input image from Blender's data
         # Only if the image is not used in any of the workflow inputs
         current_workflow = context.scene.current_workflow
-        previous_input = getattr(current_workflow, self.workflow_property)
-        if bpy.data.images.get(previous_input):
-            image = bpy.data.images.get(previous_input)
+        previous_image = getattr(current_workflow, self.workflow_property)
+        if previous_image:
             possible_inputs = get_current_workflow_target_inputs(self, context)
             is_used = False  # Flag to check if the image is used in any other input
             for input in possible_inputs:
                 if input[0] != self.workflow_property:
-                    if getattr(current_workflow, input[0]) == image.name:
+                    if getattr(current_workflow, input[0]) == previous_image:
                         is_used = True
                         break
             if not is_used:
-                bpy.data.images.remove(image)
+                bpy.data.images.remove(previous_image)
 
         # Build input file paths
         inputs_folder = str(addon_prefs.inputs_folder)
@@ -108,8 +107,8 @@ class ComfyBlenderOperatorSendImageToInput(bpy.types.Operator):
         # Load image in the data block
         image = bpy.data.images.load(input_filepath, check_existing=True)
 
-        # Update the workflow property with the image name from the data block
-        current_workflow[self.workflow_property] = image.name
+        # Update the workflow property with the image from the data block
+        setattr(current_workflow, self.workflow_property, image)
 
         # Remove temporary files
         if os.path.exists(temp_filepath):

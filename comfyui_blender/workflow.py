@@ -14,6 +14,7 @@ from bpy.props import (
     FloatProperty,
     IntProperty,
     IntVectorProperty,
+    PointerProperty,
     StringProperty
 )
 
@@ -136,7 +137,7 @@ def create_class_properties(inputs):
             continue
 
         # Load 3D and Load image
-        if node["class_type"] in ("BlenderInputLoad3D", "BlenderInputLoadImage", "BlenderInputLoadMask"):
+        if node["class_type"] in ("BlenderInputLoad3D", "BlenderInputLoadMask"):
             properties[property_name] = StringProperty(name=name)
             continue
 
@@ -235,7 +236,16 @@ def create_class_properties(inputs):
                 message = "Add-on not connect to the ComfyUI server."
                 properties[property_name] = StringProperty(name=name, default=message)
                 continue
-        
+
+        # Load 3D and Load image
+        if node["class_type"] == "BlenderInputLoadImage":
+            properties[property_name] = PointerProperty(
+                name=name,
+                type=bpy.types.Image,
+                update=on_update_image
+            )
+            continue
+
         # Load LoRA
         if node["class_type"] == "BlenderInputLoadLora":
             if addon_prefs.connection_status:

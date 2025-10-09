@@ -146,10 +146,9 @@ class ComfyBlenderOperatorRenderLineart(bpy.types.Operator):
 
         # Delete the previous input image from Blender's data
         current_workflow = scene.current_workflow
-        previous_input = getattr(current_workflow, self.workflow_property)
-        if bpy.data.images.get(previous_input):
-            image = bpy.data.images.get(previous_input)
-            bpy.data.images.remove(image)
+        previous_image = getattr(current_workflow, self.workflow_property)
+        if previous_image:
+            bpy.data.images.remove(previous_image)
 
         # Build input file paths
         inputs_folder = str(addon_prefs.inputs_folder)
@@ -177,8 +176,8 @@ class ComfyBlenderOperatorRenderLineart(bpy.types.Operator):
         # Load image in the data block
         image = bpy.data.images.load(input_filepath, check_existing=True)
 
-        # Update the workflow property with the image name from the data block
-        current_workflow[self.workflow_property] = image.name
+        # Update the workflow property with the image from the data block
+        setattr(current_workflow, self.workflow_property, image)
 
         # Reset the scene to initial state
         self.reset_scene(context, **reset_params)

@@ -86,16 +86,15 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
                 # Get image relative path in the inputs folder
                 image = getattr(current_workflow, property_name)
-                image = bpy.data.images.get(image)
                 if not image:
                     property_name = current_workflow.bl_rna.properties[property_name].name  # Node title
                     error_message = f"Input {property_name} is empty."
                     log.error(error_message)
                     bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
-                image_path = os.path.relpath(image.filepath, inputs_folder)
 
                 # Update the workflow with the relative path
+                image_path = os.path.relpath(image.filepath, inputs_folder)
                 if image_path:
                     workflow[key]["inputs"]["image"] = image_path
                 else:
