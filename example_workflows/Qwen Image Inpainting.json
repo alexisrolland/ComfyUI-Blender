@@ -818,6 +818,29 @@
       ]
     },
     {
+      "id": 20,
+      "type": "MarkdownNote",
+      "pos": [
+        -40,
+        210
+      ],
+      "size": [
+        340,
+        300
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
       "id": 9,
       "type": "VAELoader",
       "pos": [
@@ -829,7 +852,7 @@
         60
       ],
       "flags": {},
-      "order": 7,
+      "order": 8,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -849,31 +872,8 @@
         "Node name for S&R": "VAELoader"
       },
       "widgets_values": [
-        "alibaba\\wan_2.1_vae.safetensors"
+        "alibaba\\qwen_image_vae.safetensors"
       ]
-    },
-    {
-      "id": 20,
-      "type": "MarkdownNote",
-      "pos": [
-        -40,
-        210
-      ],
-      "size": [
-        340,
-        300
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
     }
   ],
   "links": [
@@ -1090,13 +1090,13 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.9230727389903443,
+      "scale": 0.6935182111122045,
       "offset": [
-        99.05178167340729,
-        -132.40265604021954
+        893.6034665192017,
+        -151.79549394330837
       ]
     },
-    "frontendVersion": "1.26.13",
+    "frontendVersion": "1.27.7",
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,
