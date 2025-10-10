@@ -87,8 +87,7 @@ class ComfyBlenderOperatorDeleteWorkflowOk(bpy.types.Operator):
                         if node["class_type"] == "BlenderInputLoadImage":
                             # Remove image from Blender's data
                             image = getattr(current_workflow, property_name)
-                            if bpy.data.images.get(image):
-                                image = bpy.data.images.get(image)
+                            if image:
                                 bpy.data.images.remove(image)
 
             if os.path.exists(self.filepath):
