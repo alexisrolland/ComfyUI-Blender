@@ -14,6 +14,13 @@ The Blender add-on UI is automatically generated according to the input and outp
 
 ![Screenshot Blender](./screenshot_blender.jpg)
 
+## Getting Started
+
+* [Setup](https://github.com/alexisrolland/ComfyUI-Blender/wiki/Setup)
+* [Usage Examples](https://github.com/alexisrolland/ComfyUI-Blender/wiki/Usage-Examples)
+* [ComfyUI Custom Nodes](https://github.com/alexisrolland/ComfyUI-Blender/wiki/ComfyUI-Custom-Nodes)
+* [Blender Add‐on Features](https://github.com/alexisrolland/ComfyUI-Blender/wiki/Blender-Add%E2%80%90on-Features)
+
 ## Setup
 
 ### ComfyUI Setup
