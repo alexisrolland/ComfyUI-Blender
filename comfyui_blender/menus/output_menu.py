@@ -1,7 +1,7 @@
 """Context menu to provide custom actions for outputs."""
 import bpy
 
-from ..workflow import get_current_workflow_target_inputs
+from ..workflow import get_current_workflow_inputs
 
 class ComfyBlenderOutputMenu(bpy.types.Menu):
     """Context menu to provide custom actions for outputs."""
@@ -17,31 +17,39 @@ class ComfyBlenderOutputMenu(bpy.types.Menu):
         output_name = context.scene.comfyui_menu_output_name
         output_filepath = context.scene.comfyui_menu_output_filepath
 
-        # Import image button
+        # Import image
         row = layout.row()
         row.enabled = output_type == "image"
         import_image = row.operator("comfy.import_image", text="Import Image", icon="IMPORT")
         import_image.name = output_name
 
-        # Project material button
-        row = layout.row()
-        row.enabled = output_type == "image"
-        project_material = row.operator("comfy.project_material", text="Project Material", icon="SHADING_TEXTURE")
-        project_material.name = output_name
-
-        # Reload workflow button
+        # Reload workflow
         row = layout.row()
         row.enabled = True  # Enabled for both image and 3d outputs
         import_workflow = row.operator("comfy.import_workflow", text="Import Workflow", icon="NODETREE")
         import_workflow.filepath = output_filepath
         import_workflow.invoke_default = False
 
+        # Create material
+        layout.separator(type="LINE")
+        layout.label(text="Material", icon="SHADING_TEXTURE")
+        row = layout.row()
+        row.enabled = output_type == "image"
+        create_material = row.operator("comfy.create_material", text="Create Material")
+        create_material.name = output_name
+
+        # Project material
+        row = layout.row()
+        row.enabled = output_type == "image"
+        project_material = row.operator("comfy.project_material", text="Project Material")
+        project_material.name = output_name
+
         # Send to input
         layout.separator(type="LINE")
         layout.label(text="Send to Input", icon="INDIRECT_ONLY_OFF")
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         if addon_prefs.connection_status:
-            target_inputs = get_current_workflow_target_inputs(self, context)
+            target_inputs = get_current_workflow_inputs(self, context, ("BlenderInputLoadImage", "BlenderInputLoadMask"))
             for input in target_inputs:
                 row = layout.row()
                 row.enabled = output_type == "image"

@@ -7,6 +7,7 @@ from .menus import (
 from .operators import (
     clear_queue,
     connect_to_server,
+    create_material,
     delete_input,
     delete_output,
     delete_workflow,
@@ -20,6 +21,7 @@ from .operators import (
     open_file_browser,
     open_image_editor,
     open_image,
+    open_text_editor,
     prepare_glb_file,
     prepare_obj_file,
     project_material,
@@ -54,7 +56,7 @@ from .connection import disconnect
 bl_info = {
     "name": "ComfyUI Blender",
     "author": "Alexis ROLLAND",
-    "version": (2, 1, 1),
+    "version": (3, 0, 0),
     "blender": (4, 5, 0),
     "location": "View3D > Sidebar > ComfyUI",
     "description": "Blender add-on to send requests to a ComfyUI server.",
@@ -81,6 +83,7 @@ def register():
     # Operators
     clear_queue.register()
     connect_to_server.register()
+    create_material.register()
     delete_input.register()
     delete_output.register()
     delete_workflow.register()
@@ -94,6 +97,7 @@ def register():
     open_file_browser.register()
     open_image_editor.register()
     open_image.register()
+    open_text_editor.register()
     prepare_glb_file.register()
     prepare_obj_file.register()
     project_material.register()
@@ -141,6 +145,7 @@ def unregister():
     # Operators
     clear_queue.unregister()
     connect_to_server.unregister()
+    create_material.unregister()
     delete_input.unregister()
     delete_output.unregister()
     delete_workflow.unregister()
@@ -154,6 +159,7 @@ def unregister():
     open_file_browser.unregister()
     open_image_editor.unregister()
     open_image.unregister()
+    open_text_editor.unregister()
     prepare_glb_file.unregister()
     prepare_obj_file.unregister()
     project_material.unregister()

@@ -37,7 +37,7 @@ def update_progress(self, context):
 
     if context.screen:
         for area in context.screen.areas:
-            if area.type == "VIEW_3D":
+            if area.type in ("VIEW_3D", "IMAGE_EDITOR"):
                 area.tag_redraw()
 
 
@@ -193,7 +193,7 @@ class ProjectSettingsPropertyGroup(bpy.types.PropertyGroup):
 
 
 class PromptPropertyGroup(bpy.types.PropertyGroup):
-    """Property group for the queue collection."""
+    """Property group for the prompts collection."""
 
     # The name property serves as the key for the collection
     name: StringProperty(
@@ -210,7 +210,7 @@ class PromptPropertyGroup(bpy.types.PropertyGroup):
     )
     status: EnumProperty(
         name="Status",
-        description="Status of the workflow in the queue.",
+        description="Status of the prompt.",
         default="pending",
         items=[
             ("pending", "Pending", ""),
@@ -279,6 +279,12 @@ class AddonPreferences(bpy.types.AddonPreferences):
         default=False
     )
 
+    # Queue
+    queue: IntProperty(
+        name="Queue",
+        description="Number of prompts in the queue on the ComfyUI server."
+    )
+
     # Construct base folders path
     base_path = os.path.dirname(bpy.utils.resource_path("USER"))
     base_path = os.path.join(base_path, "data", __package__)
@@ -342,9 +348,9 @@ class AddonPreferences(bpy.types.AddonPreferences):
         default=False
     )
 
-    # Queue
-    queue: CollectionProperty(
-        name="Queue",
+    # Prompts collection
+    prompts_collection: CollectionProperty(
+        name="Prompts Collection",
         description="Collection of prompts sent to the ComfyUI server.",
         type=PromptPropertyGroup
     )

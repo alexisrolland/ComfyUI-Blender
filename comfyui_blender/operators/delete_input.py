@@ -1,7 +1,7 @@
 """Operator to delete an input."""
 import bpy
 
-from ..workflow import get_current_workflow_target_inputs
+from ..workflow import get_current_workflow_inputs
 
 
 class ComfyBlenderOperatorDeleteInput(bpy.types.Operator):
@@ -69,25 +69,24 @@ class ComfyBlenderOperatorDeleteInputOk(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
-        # Remove input from workflow
+        # Get current workflow
         current_workflow = context.scene.current_workflow
-        current_workflow[self.workflow_property] = ""
-        self.report({'INFO'}, f"Removed input from workflow: {self.workflow_property}")
 
         if self.type == "image":
-            # Remove image from Blender's data only if it's not used in any other input
-            image = bpy.data.images.get(self.name)
-            possible_inputs = get_current_workflow_target_inputs(self, context)
+            # Delete the input image from Blender's data
+            # Only if the image is not used in any of the workflow inputs
+            image = getattr(current_workflow, self.workflow_property)
+            possible_inputs = get_current_workflow_inputs(self, context, ("BlenderInputLoadImage", "BlenderInputLoadMask"))
             is_used = False  # Flag to check if the image is used in any other input
             for input in possible_inputs:
                 if input[0] != self.workflow_property:
-                    other_input = getattr(current_workflow, input[0])
-                    if bpy.data.images.get(other_input) == image:
+                    if getattr(current_workflow, input[0]) == image:
                         is_used = True
                         break
             if not is_used:
                 bpy.data.images.remove(image)
-                self.report({'INFO'}, f"Removed image from Blender data: {self.name}")
+            else:
+                setattr(current_workflow, self.workflow_property, None)
 
             # Delete image file
             # Do not delete file in case it is reused when reloading workflows
@@ -96,17 +95,34 @@ class ComfyBlenderOperatorDeleteInputOk(bpy.types.Operator):
             #     self.report({'INFO'}, f"Deleted file: {self.filepath}")
 
         if self.type == "3d":
-            pass
+            setattr(current_workflow, self.workflow_property, "")
+
             # Delete 3D model file
             # Do not delete file in case it is reused when reloading workflows
             # if os.path.exists(self.filepath):
             #     os.remove(self.filepath)
             #     self.report({'INFO'}, f"Deleted file: {self.filepath}")
-        
+
+        if self.type == "text":
+            # Delete the input text from Blender's data
+            # Only if the text is not used in any of the workflow inputs
+            text = getattr(current_workflow, self.workflow_property)
+            possible_inputs = get_current_workflow_inputs(self, context, ("BlenderInputStringMultiline"))
+            is_used = False  # Flag to check if the text is used in any other input
+            for input in possible_inputs:
+                if input[0] != self.workflow_property:
+                    if getattr(current_workflow, input[0]) == text:
+                        is_used = True
+                        break
+            if not is_used:
+                bpy.data.texts.remove(text)
+            else:
+                setattr(current_workflow, self.workflow_property, None)
+
         # Force redraw of the UI
-        for screen in bpy.data.screens:  # Iterate through all screens
-            for area in screen.areas:  # Access areas in each screen
-                if area.type == "VIEW_3D":  # Area of the add-on panel
+        for screen in bpy.data.screens:
+            for area in screen.areas:
+                if area.type in ("VIEW_3D", "IMAGE_EDITOR"):
                     area.tag_redraw()
 
         return {'FINISHED'}

@@ -14,6 +14,7 @@ from bpy.props import (
     FloatProperty,
     IntProperty,
     IntVectorProperty,
+    PointerProperty,
     StringProperty
 )
 
@@ -81,10 +82,9 @@ def create_class_properties(inputs):
                 name=name,
                 default=node["inputs"].get("default", False)
             )
-            continue
 
         # Combo box
-        if node["class_type"] == "BlenderInputCombo":
+        elif node["class_type"] == "BlenderInputCombo":
             # If default value not in list, set to first item in the list
             default = node["inputs"].get("default", "")
             items = node["inputs"]["list"].split("\n")
@@ -96,10 +96,9 @@ def create_class_properties(inputs):
                 default=default,
                 items=[(i, i, "") for i in items]
             )
-            continue
 
         # Float
-        if node["class_type"] == "BlenderInputFloat":
+        elif node["class_type"] == "BlenderInputFloat":
             properties[property_name] = FloatProperty(
                 name=name,
                 default=node["inputs"].get("default", 0.0),
@@ -110,10 +109,9 @@ def create_class_properties(inputs):
                 step=1,
                 precision=2
             )
-            continue
 
         # Group, if the group is empty (not connected to any other node), create a dummy property
-        if node["class_type"] == "BlenderInputGroup":
+        elif node["class_type"] == "BlenderInputGroup":
             if input_groups:
                 properties[property_name] = IntVectorProperty(
                     name=name,
@@ -122,10 +120,9 @@ def create_class_properties(inputs):
                 )
             else:
                 properties[property_name] = IntVectorProperty(name=name, size=1, default=(-1,))
-            continue
 
         # Integer
-        if node["class_type"] == "BlenderInputInt":
+        elif node["class_type"] == "BlenderInputInt":
             properties[property_name] = IntProperty(
                 name=name,
                 default=node["inputs"].get("default", 0),
@@ -133,15 +130,13 @@ def create_class_properties(inputs):
                 max=node["inputs"].get("max", 2147483647),
                 step=node["inputs"].get("step", 1)
             )
-            continue
 
-        # Load 3D and Load image
-        if node["class_type"] in ("BlenderInputLoad3D", "BlenderInputLoadImage", "BlenderInputLoadMask"):
+        # Load 3D
+        elif node["class_type"] == "BlenderInputLoad3D":
             properties[property_name] = StringProperty(name=name)
-            continue
 
         # Load checkpoint
-        if node["class_type"] == "BlenderInputLoadCheckpoint":
+        elif node["class_type"] == "BlenderInputLoadCheckpoint":
             if addon_prefs.connection_status:
                 # Get list of checkpoints from the ComfyUI server
                 url = get_server_url("/models/checkpoints")
@@ -182,14 +177,12 @@ def create_class_properties(inputs):
                     default=default,
                     items=[(i, i, "") for i in items]
                 )
-                continue
             else:
                 message = "Add-on not connect to the ComfyUI server."
                 properties[property_name] = StringProperty(name=name, default=message)
-                continue
 
         # Load diffusion model
-        if node["class_type"] == "BlenderInputLoadDiffusionModel":
+        elif node["class_type"] == "BlenderInputLoadDiffusionModel":
             if addon_prefs.connection_status:
                 # Get list of diffusion models from the ComfyUI server
                 url = get_server_url("/models/diffusion_models")
@@ -230,14 +223,16 @@ def create_class_properties(inputs):
                     default=default,
                     items=[(i, i, "") for i in items]
                 )
-                continue
             else:
                 message = "Add-on not connect to the ComfyUI server."
                 properties[property_name] = StringProperty(name=name, default=message)
-                continue
-        
+
+        # Load image and load mask
+        elif node["class_type"] in ("BlenderInputLoadImage", "BlenderInputLoadMask"):
+            properties[property_name] = PointerProperty(name=name, type=bpy.types.Image)
+
         # Load LoRA
-        if node["class_type"] == "BlenderInputLoadLora":
+        elif node["class_type"] == "BlenderInputLoadLora":
             if addon_prefs.connection_status:
                 # Get list of loras from the ComfyUI server
                 url = get_server_url("/models/loras")
@@ -278,14 +273,12 @@ def create_class_properties(inputs):
                     default=default,
                     items=[(i, i, "") for i in items]
                 )
-                continue
             else:
                 message = "Add-on not connect to the ComfyUI server."
                 properties[property_name] = StringProperty(name=name, default=message)
-                continue
 
         # Sampler
-        if node["class_type"] == "BlenderInputSampler":
+        elif node["class_type"] == "BlenderInputSampler":
             # We should fetch the list dynamically from the ComfyUI server, pending on PR: https://github.com/comfyanonymous/ComfyUI/pull/10197
             items = ["ddim", "ddpm", "deis", "dpm_2", "dpm_2_ancestral", "dpm_adaptive", "dpm_fast", "dpmpp_2m", "dpmpp_2m_cfg_pp", "dpmpp_2m_sde", "dpmpp_2m_sde_gpu", "dpmpp_2m_sde_heun", "dpmpp_2m_sde_heun_gpu", "dpmpp_2s_ancestral", "dpmpp_2s_ancestral_cfg_pp", "dpmpp_3m_sde", "dpmpp_3m_sde_gpu", "dpmpp_sde", "dpmpp_sde_gpu", "er_sde", "euler", "euler_ancestral", "euler_ancestral_cfg_pp", "euler_cfg_pp", "gradient_estimation", "gradient_estimation_cfg_pp", "heun", "heunpp2", "ipndm", "ipndm_v", "lcm", "lms", "res_multistep", "res_multistep_ancestral", "res_multistep_ancestral_cfg_pp", "res_multistep_cfg_pp", "sa_solver", "sa_solver_pece", "seeds_2", "seeds_3", "uni_pc", "uni_pc_bh2"]
 
@@ -299,10 +292,9 @@ def create_class_properties(inputs):
                 default=default,
                 items=[(i, i, "") for i in items]
             )
-            continue
 
         # Seed
-        if node["class_type"] == "BlenderInputSeed":
+        elif node["class_type"] == "BlenderInputSeed":
             properties[property_name] = IntProperty(
                 name=name,
                 default=node["inputs"].get("default", 0),
@@ -310,15 +302,17 @@ def create_class_properties(inputs):
                 max=node["inputs"].get("max", 2147483647),
                 step=node["inputs"].get("step", 1)
             )
-            continue
 
         # String and String multiline
-        if node["class_type"] in ("BlenderInputString", "BlenderInputStringMultiline"):
+        elif node["class_type"] == "BlenderInputString":
             properties[property_name] = StringProperty(
                 name=name,
                 default=node["inputs"].get("default", "")
             )
-            continue
+
+        # String multiline
+        elif node["class_type"] == "BlenderInputStringMultiline":
+            properties[property_name] = PointerProperty(name=name, type=bpy.types.Text)
     return properties
 
 
@@ -425,11 +419,8 @@ def extract_workflow_from_metadata(filepath):
         return None
 
 
-def get_current_workflow_target_inputs(self, context):
-    """
-    Function to get the list of image/mask inputs from the current workflow.
-    This list is typically used to send image/mask to the target inputs.
-    """
+def get_current_workflow_inputs(self, context, input_types=[]):
+    """Function to get the list of inputs from the current workflow based on their type."""
 
     # List of inputs to send the image to
     target_inputs = []
@@ -450,7 +441,7 @@ def get_current_workflow_target_inputs(self, context):
 
             # Get workflow inputs of type load image or load mask
             for key, node in inputs.items():
-                if node["class_type"] in ("BlenderInputLoadImage", "BlenderInputLoadMask"):
+                if node["class_type"] in input_types:
                     property_name = f"node_{key}"
                     metadata = node.get("_meta", {})
                     name = metadata.get("title", f"Node {key}")

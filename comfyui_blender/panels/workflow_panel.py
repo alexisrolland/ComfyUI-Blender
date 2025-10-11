@@ -58,6 +58,11 @@ class ComfyBlenderPanelWorkflowBase(bpy.types.Panel):
         row = self.layout.row(align=True)
         row.prop(addon_prefs, "workflow")
 
+        # Get current workflow
+        workflow = getattr(addon_prefs, "workflow")
+        row = row.row(align=True)
+        row.enabled = True if workflow != "none" else False
+
         # Button to rename the current workflow
         rename_workflow = row.operator("comfy.rename_workflow", text="", icon="GREASEPENCIL")
         rename_workflow.current_filename = workflow_filename
@@ -68,10 +73,12 @@ class ComfyBlenderPanelWorkflowBase(bpy.types.Panel):
         delete_workflow.filename = workflow_filename
         delete_workflow.filepath = workflow_path
 
-        # Queue status and progress bar
+        # Queue
         row = self.layout.row(align=True)
         split = row.split(factor=0.21)
-        split.label(text=f"Queue: {len(addon_prefs.queue)}")
+        split.label(text=f"Queue: {addon_prefs.queue}")
+
+        # Progress bar and buttons to stop workflow or clear queue
         sub_row = split.row(align=True)
         sub_row.progress(factor=addon_prefs.progress_value, text=f"{int(addon_prefs.progress_value * 100)}%", type="BAR")
         sub_row.operator("comfy.stop_workflow", text="", icon="CANCEL")

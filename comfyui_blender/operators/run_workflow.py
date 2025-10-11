@@ -86,16 +86,15 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
                 # Get image relative path in the inputs folder
                 image = getattr(current_workflow, property_name)
-                image = bpy.data.images.get(image)
                 if not image:
                     property_name = current_workflow.bl_rna.properties[property_name].name  # Node title
                     error_message = f"Input {property_name} is empty."
                     log.error(error_message)
                     bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                     return {'CANCELLED'}
-                image_path = os.path.relpath(image.filepath, inputs_folder)
 
                 # Update the workflow with the relative path
+                image_path = os.path.relpath(image.filepath, inputs_folder)
                 if image_path:
                     workflow[key]["inputs"]["image"] = image_path
                 else:
@@ -120,6 +119,11 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     max = current_workflow.bl_rna.properties[property_name].hard_max
                     seed = random.randint(min, max)
                     setattr(current_workflow, property_name, seed)
+
+            # Custom handling for string multiline inputs
+            elif node["class_type"] == "BlenderInputStringMultiline":
+                text = getattr(current_workflow, property_name)
+                workflow[key]["inputs"]["value"] = text.as_string()
 
             else:
                 # Default handling for other input types
@@ -151,8 +155,8 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         prompt_id = json.loads(response_data).get("prompt_id", "")
         self.report({'INFO'}, "Workflow sent to ComfyUI server.")
 
-        # Add the prompt to the queue collection
-        prompt = addon_prefs.queue.add()
+        # Add the prompt to the prompt collection
+        prompt = addon_prefs.prompts_collection.add()
         prompt.name = prompt_id
         prompt.workflow = str(workflow)
         prompt.outputs = str(outputs)

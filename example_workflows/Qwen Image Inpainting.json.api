@@ -99,7 +99,7 @@
   },
   "9": {
     "inputs": {
-      "vae_name": "alibaba\\wan_2.1_vae.safetensors"
+      "vae_name": "alibaba\\qwen_image_vae.safetensors"
     },
     "class_type": "VAELoader",
     "_meta": {

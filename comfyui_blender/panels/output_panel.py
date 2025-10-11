@@ -33,20 +33,20 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
         project_settings = bpy.context.scene.comfyui_project_settings
         outputs_collection = project_settings.outputs_collection
 
-        # File browser button
+        # Switch output layout to list
         row = self.layout.row(align=True)
         row.alignment = "RIGHT"
-        file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
-        file_browser.folder_path = outputs_folder
-        file_browser.custom_label = "Open Outputs Folder"
-
-        # Switch output layout to list
         output_layout = row.operator("comfy.switch_output_layout", text="", icon="LONGDISPLAY")
         output_layout.layout_type = "list"
 
         # Switch output layout to thumbnail
         output_layout = row.operator("comfy.switch_output_layout", text="", icon="IMGDISPLAY")
         output_layout.layout_type = "thumbnail"
+
+        # File browser button
+        file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
+        file_browser.folder_path = outputs_folder
+        file_browser.custom_label = "Open Outputs Folder"
 
         # Create a box with grid flow for all outputs
         box = self.layout.box()

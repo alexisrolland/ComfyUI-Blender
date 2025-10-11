@@ -89,7 +89,7 @@ def listen():
 
     # Get add-on preferences
     addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-    queue = addon_prefs.queue
+    prompts_collection = addon_prefs.prompts_collection
 
     # Get project settings
     project_settings = bpy.context.scene.comfyui_project_settings
@@ -97,49 +97,59 @@ def listen():
 
     # Start listening for messages
     global WS_CONNECTION, WS_LISTENER_THREAD
-    while WS_LISTENER_THREAD:
+    while WS_LISTENER_THREAD and WS_CONNECTION:
         try:
             message = WS_CONNECTION.recv()
         except Exception as e:
             disconnect()  # The disconnect function will also set WS_LISTENER_THREAD to None
             log.error(f"WebSocket connection interrupted: {e}")
-            continue
+            break
 
         # Process the message
         if isinstance(message, str) and message != "":
             message = json.loads(message)
-            data = message["data"]
             log.debug(f"Received websocket message: {message}")
+            data = message["data"]
+
+            # Check if the message type is status
+            if message["type"] == "status":
+                addon_prefs.queue = data["status"]["exec_info"]["queue_remaining"]
+
+                # Force redraw of the UI
+                for screen in bpy.data.screens:
+                    for area in screen.areas:
+                        if area.type in ("VIEW_3D", "IMAGE_EDITOR"):
+                            area.tag_redraw()
 
             # Filter on prompts that are specific to the client
-            if "prompt_id" in data.keys():
-                if data["prompt_id"] in queue.keys():
+            elif "prompt_id" in data.keys():
+                if data["prompt_id"] in prompts_collection.keys():
 
                     # Reset progress bar to 0 when execution starts
                     if message["type"] == "execution_start":
-                        queue[data["prompt_id"]].status = message["type"]
-                        workflow = ast.literal_eval(queue[data["prompt_id"]].workflow)
-                        queue[data["prompt_id"]].total_nb_nodes = len(workflow)
+                        prompts_collection[data["prompt_id"]].status = message["type"]
+                        workflow = ast.literal_eval(prompts_collection[data["prompt_id"]].workflow)
+                        prompts_collection[data["prompt_id"]].total_nb_nodes = len(workflow)
                         addon_prefs.progress_value = 0.0
 
                     # Update cached nodes
-                    if message["type"] == "execution_cached":
-                        queue[data["prompt_id"]].status = message["type"]
-                        queue[data["prompt_id"]].nb_nodes_cached = len(data["nodes"])
+                    elif message["type"] == "execution_cached":
+                        prompts_collection[data["prompt_id"]].status = message["type"]
+                        prompts_collection[data["prompt_id"]].nb_nodes_cached = len(data["nodes"])
 
                     # Check if execution is complete
-                    if message["type"] == "executing":
-                        queue[data["prompt_id"]].status = message["type"]
+                    elif message["type"] == "executing":
+                        prompts_collection[data["prompt_id"]].status = message["type"]
                         if data["node"] is None:
                             break
 
                     # Check if the message type is executed with outputs
-                    if message["type"] == "executed":
-                        queue[data["prompt_id"]].status = message["type"]
+                    elif message["type"] == "executed":
+                        prompts_collection[data["prompt_id"]].status = message["type"]
 
                         # Get outputs from the workflow
                         key = data["node"]
-                        outputs = ast.literal_eval(queue[data["prompt_id"]].outputs)
+                        outputs = ast.literal_eval(prompts_collection[data["prompt_id"]].outputs)
 
                         # Check class type to retrieve 3D outputs
                         if key in outputs and outputs[key]["class_type"] == "BlenderOutputDownload3D":
@@ -159,7 +169,7 @@ def listen():
                             # Force redraw of the UI
                             for screen in bpy.data.screens:
                                 for area in screen.areas:
-                                    if area.type == "VIEW_3D":
+                                    if area.type in ("VIEW_3D", "IMAGE_EDITOR"):
                                         area.tag_redraw()
 
                         # Check class type to retrieve 3D outputs
@@ -180,7 +190,7 @@ def listen():
                             # Force redraw of the UI
                             for screen in bpy.data.screens:
                                 for area in screen.areas:
-                                    if area.type == "VIEW_3D":
+                                    if area.type in ("VIEW_3D", "IMAGE_EDITOR"):
                                         area.tag_redraw()
 
                         # Check class type to retrieve image outputs
@@ -202,13 +212,13 @@ def listen():
                             # Force redraw of the UI
                             for screen in bpy.data.screens:
                                 for area in screen.areas:
-                                    if area.type == "VIEW_3D":
+                                    if area.type in ("VIEW_3D", "IMAGE_EDITOR"):
                                         area.tag_redraw()
 
                     # Raise error message from ComfyUI server
-                    if message["type"] == "execution_error":
-                        # Reset progress and remove prompt from the queue when execution fails
-                        queue.remove(queue.find(data["prompt_id"]))
+                    elif message["type"] == "execution_error":
+                        # Reset progress and remove prompt from the collection when execution fails
+                        prompts_collection.remove(prompts_collection.find(data["prompt_id"]))
                         addon_prefs.progress_value = 0.0
                         error_message = data.get("exception_message", "Unknown error")
                         error_message = f"Execution error from ComfyUI server: {error_message}"
@@ -222,21 +232,21 @@ def listen():
                         # Call function to raise error popup
                         bpy.app.timers.register(raise_error, first_interval=0.0)
 
-                    # Reset progress and remove prompt from the queue when execution is interrupted
-                    if message["type"] == "execution_interrupted":
-                        queue.remove(queue.find(data["prompt_id"]))
+                    # Reset progress and remove prompt from the collection when execution is interrupted
+                    elif message["type"] == "execution_interrupted":
+                        prompts_collection.remove(prompts_collection.find(data["prompt_id"]))
                         addon_prefs.progress_value = 0.0
 
-                    # Remove prompt from the queue when execution completes
-                    if message["type"] == "execution_success":
-                        queue.remove(queue.find(data["prompt_id"]))
+                    # Remove prompt from the collection when execution completes
+                    elif message["type"] == "execution_success":
+                        prompts_collection.remove(prompts_collection.find(data["prompt_id"]))
                         addon_prefs.progress_value = 1.0
 
                     # Update progress bar
-                    if message["type"] == "progress_state":
+                    elif message["type"] == "progress_state":
                         # Percentage of progress contribution per node
-                        total_nb_nodes = queue[data["prompt_id"]].get("total_nb_nodes", 0)
-                        nb_nodes_cached = queue[data["prompt_id"]].get("nb_nodes_cached", 0)
+                        total_nb_nodes = prompts_collection[data["prompt_id"]].get("total_nb_nodes", 0)
+                        nb_nodes_cached = prompts_collection[data["prompt_id"]].get("nb_nodes_cached", 0)
                         nb_nodes_to_execute = total_nb_nodes - nb_nodes_cached
                         node_contribution = 100 / nb_nodes_to_execute if nb_nodes_to_execute > 0 else 100
 
