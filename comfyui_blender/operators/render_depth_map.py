@@ -143,12 +143,11 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
-        # Do not delete previous inputs since we are now using image data types
         # Delete the previous input image from Blender's data
-        # current_workflow = scene.current_workflow
-        # previous_image = getattr(current_workflow, self.workflow_property)
-        # if previous_image:
-        #     bpy.data.images.remove(previous_image)
+        current_workflow = scene.current_workflow
+        previous_image = getattr(current_workflow, self.workflow_property)
+        if previous_image:
+            bpy.data.images.remove(previous_image)
 
         # Build input file paths
         inputs_folder = str(addon_prefs.inputs_folder)
@@ -177,7 +176,6 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         image = bpy.data.images.load(input_filepath, check_existing=True)
 
         # Update the workflow property with the image from the data block
-        current_workflow = scene.current_workflow
         setattr(current_workflow, self.workflow_property, image)
 
         # Reset the scene to initial state

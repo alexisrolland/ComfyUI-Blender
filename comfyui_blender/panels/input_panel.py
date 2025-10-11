@@ -189,7 +189,6 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
             # Add box only if input is not in a group/box
             box = layout.box() if is_root else layout
-            box.prop(current_workflow, property_name, text="")
 
             # Get input image from the workflow property
             image = getattr(current_workflow, property_name)

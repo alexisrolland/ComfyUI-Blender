@@ -68,21 +68,20 @@ class ComfyBlenderOperatorSendImageToInput(bpy.types.Operator):
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
-        # Do not delete previous inputs since we are now using image data types
         # Delete the previous input image from Blender's data
         # Only if the image is not used in any of the workflow inputs
-        # current_workflow = context.scene.current_workflow
-        # previous_image = getattr(current_workflow, self.workflow_property)
-        # if previous_image:
-        #     possible_inputs = get_current_workflow_inputs(self, context, ("BlenderInputLoadImage", "BlenderInputLoadMask"))
-        #     is_used = False  # Flag to check if the image is used in any other input
-        #     for input in possible_inputs:
-        #         if input[0] != self.workflow_property:
-        #             if getattr(current_workflow, input[0]) == previous_image:
-        #                 is_used = True
-        #                 break
-        #     if not is_used:
-        #         bpy.data.images.remove(previous_image)
+        current_workflow = context.scene.current_workflow
+        previous_image = getattr(current_workflow, self.workflow_property)
+        if previous_image:
+            possible_inputs = get_current_workflow_inputs(self, context, ("BlenderInputLoadImage", "BlenderInputLoadMask"))
+            is_used = False  # Flag to check if the image is used in any other input
+            for input in possible_inputs:
+                if input[0] != self.workflow_property:
+                    if getattr(current_workflow, input[0]) == previous_image:
+                        is_used = True
+                        break
+            if not is_used:
+                bpy.data.images.remove(previous_image)
 
         # Build input file paths
         inputs_folder = str(addon_prefs.inputs_folder)
@@ -109,7 +108,6 @@ class ComfyBlenderOperatorSendImageToInput(bpy.types.Operator):
         image = bpy.data.images.load(input_filepath, check_existing=True)
 
         # Update the workflow property with the image from the data block
-        current_workflow = context.scene.current_workflow
         setattr(current_workflow, self.workflow_property, image)
 
         # Remove temporary files
