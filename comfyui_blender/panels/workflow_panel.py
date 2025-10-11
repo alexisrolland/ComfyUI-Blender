@@ -58,6 +58,11 @@ class ComfyBlenderPanelWorkflowBase(bpy.types.Panel):
         row = self.layout.row(align=True)
         row.prop(addon_prefs, "workflow")
 
+        # Get current workflow
+        workflow = getattr(addon_prefs, "workflow")
+        row = row.row(align=True)
+        row.enabled = True if workflow != "none" else False
+
         # Button to rename the current workflow
         rename_workflow = row.operator("comfy.rename_workflow", text="", icon="GREASEPENCIL")
         rename_workflow.current_filename = workflow_filename
