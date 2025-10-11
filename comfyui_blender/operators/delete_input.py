@@ -1,7 +1,7 @@
 """Operator to delete an input."""
 import bpy
 
-from ..workflow import get_current_workflow_target_inputs
+from ..workflow import get_current_workflow_inputs
 
 
 class ComfyBlenderOperatorDeleteInput(bpy.types.Operator):
@@ -76,7 +76,7 @@ class ComfyBlenderOperatorDeleteInputOk(bpy.types.Operator):
             # Delete the input image from Blender's data
             # Only if the image is not used in any of the workflow inputs
             image = getattr(current_workflow, self.workflow_property)
-            possible_inputs = get_current_workflow_target_inputs(self, context)
+            possible_inputs = get_current_workflow_inputs(self, context, ("BlenderInputLoadImage", "BlenderInputLoadMask"))
             is_used = False  # Flag to check if the image is used in any other input
             for input in possible_inputs:
                 if input[0] != self.workflow_property:
@@ -102,7 +102,23 @@ class ComfyBlenderOperatorDeleteInputOk(bpy.types.Operator):
             # if os.path.exists(self.filepath):
             #     os.remove(self.filepath)
             #     self.report({'INFO'}, f"Deleted file: {self.filepath}")
-        
+
+        if self.type == "text":
+            # Delete the input text from Blender's data
+            # Only if the text is not used in any of the workflow inputs
+            text = getattr(current_workflow, self.workflow_property)
+            possible_inputs = get_current_workflow_inputs(self, context, ("BlenderInputStringMultiline"))
+            is_used = False  # Flag to check if the text is used in any other input
+            for input in possible_inputs:
+                if input[0] != self.workflow_property:
+                    if getattr(current_workflow, input[0]) == text:
+                        is_used = True
+                        break
+            if not is_used:
+                bpy.data.texts.remove(text)
+            else:
+                setattr(current_workflow, self.workflow_property, None)
+
         # Force redraw of the UI
         for screen in bpy.data.screens:  # Iterate through all screens
             for area in screen.areas:  # Access areas in each screen

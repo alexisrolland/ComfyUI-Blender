@@ -21,6 +21,7 @@ from .operators import (
     open_file_browser,
     open_image_editor,
     open_image,
+    open_text_editor,
     prepare_glb_file,
     prepare_obj_file,
     project_material,
@@ -96,6 +97,7 @@ def register():
     open_file_browser.register()
     open_image_editor.register()
     open_image.register()
+    open_text_editor.register()
     prepare_glb_file.register()
     prepare_obj_file.register()
     project_material.register()
@@ -157,6 +159,7 @@ def unregister():
     open_file_browser.unregister()
     open_image_editor.unregister()
     open_image.unregister()
+    open_text_editor.unregister()
     prepare_glb_file.unregister()
     prepare_obj_file.unregister()
     project_material.unregister()

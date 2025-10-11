@@ -1,7 +1,7 @@
 """Context menu to provide custom actions for outputs."""
 import bpy
 
-from ..workflow import get_current_workflow_target_inputs
+from ..workflow import get_current_workflow_inputs
 
 class ComfyBlenderOutputMenu(bpy.types.Menu):
     """Context menu to provide custom actions for outputs."""
@@ -49,7 +49,7 @@ class ComfyBlenderOutputMenu(bpy.types.Menu):
         layout.label(text="Send to Input", icon="INDIRECT_ONLY_OFF")
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         if addon_prefs.connection_status:
-            target_inputs = get_current_workflow_target_inputs(self, context)
+            target_inputs = get_current_workflow_inputs(self, context, ("BlenderInputLoadImage", "BlenderInputLoadMask"))
             for input in target_inputs:
                 row = layout.row()
                 row.enabled = output_type == "image"

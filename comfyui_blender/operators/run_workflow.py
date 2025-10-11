@@ -120,6 +120,11 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     seed = random.randint(min, max)
                     setattr(current_workflow, property_name, seed)
 
+            # Custom handling for string multiline inputs
+            elif node["class_type"] == "BlenderInputStringMultiline":
+                text = getattr(current_workflow, property_name)
+                workflow[key]["inputs"]["value"] = text.as_string()
+
             else:
                 # Default handling for other input types
                 workflow[key]["inputs"]["value"] = getattr(current_workflow, property_name)

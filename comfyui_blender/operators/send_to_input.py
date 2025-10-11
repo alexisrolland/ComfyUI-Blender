@@ -5,7 +5,7 @@ import shutil
 
 import bpy
 
-from ..workflow import get_current_workflow_target_inputs
+from ..workflow import get_current_workflow_inputs
 from ..utils import upload_file
 
 log = logging.getLogger("comfyui_blender")
@@ -73,7 +73,7 @@ class ComfyBlenderOperatorSendImageToInput(bpy.types.Operator):
         current_workflow = context.scene.current_workflow
         previous_image = getattr(current_workflow, self.workflow_property)
         if previous_image:
-            possible_inputs = get_current_workflow_target_inputs(self, context)
+            possible_inputs = get_current_workflow_inputs(self, context, ("BlenderInputLoadImage", "BlenderInputLoadMask"))
             is_used = False  # Flag to check if the image is used in any other input
             for input in possible_inputs:
                 if input[0] != self.workflow_property:
@@ -120,10 +120,11 @@ def register():
     """Register the operator."""
 
     # Register scene properties for menu data
+    # Use a lambda function to pass arguments to get_current_workflow_inputs
     bpy.types.Scene.comfyui_target_input = bpy.props.EnumProperty(
         name="Target Input",
         description="Target input to send to",
-        items=get_current_workflow_target_inputs
+        items=lambda self, context: get_current_workflow_inputs(self, context, ("BlenderInputLoadImage", "BlenderInputLoadMask"))
     )
 
     bpy.utils.register_class(ComfyBlenderOperatorSendImageToInput)

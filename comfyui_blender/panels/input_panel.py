@@ -187,13 +187,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             file_browser.folder_path = inputs_folder
             file_browser.custom_label = "Open Inputs Folder"
 
-            # Add box only for main layout
+            # Add box only if input is not in a group/box
             box = layout.box() if is_root else layout
-
-            # Selected image
-            #box.prop(current_workflow, property_name, text="", icon="IMAGE_DATA")
-            #search_image = row.operator("comfy.search_image", text="", icon="IMAGE_DATA")
-            #search_image.workflow_property = property_name
 
             # Get input image from the workflow property
             image = getattr(current_workflow, property_name)
@@ -280,6 +275,25 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 row.prop(addon_prefs, "lock_seed", text="", icon="LOCKED")
             else:
                 row.prop(addon_prefs, "lock_seed", text="", icon="UNLOCKED")
+
+        elif node["class_type"] == "BlenderInputStringMultiline":
+            row = layout.row(align=True)
+            row.prop(current_workflow, property_name)
+
+            # Edit text button
+            open_text = row.operator("comfy.open_text_editor", text="", icon="GREASEPENCIL")
+            open_text.workflow_property = property_name
+
+            # Get input text from the workflow property
+            text = getattr(current_workflow, property_name)
+
+            # Delete input button
+            row = row.row(align=True)
+            row.enabled = True if text else False
+            delete_input = row.operator("comfy.delete_input", text="", icon="TRASH")
+            delete_input.name = text.name if text else ""
+            delete_input.workflow_property = property_name
+            delete_input.type = "text"
 
         else:
             # Default display for other input types
