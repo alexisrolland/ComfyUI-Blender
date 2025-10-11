@@ -108,19 +108,25 @@ def listen():
         # Process the message
         if isinstance(message, str) and message != "":
             message = json.loads(message)
-            data = message["data"]
             log.debug(f"Received websocket message: {message}")
+            data = message["data"]
+
+            # Check if the message type is status
+            if message["type"] == "status":
+                addon_prefs.queue = data["status"]["exec_info"]["queue_remaining"]
+
+                # Force redraw of the UI
+                for screen in bpy.data.screens:
+                    for area in screen.areas:
+                        if area.type in ("VIEW_3D", "IMAGE_EDITOR"):
+                            area.tag_redraw()
 
             # Filter on prompts that are specific to the client
-            if "prompt_id" in data.keys():
+            elif "prompt_id" in data.keys():
                 if data["prompt_id"] in prompts_collection.keys():
 
-                    # Check if the message type is status
-                    if message["type"] == "satus":
-                        pass
-
                     # Reset progress bar to 0 when execution starts
-                    elif message["type"] == "execution_start":
+                    if message["type"] == "execution_start":
                         prompts_collection[data["prompt_id"]].status = message["type"]
                         workflow = ast.literal_eval(prompts_collection[data["prompt_id"]].workflow)
                         prompts_collection[data["prompt_id"]].total_nb_nodes = len(workflow)
@@ -163,7 +169,7 @@ def listen():
                             # Force redraw of the UI
                             for screen in bpy.data.screens:
                                 for area in screen.areas:
-                                    if area.type == "VIEW_3D":
+                                    if area.type in ("VIEW_3D", "IMAGE_EDITOR"):
                                         area.tag_redraw()
 
                         # Check class type to retrieve 3D outputs
@@ -184,7 +190,7 @@ def listen():
                             # Force redraw of the UI
                             for screen in bpy.data.screens:
                                 for area in screen.areas:
-                                    if area.type == "VIEW_3D":
+                                    if area.type in ("VIEW_3D", "IMAGE_EDITOR"):
                                         area.tag_redraw()
 
                         # Check class type to retrieve image outputs
@@ -206,7 +212,7 @@ def listen():
                             # Force redraw of the UI
                             for screen in bpy.data.screens:
                                 for area in screen.areas:
-                                    if area.type == "VIEW_3D":
+                                    if area.type in ("VIEW_3D", "IMAGE_EDITOR"):
                                         area.tag_redraw()
 
                     # Raise error message from ComfyUI server

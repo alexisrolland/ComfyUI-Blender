@@ -120,9 +120,9 @@ class ComfyBlenderOperatorDeleteInputOk(bpy.types.Operator):
                 setattr(current_workflow, self.workflow_property, None)
 
         # Force redraw of the UI
-        for screen in bpy.data.screens:  # Iterate through all screens
-            for area in screen.areas:  # Access areas in each screen
-                if area.type == "VIEW_3D":  # Area of the add-on panel
+        for screen in bpy.data.screens:
+            for area in screen.areas:
+                if area.type in ("VIEW_3D", "IMAGE_EDITOR"):
                     area.tag_redraw()
 
         return {'FINISHED'}

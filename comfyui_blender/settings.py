@@ -37,7 +37,7 @@ def update_progress(self, context):
 
     if context.screen:
         for area in context.screen.areas:
-            if area.type == "VIEW_3D":
+            if area.type in ("VIEW_3D", "IMAGE_EDITOR"):
                 area.tag_redraw()
 
 
@@ -277,6 +277,12 @@ class AddonPreferences(bpy.types.AddonPreferences):
         name="Connection Status",
         description="Indicate if the Blender add-on is connected to the ComfyUI server.",
         default=False
+    )
+
+    # Queue
+    queue: IntProperty(
+        name="Queue",
+        description="Number of prompts in the queue on the ComfyUI server."
     )
 
     # Construct base folders path
