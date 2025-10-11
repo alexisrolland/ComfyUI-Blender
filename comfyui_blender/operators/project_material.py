@@ -56,7 +56,7 @@ class ComfyBlenderOperatorProjectMaterial(bpy.types.Operator):
         # output_node.location = (200, 0)
 
         # Create a new material with the image texture
-        material = bpy.data.materials.new(name="Projected Material")
+        material = bpy.data.materials.new(name="Material.Projection")
         material.use_nodes = True
         nodes = material.node_tree.nodes
         links = material.node_tree.links
@@ -64,17 +64,21 @@ class ComfyBlenderOperatorProjectMaterial(bpy.types.Operator):
 
         # Create shader nodes
         uv_node = nodes.new(type="ShaderNodeUVMap")
-        texture_node = nodes.new(type="ShaderNodeTexImage")
+        image_node = nodes.new(type="ShaderNodeTexImage")
         output_node = nodes.new(type="ShaderNodeOutputMaterial")
 
         # Position shader nodes
         uv_node.location = (-200, 0)
-        texture_node.location = (0, 0)
+        image_node.location = (0, 0)
         output_node.location = (300, 0)
 
         # Link shader nodes
-        links.new(uv_node.outputs[0], texture_node.inputs[0])  # From output socket Color to input socket Surface
-        links.new(texture_node.outputs[0], output_node.inputs[0])  # From output socket Color to input socket Surface
+        links.new(uv_node.outputs[0], image_node.inputs[0])  # From output socket Color to input socket Surface
+        links.new(image_node.outputs[0], output_node.inputs[0])  # From output socket Color to input socket Surface
+
+        # Get image and assign it to the shader texture node
+        image = bpy.data.images.get(self.name)
+        image_node.image = image
 
         # Loop on each selected mesh
         for obj in selected_meshes:
@@ -92,22 +96,18 @@ class ComfyBlenderOperatorProjectMaterial(bpy.types.Operator):
             obj.data.materials[0] = material if obj.data.materials else obj.data.materials.append(material)
 
             # Create new UV map for the projection
-            uv_map = obj.data.uv_layers.new(name="Projected UV")
+            uv_map = obj.data.uv_layers.new(name="UVMap.Projection")
             uv_map.active_render = True
 
             # Assign UV map to the shader UV node
             uv_node.uv_map = uv_map.name
-
-            # Get image and assign it to the shader texture node
-            image = bpy.data.images.get(self.name)
-            texture_node.image = image
 
             # Add modifier to apply the geometry nodes
             # modifier = obj.modifiers.new(name="Projected Geometry Nodes", type="NODES")
             # modifier.node_group = geometry_nodes
 
             # Add modifier to project the texture
-            modifier = obj.modifiers.new(name="Projection Modifier", type="UV_PROJECT")
+            modifier = obj.modifiers.new(name="Modifier.Projection", type="UV_PROJECT")
             modifier.uv_layer = uv_map.name
             modifier.projector_count = 1
             modifier.projectors[0].object = camera

@@ -7,6 +7,7 @@ from .menus import (
 from .operators import (
     clear_queue,
     connect_to_server,
+    create_material,
     delete_input,
     delete_output,
     delete_workflow,
@@ -81,6 +82,7 @@ def register():
     # Operators
     clear_queue.register()
     connect_to_server.register()
+    create_material.register()
     delete_input.register()
     delete_output.register()
     delete_workflow.register()
@@ -141,6 +143,7 @@ def unregister():
     # Operators
     clear_queue.unregister()
     connect_to_server.unregister()
+    create_material.unregister()
     delete_input.unregister()
     delete_output.unregister()
     delete_workflow.unregister()
