@@ -97,13 +97,13 @@ def listen():
 
     # Start listening for messages
     global WS_CONNECTION, WS_LISTENER_THREAD
-    while WS_LISTENER_THREAD:
+    while WS_LISTENER_THREAD and WS_CONNECTION:
         try:
             message = WS_CONNECTION.recv()
         except Exception as e:
             disconnect()  # The disconnect function will also set WS_LISTENER_THREAD to None
             log.error(f"WebSocket connection interrupted: {e}")
-            continue
+            break
 
         # Process the message
         if isinstance(message, str) and message != "":
