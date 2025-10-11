@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import re
+import shutil
 import struct
 
 import bpy
@@ -18,7 +19,12 @@ from bpy.props import (
     StringProperty
 )
 
-from .utils import add_custom_headers, contains_non_latin, get_server_url
+from .utils import (
+    add_custom_headers,
+    contains_non_latin,
+    get_server_url,
+    upload_file
+)
 
 log = logging.getLogger("comfyui_blender")
 
@@ -228,8 +234,13 @@ def create_class_properties(inputs):
                 properties[property_name] = StringProperty(name=name, default=message)
 
         # Load image and load mask
+        # Use a lambda function to pass arguments to upload_input
         elif node["class_type"] in ("BlenderInputLoadImage", "BlenderInputLoadMask"):
-            properties[property_name] = PointerProperty(name=name, type=bpy.types.Image)
+            properties[property_name] = PointerProperty(
+                name=name,
+                type=bpy.types.Image,
+                update=upload_input_callback(property_name)
+            )
 
         # Load LoRA
         elif node["class_type"] == "BlenderInputLoadLora":
@@ -419,7 +430,7 @@ def extract_workflow_from_metadata(filepath):
         return None
 
 
-def get_current_workflow_inputs(self, context, input_types=[]):
+def get_current_workflow_inputs(self, context, input_types):
     """Function to get the list of inputs from the current workflow based on their type."""
 
     # List of inputs to send the image to
@@ -569,3 +580,61 @@ def register_workflow_class(self, context):
                     else:
                         # Default handling for other input types
                         setattr(workflow_instance, property_name, node["inputs"].get("value", ""))
+
+
+def upload_input_callback(property_name):
+    """
+    Create a unique upload callback function when for the workflow property.
+    We need to do this because the workflow properties are created dynamically in a loop.
+    """
+
+    def upload_input(self, context):
+        """Upload an input image or mask to the ComfyUI server."""
+
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+        image = getattr(self, property_name)
+        previous_filepath = image.filepath
+
+        # Upload file on ComfyUI server
+        try:
+            response = upload_file(previous_filepath, type="image")
+        except Exception as e:
+            error_message = f"Failed to upload file to ComfyUI server: {addon_prefs.server_address}. {e}"
+            log.exception(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+
+        if response.status_code != 200:
+            # Reset the scene to initial state
+            error_message = f"Failed to upload file: {response.status_code} - {response.text}"
+            log.error(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+
+        # Build input file paths
+        inputs_folder = str(addon_prefs.inputs_folder)
+        input_subfolder = response.json()["subfolder"]
+        input_filename = response.json()["name"]
+        input_filepath = os.path.join(inputs_folder, input_subfolder, input_filename)
+
+        # Create the input subfolder if it doesn't exist
+        os.makedirs(os.path.join(inputs_folder, input_subfolder), exist_ok=True)
+
+        try:
+            # Copy the file to the inputs folder
+            shutil.copy(previous_filepath, input_filepath)
+            log.info(f"Input file copied to: {input_filepath}")
+        except shutil.SameFileError as e:
+            log.info(f"Input file is already in the inputs folder: {input_filepath}")
+        except Exception as e:
+            error_message = f"Failed to copy input file: {e}"
+            log.exception(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+
+        # Load image in the data block
+        # image = bpy.data.images.load(input_filepath, check_existing=True)
+
+        # Update image name and path in the data block
+        image.name = input_filename
+        image.filepath = input_filepath
+        image.reload()
+
+    return upload_input

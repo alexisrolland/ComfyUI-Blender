@@ -44,10 +44,10 @@ class ComfyBlenderOperatorUploadInputImage(bpy.types.Operator):
                 return {'CANCELLED'}
 
             # Delete the previous input file from Blender's data if it exists
-            current_workflow = context.scene.current_workflow
-            previous_image = getattr(current_workflow, self.workflow_property)
-            if previous_image:
-                bpy.data.images.remove(previous_image)
+            # current_workflow = context.scene.current_workflow
+            # previous_image = getattr(current_workflow, self.workflow_property)
+            # if previous_image:
+            #     bpy.data.images.remove(previous_image)
 
             # Build input file paths
             addon_prefs = context.preferences.addons["comfyui_blender"].preferences
@@ -75,6 +75,7 @@ class ComfyBlenderOperatorUploadInputImage(bpy.types.Operator):
             image = bpy.data.images.load(input_filepath, check_existing=True)
 
             # Update the workflow property with the image from the data block
+            current_workflow = context.scene.current_workflow
             setattr(current_workflow, self.workflow_property, image)
 
         else:
