@@ -76,7 +76,7 @@ class ComfyBlenderPanelWorkflowBase(bpy.types.Panel):
         # Queue status and progress bar
         row = self.layout.row(align=True)
         split = row.split(factor=0.21)
-        split.label(text=f"Queue: {len(addon_prefs.queue)}")
+        split.label(text=f"Queue: {len(addon_prefs.prompts_collection)}")
         sub_row = split.row(align=True)
         sub_row.progress(factor=addon_prefs.progress_value, text=f"{int(addon_prefs.progress_value * 100)}%", type="BAR")
         sub_row.operator("comfy.stop_workflow", text="", icon="CANCEL")

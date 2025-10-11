@@ -1,4 +1,4 @@
-"""Operator to remove all pending workflows from ComfyUI server queue."""
+"""Operator to remove all pending prompts from ComfyUI server queue."""
 import logging
 import requests
 
@@ -10,11 +10,11 @@ log = logging.getLogger("comfyui_blender")
 
 
 class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
-    """Operator to remove all pending workflows from ComfyUI server queue."""
+    """Operator to remove all pending prompts from ComfyUI server queue."""
 
     bl_idname = "comfy.clear_queue"
     bl_label = "Clear Queue"
-    bl_description = "Remove all pending workflows from ComfyUI server queue."
+    bl_description = "Remove all pending prompts from ComfyUI server queue."
 
     def execute(self, context):
         """Execute the operator."""
@@ -41,11 +41,11 @@ class ComfyBlenderOperatorStopWorkflow(bpy.types.Operator):
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
 
-        # Get indices of workflows to remove and remove them in reverse order
-        queue = addon_prefs.queue
-        workflow_indices = [i for i, workflow in enumerate(queue) if workflow.status == "pending"]
-        for i in reversed(workflow_indices):
-            queue.remove(i)
+        # Get indices of prompts to remove and remove them in reverse order
+        prompts_collection = addon_prefs.prompts_collection
+        prompt_indices = [i for i, workflow in enumerate(prompts_collection) if workflow.status == "pending"]
+        for i in reversed(prompt_indices):
+            prompts_collection.remove(i)
 
         self.report({'INFO'}, "Request to stop workflow execution sent to ComfyUI server.")
         return {'FINISHED'}

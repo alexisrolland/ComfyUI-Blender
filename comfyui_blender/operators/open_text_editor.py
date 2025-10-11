@@ -24,7 +24,7 @@ class ComfyBlenderOperatorOpenTextEditor(bpy.types.Operator):
 
         # If no text editor area exists, split the screen to create one
         if text_editor_area is None:
-            bpy.ops.screen.area_split(direction="VERTICAL", factor=0.5)
+            bpy.ops.screen.area_split(direction="VERTICAL", factor=0.3)
 
             # Get the newly created area (the last one)
             text_editor_area = context.screen.areas[-1]

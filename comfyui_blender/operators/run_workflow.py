@@ -155,8 +155,8 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         prompt_id = json.loads(response_data).get("prompt_id", "")
         self.report({'INFO'}, "Workflow sent to ComfyUI server.")
 
-        # Add the prompt to the queue collection
-        prompt = addon_prefs.queue.add()
+        # Add the prompt to the prompt collection
+        prompt = addon_prefs.prompts_collection.add()
         prompt.name = prompt_id
         prompt.workflow = str(workflow)
         prompt.outputs = str(outputs)
