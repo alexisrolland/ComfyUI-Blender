@@ -482,18 +482,25 @@ def parse_workflow_for_inputs(workflow):
 
     inputs = {}
     sorted_inputs = inputs
-    for key, node in workflow.items():
-        class_type = node.get("class_type")
-        if class_type:
-            if class_type.startswith("BlenderInput"):
-                inputs[key]=node
+    try:
+        for key, node in workflow.items():
+            class_type = node.get("class_type")
+            if class_type:
+                if class_type.startswith("BlenderInput"):
+                    inputs[key]=node
 
-    if len(inputs) > 0:
-        # Reorder the keys based on the "order" property of the nodes dictionaries
-        sorted_keys = sorted(inputs.keys(), key=lambda k: inputs[k]["inputs"]["order"])
+        if len(inputs) > 0:
+            # Reorder the keys based on the "order" property of the nodes dictionaries
+            sorted_keys = sorted(inputs.keys(), key=lambda k: inputs[k]["inputs"]["order"])
 
-        # Create a new dictionary with the sorted keys
-        sorted_inputs = {key: inputs[key] for key in sorted_keys}
+            # Create a new dictionary with the sorted keys
+            sorted_inputs = {key: inputs[key] for key in sorted_keys}
+
+    except Exception as e:
+        error_message = f"Failed to parse workflow inputs. There might be something wrong in the Blender input nodes. Error message: {e}"
+        log.exception(error_message)
+        bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+
     return sorted_inputs
 
 
