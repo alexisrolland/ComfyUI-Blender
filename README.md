@@ -25,9 +25,9 @@ The Blender add-on UI is automatically composed according to the input and outpu
 
 ### ComfyUI Setup
 
-Download and install ComfyUI (if you are new to ComfyUI, refer to the original [ComfyUI](https://github.com/comfyanonymous/ComfyUI) repository to get started). **Make sure you have the latest version.**
+Download and install ComfyUI. If you are new to ComfyUI, refer to the original [repository](https://github.com/comfyanonymous/ComfyUI) to get started. **Make sure you have the latest version.**
 
-At the time of writing this, the latest version was ComfyUI `v0.3.57`. That version required to update some of the ComfyUI-Blender nodes to the custom node schema v3. Making them incompatible with earlier versions of ComfyUI.
+At the time of writing this, the latest version was ComfyUI `v0.3.57`. This version required to update some of the ComfyUI-Blender nodes to the custom node schema v3. Making them incompatible with earlier versions of ComfyUI.
 
 Install the ComfyUI-Blender nodes from the [ComfyUI-Manager](https://github.com/Comfy-Org/ComfyUI-Manager) or by cloning this repository in the custom nodes folder of ComfyUI:
 

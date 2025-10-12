@@ -1,7 +1,7 @@
 {
   "1": {
     "inputs": {
-      "value": "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
+      "value": "Photograph of an ancient treasure chest on a black background. The chest is made of rich, vintage antique wood sculpted with floral patterns, with brass and iron fittings. The brass lock and hinges are tarnished with age, adding to its mysterious and timeless appeal. The lighting is dramatic, with soft shadows accentuating the texture of the wood and metal, creating a sense of depth and intrigue. Ultra HD, 4K, cinematic composition.",
       "order": 3,
       "default": "",
       "format_path": false
@@ -89,7 +89,7 @@
   },
   "8": {
     "inputs": {
-      "image": "depth_map.png",
+      "image": "blender_depth_map0001.png",
       "order": 4
     },
     "class_type": "BlenderInputLoadImage",
