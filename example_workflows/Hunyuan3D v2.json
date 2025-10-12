@@ -5,72 +5,6 @@
   "last_link_id": 24,
   "nodes": [
     {
-      "id": 1,
-      "type": "MarkdownNote",
-      "pos": [
-        -500.4363098144531,
-        185.2362518310547
-      ],
-      "size": [
-        340,
-        230
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 3,
-      "type": "BlenderInputLoadImage",
-      "pos": [
-        -430,
-        490
-      ],
-      "size": [
-        270,
-        338.0000305175781
-      ],
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            19
-          ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
-        }
-      ],
-      "title": "Image",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
-        "Node name for S&R": "BlenderInputLoadImage"
-      },
-      "widgets_values": [
-        "example.png",
-        2,
-        "image"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 4,
       "type": "ModelSamplingAuraFlow",
       "pos": [
@@ -82,7 +16,7 @@
         60
       ],
       "flags": {},
-      "order": 10,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -172,7 +106,7 @@
         82
       ],
       "flags": {},
-      "order": 2,
+      "order": 0,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -314,7 +248,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        204712058848371,
+        906688555071748,
         "randomize",
         20,
         8,
@@ -440,9 +374,16 @@
         154
       ],
       "flags": {},
-      "order": 3,
+      "order": 1,
       "mode": 0,
-      "inputs": [],
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
       "outputs": [
         {
           "name": "FLOAT",
@@ -480,9 +421,16 @@
         210
       ],
       "flags": {},
-      "order": 4,
+      "order": 2,
       "mode": 0,
-      "inputs": [],
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
       "outputs": [
         {
           "name": "*",
@@ -520,9 +468,16 @@
         160
       ],
       "flags": {},
-      "order": 5,
+      "order": 3,
       "mode": 0,
-      "inputs": [],
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
       "outputs": [
         {
           "name": "FLOAT",
@@ -560,7 +515,7 @@
         302
       ],
       "flags": {},
-      "order": 9,
+      "order": 10,
       "mode": 0,
       "inputs": [
         {
@@ -628,7 +583,7 @@
         82
       ],
       "flags": {},
-      "order": 6,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -664,7 +619,7 @@
         98
       ],
       "flags": {},
-      "order": 7,
+      "order": 5,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -724,9 +679,16 @@
         178
       ],
       "flags": {},
-      "order": 8,
+      "order": 6,
       "mode": 0,
-      "inputs": [],
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
       "outputs": [
         {
           "name": "INT",
@@ -783,6 +745,79 @@
       },
       "widgets_values": [
         "3d/blender"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 1,
+      "type": "MarkdownNote",
+      "pos": [
+        -500,
+        140
+      ],
+      "size": [
+        340,
+        280
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Export the workflow: Workflow > Export (API)\n\n(3) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 3,
+      "type": "BlenderInputLoadImage",
+      "pos": [
+        -430,
+        490
+      ],
+      "size": [
+        270,
+        338.0000305175781
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            19
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "Image",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
+        "Node name for S&R": "BlenderInputLoadImage"
+      },
+      "widgets_values": [
+        "blender_00001_.png",
+        2,
+        "image"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -938,13 +973,17 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.6951137299943237,
+      "scale": 0.6319215727221125,
       "offset": [
-        539.2904986588472,
-        203.82201275199412
+        600,
+        -40
       ]
     },
-    "frontendVersion": "1.23.4"
+    "frontendVersion": "1.26.13",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
   },
   "version": 0.4
 }

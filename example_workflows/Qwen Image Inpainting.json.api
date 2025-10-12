@@ -49,7 +49,7 @@
   },
   "5": {
     "inputs": {
-      "value": "",
+      "value": "Photograph of an ancient treasure chest on a black background. The chest is opened and golden light is diffusing gentles light ray up. The lighting is dramatic, with soft shadows accentuating the texture of the wood and metal, creating a sense of depth and intrigue. Ultra HD, 4K, cinematic composition.",
       "order": 2,
       "default": "",
       "format_path": false
@@ -143,7 +143,7 @@
   },
   "11": {
     "inputs": {
-      "image": "example.png",
+      "image": "blender_00001_.png",
       "order": 3
     },
     "class_type": "BlenderInputLoadImage",
@@ -153,7 +153,7 @@
   },
   "12": {
     "inputs": {
-      "image": "example.png",
+      "image": "blender_input.png",
       "order": 4
     },
     "class_type": "BlenderInputLoadMask",

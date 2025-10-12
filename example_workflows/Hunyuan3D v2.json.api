@@ -10,7 +10,7 @@
   },
   "3": {
     "inputs": {
-      "image": "example.png",
+      "image": "blender_00001_.png",
       "order": 2
     },
     "class_type": "BlenderInputLoadImage",

@@ -5,52 +5,6 @@
   "last_link_id": 19,
   "nodes": [
     {
-      "id": 1,
-      "type": "BlenderInputStringMultiline",
-      "pos": [
-        260,
-        940
-      ],
-      "size": [
-        340,
-        360
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            3
-          ]
-        }
-      ],
-      "title": "Prompt",
-      "properties": {
-        "Node name for S&R": "BlenderInputStringMultiline",
-        "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
-      },
-      "widgets_values": [
-        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
-        3,
-        "",
-        false
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 2,
       "type": "DualCLIPLoader",
       "pos": [
@@ -62,7 +16,7 @@
         130
       ],
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -99,7 +53,7 @@
         88
       ],
       "flags": {},
-      "order": 9,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -138,7 +92,7 @@
         88
       ],
       "flags": {},
-      "order": 8,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -185,7 +139,7 @@
         154
       ],
       "flags": {},
-      "order": 2,
+      "order": 1,
       "mode": 0,
       "inputs": [
         {
@@ -206,9 +160,9 @@
       ],
       "title": "Depth Strength",
       "properties": {
-        "Node name for S&R": "BlenderInputFloat",
         "cnr_id": "comfyui-blender",
-        "ver": "e5f69ef0b1450e0e1c96ba3156ed690fd8e7f9da"
+        "ver": "e5f69ef0b1450e0e1c96ba3156ed690fd8e7f9da",
+        "Node name for S&R": "BlenderInputFloat"
       },
       "widgets_values": [
         0.7500000000000001,
@@ -271,7 +225,7 @@
         58
       ],
       "flags": {},
-      "order": 3,
+      "order": 2,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -419,7 +373,7 @@
         180
       ],
       "flags": {},
-      "order": 4,
+      "order": 3,
       "mode": 0,
       "inputs": [
         {
@@ -440,9 +394,9 @@
       ],
       "title": "Seed",
       "properties": {
-        "Node name for S&R": "BlenderInputSeed",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputSeed"
       },
       "widgets_values": [
         0,
@@ -589,9 +543,9 @@
       "outputs": [],
       "title": "Save Image",
       "properties": {
-        "Node name for S&R": "BlenderOutputSaveImage",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderOutputSaveImage"
       },
       "widgets_values": [
         "blender"
@@ -600,62 +554,18 @@
       "bgcolor": "#653"
     },
     {
-      "id": 17,
-      "type": "BlenderInputLoadDiffusionModel",
-      "pos": [
-        720,
-        300
-      ],
-      "size": [
-        318.3423767089844,
-        130
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            19
-          ]
-        }
-      ],
-      "title": "Model",
-      "properties": {
-        "Node name for S&R": "BlenderInputLoadDiffusionModel"
-      },
-      "widgets_values": [
-        "visitor01\\rayflux-v1.0.safetensors",
-        "default",
-        2,
-        "visitor01\\rayflux-v1.0.safetensors"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 16,
       "type": "MarkdownNote",
       "pos": [
-        350,
-        420
+        330,
+        370
       ],
       "size": [
         340,
-        240
+        300
       ],
       "flags": {},
-      "order": 6,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -678,7 +588,7 @@
         350
       ],
       "flags": {},
-      "order": 7,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -704,14 +614,106 @@
       ],
       "title": "Depth Map",
       "properties": {
-        "Node name for S&R": "BlenderInputLoadImage",
         "cnr_id": "comfyui-blender",
-        "ver": "e5f69ef0b1450e0e1c96ba3156ed690fd8e7f9da"
+        "ver": "e5f69ef0b1450e0e1c96ba3156ed690fd8e7f9da",
+        "Node name for S&R": "BlenderInputLoadImage"
       },
       "widgets_values": [
-        "depth_map.png",
+        "blender_depth_map0001.png",
         4,
         "image"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 1,
+      "type": "BlenderInputStringMultiline",
+      "pos": [
+        260,
+        940
+      ],
+      "size": [
+        340,
+        220
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "title": "Prompt",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputStringMultiline"
+      },
+      "widgets_values": [
+        "Photograph of an ancient treasure chest on a black background. The chest is made of rich, vintage antique wood sculpted with floral patterns, with brass and iron fittings. The brass lock and hinges are tarnished with age, adding to its mysterious and timeless appeal. The lighting is dramatic, with soft shadows accentuating the texture of the wood and metal, creating a sense of depth and intrigue. Ultra HD, 4K, cinematic composition.",
+        3,
+        "",
+        false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 17,
+      "type": "BlenderInputLoadDiffusionModel",
+      "pos": [
+        720,
+        300
+      ],
+      "size": [
+        318.3423767089844,
+        130
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            19
+          ]
+        }
+      ],
+      "title": "Model",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "bff2443c331d37c7ee05b6c1ff43cd21644e7175",
+        "Node name for S&R": "BlenderInputLoadDiffusionModel"
+      },
+      "widgets_values": [
+        "visitor01\\rayflux-v1.0.safetensors",
+        "default",
+        2,
+        "visitor01\\rayflux-v1.0.safetensors"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -867,13 +869,13 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.6696902654867255,
+      "scale": 0.810325221238938,
       "offset": [
-        217.2084572183681,
-        -68.68021143045917
+        -42.51442253874927,
+        -227.70278239644864
       ]
     },
-    "frontendVersion": "1.25.10",
+    "frontendVersion": "1.26.13",
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,
