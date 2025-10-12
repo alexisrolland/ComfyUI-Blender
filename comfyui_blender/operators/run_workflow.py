@@ -123,6 +123,14 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
             # Custom handling for string multiline inputs
             elif node["class_type"] == "BlenderInputStringMultiline":
                 text = getattr(current_workflow, property_name)
+                if not text:
+                    property_name = current_workflow.bl_rna.properties[property_name].name  # Node title
+                    error_message = f"Input {property_name} is empty."
+                    log.error(error_message)
+                    bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                    return {'CANCELLED'}
+
+                # Update the workflow with the text content
                 workflow[key]["inputs"]["value"] = text.as_string()
 
             else:
