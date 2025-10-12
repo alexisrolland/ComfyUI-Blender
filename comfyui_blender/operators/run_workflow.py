@@ -94,7 +94,9 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     return {'CANCELLED'}
 
                 # Update the workflow with the relative path
-                image_path = os.path.relpath(image.filepath, inputs_folder)
+                # Get image absolute path in case it was converted to relative path like //..\AppData\Roaming\...
+                image_absolute_path = bpy.path.abspath(image.filepath)
+                image_path = os.path.relpath(image_absolute_path, inputs_folder)
                 if image_path:
                     workflow[key]["inputs"]["image"] = image_path
                 else:
@@ -123,6 +125,14 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
             # Custom handling for string multiline inputs
             elif node["class_type"] == "BlenderInputStringMultiline":
                 text = getattr(current_workflow, property_name)
+                if not text:
+                    property_name = current_workflow.bl_rna.properties[property_name].name  # Node title
+                    error_message = f"Input {property_name} is empty."
+                    log.error(error_message)
+                    bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                    return {'CANCELLED'}
+
+                # Update the workflow with the text content
                 workflow[key]["inputs"]["value"] = text.as_string()
 
             else:

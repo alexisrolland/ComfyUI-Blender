@@ -14,10 +14,10 @@ from .operators import (
     disconnect_from_server,
     download_example_workflows,
     get_camera_resolution,
+    get_random_seed,
     import_3d_model,
     import_image,
     import_workflow,
-    lock_seed,
     open_file_browser,
     open_image_editor,
     open_image,
@@ -90,10 +90,10 @@ def register():
     disconnect_from_server.register()
     download_example_workflows.register()
     get_camera_resolution.register()
+    get_random_seed.register()
     import_3d_model.register()
     import_image.register()
     import_workflow.register()
-    lock_seed.register()
     open_file_browser.register()
     open_image_editor.register()
     open_image.register()
@@ -152,10 +152,10 @@ def unregister():
     disconnect_from_server.unregister()
     download_example_workflows.unregister()
     get_camera_resolution.unregister()
+    get_random_seed.unregister()
     import_3d_model.unregister()
     import_image.unregister()
     import_workflow.unregister()
-    lock_seed.unregister()
     open_file_browser.unregister()
     open_image_editor.unregister()
     open_image.unregister()
