@@ -94,7 +94,9 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     return {'CANCELLED'}
 
                 # Update the workflow with the relative path
-                image_path = os.path.relpath(image.filepath, inputs_folder)
+                # Get image absolute path in case it was converted to relative path like //..\AppData\Roaming\...
+                image_absolute_path = bpy.path.abspath(image.filepath)
+                image_path = os.path.relpath(image_absolute_path, inputs_folder)
                 if image_path:
                     workflow[key]["inputs"]["image"] = image_path
                 else:
