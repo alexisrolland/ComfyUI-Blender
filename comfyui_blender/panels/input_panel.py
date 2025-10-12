@@ -270,7 +270,13 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
         # Custom handling for seed inputs
         elif node["class_type"] == "BlenderInputSeed":
             row = layout.row(align=True)
-            row.prop(current_workflow, property_name) # Random seed management to be implemented
+            row.prop(current_workflow, property_name)
+            
+            # Get random seed button
+            random_seed = row.operator("comfy.get_random_seed", text="", icon="FILE_REFRESH")
+            random_seed.workflow_property = property_name
+
+            # Lock seed toggle
             if addon_prefs.lock_seed:
                 row.prop(addon_prefs, "lock_seed", text="", icon="LOCKED")
             else:
