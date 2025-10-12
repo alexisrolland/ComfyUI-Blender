@@ -140,7 +140,7 @@
   },
   "10": {
     "inputs": {
-      "image": "blender_depth_map0001.png",
+      "image": "example.png",
       "order": 4
     },
     "class_type": "BlenderInputLoadImage",

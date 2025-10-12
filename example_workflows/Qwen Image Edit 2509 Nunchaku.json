@@ -863,7 +863,7 @@
         "Node name for S&R": "BlenderInputLoadImage"
       },
       "widgets_values": [
-        "blender_depth_map0001.png",
+        "example.png",
         4,
         "image"
       ],
