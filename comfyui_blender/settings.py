@@ -289,6 +289,13 @@ class AddonPreferences(bpy.types.AddonPreferences):
         update=update_server_address
     )
 
+    # API key
+    api_key: StringProperty(
+        name="API Key",
+        description="API key to authenticate requests when using ComfyUI API nodes.",
+        subtype="PASSWORD"
+    )
+
     # Custom http headers, this can be used if the ComfyUI server requires custom authentication
     http_headers: CollectionProperty(
         name="Custom Headers",
@@ -396,10 +403,11 @@ class AddonPreferences(bpy.types.AddonPreferences):
 
         # Check Blender version
         if bpy.app.version >= (4, 5, 0):
-            # Client Id and server address
+            # Server settings
             layout.label(text="Server:")
             layout.prop(self, "client_id")
             layout.prop(self, "server_address")
+            layout.prop(self, "api_key")
 
             # Custom HTTP headers
             row = layout.row()
