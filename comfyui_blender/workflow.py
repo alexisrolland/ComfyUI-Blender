@@ -74,6 +74,10 @@ def create_class_properties(inputs):
     for group_key in input_groups:
         input_groups[group_key].sort(key=lambda k: inputs[k]["inputs"]["order"])
 
+    # Dictionary to hold default objects for the properties
+    # Some properties such as PointerProperty need to have their default value set after registration
+    default_objects = {}
+
     # Create properties
     properties = {}
     for key, node in inputs.items():
@@ -319,7 +323,22 @@ def create_class_properties(inputs):
         # String multiline
         elif node["class_type"] == "BlenderInputStringMultiline":
             properties[property_name] = PointerProperty(name=name, type=bpy.types.Text)
-    return properties
+
+            # Create a new text block with the default value
+            # Check if bpy.data.texts is available to avoid error message
+            default = node["inputs"].get("default", "")
+            if default and hasattr(bpy.data, "texts"):
+                text_name = f"{name} (Default)"
+                if text_name in bpy.data.texts:
+                    text_block = bpy.data.texts[text_name]
+                else:
+                    text_block = bpy.data.texts.new(text_name)
+                text_block.clear()
+                text_block.write(default)
+
+                # Add text block to default objects
+                default_objects[property_name] = text_block
+    return properties, default_objects
 
 
 def create_workflow_class(class_name, properties):
@@ -541,14 +560,19 @@ def register_workflow_class(self, context):
 
         # Get inputs from the workflow
         inputs = parse_workflow_for_inputs(workflow)
-        properties = create_class_properties(inputs)
+        properties, default_objects = create_class_properties(inputs)
         workflow_class = create_workflow_class(workflow_class_name, properties)
 
         # Register the workflow class
         bpy.utils.register_class(workflow_class)
         bpy.types.Scene.current_workflow = bpy.props.PointerProperty(type=workflow_class)
 
-        # Get custom data from the workflow
+        # Assign default objects to the properties that need it
+        current_workflow = context.scene.current_workflow
+        for property_name, default_object in default_objects.items():
+            setattr(current_workflow, property_name, default_object)
+
+        # Get custom data from the workflow JSON file
         keep_values = False
         if workflow.get("comfyui_blender"):
             keep_values = workflow["comfyui_blender"].get("keep_values", False)
