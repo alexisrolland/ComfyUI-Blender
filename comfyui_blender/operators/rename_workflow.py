@@ -4,7 +4,7 @@ import os
 
 import bpy
 
-from ..utils import get_filepath
+from ..utils import get_filepath, get_workflows_folder
 
 log = logging.getLogger("comfyui_blender")
 
@@ -68,8 +68,7 @@ class ComfyBlenderOperatorRenameWorkflowOk(bpy.types.Operator):
         """Execute the operator."""
 
         # Get workflows folder
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        workflows_folder = str(addon_prefs.workflows_folder)
+        workflows_folder = get_workflows_folder()
         current_filepath = os.path.join(workflows_folder, self.current_filename)
         new_filename, new_filepath = get_filepath(self.new_filename, workflows_folder)
 
@@ -84,6 +83,7 @@ class ComfyBlenderOperatorRenameWorkflowOk(bpy.types.Operator):
             return {'CANCELLED'}
 
         # Set current workflow to load workflow
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         addon_prefs.workflow = new_filename
         return {'FINISHED'}
 

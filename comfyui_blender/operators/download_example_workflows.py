@@ -5,7 +5,12 @@ import requests
 
 import bpy
 
-from ..utils import add_custom_headers, get_filepath, get_server_url
+from ..utils import (
+    add_custom_headers,
+    get_filepath,
+    get_server_url,
+    get_workflows_folder
+)
 from ..workflow import check_workflow_file_exists
 
 log = logging.getLogger("comfyui_blender")
@@ -24,8 +29,8 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
         
-        addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-        workflows_folder = str(addon_prefs.workflows_folder)
+        # Get workflows folder
+        workflows_folder = get_workflows_folder()
 
         # Download example workflows
         url = get_server_url("/api/workflow_templates")
@@ -33,6 +38,7 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
         try:
             response = requests.get(url, headers=headers)
         except Exception as e:
+            addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
             error_message = f"Failed to download example workflows from ComfyUI server: {addon_prefs.server_address}. {e}"
             log.exception(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
@@ -55,6 +61,7 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
             try:
                 response = requests.get(url, headers=headers)
             except Exception as e:
+                addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
                 error_message = f"Failed to download workflow from ComfyUI server: {addon_prefs.server_address}. {e}"
                 log.exception(error_message)
                 bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
@@ -89,6 +96,7 @@ class ComfyBlenderOperatorDownloadExampleWorkflows(bpy.types.Operator):
                 self.report({'INFO'}, f"Workflow already exists: {workflow_filename}")
 
             # Force refresh of the panel
+            addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
             if addon_prefs.workflow:
                 addon_prefs.workflow = addon_prefs.workflow
         return {'FINISHED'}

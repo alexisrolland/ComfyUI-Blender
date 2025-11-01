@@ -5,6 +5,7 @@ import os
 import bpy
 
 from .. import workflow as w
+from ..utils import get_inputs_folder, get_workflows_folder
 
 
 class ComfyBlenderPanelInput(bpy.types.Panel):
@@ -30,7 +31,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
         if addon_prefs.connection_status:
             if hasattr(context.scene, "current_workflow"):
                 # Get the selected workflow
-                workflows_folder = str(addon_prefs.workflows_folder)
+                workflows_folder = get_workflows_folder()
                 workflow_filename = str(addon_prefs.workflow)
                 workflow_path = os.path.join(workflows_folder, workflow_filename)
                 current_workflow = context.scene.current_workflow
@@ -88,8 +89,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
     def display_input(self, context, current_workflow, layout, property_name, node, is_root=True):
         """Format the input for display in the panel."""
 
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        inputs_folder = str(addon_prefs.inputs_folder)
+        # Get inputs folder
+        inputs_folder = get_inputs_folder()
 
         # Custom handling for integer inputs
         if node["class_type"] == "BlenderInputInt":
@@ -236,11 +237,6 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             # Add box only for main layout
             box = layout.box() if is_root else layout
 
-            # Selected image
-            #box.prop(current_workflow, property_name, text="", icon="IMAGE_DATA")
-            #search_image = row.operator("comfy.search_image", text="", icon="IMAGE_DATA")
-            #search_image.workflow_property = property_name
-
             # Get input image from the workflow property
             image = getattr(current_workflow, property_name)
 
@@ -277,6 +273,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             random_seed.workflow_property = property_name
 
             # Lock seed toggle
+            addon_prefs = context.preferences.addons["comfyui_blender"].preferences
             if addon_prefs.lock_seed:
                 row.prop(addon_prefs, "lock_seed", text="", icon="LOCKED")
             else:

@@ -6,7 +6,7 @@ import shutil
 import bpy
 
 from ..workflow import get_current_workflow_inputs
-from ..utils import upload_file
+from ..utils import get_inputs_folder, get_temp_folder, upload_file
 
 log = logging.getLogger("comfyui_blender")
 
@@ -41,8 +41,7 @@ class ComfyBlenderOperatorSendImageToInput(bpy.types.Operator):
             return {'CANCELLED'}
 
         # Build temp file paths
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        temp_folder = str(addon_prefs.temp_folder)
+        temp_folder = get_temp_folder()
         temp_filepath = os.path.join(temp_folder, self.temp_filename)
 
         # Duplicate the image to ensure it has an alpha channel
@@ -57,6 +56,7 @@ class ComfyBlenderOperatorSendImageToInput(bpy.types.Operator):
         try:
             response = upload_file(temp_filepath, type="image")
         except Exception as e:
+            addon_prefs = context.preferences.addons["comfyui_blender"].preferences
             error_message = f"Failed to upload file to ComfyUI server: {addon_prefs.server_address}. {e}"
             log.exception(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
@@ -84,7 +84,7 @@ class ComfyBlenderOperatorSendImageToInput(bpy.types.Operator):
                 bpy.data.images.remove(previous_image)
 
         # Build input file paths
-        inputs_folder = str(addon_prefs.inputs_folder)
+        inputs_folder = get_inputs_folder()
         input_subfolder = response.json()["subfolder"]
         input_filename = response.json()["name"]
         input_filepath = os.path.join(inputs_folder, input_subfolder, input_filename)

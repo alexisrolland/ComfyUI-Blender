@@ -6,7 +6,7 @@ import shutil
 
 import bpy
 
-from ..utils import get_filepath, contains_non_latin
+from ..utils import contains_non_latin, get_filepath, get_workflows_folder
 from ..workflow import check_workflow_file_exists, extract_workflow_from_metadata
 
 log = logging.getLogger("comfyui_blender")
@@ -29,8 +29,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
         """Execute the operator."""
 
         # Get workflows folder
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        workflows_folder = str(addon_prefs.workflows_folder)
+        workflows_folder = get_workflows_folder()
 
         # Build list of selected files paths
         selected_files = []
@@ -62,7 +61,9 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
             try:
                 # Import workflow
                 workflow_filename = self.process_single_file(workflows_folder, path)
+
                 # Set current workflow to workflow
+                addon_prefs = context.preferences.addons["comfyui_blender"].preferences
                 addon_prefs.workflow = workflow_filename
             except Exception as e:
                 error_message = str(e)

@@ -1,6 +1,8 @@
 """Panel to display options in the file browser."""
 import bpy
 
+from ..utils import get_inputs_folder, get_outputs_folder, get_workflows_folder
+
 
 class ComfyBlenderPanelFileBrowser(bpy.types.Panel):
     """Panel to display options in the file browser."""
@@ -21,24 +23,18 @@ class ComfyBlenderPanelFileBrowser(bpy.types.Panel):
         """Draw the panel."""
 
         layout = self.layout
-        
-        # Get outputs folder
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        inputs_folder = str(addon_prefs.inputs_folder)
-        outputs_folder = str(addon_prefs.outputs_folder)
-        workflows_folder = str(addon_prefs.workflows_folder)
 
         # Inputs folder
         inputs = layout.operator("comfy.open_file_browser", text="Inputs", icon="FILE_FOLDER")
-        inputs.folder_path = inputs_folder
+        inputs.folder_path = get_inputs_folder()
 
         # Outputs folder
         outputs = layout.operator("comfy.open_file_browser", text="Outputs", icon="FILE_FOLDER")
-        outputs.folder_path = outputs_folder
+        outputs.folder_path = get_outputs_folder()
 
         # Workflows folder
         workflows = layout.operator("comfy.open_file_browser", text="Workflows", icon="FILE_FOLDER")
-        workflows.folder_path = workflows_folder
+        workflows.folder_path = get_workflows_folder()
 
 def register():
     """Register the panel."""

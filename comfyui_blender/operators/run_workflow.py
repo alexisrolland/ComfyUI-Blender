@@ -8,7 +8,7 @@ import requests
 import bpy
 
 from .. import workflow as w
-from ..utils import add_custom_headers, get_server_url
+from ..utils import add_custom_headers, get_inputs_folder, get_server_url, get_workflows_folder
 
 log = logging.getLogger("comfyui_blender")
 
@@ -25,7 +25,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
         # Get add-on preferences and selected workflow
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        workflows_folder = str(addon_prefs.workflows_folder)
+        workflows_folder = get_workflows_folder()
         workflow_filename = str(addon_prefs.workflow)
         workflow_path = os.path.join(workflows_folder, workflow_filename)
 
@@ -80,9 +80,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
             # Custom handling for load image input
             elif node["class_type"] in ("BlenderInputLoadImage", "BlenderInputLoadMask"):
-                # Get add-on preferences
-                addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-                inputs_folder = str(addon_prefs.inputs_folder)
+                inputs_folder = get_inputs_folder()
 
                 # Get image relative path in the inputs folder
                 image = getattr(current_workflow, property_name)

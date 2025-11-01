@@ -18,7 +18,13 @@ from bpy.props import (
     StringProperty
 )
 
-from .utils import add_custom_headers, contains_non_latin, get_server_url
+from .utils import (
+    add_custom_headers,
+    contains_non_latin,
+    get_inputs_folder,
+    get_server_url,
+    get_workflows_folder
+)
 
 log = logging.getLogger("comfyui_blender")
 
@@ -427,7 +433,7 @@ def get_current_workflow_inputs(self, context, input_types=[]):
     addon_prefs = context.preferences.addons["comfyui_blender"].preferences
     if hasattr(context.scene, "current_workflow"):
         # Get the selected workflow
-        workflows_folder = str(addon_prefs.workflows_folder)
+        workflows_folder = get_workflows_folder()
         workflow_filename = str(addon_prefs.workflow)
         workflow_path = os.path.join(workflows_folder, workflow_filename)
 
@@ -461,8 +467,7 @@ def get_workflow_class_name(workflow_filename):
 def get_workflow_list(self, context):
     """Return a list of workflow JSON files from the workflows folder."""
 
-    addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-    workflows_folder = addon_prefs.workflows_folder
+    workflows_folder = get_workflows_folder()
     workflows = []
 
     if os.path.exists(workflows_folder) and os.path.isdir(workflows_folder):
@@ -519,8 +524,7 @@ def parse_workflow_for_outputs(workflow):
 def register_workflow_class(self, context):
     """Wrapper function to register a workflow class."""
 
-    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-    workflows_folder = str(addon_prefs.workflows_folder)
+    workflows_folder = get_workflows_folder()
     workflow_filename = str(self.workflow)
     workflow_path = os.path.join(workflows_folder, workflow_filename)
     workflow_class_name = get_workflow_class_name(workflow_filename)
@@ -563,8 +567,7 @@ def register_workflow_class(self, context):
                     
                     # Custom handling for image input
                     elif node["class_type"] == "BlenderInputLoadImage":
-                        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-                        inputs_folder = str(addon_prefs.inputs_folder)
+                        inputs_folder = get_inputs_folder()
                         input_filename = node["inputs"].get("image", "")
                         input_filepath = os.path.join(inputs_folder, input_filename)
 

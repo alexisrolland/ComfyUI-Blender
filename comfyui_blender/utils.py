@@ -7,6 +7,7 @@ from urllib.parse import quote, urljoin, urlencode
 
 import bpy
 
+
 log = logging.getLogger("comfyui_blender")
 
 
@@ -38,9 +39,6 @@ def contains_non_latin(s):
 def download_file(filename, subfolder, type="output"):
     """Download a file from the ComfyUI server."""
 
-    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-    outputs_folder = addon_prefs.outputs_folder
-
     # Download the file data from the ComfyUI server
     # Add a random parameter to avoid caching issues
     params = {"filename": filename, "subfolder": subfolder, "type": type, "rand": random.random()}
@@ -68,6 +66,7 @@ def download_file(filename, subfolder, type="output"):
         # To be fixed in future release
 
     # Save the file in the output folder
+    outputs_folder = get_outputs_folder()
     folder = os.path.join(outputs_folder, subfolder)
     filepath = os.path.join(folder, filename)
 
@@ -94,6 +93,56 @@ def get_filepath(filename, folder):
         filename = f"{name}_{counter}{ext}"
         filepath = os.path.join(folder, filename)
     return filename, filepath
+
+
+def get_inputs_folder():
+    """Get the inputs folder from the preferences."""
+
+    project_settings = bpy.context.scene.comfyui_project_settings
+    if project_settings.use_blend_file_location:
+        inputs_folder = project_settings.inputs_folder
+    else:
+        addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+        inputs_folder = addon_prefs.inputs_folder
+    return str(inputs_folder)
+
+
+def get_outputs_folder():
+    """Get the outputs folder from the preferences."""
+
+    project_settings = bpy.context.scene.comfyui_project_settings
+    if project_settings.use_blend_file_location:
+        outputs_folder = project_settings.outputs_folder
+    else:
+        addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+        outputs_folder = addon_prefs.outputs_folder
+    return str(outputs_folder)
+
+
+def get_temp_folder():
+    """Get the temporary folder from the preferences."""
+
+    project_settings = bpy.context.scene.comfyui_project_settings
+    if project_settings.use_blend_file_location:
+        temp_folder = project_settings.temp_folder
+    else:
+        addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+        temp_folder = addon_prefs.temp_folder
+    return str(temp_folder)
+
+
+def get_workflows_folder():
+    """Get the workflows folder from the preferences."""
+
+    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+    workflows_folder = addon_prefs.workflows_folder
+
+    if hasattr(bpy.context, "scene"):
+        if bpy.context.scene:
+            project_settings = bpy.context.scene.comfyui_project_settings
+            if project_settings.use_blend_file_location:
+                workflows_folder = project_settings.workflows_folder
+    return str(workflows_folder)
 
 
 def get_server_url(route=None, params=None):

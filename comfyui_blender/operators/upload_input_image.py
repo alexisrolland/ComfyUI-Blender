@@ -5,7 +5,7 @@ import shutil
 
 import bpy
 
-from ..utils import upload_file
+from ..utils import get_inputs_folder, get_outputs_folder, upload_file
 
 log = logging.getLogger("comfyui_blender")
 
@@ -50,8 +50,7 @@ class ComfyBlenderOperatorUploadInputImage(bpy.types.Operator):
                 bpy.data.images.remove(previous_image)
 
             # Build input file paths
-            addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-            inputs_folder = str(addon_prefs.inputs_folder)
+            inputs_folder = get_inputs_folder()
             input_subfolder = response.json()["subfolder"]
             input_filename = response.json()["name"]
             input_filepath = os.path.join(inputs_folder, input_subfolder, input_filename)
@@ -86,11 +85,9 @@ class ComfyBlenderOperatorUploadInputImage(bpy.types.Operator):
 
     def invoke(self, context, event):
         """Invoke the file selector."""
-
-        addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-        outputs_folder = addon_prefs.outputs_folder
         
         # Set the filepath to the folder and add a trailing slash/backslash
+        outputs_folder = get_outputs_folder()
         if not outputs_folder.endswith(os.sep):
             outputs_folder += os.sep
         self.filepath = outputs_folder
