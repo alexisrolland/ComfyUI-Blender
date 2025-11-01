@@ -45,11 +45,6 @@ def update_project_folders(self, context):
     """Callback to update workflows, inputs and outputs folders according to the project base folder."""
 
     try:
-        # Set workflows folder
-        workflows_folder = os.path.join(self.base_folder, "workflows")
-        os.makedirs(workflows_folder, exist_ok=True)
-        self.workflows_folder = workflows_folder
-
         # Set inputs folder
         inputs_folder = os.path.join(self.base_folder, "inputs")
         os.makedirs(inputs_folder, exist_ok=True)
@@ -59,6 +54,17 @@ def update_project_folders(self, context):
         outputs_folder = os.path.join(self.base_folder, "outputs")
         os.makedirs(outputs_folder, exist_ok=True)
         self.outputs_folder = outputs_folder
+
+        # Set temp folder
+        temp_folder = os.path.join(self.base_folder, "workflows")
+        os.makedirs(temp_folder, exist_ok=True)
+        self.temp_folder = temp_folder
+
+        # Set workflows folder
+        workflows_folder = os.path.join(self.base_folder, "workflows")
+        os.makedirs(workflows_folder, exist_ok=True)
+        self.workflows_folder = workflows_folder
+
     except Exception as e:
         error_message = f"Failed to create project folders. {e}"
         log.exception(error_message)
@@ -91,27 +97,22 @@ def update_server_address(self, context):
 def update_use_blend_file_location(self, context):
     """Update project base folders according to the location of the .blend file."""
 
-    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
-
     # Set project folder to the current .blend file location
     if self.use_blend_file_location:
         if bpy.data.filepath:
-            addon_prefs.base_folder = os.path.dirname(bpy.data.filepath)
+            self.base_folder = os.path.dirname(bpy.data.filepath)
         else:
             self.use_blend_file_location = False
             error_message = "Save your .blend file before using this option."
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return
-    else:
-        # Reset to the default base folder
-        addon_prefs.base_folder = addon_prefs.base_path
 
-    # Update workflows, inputs and outputs folders
-    update_project_folders(addon_prefs, context)
+        # Update workflows, inputs and outputs folders
+        update_project_folders(self, context)
 
     # Force the update of the workflow property to refresh the input panel
-    if addon_prefs.workflow:
-        addon_prefs.workflow = addon_prefs.workflow
+    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+    addon_prefs.workflow = get_workflow_list(self, context)[0][0]
 
 
 # Operators
@@ -191,6 +192,37 @@ class ProjectSettingsPropertyGroup(bpy.types.PropertyGroup):
         update=update_use_blend_file_location
     )
 
+    # Base folder
+    base_folder: StringProperty(
+        name="Base Folder",
+        description="Base folder where workflows, inputs and outputs are stored.",
+        update=update_project_folders
+    )
+
+    # Inputs folder
+    inputs_folder: StringProperty(
+        name="Inputs Folder",
+        description="Folder where inputs are stored."
+    )
+
+    # Outputs folder
+    outputs_folder: StringProperty(
+        name="Outputs Folder",
+        description="Folder where outputs are stored."
+    )
+
+    # Temp folder
+    temp_folder: StringProperty(
+        name="Temporary Files Folder",
+        description="Folder to store temporary files."
+    )
+
+    # Workflows folder
+    workflows_folder: StringProperty(
+        name="Workflows Folder",
+        description="Folder where workflows are stored."
+    )
+
 
 class PromptPropertyGroup(bpy.types.PropertyGroup):
     """Property group for the prompts collection."""
@@ -257,6 +289,13 @@ class AddonPreferences(bpy.types.AddonPreferences):
         update=update_server_address
     )
 
+    # API key
+    api_key: StringProperty(
+        name="API Key",
+        description="API key to authenticate requests when using ComfyUI API nodes.",
+        subtype="PASSWORD"
+    )
+
     # Custom http headers, this can be used if the ComfyUI server requires custom authentication
     http_headers: CollectionProperty(
         name="Custom Headers",
@@ -285,52 +324,35 @@ class AddonPreferences(bpy.types.AddonPreferences):
         description="Number of prompts in the queue on the ComfyUI server."
     )
 
-    # Construct base folders path
-    base_path = os.path.dirname(bpy.utils.resource_path("USER"))
-    base_path = os.path.join(base_path, "data", __package__)
-
-    # Project base folder
+    # Base folder
     base_folder: StringProperty(
         name="Base Folder",
-        description="Base project folder where workflows, inputs and outputs are stored.",
-        default=base_path,
+        description="Base folder where workflows, inputs and outputs are stored.",
         update=update_project_folders
     )
 
-    # Inputs folder path
-    default_inputs_folder = os.path.join(base_path, "inputs")
-    os.makedirs(default_inputs_folder, exist_ok=True)
+    # Inputs folder
     inputs_folder: StringProperty(
         name="Inputs Folder",
-        description="Folder where inputs are stored.",
-        default=default_inputs_folder
+        description="Folder where inputs are stored."
     )
 
-    # Outputs folder path
-    default_outputs_folder = os.path.join(base_path, "outputs")
-    os.makedirs(default_outputs_folder, exist_ok=True)
+    # Outputs folder
     outputs_folder: StringProperty(
         name="Outputs Folder",
-        description="Folder where outputs are stored.",
-        default=default_outputs_folder
+        description="Folder where outputs are stored."
     )
 
-    # Temp folder path
-    temp_folder = os.path.join(base_path, "temp")
-    os.makedirs(temp_folder, exist_ok=True)
+    # Temp folder
     temp_folder: StringProperty(
         name="Temporary Files Folder",
-        description="Folder to store temporary files.",
-        default=temp_folder
+        description="Folder to store temporary files."
     )
 
     # Workflows folder
-    default_workflows_folder = os.path.join(base_path, "workflows")
-    os.makedirs(default_workflows_folder, exist_ok=True)
     workflows_folder: StringProperty(
         name="Workflows Folder",
-        description="Folder where workflows are stored.",
-        default=default_workflows_folder
+        description="Folder where workflows are stored."
     )
 
     # Current workflow
@@ -381,10 +403,11 @@ class AddonPreferences(bpy.types.AddonPreferences):
 
         # Check Blender version
         if bpy.app.version >= (4, 5, 0):
-            # Client Id and server address
+            # Server settings
             layout.label(text="Server:")
             layout.prop(self, "client_id")
             layout.prop(self, "server_address")
+            layout.prop(self, "api_key")
 
             # Custom HTTP headers
             row = layout.row()
@@ -412,41 +435,76 @@ class AddonPreferences(bpy.types.AddonPreferences):
             # Folders
             layout.label(text="Folders:")
 
-            # Get project settings
+            # Use .blend file location
             project_settings = bpy.context.scene.comfyui_project_settings
-            use_file_loc = project_settings.use_blend_file_location
+            layout.prop(project_settings, "use_blend_file_location")
+            use_blend_file_location = project_settings.use_blend_file_location
 
-            # Base folder
-            row = layout.row(align=True)
-            row.prop(self, "base_folder", text="Base Folder", emboss=not use_file_loc)
-            if not use_file_loc:
+            if use_blend_file_location:
+                # Base folder
+                row = layout.row(align=True)
+                row.prop(project_settings, "base_folder", text="Base Folder", emboss=False)
+
+                # Create box for subfolders
+                box = layout.box()
+                col = box.column(align=True)
+
+                # Inputs folder
+                row = col.row(align=True)
+                row.prop(project_settings, "inputs_folder", text="Inputs", emboss=False)
+
+                # Outputs folder
+                row = col.row(align=True)
+                row.prop(project_settings, "outputs_folder", text="Outputs", emboss=False)
+
+                # Workflows folder
+                row = col.row(align=True)
+                row.prop(project_settings, "workflows_folder", text="Workflows", emboss=False)
+
+            else:
+                # Base folder
+                row = layout.row(align=True)
+                row.prop(self, "base_folder", text="Base Folder")
+
+                # Button select and reset base folder
                 select_base_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
                 select_base_folder.target_property = "base_folder"
+                reset_base_folder = row.operator("comfy.reset_folder", text="", icon="FILE_REFRESH")
+                reset_base_folder.target_property = "base_folder"
 
-            # Create box for subfolders
-            box = layout.box()
-            col = box.column(align=True)
+                # Create box for subfolders
+                box = layout.box()
+                col = box.column(align=True)
 
-            # Inputs folder
-            row = col.row(align=True)
-            row.prop(self, "inputs_folder", text="Inputs", emboss=not use_file_loc)
-            if not use_file_loc:
+                # Inputs folder
+                row = col.row(align=True)
+                row.prop(self, "inputs_folder", text="Inputs")
+
+                # Button select and reset inputs folder
                 select_inputs_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
                 select_inputs_folder.target_property = "inputs_folder"
+                reset_inputs_folder = row.operator("comfy.reset_folder", text="", icon="FILE_REFRESH")
+                reset_inputs_folder.target_property = "inputs_folder"
 
-            # Outputs folder
-            row = col.row(align=True)
-            row.prop(self, "outputs_folder", text="Outputs", emboss=not use_file_loc)
-            if not use_file_loc:
+                # Outputs folder
+                row = col.row(align=True)
+                row.prop(self, "outputs_folder", text="Outputs")
+
+                # Button select and reset outputs folder
                 select_outputs_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
                 select_outputs_folder.target_property = "outputs_folder"
-            
-            # Workflows folder
-            row = col.row(align=True)
-            row.prop(self, "workflows_folder", text="Workflows", emboss=not use_file_loc)
-            if not use_file_loc:
+                reset_outputs_folder = row.operator("comfy.reset_folder", text="", icon="FILE_REFRESH")
+                reset_outputs_folder.target_property = "outputs_folder"
+
+                # Workflows folder
+                row = col.row(align=True)
+                row.prop(self, "workflows_folder", text="Workflows")
+
+                # Button select and reset workflows folder
                 select_workflows_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
                 select_workflows_folder.target_property = "workflows_folder"
+                reset_workflows_folder = row.operator("comfy.reset_folder", text="", icon="FILE_REFRESH")
+                reset_workflows_folder.target_property = "workflows_folder"
         else:
             col = layout.column(align=True)
             col.label(text=f"ComfyUI Blender requires Blender 4.5 or higher.")
@@ -478,6 +536,33 @@ def register():
     # Force the update of the workflow property to trigger the registration of the selected workflow class
     if addon_prefs.workflow:
         addon_prefs.workflow = addon_prefs.workflow
+
+    # Set default folders if they are empty
+    if not addon_prefs.base_folder:
+        base_path = os.path.dirname(bpy.utils.resource_path("USER"))
+        base_path = os.path.join(base_path, "data", __package__)
+        addon_prefs.base_folder = base_path
+        os.makedirs(addon_prefs.base_folder, exist_ok=True)
+
+    # Inputs folder
+    if not addon_prefs.inputs_folder:
+        addon_prefs.inputs_folder = os.path.join(addon_prefs.base_folder, "inputs")
+        os.makedirs(addon_prefs.inputs_folder, exist_ok=True)
+    
+    # Outputs folder
+    if not addon_prefs.outputs_folder:
+        addon_prefs.outputs_folder = os.path.join(addon_prefs.base_folder, "outputs")
+        os.makedirs(addon_prefs.outputs_folder, exist_ok=True)
+
+    # Temp folder
+    if not addon_prefs.temp_folder:
+        addon_prefs.temp_folder = os.path.join(addon_prefs.base_folder, "temp")
+        os.makedirs(addon_prefs.temp_folder, exist_ok=True)
+
+    # Workflows folder
+    if not addon_prefs.workflows_folder:
+        addon_prefs.workflows_folder = os.path.join(addon_prefs.base_folder, "workflows")
+        os.makedirs(addon_prefs.workflows_folder, exist_ok=True)
 
     # Check if use_blend_file_location is enabled and update folders accordingly
     # Use a timer to check and update folders after Blender is fully loaded

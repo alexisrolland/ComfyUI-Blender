@@ -5,6 +5,7 @@ import bpy
 from bpy.app.handlers import persistent
 
 from .connection import disconnect
+from .settings import update_use_blend_file_location
 
 log = logging.getLogger("comfyui_blender")
 
@@ -26,13 +27,7 @@ def load_post_handler(scene, depsgraph):
 
     # Update the base folder according to the .blend file location
     if bpy.data.filepath and project_settings.use_blend_file_location:
-        addon_prefs.base_folder = os.path.dirname(bpy.data.filepath)
-    else:
-        # Reset base folder if the .blend file location is empty
-        project_settings.use_blend_file_location = False
-        base_path = os.path.dirname(bpy.utils.resource_path("USER"))
-        base_path = os.path.join(base_path, "data", __package__)
-        addon_prefs.base_folder = base_path
+        update_use_blend_file_location(project_settings, bpy.context)
 
     # Force the update of the workflow property to refresh the input panel
     if addon_prefs.workflow:
@@ -43,11 +38,10 @@ def load_post_handler(scene, depsgraph):
 def save_post_handler(scene, depsgraph):
     """Called after saving the blend file"""
 
-    # Update the base folder according to the .blend file location
-    addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
+    # Update the base folder according to the new .blend file location
     project_settings = bpy.context.scene.comfyui_project_settings
     if project_settings.use_blend_file_location:
-        addon_prefs.base_folder = os.path.dirname(bpy.data.filepath)
+        project_settings.base_folder = os.path.dirname(bpy.data.filepath)
 
 
 def register():

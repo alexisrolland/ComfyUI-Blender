@@ -3,6 +3,8 @@ import os
 
 import bpy
 
+from ..utils import get_workflows_folder
+
 
 class ComfyBlenderPanelWorkflowBase(bpy.types.Panel):
     """Panel to display workflows options."""
@@ -36,7 +38,7 @@ class ComfyBlenderPanelWorkflowBase(bpy.types.Panel):
         row.operator("preferences.addon_show", text="", icon="PREFERENCES").module = "comfyui_blender"
 
         # Get workflows information
-        workflows_folder = str(addon_prefs.workflows_folder)
+        workflows_folder = get_workflows_folder()
         workflow_filename = str(addon_prefs.workflow)
         workflow_path = os.path.join(workflows_folder, workflow_filename)
 

@@ -20,14 +20,17 @@ class ComfyBlenderOperatorSelectFolder(bpy.types.Operator):
         if self.target_property == "base_folder":
             addon_prefs.base_folder = self.directory
 
-        elif self.target_property == "workflows_folder":
-            addon_prefs.workflows_folder = self.directory
-
         elif self.target_property == "inputs_folder":
             addon_prefs.inputs_folder = self.directory
 
         elif self.target_property == "outputs_folder":
             addon_prefs.outputs_folder = self.directory
+
+        elif self.target_property == "workflows_folder":
+            addon_prefs.workflows_folder = self.directory
+
+        # Save user preferences to retain the folder selection when restarting Blender
+        bpy.ops.wm.save_userpref()
 
         self.report({'INFO'}, f"Folder set to: {self.directory}")
         return {'FINISHED'}

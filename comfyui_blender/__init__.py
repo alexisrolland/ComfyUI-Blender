@@ -29,6 +29,7 @@ from .operators import (
     render_depth_map,
     render_lineart,
     render_view,
+    reset_folder,
     run_workflow,
     select_brush,
     select_folder,
@@ -56,7 +57,7 @@ from .connection import disconnect
 bl_info = {
     "name": "ComfyUI Blender",
     "author": "Alexis ROLLAND",
-    "version": (3, 0, 1),
+    "version": (3, 1, 0),
     "blender": (4, 5, 0),
     "location": "View3D > Sidebar > ComfyUI",
     "description": "Blender add-on to send requests to a ComfyUI server.",
@@ -105,6 +106,7 @@ def register():
     render_depth_map.register()
     render_lineart.register()
     render_view.register()
+    reset_folder.register()
     run_workflow.register()
     select_brush.register()
     select_folder.register()
@@ -167,6 +169,7 @@ def unregister():
     render_depth_map.unregister()
     render_lineart.unregister()
     render_view.unregister()
+    reset_folder.unregister()
     run_workflow.unregister()
     select_brush.unregister()
     select_folder.unregister()

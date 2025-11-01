@@ -3,6 +3,8 @@ import os
 
 import bpy
 
+from ..utils import get_outputs_folder
+
 
 class ComfyBlenderPanelOutput(bpy.types.Panel):
     """Panel to display generated outputs."""
@@ -26,8 +28,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
         """Draw the panel."""
 
         # Get outputs folder
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        outputs_folder = str(addon_prefs.outputs_folder)
+        outputs_folder = get_outputs_folder()
 
         # Get outputs collection
         project_settings = bpy.context.scene.comfyui_project_settings
@@ -57,6 +58,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
             return
 
         # Display outputs as thumbnails
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         if addon_prefs.outputs_layout == "thumbnail":
             flow = box.grid_flow(row_major=True, columns=2, even_columns=True, even_rows=True, align=True)
             for index, output in enumerate(reversed(outputs_collection)):

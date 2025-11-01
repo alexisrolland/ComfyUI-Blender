@@ -3,6 +3,8 @@ import os
 
 import bpy
 
+from ..utils import get_outputs_folder
+
 
 class ComfyBlenderOperatorDeleteOutput(bpy.types.Operator):
     """Operator to delete an output."""
@@ -69,8 +71,7 @@ class ComfyBlenderOperatorDeleteOutputOk(bpy.types.Operator):
         # Remove output from Blender's data
         if self.type == "image":
             # Get the full path of the image
-            addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-            outputs_folder = str(addon_prefs.outputs_folder)
+            outputs_folder = get_outputs_folder()
             image_filepath = os.path.join(outputs_folder, self.filepath)
 
             # Check if image exists in the data block and remove it
