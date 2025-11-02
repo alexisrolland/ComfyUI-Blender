@@ -75,4 +75,4 @@ In a nutshell:
 
 ## Credits
 
-Thank you to [Seth A. Robinson](https://github.com/SethRobinson) for open-sourcing his code convert ComfyUI workflows to API format: [comfyui-workflow-to-api-converter-endpoint](https://github.com/SethRobinson/comfyui-workflow-to-api-converter-endpoint).
+Thank you to [Seth A. Robinson](https://github.com/SethRobinson) for open-sourcing his code to convert ComfyUI workflows to API format: [comfyui-workflow-to-api-converter-endpoint](https://github.com/SethRobinson/comfyui-workflow-to-api-converter-endpoint).
