@@ -1,4 +1,4 @@
-from .input_nodes import (
+from .nodes import (
     BlenderInputBoolean,
     BlenderInputCombo,
     BlenderInputFloat,
@@ -13,13 +13,12 @@ from .input_nodes import (
     BlenderInputSampler,
     BlenderInputSeed,
     BlenderInputString,
-    BlenderInputStringMultiline
-)
-from .output_nodes import (
+    BlenderInputStringMultiline,
     BlenderOutputDownload3D,
     BlenderOutputSaveGlb,
     BlenderOutputSaveImage
 )
+
 
 # A dictionary that contains all nodes you want to export with their names
 # NOTE: names should be globally unique
