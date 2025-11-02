@@ -39,6 +39,17 @@ def contains_non_latin(s):
 def download_file(filename, subfolder, type="output"):
     """Download a file from the ComfyUI server."""
 
+    # Clean-up subfolder path, this is needed become some nodes return full path in subfolder
+    # Find first occurrence of "output" and get everything after it
+    index = subfolder.find("output")
+    if index != -1:
+        # Get substring after "output" (including the separator)
+        subfolder = subfolder[index + len("output"):]
+
+        # Remove leading separator if present
+        if subfolder.startswith("\\") or subfolder.startswith("/"):
+            subfolder = subfolder[1:]
+
     # Download the file data from the ComfyUI server
     # Add a random parameter to avoid caching issues
     params = {"filename": filename, "subfolder": subfolder, "type": type, "rand": random.random()}

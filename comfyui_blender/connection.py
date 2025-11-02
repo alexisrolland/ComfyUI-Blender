@@ -222,6 +222,7 @@ def listen():
                         addon_prefs.progress_value = 0.0
                         error_message = data.get("exception_message", "Unknown error")
                         error_message = f"Execution error from ComfyUI server: {error_message}"
+                        log.error(f"{error_message}")
 
                         # Schedule popup to run on main thread
                         # Do not call the function directly since the thread is not the main thread
