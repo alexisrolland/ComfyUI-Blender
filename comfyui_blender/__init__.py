@@ -12,7 +12,7 @@ from .operators import (
     delete_output,
     delete_workflow,
     disconnect_from_server,
-    download_example_workflows,
+    download_workflows,
     get_camera_resolution,
     get_random_seed,
     import_3d_model,
@@ -89,7 +89,7 @@ def register():
     delete_output.register()
     delete_workflow.register()
     disconnect_from_server.register()
-    download_example_workflows.register()
+    download_workflows.register()
     get_camera_resolution.register()
     get_random_seed.register()
     import_3d_model.register()
@@ -152,7 +152,7 @@ def unregister():
     delete_output.unregister()
     delete_workflow.unregister()
     disconnect_from_server.unregister()
-    download_example_workflows.unregister()
+    download_workflows.unregister()
     get_camera_resolution.unregister()
     get_random_seed.unregister()
     import_3d_model.unregister()

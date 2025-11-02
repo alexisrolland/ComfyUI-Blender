@@ -47,9 +47,8 @@ class ComfyBlenderPanelWorkflowBase(bpy.types.Panel):
         import_workflow = row.operator("comfy.import_workflow", text="Import Workflow")
         import_workflow.invoke_default = True
 
-        # Button to download example workflows
-        # Hide this since example workflows are likely not working natively on the user's ComfyUI instance
-        # row.operator("comfy.download_example_workflows", text="", icon="IMPORT")
+        # Button to download workflows
+        row.operator("comfy.download_workflows", text="", icon="IMPORT")
 
         # Button to open the workflows folder
         file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")

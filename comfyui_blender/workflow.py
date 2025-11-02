@@ -585,11 +585,28 @@ def register_workflow_class(self, context):
                 property_name = f"node_{key}"
 
                 if hasattr(workflow_instance, property_name):
+                    # Custom handling for group of inputs
+                    if node["class_type"] == "BlenderInputGroup":
+                        # Do nothing, groups are just containers
+                        continue
+
+                    # Custom handling for sampler input
+                    elif node["class_type"] == "BlenderInputSampler":
+                        setattr(workflow_instance, property_name, node["inputs"].get("sampler_name", ""))
+
                     # Custom handling for 3D model input
-                    if node["class_type"] == "BlenderInputLoad3D":
+                    elif node["class_type"] == "BlenderInputLoad3D":
                         setattr(workflow_instance, property_name, node["inputs"].get("model_file", ""))
                     
-                    # Custom handling for image input
+                    # Custom handling for load checkpoint input
+                    elif node["class_type"] == "BlenderInputLoadCheckpoint":
+                        setattr(workflow_instance, property_name, node["inputs"].get("ckpt_name", ""))
+
+                    # Custom handling for load diffusion model input
+                    elif node["class_type"] == "BlenderInputLoadDiffusionModel":
+                        setattr(workflow_instance, property_name, node["inputs"].get("unet_name", ""))
+
+                    # Custom handling for load image input
                     elif node["class_type"] == "BlenderInputLoadImage":
                         inputs_folder = get_inputs_folder()
                         input_filename = node["inputs"].get("image", "")
@@ -598,7 +615,25 @@ def register_workflow_class(self, context):
                         # Load image in the data block and update the workflow property
                         if os.path.exists(input_filepath):
                             image = bpy.data.images.load(input_filepath, check_existing=True)
-                            setattr(workflow_instance, property_name, image.name)
+                            setattr(workflow_instance, property_name, image)
+                    
+                    # Custom handling for load LoRA input
+                    elif node["class_type"] == "BlenderInputLoadLora":
+                        setattr(workflow_instance, property_name, node["inputs"].get("lora_name", ""))
+
+                    # Custom handling for string multiline inputs
+                    elif node["class_type"] == "BlenderInputStringMultiline":
+                        # Create a new text block with the string value
+                        text_name = workflow_filename.split(".")[0]
+                        if text_name in bpy.data.texts:
+                            text_block = bpy.data.texts[text_name]
+                        else:
+                            text_block = bpy.data.texts.new(text_name)
+                        text_block.clear()
+                        text_block.write(node["inputs"].get("value", ""))
+
+                        # Assign text block to the property
+                        setattr(workflow_instance, property_name, text_block)
 
                     else:
                         # Default handling for other input types

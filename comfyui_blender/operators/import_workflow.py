@@ -28,10 +28,7 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
-        # Get workflows folder
-        workflows_folder = get_workflows_folder()
-
-        # Build list of selected files paths
+        # Build list of files paths for multiple files import
         selected_files = []
         if getattr(self, "files", None) and len(self.files) > 0:
             for file in self.files:
@@ -42,6 +39,8 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
                 else:
                     self.report({'ERROR'}, f"Could not import workflow. File name contains non-latin characters: {file.name}")
                     log.error(f"Could not import workflow. File name contains non-latin characters: {file.name}")
+
+        # File path for single file import
         elif self.filepath:
             # Check for non-latin characters in file name
             # Non-latin characters cause issues with Blender dropdown menus
@@ -51,26 +50,28 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
             else:
                 self.report({'ERROR'}, f"Could not import workflow. File name contains non-latin characters: {filename}")
                 log.error(f"Could not import workflow. File name contains non-latin characters: {filename}")
-            selected_files.append(self.filepath)
+
         else:
             self.report({'ERROR'}, "No file selected.")
             return {'CANCELLED'}
 
+        # Loop over the files paths to import each of them
+        workflows_folder = get_workflows_folder()
         import_failures = 0
         for path in selected_files:
             try:
                 # Import workflow
                 workflow_filename = self.process_single_file(workflows_folder, path)
-
-                # Set current workflow to workflow
-                addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-                addon_prefs.workflow = workflow_filename
             except Exception as e:
                 error_message = str(e)
                 log.error(error_message)
                 bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 import_failures += 1
                 continue
+        
+        # Set current workflow to last imported workflow
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+        addon_prefs.workflow = workflow_filename
 
         # Clear selected files for the next run
         self.files.clear()
