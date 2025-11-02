@@ -5,7 +5,7 @@ from comfy_api.latest import io
 from comfy_extras.nodes_custom_sampler import KSamplerSelect
 from comfy_extras.nodes_primitive import Boolean, Float, Int, String, StringMultiline
 from comfy.comfy_types.node_typing import IO
-from nodes import CheckpointLoaderSimple, LoadImage, LoraLoaderModelOnly, UNETLoader
+from nodes import CheckpointLoaderSimple, LoadImage, LoadImageMask, LoraLoaderModelOnly, UNETLoader
 
 
 # Enforce min/max int and float according to Blender limitation
@@ -298,16 +298,16 @@ class BlenderInputLoadLora(LoraLoaderModelOnly):
         return super().load_lora_model_only(model, lora_name, strength_model)
 
 
-class BlenderInputLoadMask(LoadImage):
+class BlenderInputLoadMask(LoadImageMask):
     """Node used by ComfyUI Blender add-on to input a mask in a workflow."""
     CATEGORY = "blender"
     FUNCTION = "execute"
-    RETURN_TYPES = ("MASK",)
 
     @classmethod
     def INPUT_TYPES(s):
         INPUT_TYPES = super().INPUT_TYPES()
         INPUT_TYPES["required"]["order"] = (IO.INT, {"default": 0, "min": MIN_INT, "max": MAX_INT, "control_after_generate": False})
+        del INPUT_TYPES["required"]["channel"]  # Remove the channel widget as we hard code it to alpha below
 
         # Create optional input key
         if not INPUT_TYPES.get("optional", None):
@@ -316,7 +316,7 @@ class BlenderInputLoadMask(LoadImage):
         return INPUT_TYPES
     
     def execute(self, image, order, **kwargs):
-        result = super().load_image(image)
+        result = super().load_image(image, "alpha")  # Enforce use of alpha channel for mask
         result = result[1:]  # Remove the image output from the tuple
         return result
 
