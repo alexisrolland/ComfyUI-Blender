@@ -32,8 +32,6 @@ class ComfyBlenderOperatorSendToInput(bpy.types.Operator):
 
         # Manage image input
         if self.type == "image":
-            temp_filename = "blender_input.png"
-
             # Get image
             image = bpy.data.images.get(self.name)
             if not image:
@@ -51,6 +49,7 @@ class ComfyBlenderOperatorSendToInput(bpy.types.Operator):
 
             # Build temp file paths
             temp_folder = get_temp_folder()
+            temp_filename = "blender_input.png"
             temp_filepath = os.path.join(temp_folder, temp_filename)
 
             # Duplicate the image to ensure it has an alpha channel
@@ -125,8 +124,6 @@ class ComfyBlenderOperatorSendToInput(bpy.types.Operator):
 
         # Manage text input
         elif self.type == "text":
-            temp_filename = "blender_input.txt"
-
             # Get text object
             text = bpy.data.texts.get(self.name)
             if not text:
@@ -137,37 +134,44 @@ class ComfyBlenderOperatorSendToInput(bpy.types.Operator):
 
             # Check the current workflow contains a valid input
             if not self.workflow_property:
-                error_message = "No string multiline input in the selected workflow. Make sure to add a node 'Blender Input Input Multiline' in the workflow."
+                error_message = "No string or string multiline input in the selected workflow. Make sure to add a node 'Blender Input String' or 'Blender Input String Multiline' in the workflow."
                 log.error(error_message)
                 bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 return {'CANCELLED'}
 
-            # Delete the previous input text from Blender's data
-            # Only if the text object is not used in any of the workflow inputs
+            # Check if the target input is a string or string multiline (text object)
             current_workflow = context.scene.current_workflow
             previous_text = getattr(current_workflow, self.workflow_property)
-            if previous_text:
-                possible_inputs = get_current_workflow_inputs(self, context, ("BlenderInputStringMultiline"))
-                is_used = False  # Flag to check if the image is used in any other input
-                for input in possible_inputs:
-                    if input[0] != self.workflow_property:
-                        if getattr(current_workflow, input[0]) == previous_text:
-                            is_used = True
-                            break
-                if not is_used:
-                    bpy.data.texts.remove(previous_text)
+            if isinstance(previous_text, str):
+                # Update the workflow property with the text object converted to string
+                setattr(current_workflow, self.workflow_property, text.as_string())
 
-            # Build input file paths
-            inputs_folder = get_inputs_folder()
-            input_filename, input_filepath = get_filepath(temp_filename, inputs_folder)
-            with open(input_filepath, "w") as file:
-                file.write(text.as_string())
+            else:
+                # Delete the previous input text from Blender's data
+                # Only if the text object is not used in any of the workflow inputs
+                if previous_text:
+                    possible_inputs = get_current_workflow_inputs(self, context, ("BlenderInputStringMultiline"))
+                    is_used = False  # Flag to check if the image is used in any other input
+                    for input in possible_inputs:
+                        if input[0] != self.workflow_property:
+                            if getattr(current_workflow, input[0]) == previous_text:
+                                is_used = True
+                                break
+                    if not is_used:
+                        bpy.data.texts.remove(previous_text)
 
-            # Load text object in the data block
-            text = bpy.data.texts.load(input_filepath)
+                # Build input file paths
+                inputs_folder = get_inputs_folder()
+                temp_filename = "blender_input.txt"
+                input_filename, input_filepath = get_filepath(temp_filename, inputs_folder)
+                with open(input_filepath, "w") as file:
+                    file.write(text.as_string())
 
-            # Update the workflow property with the text object from the data block
-            setattr(current_workflow, self.workflow_property, text)
+                # Load text object in the data block
+                text = bpy.data.texts.load(input_filepath)
+
+                # Update the workflow property with the text object from the data block
+                setattr(current_workflow, self.workflow_property, text)
         return {'FINISHED'}
 
 
