@@ -21,7 +21,8 @@ from .nodes import (
     BlenderInputStringMultiline,
     BlenderOutputDownload3D,
     BlenderOutputSaveGlb,
-    BlenderOutputSaveImage
+    BlenderOutputSaveImage,
+    BlenderOutputString
 )
 from .workflow_converter import WorkflowConverter
 
@@ -116,7 +117,8 @@ NODE_CLASS_MAPPINGS = {
     "BlenderInputStringMultiline": BlenderInputStringMultiline,
     "BlenderOutputDownload3D": BlenderOutputDownload3D,
     "BlenderOutputSaveGlb": BlenderOutputSaveGlb,
-    "BlenderOutputSaveImage": BlenderOutputSaveImage
+    "BlenderOutputSaveImage": BlenderOutputSaveImage,
+    "BlenderOutputString": BlenderOutputString
 }
 
 # A dictionary that contains the friendly/humanly readable titles for the nodes
@@ -138,5 +140,15 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "BlenderInputStringMultiline": "Blender Input String Multiline",
     "BlenderOutputDownload3D": "Blender Output Download 3D",
     "BlenderOutputSaveGlb": "Blender Output Save GLB",
-    "BlenderOutputSaveImage": "Blender Output Save Image"
+    "BlenderOutputSaveImage": "Blender Output Save Image",
+    "BlenderOutputString": "Blender Output String"
 }
+
+# Set the web directory to load frontend extensions
+WEB_DIRECTORY = "./js"
+
+__all__ = [
+    "NODE_CLASS_MAPPINGS",
+    "NODE_DISPLAY_NAME_MAPPINGS",
+    "WEB_DIRECTORY"
+]

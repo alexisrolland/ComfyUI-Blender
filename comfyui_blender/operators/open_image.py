@@ -7,7 +7,7 @@ log = logging.getLogger("comfyui_blender")
 
 
 class ComfyBlenderOperatorImportInputImage(bpy.types.Operator):
-    """Operator to load open an image."""
+    """Operator to load and open an image."""
 
     bl_idname = "comfy.open_image"
     bl_label = "Open Image"

@@ -36,12 +36,14 @@ class ComfyBlenderOperatorOpenTextEditor(bpy.types.Operator):
         space.show_syntax_highlight = False
 
         # Select text object or create a new one if it doesn't exist
-        current_workflow = context.scene.current_workflow
-        text = getattr(current_workflow, self.workflow_property)
-        if text:
-            space.text = text
+        if self.name in bpy.data.texts:
+            space.text = bpy.data.texts.get(self.name)
         else:
-            space.text = bpy.data.texts.new("Prompt")
+            space.text = bpy.data.texts.new(self.name)
+
+        # Set workflow property with text object
+        if self.workflow_property:
+            current_workflow = context.scene.current_workflow
             setattr(current_workflow, self.workflow_property, space.text)
         return {'FINISHED'}
 
