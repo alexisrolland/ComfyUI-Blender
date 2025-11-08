@@ -283,12 +283,18 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             row = layout.row(align=True)
             row.prop(current_workflow, property_name)
 
-            # Edit text button
-            open_text = row.operator("comfy.open_text_editor", text="", icon="GREASEPENCIL")
-            open_text.workflow_property = property_name
+            # Set default name for the text object to the node title
+            text_name = current_workflow.bl_rna.properties[property_name].name
 
-            # Get input text from the workflow property
+            # Get input text from the workflow property, reset the text object name accordingly
             text = getattr(current_workflow, property_name)
+            if text:
+                text_name = text.name
+
+            # Edit text button
+            text_editor = row.operator("comfy.open_text_editor", text="", icon="GREASEPENCIL")            
+            text_editor.name = text_name
+            text_editor.workflow_property = property_name
 
             # Delete input button
             row = row.row(align=True)

@@ -25,7 +25,7 @@ class ComfyBlenderOutputMenu(bpy.types.Menu):
 
         # Reload workflow
         row = layout.row()
-        row.enabled = True  # Enabled for both image and 3d outputs
+        row.enabled = output_type in ("3d", "image")
         import_workflow = row.operator("comfy.import_workflow", text="Import Workflow", icon="NODETREE")
         import_workflow.filepath = output_filepath
         import_workflow.invoke_default = False

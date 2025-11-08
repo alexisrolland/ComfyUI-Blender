@@ -171,7 +171,11 @@ class OutputPropertyGroup(bpy.types.PropertyGroup):
     type: EnumProperty(
         name="Type",
         description="Type of the output.",
-        items=[("3d", "3D", "3D model output"), ("image", "Image", "Image output")]
+        items=[
+            ("3d", "3D", "3D model output"),
+            ("image", "Image", "Image output"),
+            ("text", "Text", "Text output")
+        ]
     )
 
 

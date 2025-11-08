@@ -85,7 +85,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                             image.preview_ensure()
                             icon_id = image.preview.icon_id
 
-                            # Image preview
+                            # Output preview
                             row = card.row(align=True)
                             row.template_icon(icon_value=icon_id, scale=5)
 
@@ -122,7 +122,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         bpy.data.images["icon_mesh_data.png"].preview_ensure()
                         icon_id = bpy.data.images["icon_mesh_data.png"].preview.icon_id
 
-                        # Image preview
+                        # Output preview
                         row = card.row(align=True)
                         row.template_icon(icon_value=icon_id, scale=5)
 
@@ -146,6 +146,57 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         # Output name with link
                         output_name = card.operator("comfy.import_3d_model", text=output.name, emboss=False)
                         output_name.filepath = full_path
+                    
+                    # Display output of type text
+                    elif output.type == "text":
+                        # Load text icon in the data block if it does not exist
+                        if "icon_file_text.png" not in bpy.data.images:
+                            addon_folder = os.path.dirname(os.path.dirname(__file__))
+                            icon_path = os.path.join(addon_folder, "assets", "icon_file_text.png")
+                            if os.path.exists(icon_path):
+                                bpy.data.images.load(icon_path, check_existing=True)
+
+                        bpy.data.images["icon_file_text.png"].preview_ensure()
+                        icon_id = bpy.data.images["icon_file_text.png"].preview.icon_id
+
+                        # Check if text object exists in the data block
+                        text = None
+                        for i in bpy.data.texts:
+                            if i.filepath == full_path:
+                                text = i
+                                break
+
+                        # Load text object in the data block if it does not exist
+                        if text is None and os.path.exists(full_path):
+                            text = bpy.data.texts.load(full_path)
+
+                        if text:
+                            # Output preview
+                            row = card.row(align=True)
+                            row.template_icon(icon_value=icon_id, scale=5)
+
+                            # Text editor button
+                            col = row.column(align=True)
+                            text_editor = col.operator("comfy.open_text_editor", text="", icon="TEXT")
+                            text_editor.name = text.name
+                            text_editor.workflow_property = ""  # Ensure this is empty to avoid setting inputs
+
+                            # Delete output button
+                            delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
+                            delete_output.name = output.name
+                            delete_output.filepath = output.filepath
+                            delete_output.type = output.type
+
+                            # Output menu button
+                            output_menu = col.operator("comfy.show_output_menu", text="", icon="DOWNARROW_HLT")
+                            output_menu.output_type = output.type
+                            output_menu.output_name = output.name
+                            output_menu.output_filepath = full_path
+
+                            # Output name with link
+                            output_name = card.operator("comfy.open_text_editor", text=text.name, emboss=False)
+                            output_name.name = text.name
+                            output_name.workflow_property = ""  # Ensure this is empty to avoid setting inputs
 
                 else:
                     # If the file does not exist anymore, remove it from the outputs collection
@@ -221,6 +272,42 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         output_menu.output_type = output.type
                         output_menu.output_name = output.name
                         output_menu.output_filepath = full_path
+                    
+                    # Display output of type text
+                    elif output.type == "text":
+                        # Check if text object exists in the data block
+                        text = None
+                        for i in bpy.data.texts:
+                            if i.filepath == full_path:
+                                text = i
+                                break
+                        
+                        # Load text object in the data block if it does not exist
+                        if text is None and os.path.exists(full_path):
+                            text = bpy.data.texts.load(full_path)
+
+                        if text:
+                            # Output name with link
+                            output_name = row_left.operator("comfy.open_text_editor", text=text.name, emboss=False, icon="FILE_TEXT")
+                            output_name.name = text.name
+                            output_name.workflow_property = ""  # Ensure this is empty to avoid setting inputs
+
+                            # Text editor button
+                            text_editor = row_right.operator("comfy.open_text_editor", text="", icon="TEXT")
+                            text_editor.name = text.name
+                            output_name.workflow_property = ""  # Ensure this is empty to avoid setting inputs
+
+                            # Delete output button
+                            delete_output = row_right.operator("comfy.delete_output", text="", icon="TRASH")
+                            delete_output.name = output.name
+                            delete_output.filepath = output.filepath
+                            delete_output.type = output.type
+
+                            # Output menu button
+                            output_menu = row_right.operator("comfy.show_output_menu", text="", icon="DOWNARROW_HLT")
+                            output_menu.output_type = output.type
+                            output_menu.output_name = output.name
+                            output_menu.output_filepath = full_path
 
                 else:
                     # If the file does not exist anymore, remove it from the outputs collection

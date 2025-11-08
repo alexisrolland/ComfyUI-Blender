@@ -8,7 +8,13 @@ import threading
 import bpy
 from ._vendor import websocket
 
-from .utils import add_custom_headers, download_file, get_websocket_url
+from .utils import (
+    add_custom_headers,
+    download_file,
+    get_filepath,
+    get_outputs_folder,
+    get_websocket_url
+)
 
 
 log = logging.getLogger("comfyui_blender")
@@ -208,6 +214,33 @@ def listen():
 
                                 # Call function to add output to collection
                                 bpy.app.timers.register(add_image_output, first_interval=0.0)
+
+                            # Force redraw of the UI
+                            for screen in bpy.data.screens:
+                                for area in screen.areas:
+                                    if area.type in ("VIEW_3D", "IMAGE_EDITOR"):
+                                        area.tag_redraw()
+                    
+                        # Check class type to retrieve text outputs
+                        elif key in outputs and outputs[key]["class_type"] == "BlenderOutputString":
+                            metadata = outputs[key].get("_meta", {})
+                            filename = metadata.get("title", "string") + ".txt"
+                            outputs_folder = get_outputs_folder()
+                            for output in data["output"]["text"]:
+                                filename, filepath = get_filepath(filename, outputs_folder)
+                                with open(filepath, "w") as file:
+                                    file.write(output)
+
+                                # Schedule adding output to collection on main thread
+                                def add_text_output(filename=filename):
+                                    text = outputs_collection.add()
+                                    text.name = filename
+                                    text.filepath = filename  # Provide filename as relative path since there is no subfolder
+                                    text.type = "text"
+                                    return None
+
+                                # Call function to add output to collection
+                                bpy.app.timers.register(add_text_output, first_interval=0.0)
 
                             # Force redraw of the UI
                             for screen in bpy.data.screens:

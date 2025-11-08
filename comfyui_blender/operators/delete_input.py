@@ -104,7 +104,7 @@ class ComfyBlenderOperatorDeleteInputOk(bpy.types.Operator):
             #     self.report({'INFO'}, f"Deleted file: {self.filepath}")
 
         if self.type == "text":
-            # Delete the input text from Blender's data
+            # Delete the text object from Blender's data
             # Only if the text is not used in any of the workflow inputs
             text = getattr(current_workflow, self.workflow_property)
             possible_inputs = get_current_workflow_inputs(self, context, ("BlenderInputStringMultiline"))
