@@ -55,6 +55,7 @@ class ComfyBlenderPanelPaintMask(bpy.types.Panel):
             row.prop(context.scene, "comfyui_target_input", text="")
             send_input = row.operator("comfy.send_to_input", text="", icon="INDIRECT_ONLY_OFF")
             send_input.name = context.edit_image.name if context.edit_image else ""
+            send_input.type = "image"
             send_input.workflow_property = context.scene.comfyui_target_input
 
             # Button to reload the image from disk

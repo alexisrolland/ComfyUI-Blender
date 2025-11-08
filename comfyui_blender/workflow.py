@@ -470,7 +470,7 @@ def get_current_workflow_inputs(self, context, input_types=[]):
                     property_name = f"node_{key}"
                     metadata = node.get("_meta", {})
                     name = metadata.get("title", f"Node {key}")
-                    target_inputs.append((property_name, name, ""))
+                    target_inputs.append((property_name, name, node["class_type"]))
     return target_inputs
 
 
