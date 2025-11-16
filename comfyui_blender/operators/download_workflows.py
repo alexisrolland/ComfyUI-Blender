@@ -42,8 +42,9 @@ class ComfyBlenderOperatorDownloadWorkflows(bpy.types.Operator):
         workflows = response.json()
         for workflow in workflows:
             workflow_name = workflow["name"]
-            self.report({'INFO'}, f"Downloading workflow: {workflow_name}")
-            url = get_server_url(f"/blender/workflows/{workflow_name}")
+            workflow_path = workflow["path"]
+            url = get_server_url(f"/blender/workflow")
+            url = url + f"?filepath={workflow_path}"
             try:
                 response = requests.get(url, headers=headers)
             except Exception as e:
@@ -59,6 +60,7 @@ class ComfyBlenderOperatorDownloadWorkflows(bpy.types.Operator):
                 bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 continue
 
+            self.report({'INFO'}, f"Downloaded workflow: {workflow_path}")
             # Check if a workflow with the same data already exists
             workflow_data = response.json()
             workflows_folder = get_workflows_folder()
