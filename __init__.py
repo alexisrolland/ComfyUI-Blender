@@ -42,7 +42,10 @@ async def get_workflows_list(request):
             async with session.get(url) as response:
                 if response.status == 200:
                     content = await response.text()
-                    return web.Response(text=content, content_type="application/json")
+                    # Parse response and filter to only include files
+                    data = json.loads(content)
+                    files = [item for item in data if item.get("type") == "file"]
+                    return web.json_response(files)
                 else:
                     raise web.HTTPNotFound(text="File not found")
     except Exception as e:
@@ -50,17 +53,20 @@ async def get_workflows_list(request):
 
 
 # Add endpoint to return the a workflow from the user folder in API format
-@PromptServer.instance.routes.get("/blender/workflows/{file_name}")
+@PromptServer.instance.routes.get("/blender/workflow")
 async def get_workflow_file(request):
-    """Endpoint to get a workflow file from the user folder."""
+    """
+    Endpoint to get a workflow file from the user folder.
+    The query parameter 'filepath' specifies the path to the workflow file as returned by the /blender/workflows endpoint.
+    """
 
-    # Get the file name from the URL
-    file_name = request.match_info.get("file_name", "")
-    if not file_name:
-        raise web.HTTPBadRequest(text="The workflow file name is required")
+    # Get the file path from query parameters
+    file_path = request.query.get("filepath", "")
+    if not file_path:
+        raise web.HTTPBadRequest(text="The filepath query parameter is required")
 
     # Construct internal URL using the request's host and scheme
-    encoded_file_path = urllib.parse.quote(f"workflows/{file_name}", safe="")
+    encoded_file_path = urllib.parse.quote(file_path, safe="")
     base_url = f"{request.scheme}://{request.host}"
     url = f"{base_url}/api/userdata/{encoded_file_path}"
 
