@@ -62,16 +62,16 @@ class ComfyBlenderOperatorImportWorkflow(bpy.types.Operator):
             try:
                 # Import workflow
                 workflow_filename = self.process_single_file(workflows_folder, path)
+
+                # Set current workflow to last imported workflow
+                addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+                addon_prefs.workflow = workflow_filename
             except Exception as e:
                 error_message = str(e)
                 log.error(error_message)
                 bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                 import_failures += 1
                 continue
-        
-        # Set current workflow to last imported workflow
-        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
-        addon_prefs.workflow = workflow_filename
 
         # Clear selected files for the next run
         self.files.clear()
