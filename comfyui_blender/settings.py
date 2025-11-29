@@ -405,8 +405,9 @@ class AddonPreferences(bpy.types.AddonPreferences):
 
         layout = self.layout
 
-        # Check Blender version
-        if bpy.app.version >= (4, 5, 0):
+        # Check Blender version as declared in bl_info
+        # At the time of writing this, it was Blender 5.0
+        if bpy.app.version >= (5, 0, 0):
             # Server settings
             layout.label(text="Server:")
             layout.prop(self, "client_id")
@@ -511,7 +512,7 @@ class AddonPreferences(bpy.types.AddonPreferences):
                 reset_workflows_folder.target_property = "workflows_folder"
         else:
             col = layout.column(align=True)
-            col.label(text=f"ComfyUI Blender requires Blender 4.5 or higher.")
+            col.label(text=f"This version of ComfyUI Blender requires Blender 5.0 or higher.")
             col.label(text=f"Current Blender version: {'.'.join(map(str, bpy.app.version))}")
             col.label(text="Please update Blender to use this add-on.")
 
