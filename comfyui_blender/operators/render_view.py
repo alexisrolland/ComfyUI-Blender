@@ -56,24 +56,31 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         scene.render.filepath = extra_filepath
 
         # Create a new node tree for compositing
-        scene.use_nodes = True
-        tree = scene.node_tree
+        bpy.ops.node.new_compositing_node_group(name="CompositorRender")
+        tree = bpy.data.node_groups["CompositorRender"]
         tree.nodes.clear()
 
         # Create nodes
         rlayers_node = tree.nodes.new(type="CompositorNodeRLayers")
         output_file_node = tree.nodes.new(type="CompositorNodeOutputFile")
-        tree.links.new(rlayers_node.outputs[0], output_file_node.inputs[0])  # From output socket Image to input socket Image
-        output_file_node.base_path = temp_folder
-        output_file_node.file_slots[0].path = self.temp_filename
-        output_file_node.file_slots[0].format.file_format = "PNG"
+        output_file_node.directory = temp_folder
+        output_file_node.file_name = ""  # Filename will be set by the file output item
+        output_file_node.format.media_type = "IMAGE"
+        output_file_node.format.color_mode = "RGB"
+        output_file_node.format.file_format = "PNG"
+        output_file_node.format.compression = 0
+        output_file_node.file_output_items.new("RGBA", self.temp_filename)  # Create input socket blender_render
+
+        # Link nodes
+        tree.links.new(rlayers_node.outputs[0], output_file_node.inputs[self.temp_filename])  # From output socket Image to input socket blender_render
 
         # Render the scene
+        scene.compositing_node_group = tree
         bpy.ops.render.render(write_still=True)
+        bpy.data.node_groups.remove(tree)
 
         # Get the rendered filename and path based on current frame
-        current_frame = scene.frame_current
-        temp_filename = f"{self.temp_filename}{current_frame:04d}.png"  # Blender uses 4-digit zero-padded frame numbers
+        temp_filename = f"{self.temp_filename}.png"
         temp_filepath = os.path.join(temp_folder, temp_filename)
         reset_params["temp_filepath"] = temp_filepath  # Add the temp filepath to the reset param to delete it later
 

@@ -77,21 +77,25 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         scene.view_layers["ViewLayer"].use_pass_z = True
 
         # Create a new node tree for compositing
-        scene.use_nodes = True
-        tree = scene.node_tree
+        bpy.ops.node.new_compositing_node_group(name="CompositorDepthMap")
+        tree = bpy.data.node_groups["CompositorDepthMap"]
         tree.nodes.clear()
 
         # Create nodes
         rlayers_node = tree.nodes.new(type="CompositorNodeRLayers")
-        map_range_node = tree.nodes.new(type="CompositorNodeMapRange")
+        map_range_node = tree.nodes.new(type="ShaderNodeMapRange")
         output_file_node = tree.nodes.new(type="CompositorNodeOutputFile")
-        output_file_node.base_path = temp_folder
-        output_file_node.file_slots[0].path = self.temp_filename
-        output_file_node.file_slots[0].format.file_format = "PNG"
+        output_file_node.directory = temp_folder
+        output_file_node.file_name = ""  # Filename will be set by the file output item
+        output_file_node.format.media_type = "IMAGE"
+        output_file_node.format.color_mode = "RGB"
+        output_file_node.format.file_format = "PNG"
+        output_file_node.format.compression = 0
+        output_file_node.file_output_items.new("FLOAT", self.temp_filename)  # Create input socket blender_depth_map
 
         # Link nodes
         tree.links.new(rlayers_node.outputs[2], map_range_node.inputs[0])  # From output socket Depth to input socket Value
-        tree.links.new(map_range_node.outputs[0], output_file_node.inputs[0])  # From output socket Value to input socket Image
+        tree.links.new(map_range_node.outputs[0], output_file_node.inputs[0])  # From output socket Value to input socket blender_depth_map
 
         # Get closest and furthest vertices from the camera
         cam_location = scene.camera.matrix_world.translation
@@ -115,11 +119,12 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         map_range_node.inputs[4].default_value = 0 # To Max
 
         # Render the scene
+        scene.compositing_node_group = tree
         bpy.ops.render.render(write_still=True)
+        bpy.data.node_groups.remove(tree)
 
         # Get the rendered filename and path based on current frame
-        current_frame = scene.frame_current
-        temp_filename = f"{self.temp_filename}{current_frame:04d}.png"  # Blender uses 4-digit zero-padded frame numbers
+        temp_filename = f"{self.temp_filename}.png"
         temp_filepath = os.path.join(temp_folder, temp_filename)
         reset_params["temp_filepath"] = temp_filepath  # Add the temp filepath to the reset param to delete it later
 
