@@ -56,7 +56,7 @@ def update_project_folders(self, context):
         self.outputs_folder = outputs_folder
 
         # Set temp folder
-        temp_folder = os.path.join(self.base_folder, "workflows")
+        temp_folder = os.path.join(self.base_folder, "temp")
         os.makedirs(temp_folder, exist_ok=True)
         self.temp_folder = temp_folder
 
