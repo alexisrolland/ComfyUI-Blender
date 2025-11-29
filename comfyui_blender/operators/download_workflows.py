@@ -31,6 +31,7 @@ class ComfyBlenderOperatorDownloadWorkflows(bpy.types.Operator):
         headers = add_custom_headers()
         try:
             response = requests.get(url, headers=headers)
+            workflows = response.json()
         except Exception as e:
             addon_prefs = bpy.context.preferences.addons["comfyui_blender"].preferences
             error_message = f"Failed to get list of workflows from ComfyUI server: {addon_prefs.server_address}. {e}"
@@ -39,7 +40,6 @@ class ComfyBlenderOperatorDownloadWorkflows(bpy.types.Operator):
             return {'CANCELLED'}
 
         # Download workflows in API format
-        workflows = response.json()
         for workflow in workflows:
             workflow_name = workflow["name"]
             workflow_path = workflow["path"]
