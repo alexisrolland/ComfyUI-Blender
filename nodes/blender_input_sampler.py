@@ -25,4 +25,4 @@ class BlenderInputSampler(KSamplerSelect):
 
     @classmethod
     def execute(self, sampler_name, order: int, default: str, **kwargs) -> io.NodeOutput:
-        return super().execute(sampler_name)
+        return io.NodeOutput(sampler_name)
