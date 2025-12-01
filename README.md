@@ -27,7 +27,7 @@ The Blender add-on UI is automatically composed according to the input and outpu
 
 Download and install ComfyUI. If you are new to ComfyUI, refer to the original [repository](https://github.com/comfyanonymous/ComfyUI) to get started. **Make sure you have the latest version.**
 
-At the time of writing this, the latest version was ComfyUI `v0.3.57`. This version required to update some of the ComfyUI-Blender nodes to the custom node schema v3. Making them incompatible with earlier versions of ComfyUI.
+At the time of writing this, the latest version was ComfyUI `v0.3.75`. This version required to update some of the ComfyUI-Blender nodes to the custom node schema v3. Making them incompatible with earlier versions of ComfyUI.
 
 Install the ComfyUI-Blender nodes from the [ComfyUI-Manager](https://github.com/Comfy-Org/ComfyUI-Manager) or by cloning this repository in the custom nodes folder of ComfyUI:
 
@@ -40,7 +40,10 @@ If the ComfyUI server runs on a different machine than the Blender client, it mu
 
 ### Install Blender Add-on
 
-**Make sure you have a recent version of Blender.** The add-on has been developed for Blender `v4.5` and above. Some features such as the lineart rendering do not work on earlier versions.
+**Make sure you have a recent version of Blender.**
+
+- The add-on has been updated to support Blender `v5.0` from version [`v4.0.0`](https://github.com/alexisrolland/ComfyUI-Blender/releases) onward.
+- The last version of the add-on to support Blender `v4.5` is [`v3.3.4`](https://github.com/alexisrolland/ComfyUI-Blender/releases/tag/v3.3.4).
 
 Download the add-on package `comfyui_blender_[...].zip` from the **[LATEST RELEASE](https://github.com/alexisrolland/ComfyUI-Blender/releases)**.
 
