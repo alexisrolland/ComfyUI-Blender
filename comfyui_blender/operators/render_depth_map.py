@@ -2,6 +2,7 @@
 import logging
 import os
 import shutil
+from math import tan
 
 import bpy
 
@@ -97,21 +98,70 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         tree.links.new(rlayers_node.outputs[2], map_range_node.inputs[0])  # From output socket Depth to input socket Value
         tree.links.new(map_range_node.outputs[0], output_file_node.inputs[0])  # From output socket Value to input socket blender_depth_map
 
-        # Get closest and furthest vertices from the camera
+        # Get camera info to get closest and furthest vertices in the camera frustum
         cam_location = scene.camera.matrix_world.translation
+        cam_matrix = scene.camera.matrix_world
+        cam_data = scene.camera.data
+        aspect_ratio = scene.render.resolution_x / scene.render.resolution_y
         min_distance = float('inf')
         max_distance = 0.0
 
         for obj in scene.objects:
-            if obj.type == "MESH":
+            if obj.type == "MESH" and obj.visible_get():
+                # Switch to object mode to ensure mesh data is available
+                if obj.mode == "EDIT":
+                    bpy.context.view_layer.objects.active = obj
+                    bpy.ops.object.mode_set(mode="OBJECT")
+
                 for vertex in obj.data.vertices:
+                    # Convert vertex to world coordinates
                     world_coord = obj.matrix_world @ vertex.co
-                    distance = (cam_location - world_coord).length
-                    if distance < min_distance:
-                        min_distance = distance
-                    if distance > max_distance:
-                        max_distance = distance
-        
+
+                    # Convert world coordinates to camera space coordinates
+                    cam_space = cam_matrix.inverted() @ world_coord.to_4d()
+
+                    # Check if vertex is in camera frustum
+                    # Z value should be negative (in front of camera)
+                    if cam_space.z >= 0:
+                        continue
+
+                    # Convert to normalized device coordinates
+                    # Get camera projection parameters
+                    if cam_data.type == "PERSP":
+                        # Calculate frustum bounds
+                        z_dist = -cam_space.z
+                        if z_dist < cam_data.clip_start or z_dist > cam_data.clip_end:
+                            continue
+
+                        # Calculate horizontal and vertical bounds
+                        tan_half_fov = tan(cam_data.angle / 2)
+                        h_bound = z_dist * tan_half_fov
+                        v_bound = h_bound / aspect_ratio
+
+                        # Check if vertex is within frustum bounds
+                        if (abs(cam_space.x) <= h_bound and abs(cam_space.y) <= v_bound):
+                            distance = (cam_location - world_coord.xyz).length
+                            min_distance = min(min_distance, distance)
+                            max_distance = max(max_distance, distance)
+
+                    # For orthographic camera
+                    elif cam_data.type == "ORTHO":
+                        ortho_scale = cam_data.ortho_scale
+                        h_bound = ortho_scale / 2
+                        v_bound = h_bound / aspect_ratio
+                        z_dist = -cam_space.z
+
+                        if (z_dist >= cam_data.clip_start and z_dist <= cam_data.clip_end and
+                            abs(cam_space.x) <= h_bound and abs(cam_space.y) <= v_bound):
+                            distance = (cam_location - world_coord.xyz).length
+                            min_distance = min(min_distance, distance)
+                            max_distance = max(max_distance, distance)
+
+        # Handle case where no vertices are in frustum
+        if min_distance == float("inf"):
+            min_distance = cam_data.clip_start
+            max_distance = cam_data.clip_end
+
         # Update Map Range node
         map_range_node.inputs[1].default_value = min_distance  # From Min
         map_range_node.inputs[2].default_value = max_distance  # From Max
