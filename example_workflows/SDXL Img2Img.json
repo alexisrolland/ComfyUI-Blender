@@ -5,52 +5,6 @@
   "last_link_id": 18,
   "nodes": [
     {
-      "id": 1,
-      "type": "BlenderInputStringMultiline",
-      "pos": [
-        410,
-        980
-      ],
-      "size": [
-        330,
-        340
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            6
-          ]
-        }
-      ],
-      "title": "Prompt",
-      "properties": {
-        "Node name for S&R": "BlenderInputStringMultiline",
-        "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
-      },
-      "widgets_values": [
-        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
-        3,
-        "",
-        false
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 3,
       "type": "BlenderInputLoadImage",
       "pos": [
@@ -62,7 +16,7 @@
         350
       ],
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "inputs": [
         {
@@ -112,7 +66,7 @@
         178
       ],
       "flags": {},
-      "order": 2,
+      "order": 1,
       "mode": 0,
       "inputs": [
         {
@@ -160,7 +114,7 @@
         154
       ],
       "flags": {},
-      "order": 3,
+      "order": 2,
       "mode": 0,
       "inputs": [
         {
@@ -355,11 +309,11 @@
         1490
       ],
       "size": [
-        210.29940795898438,
+        210.2994140625,
         88
       ],
       "flags": {},
-      "order": 8,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -394,11 +348,11 @@
         1330
       ],
       "size": [
-        210.29940795898438,
+        210.2994140625,
         88
       ],
       "flags": {},
-      "order": 7,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -476,29 +430,6 @@
       "widgets_values": []
     },
     {
-      "id": 12,
-      "type": "MarkdownNote",
-      "pos": [
-        30,
-        1310
-      ],
-      "size": [
-        340,
-        240
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 13,
       "type": "BlenderInputLoadCheckpoint",
       "pos": [
@@ -510,7 +441,7 @@
         146
       ],
       "flags": {},
-      "order": 5,
+      "order": 3,
       "mode": 0,
       "inputs": [
         {
@@ -552,6 +483,75 @@
         "visitor01\\raymnants-v3.0.safetensors",
         2,
         "visitor01\\raymnants-v3.0.safetensors"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 1,
+      "type": "BlenderInputStringMultiline",
+      "pos": [
+        410,
+        1100
+      ],
+      "size": [
+        330,
+        230
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "title": "Prompt",
+      "properties": {
+        "Node name for S&R": "BlenderInputStringMultiline",
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+      },
+      "widgets_values": [
+        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
+        3,
+        "",
+        false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 12,
+      "type": "MarkdownNote",
+      "pos": [
+        80,
+        1400
+      ],
+      "size": [
+        340,
+        280
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -667,17 +667,18 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.6083199356913183,
+      "scale": 0.7106316725978646,
       "offset": [
-        630.5130492236538,
-        -732.6666666666667
+        430.91079812206567,
+        -872.6666666666666
       ]
     },
-    "frontendVersion": "1.25.10",
+    "frontendVersion": "1.33.10",
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,
-    "VHS_KeepIntermediate": true
+    "VHS_KeepIntermediate": true,
+    "workflowRendererVersion": "LG"
   },
   "version": 0.4
 }

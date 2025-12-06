@@ -95,41 +95,6 @@
       ]
     },
     {
-      "id": 6,
-      "type": "EmptyLatentHunyuan3Dv2",
-      "pos": [
-        300,
-        450
-      ],
-      "size": [
-        260.2345886230469,
-        82
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "label": "LATENT",
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            5
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.43",
-        "Node name for S&R": "EmptyLatentHunyuan3Dv2"
-      },
-      "widgets_values": [
-        3072,
-        1
-      ]
-    },
-    {
       "id": 7,
       "type": "Hunyuan3Dv2Conditioning",
       "pos": [
@@ -137,7 +102,7 @@
         310
       ],
       "size": [
-        206.45761108398438,
+        206.4576171875,
         46
       ],
       "flags": {},
@@ -374,7 +339,7 @@
         154
       ],
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "inputs": [
         {
@@ -395,9 +360,9 @@
       ],
       "title": "Cfg",
       "properties": {
+        "Node name for S&R": "BlenderInputFloat",
         "cnr_id": "comfyui-blender",
-        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
-        "Node name for S&R": "BlenderInputFloat"
+        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9"
       },
       "widgets_values": [
         8.000000000000002,
@@ -421,7 +386,7 @@
         210
       ],
       "flags": {},
-      "order": 2,
+      "order": 1,
       "mode": 0,
       "inputs": [
         {
@@ -433,7 +398,7 @@
       ],
       "outputs": [
         {
-          "name": "*",
+          "name": "combo",
           "type": "*",
           "links": [
             15
@@ -442,16 +407,16 @@
       ],
       "title": "Voxel To Mesh Algorithm",
       "properties": {
+        "Node name for S&R": "BlenderInputCombo",
         "cnr_id": "comfyui-blender",
-        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
-        "Node name for S&R": "BlenderInputCombo"
+        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9"
       },
       "widgets_values": [
         "surface net",
         4,
         "surface net",
         false,
-        "basic\nsurface net"
+        "COMBO"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -468,7 +433,7 @@
         160
       ],
       "flags": {},
-      "order": 3,
+      "order": 2,
       "mode": 0,
       "inputs": [
         {
@@ -489,9 +454,9 @@
       ],
       "title": "Voxel To Mesh Threshold",
       "properties": {
+        "Node name for S&R": "BlenderInputFloat",
         "cnr_id": "comfyui-blender",
-        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
-        "Node name for S&R": "BlenderInputFloat"
+        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9"
       },
       "widgets_values": [
         0.6000000000000001,
@@ -583,7 +548,7 @@
         82
       ],
       "flags": {},
-      "order": 4,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -619,7 +584,7 @@
         98
       ],
       "flags": {},
-      "order": 5,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -679,7 +644,7 @@
         178
       ],
       "flags": {},
-      "order": 6,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -700,9 +665,9 @@
       ],
       "title": "Seed",
       "properties": {
+        "Node name for S&R": "BlenderInputSeed",
         "cnr_id": "comfyui-blender",
-        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
-        "Node name for S&R": "BlenderInputSeed"
+        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9"
       },
       "widgets_values": [
         0,
@@ -739,9 +704,9 @@
       "outputs": [],
       "title": "Save GLB",
       "properties": {
+        "Node name for S&R": "BlenderOutputSaveGlb",
         "cnr_id": "comfyui-blender",
-        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
-        "Node name for S&R": "BlenderOutputSaveGlb"
+        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9"
       },
       "widgets_values": [
         "3d/blender"
@@ -761,7 +726,7 @@
         280
       ],
       "flags": {},
-      "order": 7,
+      "order": 6,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -784,7 +749,7 @@
         338.0000305175781
       ],
       "flags": {},
-      "order": 8,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -810,9 +775,9 @@
       ],
       "title": "Image",
       "properties": {
+        "Node name for S&R": "BlenderInputLoadImage",
         "cnr_id": "comfyui-blender",
-        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9",
-        "Node name for S&R": "BlenderInputLoadImage"
+        "ver": "98ea952ed9c3cd1960eacfcd7b155e001e29c5c9"
       },
       "widgets_values": [
         "blender_00001_.png",
@@ -821,6 +786,41 @@
       ],
       "color": "#432",
       "bgcolor": "#653"
+    },
+    {
+      "id": 6,
+      "type": "EmptyLatentHunyuan3Dv2",
+      "pos": [
+        540,
+        880
+      ],
+      "size": [
+        260.2345886230469,
+        82
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.43",
+        "Node name for S&R": "EmptyLatentHunyuan3Dv2"
+      },
+      "widgets_values": [
+        3072,
+        1
+      ]
     }
   ],
   "links": [
@@ -973,17 +973,18 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.6319215727221125,
+      "scale": 0.549618320610687,
       "offset": [
-        600,
-        -40
+        946.6666666666665,
+        427.85416666666663
       ]
     },
-    "frontendVersion": "1.26.13",
+    "frontendVersion": "1.33.10",
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,
-    "VHS_KeepIntermediate": true
+    "VHS_KeepIntermediate": true,
+    "workflowRendererVersion": "LG"
   },
   "version": 0.4
 }

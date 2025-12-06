@@ -46,7 +46,7 @@
         1020
       ],
       "size": [
-        210.29940795898438,
+        210.2994140625,
         88
       ],
       "flags": {},
@@ -191,9 +191,9 @@
       ],
       "title": "Width",
       "properties": {
+        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderInputInt"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
         1328,
@@ -241,9 +241,9 @@
       ],
       "title": "Height",
       "properties": {
+        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderInputInt"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
         1328,
@@ -285,9 +285,9 @@
       ],
       "title": "Resolution",
       "properties": {
+        "Node name for S&R": "BlenderInputGroup",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderInputGroup"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
         3,
@@ -407,9 +407,9 @@
       ],
       "title": "Strength",
       "properties": {
+        "Node name for S&R": "BlenderInputFloat",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderInputFloat"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
         1,
@@ -634,40 +634,6 @@
       ]
     },
     {
-      "id": 24,
-      "type": "VAELoader",
-      "pos": [
-        2720,
-        1340
-      ],
-      "size": [
-        210,
-        58
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [
-            26,
-            39
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.52",
-        "Node name for S&R": "VAELoader"
-      },
-      "widgets_values": [
-        "alibaba\\qwen_image_vae.safetensors"
-      ]
-    },
-    {
       "id": 25,
       "type": "ControlNetLoader",
       "pos": [
@@ -679,7 +645,7 @@
         58
       ],
       "flags": {},
-      "order": 4,
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -763,9 +729,9 @@
       "outputs": [],
       "title": "Save Image",
       "properties": {
+        "Node name for S&R": "BlenderOutputSaveImage",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderOutputSaveImage"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
         "blender"
@@ -785,7 +751,7 @@
         250
       ],
       "flags": {},
-      "order": 5,
+      "order": 4,
       "mode": 0,
       "inputs": [
         {
@@ -806,9 +772,9 @@
       ],
       "title": "Prompt",
       "properties": {
+        "Node name for S&R": "BlenderInputStringMultiline",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
-        "Node name for S&R": "BlenderInputStringMultiline"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
       },
       "widgets_values": [
         "Photograph of an ancient treasure chest on a black background. The chest is made of rich, vintage antique wood sculpted with floral patterns, with brass and iron fittings. The brass lock and hinges are tarnished with age, adding to its mysterious and timeless appeal. The lighting is dramatic, with soft shadows accentuating the texture of the wood and metal, creating a sense of depth and intrigue. Ultra HD, 4K, cinematic composition.",
@@ -857,9 +823,9 @@
       ],
       "title": "Image",
       "properties": {
+        "Node name for S&R": "BlenderInputLoadImage",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderInputLoadImage"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
         "blender_depth_map0001.png",
@@ -881,7 +847,7 @@
         180
       ],
       "flags": {},
-      "order": 6,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -902,9 +868,9 @@
       ],
       "title": "Seed",
       "properties": {
+        "Node name for S&R": "BlenderInputSeed",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
-        "Node name for S&R": "BlenderInputSeed"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
       },
       "widgets_values": [
         0,
@@ -929,7 +895,7 @@
         106
       ],
       "flags": {},
-      "order": 7,
+      "order": 6,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -944,9 +910,9 @@
       ],
       "title": "ControlNet",
       "properties": {
+        "Node name for S&R": "BlenderInputGroup",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
-        "Node name for S&R": "BlenderInputGroup"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
       },
       "widgets_values": [
         4,
@@ -968,7 +934,7 @@
         310
       ],
       "flags": {},
-      "order": 8,
+      "order": 7,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -978,6 +944,40 @@
       ],
       "color": "#432",
       "bgcolor": "#653"
+    },
+    {
+      "id": 24,
+      "type": "VAELoader",
+      "pos": [
+        2720,
+        1340
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            26,
+            39
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.52",
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "alibaba\\qwen_image_vae.safetensors"
+      ]
     }
   ],
   "links": [
@@ -1186,17 +1186,18 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.6934334949441673,
+      "scale": 0.46999880333955896,
       "offset": [
-        -1375.416259765625,
-        -776.527587890625
+        -365.14973786403334,
+        -553.282185872396
       ]
     },
-    "frontendVersion": "1.26.13",
+    "frontendVersion": "1.33.10",
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,
-    "VHS_KeepIntermediate": true
+    "VHS_KeepIntermediate": true,
+    "workflowRendererVersion": "LG"
   },
   "version": 0.4
 }

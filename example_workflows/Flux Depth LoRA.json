@@ -49,7 +49,7 @@
         900
       ],
       "size": [
-        210.29940795898438,
+        210.2994140625,
         88
       ],
       "flags": {},
@@ -88,7 +88,7 @@
         740
       ],
       "size": [
-        210.29940795898438,
+        210.2994140625,
         88
       ],
       "flags": {},
@@ -160,9 +160,9 @@
       ],
       "title": "Depth Strength",
       "properties": {
+        "Node name for S&R": "BlenderInputFloat",
         "cnr_id": "comfyui-blender",
-        "ver": "e5f69ef0b1450e0e1c96ba3156ed690fd8e7f9da",
-        "Node name for S&R": "BlenderInputFloat"
+        "ver": "e5f69ef0b1450e0e1c96ba3156ed690fd8e7f9da"
       },
       "widgets_values": [
         0.7500000000000001,
@@ -303,7 +303,7 @@
         740
       ],
       "size": [
-        217.31991577148438,
+        217.319921875,
         86
       ],
       "flags": {},
@@ -394,9 +394,9 @@
       ],
       "title": "Seed",
       "properties": {
+        "Node name for S&R": "BlenderInputSeed",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
-        "Node name for S&R": "BlenderInputSeed"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
       },
       "widgets_values": [
         0,
@@ -543,35 +543,12 @@
       "outputs": [],
       "title": "Save Image",
       "properties": {
+        "Node name for S&R": "BlenderOutputSaveImage",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
-        "Node name for S&R": "BlenderOutputSaveImage"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
       },
       "widgets_values": [
         "blender"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 16,
-      "type": "MarkdownNote",
-      "pos": [
-        330,
-        370
-      ],
-      "size": [
-        340,
-        300
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -588,7 +565,7 @@
         350
       ],
       "flags": {},
-      "order": 5,
+      "order": 4,
       "mode": 0,
       "inputs": [
         {
@@ -614,9 +591,9 @@
       ],
       "title": "Depth Map",
       "properties": {
+        "Node name for S&R": "BlenderInputLoadImage",
         "cnr_id": "comfyui-blender",
-        "ver": "e5f69ef0b1450e0e1c96ba3156ed690fd8e7f9da",
-        "Node name for S&R": "BlenderInputLoadImage"
+        "ver": "e5f69ef0b1450e0e1c96ba3156ed690fd8e7f9da"
       },
       "widgets_values": [
         "blender_depth_map0001.png",
@@ -638,7 +615,7 @@
         220
       ],
       "flags": {},
-      "order": 6,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -659,9 +636,9 @@
       ],
       "title": "Prompt",
       "properties": {
+        "Node name for S&R": "BlenderInputStringMultiline",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
-        "Node name for S&R": "BlenderInputStringMultiline"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
       },
       "widgets_values": [
         "Photograph of an ancient treasure chest on a black background. The chest is made of rich, vintage antique wood sculpted with floral patterns, with brass and iron fittings. The brass lock and hinges are tarnished with age, adding to its mysterious and timeless appeal. The lighting is dramatic, with soft shadows accentuating the texture of the wood and metal, creating a sense of depth and intrigue. Ultra HD, 4K, cinematic composition.",
@@ -684,7 +661,7 @@
         130
       ],
       "flags": {},
-      "order": 7,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -705,15 +682,38 @@
       ],
       "title": "Model",
       "properties": {
+        "Node name for S&R": "BlenderInputLoadDiffusionModel",
         "cnr_id": "comfyui-blender",
-        "ver": "bff2443c331d37c7ee05b6c1ff43cd21644e7175",
-        "Node name for S&R": "BlenderInputLoadDiffusionModel"
+        "ver": "bff2443c331d37c7ee05b6c1ff43cd21644e7175"
       },
       "widgets_values": [
         "visitor01\\rayflux-v1.0.safetensors",
         "default",
         2,
         "visitor01\\rayflux-v1.0.safetensors"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 16,
+      "type": "MarkdownNote",
+      "pos": [
+        330,
+        370
+      ],
+      "size": [
+        340,
+        280
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -869,17 +869,18 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.810325221238938,
+      "scale": 0.7068584070796459,
       "offset": [
-        -42.51442253874927,
-        -227.70278239644864
+        188.1220657276997,
+        -71.66666666666663
       ]
     },
-    "frontendVersion": "1.26.13",
+    "frontendVersion": "1.33.10",
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,
-    "VHS_KeepIntermediate": true
+    "VHS_KeepIntermediate": true,
+    "workflowRendererVersion": "LG"
   },
   "version": 0.4
 }

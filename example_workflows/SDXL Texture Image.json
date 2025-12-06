@@ -5,52 +5,6 @@
   "last_link_id": 21,
   "nodes": [
     {
-      "id": 1,
-      "type": "BlenderInputStringMultiline",
-      "pos": [
-        345,
-        378
-      ],
-      "size": [
-        340,
-        278
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            11
-          ]
-        }
-      ],
-      "title": "Prompt",
-      "properties": {
-        "Node name for S&R": "BlenderInputStringMultiline",
-        "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
-      },
-      "widgets_values": [
-        "seamless, tileable texture of old, broken stone with moss. The texture should feature irregular stone surfaces with cracks and crevices, and patches of moss growing in and on the stones. Ensure high-resolution details with natural variations in color and texture. Optimize for PBR workflows with neutral lighting. Include subtle imperfections like dirt and grime for realism. The mood should be dark and gritty, suitable for fantasy or historical video game environments.",
-        3,
-        "",
-        false
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 3,
       "type": "BlenderInputGroup",
       "pos": [
@@ -62,7 +16,7 @@
         106
       ],
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -149,7 +103,7 @@
         178
       ],
       "flags": {},
-      "order": 2,
+      "order": 1,
       "mode": 0,
       "inputs": [
         {
@@ -389,7 +343,7 @@
         830
       ],
       "size": [
-        210.29940795898438,
+        210.2994140625,
         88
       ],
       "flags": {},
@@ -428,7 +382,7 @@
         670
       ],
       "size": [
-        210.29940795898438,
+        210.2994140625,
         88
       ],
       "flags": {},
@@ -548,24 +502,97 @@
       ]
     },
     {
-      "id": 15,
-      "type": "MarkdownNote",
+      "id": 4,
+      "type": "BlenderInputInt",
       "pos": [
-        -40,
-        660
+        470,
+        980
+      ],
+      "size": [
+        210,
+        226
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "title": "Width",
+      "properties": {
+        "Node name for S&R": "BlenderInputInt",
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+      },
+      "widgets_values": [
+        1024,
+        1,
+        1024,
+        768,
+        1344,
+        8,
+        true,
+        false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 1,
+      "type": "BlenderInputStringMultiline",
+      "pos": [
+        345,
+        378
       ],
       "size": [
         340,
-        240
+        230
       ],
       "flags": {},
-      "order": 3,
+      "order": 2,
       "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "title": "Prompt",
+      "properties": {
+        "Node name for S&R": "BlenderInputStringMultiline",
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+      },
       "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+        "seamless, tileable texture of old, broken stone with moss. The texture should feature irregular stone surfaces with cracks and crevices, and patches of moss growing in and on the stones. Ensure high-resolution details with natural variations in color and texture. Optimize for PBR workflows with neutral lighting. Include subtle imperfections like dirt and grime for realism. The mood should be dark and gritty, suitable for fantasy or historical video game environments.",
+        3,
+        "",
+        false
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -575,14 +602,14 @@
       "type": "BlenderInputLoadCheckpoint",
       "pos": [
         390,
-        740
+        690
       ],
       "size": [
         292.1470642089844,
         146
       ],
       "flags": {},
-      "order": 4,
+      "order": 3,
       "mode": 0,
       "inputs": [
         {
@@ -629,51 +656,24 @@
       "bgcolor": "#653"
     },
     {
-      "id": 4,
-      "type": "BlenderInputInt",
+      "id": 15,
+      "type": "MarkdownNote",
       "pos": [
-        470,
-        980
+        30,
+        690
       ],
       "size": [
-        210,
-        226
+        330,
+        280
       ],
       "flags": {},
-      "order": 5,
+      "order": 4,
       "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": 1
-        }
-      ],
-      "outputs": [
-        {
-          "name": "INT",
-          "type": "INT",
-          "links": [
-            14
-          ]
-        }
-      ],
-      "title": "Width",
-      "properties": {
-        "Node name for S&R": "BlenderInputInt",
-        "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
-      },
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
       "widgets_values": [
-        1024,
-        1,
-        1024,
-        768,
-        1344,
-        8,
-        true,
-        false
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -821,17 +821,18 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.647902397260274,
+      "scale": 0.6838613013698629,
       "offset": [
-        594.9669639907498,
+        543.793427230047,
         -143.33333333333337
       ]
     },
-    "frontendVersion": "1.25.10",
+    "frontendVersion": "1.33.10",
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,
-    "VHS_KeepIntermediate": true
+    "VHS_KeepIntermediate": true,
+    "workflowRendererVersion": "LG"
   },
   "version": 0.4
 }

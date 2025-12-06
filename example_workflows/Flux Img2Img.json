@@ -12,7 +12,7 @@
         810
       ],
       "size": [
-        210.29940795898438,
+        210.2994140625,
         88
       ],
       "flags": {},
@@ -59,7 +59,7 @@
         970
       ],
       "size": [
-        210.29940795898438,
+        210.2994140625,
         88
       ],
       "flags": {},
@@ -623,29 +623,6 @@
       "bgcolor": "#653"
     },
     {
-      "id": 4,
-      "type": "MarkdownNote",
-      "pos": [
-        740,
-        510
-      ],
-      "size": [
-        340,
-        230
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
       "id": 23,
       "type": "BlenderInputLoadDiffusionModel",
       "pos": [
@@ -657,7 +634,7 @@
         130
       ],
       "flags": {},
-      "order": 7,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -685,6 +662,29 @@
         "default",
         2,
         "visitor01\\rayflux-v1.0.safetensors"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 4,
+      "type": "MarkdownNote",
+      "pos": [
+        730,
+        470
+      ],
+      "size": [
+        340,
+        270
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -824,17 +824,18 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.7513148009015777,
+      "scale": 0.6689698492462312,
       "offset": [
-        -79.0673573399415,
-        -341.45885109000966
+        35.04225352112667,
+        -231
       ]
     },
-    "frontendVersion": "1.25.10",
+    "frontendVersion": "1.33.10",
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,
-    "VHS_KeepIntermediate": true
+    "VHS_KeepIntermediate": true,
+    "workflowRendererVersion": "LG"
   },
   "version": 0.4
 }

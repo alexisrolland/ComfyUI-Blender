@@ -52,7 +52,7 @@
         88
       ],
       "flags": {},
-      "order": 12,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
@@ -142,7 +142,7 @@
         46
       ],
       "flags": {},
-      "order": 11,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
@@ -184,7 +184,7 @@
         206
       ],
       "flags": {},
-      "order": 15,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {
@@ -253,11 +253,11 @@
         690
       ],
       "size": [
-        180.74765014648438,
+        180.74765625,
         46
       ],
       "flags": {},
-      "order": 14,
+      "order": 15,
       "mode": 0,
       "inputs": [
         {
@@ -444,9 +444,9 @@
       "outputs": [],
       "title": "Save Image",
       "properties": {
+        "Node name for S&R": "BlenderOutputSaveImage",
         "cnr_id": "comfyui-blender",
-        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
-        "Node name for S&R": "BlenderOutputSaveImage"
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5"
       },
       "widgets_values": [
         "blender"
@@ -555,9 +555,9 @@
       ],
       "title": "Seed",
       "properties": {
+        "Node name for S&R": "BlenderInputSeed",
         "cnr_id": "comfyui-blender",
-        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
-        "Node name for S&R": "BlenderInputSeed"
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5"
       },
       "widgets_values": [
         0,
@@ -736,10 +736,56 @@
       ]
     },
     {
+      "id": 5,
+      "type": "BlenderInputStringMultiline",
+      "pos": [
+        200,
+        600
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "title": "Prompt",
+      "properties": {
+        "Node name for S&R": "BlenderInputStringMultiline",
+        "cnr_id": "comfyui-blender",
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5"
+      },
+      "widgets_values": [
+        "Photograph of an ancient treasure chest on a black background. The chest is opened and golden light is diffusing gentles light ray up. The lighting is dramatic, with soft shadows accentuating the texture of the wood and metal, creating a sense of depth and intrigue. Ultra HD, 4K, cinematic composition.",
+        2,
+        "",
+        false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
       "id": 11,
       "type": "BlenderInputLoadImage",
       "pos": [
-        620,
+        630,
         1020
       ],
       "size": [
@@ -747,7 +793,7 @@
         318
       ],
       "flags": {},
-      "order": 6,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -770,9 +816,9 @@
       ],
       "title": "Image",
       "properties": {
+        "Node name for S&R": "BlenderInputLoadImage",
         "cnr_id": "comfyui-blender",
-        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
-        "Node name for S&R": "BlenderInputLoadImage"
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5"
       },
       "widgets_values": [
         "blender_00001_.png",
@@ -786,15 +832,15 @@
       "id": 12,
       "type": "BlenderInputLoadMask",
       "pos": [
-        620,
-        1410
+        630,
+        1420
       ],
       "size": [
         270,
         318
       ],
       "flags": {},
-      "order": 7,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -817,60 +863,14 @@
       ],
       "title": "Mask",
       "properties": {
+        "Node name for S&R": "BlenderInputLoadMask",
         "cnr_id": "comfyui-blender",
-        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
-        "Node name for S&R": "BlenderInputLoadMask"
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5"
       },
       "widgets_values": [
         "blender_input.png",
         4,
         "image"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 5,
-      "type": "BlenderInputStringMultiline",
-      "pos": [
-        200,
-        600
-      ],
-      "size": [
-        400,
-        200
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            4
-          ]
-        }
-      ],
-      "title": "Prompt",
-      "properties": {
-        "cnr_id": "comfyui-blender",
-        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
-        "Node name for S&R": "BlenderInputStringMultiline"
-      },
-      "widgets_values": [
-        "Photograph of an ancient treasure chest on a black background. The chest is opened and golden light is diffusing gentles light ray up. The lighting is dramatic, with soft shadows accentuating the texture of the wood and metal, creating a sense of depth and intrigue. Ultra HD, 4K, cinematic composition.",
-        2,
-        "",
-        false
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -1090,17 +1090,18 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.5731555463737229,
+      "scale": 0.5061787072243346,
       "offset": [
-        140,
-        -110
+        700.2276411459482,
+        93
       ]
     },
-    "frontendVersion": "1.26.13",
+    "frontendVersion": "1.33.10",
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,
-    "VHS_KeepIntermediate": true
+    "VHS_KeepIntermediate": true,
+    "workflowRendererVersion": "LG"
   },
   "version": 0.4
 }
