@@ -1,6 +1,7 @@
 """Operator to download workflows from ComfyUI server."""
 import json
 import logging
+import os
 import requests
 
 import bpy
@@ -64,6 +65,7 @@ class ComfyBlenderOperatorDownloadWorkflows(bpy.types.Operator):
             # Check if a workflow with the same data already exists
             workflow_data = response.json()
             workflows_folder = get_workflows_folder()
+            os.makedirs(workflows_folder, exist_ok=True)  # Create workflow folder if it doesn't exist
             workflow_filename = check_workflow_file_exists(workflow_data, workflows_folder)
 
             # Get target file name and path if workflow does not exist
