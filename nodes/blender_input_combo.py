@@ -26,7 +26,7 @@ class BlenderInputCombo(String):
         schema.inputs.append(io.String.Input("default", default="", tooltip=TOOLTIP_DEFAULT))
         schema.inputs.append(io.Boolean.Input("format_path", default=False, tooltip=TOOLTIP_FORMAT_PATH))
         schema.inputs.append(io.String.Input("list", default="", multiline=True, tooltip="list of values displayed in the combo box in the Blender add-on (one item per line)."))
-        schema.outputs = [io.AnyType.Output()]
+        schema.outputs = [io.AnyType.Output(display_name="combo")]
         return schema
 
     @classmethod
