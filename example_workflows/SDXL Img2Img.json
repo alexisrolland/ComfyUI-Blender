@@ -2,7 +2,7 @@
   "id": "00000000-0000-0000-0000-000000000000",
   "revision": 0,
   "last_node_id": 13,
-  "last_link_id": 18,
+  "last_link_id": 19,
   "nodes": [
     {
       "id": 3,
@@ -42,9 +42,9 @@
       ],
       "title": "Image",
       "properties": {
-        "Node name for S&R": "BlenderInputLoadImage",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputLoadImage"
       },
       "widgets_values": [
         "example.png",
@@ -87,9 +87,9 @@
       ],
       "title": "Seed",
       "properties": {
-        "Node name for S&R": "BlenderInputSeed",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputSeed"
       },
       "widgets_values": [
         0,
@@ -98,53 +98,6 @@
         0,
         2147483647,
         1
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 5,
-      "type": "BlenderInputFloat",
-      "pos": [
-        800,
-        2020
-      ],
-      "size": [
-        210,
-        154
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "FLOAT",
-          "type": "FLOAT",
-          "links": [
-            14
-          ]
-        }
-      ],
-      "title": "Denoise",
-      "properties": {
-        "Node name for S&R": "BlenderInputFloat",
-        "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
-      },
-      "widgets_values": [
-        0.5000000000000001,
-        5,
-        0.5000000000000001,
-        0.10000000000000002,
-        1.0000000000000002
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -276,7 +229,7 @@
       ],
       "size": [
         210,
-        150
+        270
       ],
       "flags": {},
       "order": 11,
@@ -291,9 +244,9 @@
       "outputs": [],
       "title": "Save Image",
       "properties": {
-        "Node name for S&R": "BlenderOutputSaveImage",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderOutputSaveImage"
       },
       "widgets_values": [
         "blender"
@@ -313,7 +266,7 @@
         88
       ],
       "flags": {},
-      "order": 7,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -399,7 +352,7 @@
         46
       ],
       "flags": {},
-      "order": 6,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -410,7 +363,7 @@
         {
           "name": "vae",
           "type": "VAE",
-          "link": null
+          "link": 19
         }
       ],
       "outputs": [
@@ -428,6 +381,29 @@
         "Node name for S&R": "VAEEncode"
       },
       "widgets_values": []
+    },
+    {
+      "id": 12,
+      "type": "MarkdownNote",
+      "pos": [
+        80,
+        1400
+      ],
+      "size": [
+        340,
+        280
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
     },
     {
       "id": 13,
@@ -471,18 +447,68 @@
           "name": "VAE",
           "type": "VAE",
           "links": [
-            18
+            18,
+            19
           ]
         }
       ],
       "title": "Model",
       "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "c82ce7f7c412d7cea73c2d69e442665d50d2da09",
         "Node name for S&R": "BlenderInputLoadCheckpoint"
       },
       "widgets_values": [
-        "visitor01\\raymnants-v3.0.safetensors",
+        "ray\\raymnants-v3.0.safetensors",
         2,
-        "visitor01\\raymnants-v3.0.safetensors"
+        "ray\\raymnants-v3.0.safetensors"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 5,
+      "type": "BlenderInputFloat",
+      "pos": [
+        800,
+        2020
+      ],
+      "size": [
+        210,
+        154
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "title": "Denoise",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputFloat"
+      },
+      "widgets_values": [
+        0.85,
+        5,
+        0.85,
+        0.10000000000000002,
+        1.0000000000000002
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -499,7 +525,7 @@
         230
       ],
       "flags": {},
-      "order": 4,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -520,38 +546,15 @@
       ],
       "title": "Prompt",
       "properties": {
-        "Node name for S&R": "BlenderInputStringMultiline",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputStringMultiline"
       },
       "widgets_values": [
-        "A blockbuster sci-fi movie crafted with cutting-edge VFX, showcasing hyper-detailed realistic visuals. Vibrant accents glow against dark, immersive settings with sweeping, dynamic camera work. The style is sleek, epic, and intensely cinematic. Tiny and cute dragon with rainbow color scales, looking adorable and playful. The environment is vibrant and dark, filled with towering trees and ominous flowers. The mood is eerie and dreadful, as the dragon wink with its eye",
+        "A vibrant, anime-style illustration of an adorable schoolgirl, her playful charm radiating in every detail. She wears a crisp pink seifuku uniform—pleated skirt swaying gently—paired with a matching ribbon tied neatly in her hair. Atop her head, a pair of oversized, velvety fennec fox ears stand alert, their delicate fur catching the light with a soft glow. Her expressive eyes sparkle with youthful energy, and a hint of a blush dusts her cheeks, adding to her endearing allure. The scene is lively, colorful, and brimming with whimsy, capturing the essence of school life with a magical twist.",
         3,
-        "",
+        "anime drawing style of a school girl wearing a pink uniform and large fennec ears on the head",
         false
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 12,
-      "type": "MarkdownNote",
-      "pos": [
-        80,
-        1400
-      ],
-      "size": [
-        340,
-        280
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -661,16 +664,24 @@
       6,
       1,
       "VAE"
+    ],
+    [
+      19,
+      13,
+      2,
+      11,
+      1,
+      "VAE"
     ]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.7106316725978646,
+      "scale": 1.0404358318505367,
       "offset": [
-        430.91079812206567,
-        -872.6666666666666
+        -67.25152038189296,
+        -1089.0045489207241
       ]
     },
     "frontendVersion": "1.33.10",

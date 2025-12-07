@@ -215,9 +215,9 @@
       ],
       "title": "Seed",
       "properties": {
-        "Node name for S&R": "BlenderInputSeed",
         "cnr_id": "comfyui-blender",
-        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5"
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
+        "Node name for S&R": "BlenderInputSeed"
       },
       "widgets_values": [
         0,
@@ -548,9 +548,9 @@
       "outputs": [],
       "title": "Save Image",
       "properties": {
-        "Node name for S&R": "BlenderOutputSaveImage",
         "cnr_id": "comfyui-blender",
-        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5"
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
+        "Node name for S&R": "BlenderOutputSaveImage"
       },
       "widgets_values": [
         "blender"
@@ -673,9 +673,9 @@
       ],
       "title": "Height",
       "properties": {
-        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5"
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
+        "Node name for S&R": "BlenderInputInt"
       },
       "widgets_values": [
         1328,
@@ -723,9 +723,9 @@
       ],
       "title": "Width",
       "properties": {
-        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5"
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
+        "Node name for S&R": "BlenderInputInt"
       },
       "widgets_values": [
         1328,
@@ -767,9 +767,9 @@
       ],
       "title": "Resolution",
       "properties": {
-        "Node name for S&R": "BlenderInputGroup",
         "cnr_id": "comfyui-blender",
-        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5"
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
+        "Node name for S&R": "BlenderInputGroup"
       },
       "widgets_values": [
         3,
@@ -812,9 +812,9 @@
       ],
       "title": "Image",
       "properties": {
-        "Node name for S&R": "BlenderInputLoadImage",
         "cnr_id": "comfyui-blender",
-        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5"
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
+        "Node name for S&R": "BlenderInputLoadImage"
       },
       "widgets_values": [
         "example.png",
@@ -880,14 +880,14 @@
       ],
       "title": "Prompt",
       "properties": {
-        "Node name for S&R": "BlenderInputStringMultiline",
         "cnr_id": "comfyui-blender",
-        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5"
+        "ver": "841b749d5ea53dca4865b3c80b36558a2b8f7be5",
+        "Node name for S&R": "BlenderInputStringMultiline"
       },
       "widgets_values": [
         "Photograph of an ancient treasure chest on a black background. The chest is made of rich, vintage antique wood sculpted with floral patterns, with brass and iron fittings. The brass lock and hinges are tarnished with age, adding to its mysterious and timeless appeal. The lighting is dramatic, with soft shadows accentuating the texture of the wood and metal, creating a sense of depth and intrigue. Ultra HD, 4K, cinematic composition.",
         2,
-        "",
+        "Photograph of an ancient treasure chest on a black background. The chest is made of rich, vintage antique wood sculpted with floral patterns, with brass and iron fittings. The brass lock and hinges are tarnished with age, adding to its mysterious and timeless appeal. The lighting is dramatic, with soft shadows accentuating the texture of the wood and metal, creating a sense of depth and intrigue. Ultra HD, 4K, cinematic composition.",
         false
       ],
       "color": "#432",
@@ -1076,10 +1076,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.650797018057517,
+      "scale": 0.7874643918495957,
       "offset": [
-        1568.778579711914,
-        425.2274737358093
+        1415.1716341129018,
+        226.55182361208688
       ]
     },
     "frontendVersion": "1.33.10",

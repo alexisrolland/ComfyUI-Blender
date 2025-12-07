@@ -31,6 +31,8 @@
       ],
       "title": "Resolution",
       "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "c82ce7f7c412d7cea73c2d69e442665d50d2da09",
         "Node name for S&R": "BlenderInputGroup"
       },
       "widgets_values": [
@@ -74,9 +76,9 @@
       ],
       "title": "Height",
       "properties": {
-        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputInt"
       },
       "widgets_values": [
         1024,
@@ -103,7 +105,7 @@
         88
       ],
       "flags": {},
-      "order": 8,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -150,7 +152,7 @@
         88
       ],
       "flags": {},
-      "order": 7,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -311,70 +313,12 @@
       "outputs": [],
       "title": "Save Image",
       "properties": {
-        "Node name for S&R": "BlenderOutputSaveImage",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderOutputSaveImage"
       },
       "widgets_values": [
         "blender"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 14,
-      "type": "BlenderInputLoadCheckpoint",
-      "pos": [
-        440,
-        690
-      ],
-      "size": [
-        292.1470642089844,
-        146
-      ],
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            16
-          ]
-        },
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "links": [
-            17,
-            18
-          ]
-        },
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [
-            19
-          ]
-        }
-      ],
-      "title": "Model",
-      "properties": {
-        "Node name for S&R": "BlenderInputLoadCheckpoint"
-      },
-      "widgets_values": [
-        "visitor01\\raymnants-v3.0.safetensors",
-        2,
-        "visitor01\\raymnants-v3.0.safetensors"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -412,9 +356,9 @@
       ],
       "title": "Width",
       "properties": {
-        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputInt"
       },
       "widgets_values": [
         1024,
@@ -441,7 +385,7 @@
         280
       ],
       "flags": {},
-      "order": 2,
+      "order": 1,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -516,7 +460,7 @@
         178
       ],
       "flags": {},
-      "order": 3,
+      "order": 2,
       "mode": 0,
       "inputs": [
         {
@@ -537,9 +481,9 @@
       ],
       "title": "Seed",
       "properties": {
-        "Node name for S&R": "BlenderInputSeed",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputSeed"
       },
       "widgets_values": [
         0,
@@ -564,7 +508,7 @@
         220
       ],
       "flags": {},
-      "order": 4,
+      "order": 3,
       "mode": 0,
       "inputs": [
         {
@@ -585,15 +529,75 @@
       ],
       "title": "Prompt",
       "properties": {
-        "Node name for S&R": "BlenderInputStringMultiline",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputStringMultiline"
       },
       "widgets_values": [
-        "A high-end 3D render of a video game item, wooden treasure chest made of oak on a black background, featuring ultra-detailed textures and physically based rendering. The item is showcased with state-of-the-art shaders, realistic lighting, and intricate details that emphasize depth and material quality. The style is hyper-realistic, immersive, and visually stunning, capturing the essence of next-gen gaming graphics.",
+        "In a shadowy lab, robotic arms carve glowing runes into a towering clay golem, embedding arcane crystals into its limbs. Sparks crackle as holographic schematics flicker above, blending alchemy and tech. Ancient tomes lie open beside humming monitors, the air thick with magic and anticipation. Life about to surge into the stone giant.",
         3,
-        "",
+        "In a shadowy lab, robotic arms carve glowing runes into a towering clay golem, embedding arcane crystals into its limbs. Sparks crackle as holographic schematics flicker above, blending alchemy and tech. Ancient tomes lie open beside humming monitors, the air thick with magic and anticipation. Life about to surge into the stone giant.",
         false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 14,
+      "type": "BlenderInputLoadCheckpoint",
+      "pos": [
+        440,
+        690
+      ],
+      "size": [
+        292.1470642089844,
+        146
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            16
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            17,
+            18
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            19
+          ]
+        }
+      ],
+      "title": "Model",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "c82ce7f7c412d7cea73c2d69e442665d50d2da09",
+        "Node name for S&R": "BlenderInputLoadCheckpoint"
+      },
+      "widgets_values": [
+        "ray\\raymnants-v3.0.safetensors",
+        2,
+        "ray\\raymnants-v3.0.safetensors"
       ],
       "color": "#432",
       "bgcolor": "#653"
