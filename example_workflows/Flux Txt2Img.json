@@ -37,9 +37,9 @@
       ],
       "title": "Seed",
       "properties": {
-        "Node name for S&R": "BlenderInputSeed",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputSeed"
       },
       "widgets_values": [
         0,
@@ -204,9 +204,9 @@
       "outputs": [],
       "title": "Save Image",
       "properties": {
-        "Node name for S&R": "BlenderOutputSaveImage",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderOutputSaveImage"
       },
       "widgets_values": [
         "blender"
@@ -480,9 +480,9 @@
       ],
       "title": "Width",
       "properties": {
-        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputInt"
       },
       "widgets_values": [
         1024,
@@ -530,9 +530,9 @@
       ],
       "title": "Height",
       "properties": {
-        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputInt"
       },
       "widgets_values": [
         1024,
@@ -543,96 +543,6 @@
         8,
         false,
         true
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 1,
-      "type": "BlenderInputStringMultiline",
-      "pos": [
-        600,
-        1020
-      ],
-      "size": [
-        340,
-        380
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            2
-          ]
-        }
-      ],
-      "title": "Prompt",
-      "properties": {
-        "Node name for S&R": "BlenderInputStringMultiline",
-        "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
-      },
-      "widgets_values": [
-        "seamless, tileable texture of old, broken stone with moss. The texture should feature irregular stone surfaces with cracks and crevices, and patches of moss growing in and on the stones. Ensure high-resolution details with natural variations in color and texture. Optimize for PBR workflows with neutral lighting. Include subtle imperfections like dirt and grime for realism. The mood should be dark and gritty, suitable for fantasy or historical video game environments.",
-        3,
-        "",
-        false
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 21,
-      "type": "BlenderInputLoadDiffusionModel",
-      "pos": [
-        1140,
-        630
-      ],
-      "size": [
-        318.3423767089844,
-        130
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            29
-          ]
-        }
-      ],
-      "title": "Model",
-      "properties": {
-        "Node name for S&R": "BlenderInputLoadDiffusionModel"
-      },
-      "widgets_values": [
-        "visitor01\\rayflux-v1.0.safetensors",
-        "default",
-        2,
-        "visitor01\\rayflux-v1.0.safetensors"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -649,7 +559,7 @@
         58
       ],
       "flags": {},
-      "order": 6,
+      "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -682,13 +592,105 @@
         270
       ],
       "flags": {},
-      "order": 7,
+      "order": 5,
       "mode": 0,
       "inputs": [],
       "outputs": [],
       "properties": {},
       "widgets_values": [
         "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 21,
+      "type": "BlenderInputLoadDiffusionModel",
+      "pos": [
+        1140,
+        630
+      ],
+      "size": [
+        318.3423767089844,
+        130
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            29
+          ]
+        }
+      ],
+      "title": "Model",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "c82ce7f7c412d7cea73c2d69e442665d50d2da09",
+        "Node name for S&R": "BlenderInputLoadDiffusionModel"
+      },
+      "widgets_values": [
+        "ray\\rayflux-v1.0.safetensors",
+        "default",
+        2,
+        "ray\\rayflux-v1.0.safetensors"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 1,
+      "type": "BlenderInputStringMultiline",
+      "pos": [
+        600,
+        1020
+      ],
+      "size": [
+        340,
+        260
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "title": "Prompt",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputStringMultiline"
+      },
+      "widgets_values": [
+        "In a shadowy lab, robotic arms carve glowing runes into a towering clay golem, embedding arcane crystals into its limbs. Sparks crackle as holographic schematics flicker above, blending alchemy and tech. Ancient tomes lie open beside humming monitors, the air thick with magic and anticipation. Life about to surge into the stone giant.",
+        3,
+        "In a shadowy lab, robotic arms carve glowing runes into a towering clay golem, embedding arcane crystals into its limbs. Sparks crackle as holographic schematics flicker above, blending alchemy and tech. Ancient tomes lie open beside humming monitors, the air thick with magic and anticipation. Life about to surge into the stone giant.",
+        false
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -820,10 +822,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.6515089722675366,
+      "scale": 1.15418788641925,
       "offset": [
-        73.50234741784038,
-        -245.66666666666663
+        -479.6641816303475,
+        -594.3976997471814
       ]
     },
     "frontendVersion": "1.33.10",

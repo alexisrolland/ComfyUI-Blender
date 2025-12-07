@@ -8,8 +8,8 @@ app.registerExtension({
     async nodeCreated(node) {
         if (node.comfyClass === "BlenderInputCombo") {
             node.onConnectionsChange = async function (_, changedOutputId, isConnected, linkInfo) {
-                // Do nothing if the changed output is not the "combo" output socket or if it is disconnected
-                const comboSlot = node.outputs.findIndex(o => o.name === "combo")
+                // Do nothing if the changed output is not the "COMBO" output socket or if it is disconnected
+                const comboSlot = node.outputs.findIndex(o => o.name === "COMBO")
                 if (changedOutputId !== comboSlot) { return }
                 if (!isConnected) { return }
                 if (!linkInfo) { return }

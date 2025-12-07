@@ -31,6 +31,8 @@
       ],
       "title": "Resolution",
       "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "c82ce7f7c412d7cea73c2d69e442665d50d2da09",
         "Node name for S&R": "BlenderInputGroup"
       },
       "widgets_values": [
@@ -74,9 +76,9 @@
       ],
       "title": "Height",
       "properties": {
-        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputInt"
       },
       "widgets_values": [
         1024,
@@ -124,9 +126,9 @@
       ],
       "title": "Seed",
       "properties": {
-        "Node name for S&R": "BlenderInputSeed",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputSeed"
       },
       "widgets_values": [
         0,
@@ -273,9 +275,9 @@
       "outputs": [],
       "title": "Save Image",
       "properties": {
-        "Node name for S&R": "BlenderOutputSaveImage",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderOutputSaveImage"
       },
       "widgets_values": [
         "blender"
@@ -534,9 +536,9 @@
       ],
       "title": "Width",
       "properties": {
-        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputInt"
       },
       "widgets_values": [
         1024,
@@ -547,6 +549,29 @@
         8,
         true,
         false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 15,
+      "type": "MarkdownNote",
+      "pos": [
+        30,
+        690
+      ],
+      "size": [
+        330,
+        280
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -563,7 +588,7 @@
         230
       ],
       "flags": {},
-      "order": 2,
+      "order": 3,
       "mode": 0,
       "inputs": [
         {
@@ -584,14 +609,14 @@
       ],
       "title": "Prompt",
       "properties": {
-        "Node name for S&R": "BlenderInputStringMultiline",
         "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputStringMultiline"
       },
       "widgets_values": [
         "seamless, tileable texture of old, broken stone with moss. The texture should feature irregular stone surfaces with cracks and crevices, and patches of moss growing in and on the stones. Ensure high-resolution details with natural variations in color and texture. Optimize for PBR workflows with neutral lighting. Include subtle imperfections like dirt and grime for realism. The mood should be dark and gritty, suitable for fantasy or historical video game environments.",
         3,
-        "",
+        "seamless, tileable texture of old, broken stone with moss. The texture should feature irregular stone surfaces with cracks and crevices, and patches of moss growing in and on the stones. Ensure high-resolution details with natural variations in color and texture. Optimize for PBR workflows with neutral lighting. Include subtle imperfections like dirt and grime for realism. The mood should be dark and gritty, suitable for fantasy or historical video game environments.",
         false
       ],
       "color": "#432",
@@ -609,7 +634,7 @@
         146
       ],
       "flags": {},
-      "order": 3,
+      "order": 4,
       "mode": 0,
       "inputs": [
         {
@@ -645,35 +670,14 @@
       ],
       "title": "Model",
       "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "c82ce7f7c412d7cea73c2d69e442665d50d2da09",
         "Node name for S&R": "BlenderInputLoadCheckpoint"
       },
       "widgets_values": [
-        "visitor01\\raymnants-v3.0.safetensors",
+        "ray\\raymnants-v3.0.safetensors",
         2,
-        "visitor01\\raymnants-v3.0.safetensors"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 15,
-      "type": "MarkdownNote",
-      "pos": [
-        30,
-        690
-      ],
-      "size": [
-        330,
-        280
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+        "ray\\raymnants-v3.0.safetensors"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -821,10 +825,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.6838613013698629,
+      "scale": 0.8264462809917354,
       "offset": [
-        543.793427230047,
-        -143.33333333333337
+        350.53098229413195,
+        -254.42689132037412
       ]
     },
     "frontendVersion": "1.33.10",

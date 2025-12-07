@@ -5,40 +5,6 @@
   "last_link_id": 39,
   "nodes": [
     {
-      "id": 17,
-      "type": "UNETLoader",
-      "pos": [
-        1880,
-        880
-      ],
-      "size": [
-        270,
-        82
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            28
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.52",
-        "Node name for S&R": "UNETLoader"
-      },
-      "widgets_values": [
-        "alibaba\\qwen_image_fp8_e4m3fn.safetensors",
-        "default"
-      ]
-    },
-    {
       "id": 2,
       "type": "CLIPTextEncode",
       "pos": [
@@ -50,7 +16,7 @@
         88
       ],
       "flags": {},
-      "order": 12,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
@@ -98,7 +64,7 @@
         106
       ],
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -133,7 +99,7 @@
         26
       ],
       "flags": {},
-      "order": 17,
+      "order": 16,
       "mode": 0,
       "inputs": [
         {
@@ -170,7 +136,7 @@
         226
       ],
       "flags": {},
-      "order": 10,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -191,9 +157,9 @@
       ],
       "title": "Width",
       "properties": {
-        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
+        "Node name for S&R": "BlenderInputInt"
       },
       "widgets_values": [
         1328,
@@ -220,7 +186,7 @@
         226
       ],
       "flags": {},
-      "order": 11,
+      "order": 10,
       "mode": 0,
       "inputs": [
         {
@@ -241,9 +207,9 @@
       ],
       "title": "Height",
       "properties": {
-        "Node name for S&R": "BlenderInputInt",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
+        "Node name for S&R": "BlenderInputInt"
       },
       "widgets_values": [
         1328,
@@ -270,7 +236,7 @@
         106
       ],
       "flags": {},
-      "order": 2,
+      "order": 1,
       "mode": 0,
       "inputs": [],
       "outputs": [
@@ -285,9 +251,9 @@
       ],
       "title": "Resolution",
       "properties": {
-        "Node name for S&R": "BlenderInputGroup",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
+        "Node name for S&R": "BlenderInputGroup"
       },
       "widgets_values": [
         3,
@@ -386,7 +352,7 @@
         154
       ],
       "flags": {},
-      "order": 13,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
@@ -407,9 +373,9 @@
       ],
       "title": "Strength",
       "properties": {
-        "Node name for S&R": "BlenderInputFloat",
         "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
+        "Node name for S&R": "BlenderInputFloat"
       },
       "widgets_values": [
         1,
@@ -433,7 +399,7 @@
         146
       ],
       "flags": {},
-      "order": 16,
+      "order": 15,
       "mode": 0,
       "inputs": [
         {
@@ -526,6 +492,386 @@
       "widgets_values": []
     },
     {
+      "id": 25,
+      "type": "ControlNetLoader",
+      "pos": [
+        2180,
+        1250
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CONTROL_NET",
+          "type": "CONTROL_NET",
+          "links": [
+            30
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.59",
+        "Node name for S&R": "ControlNetLoader"
+      },
+      "widgets_values": [
+        "instantx\\Qwen-Image-ControlNet-Union.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "ModelSamplingAuraFlow",
+      "pos": [
+        2420,
+        910
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.52",
+        "Node name for S&R": "ModelSamplingAuraFlow"
+      },
+      "widgets_values": [
+        3.1
+      ]
+    },
+    {
+      "id": 6,
+      "type": "BlenderOutputSaveImage",
+      "pos": [
+        3120,
+        1020
+      ],
+      "size": [
+        220,
+        282
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 11
+        }
+      ],
+      "outputs": [],
+      "title": "Save Image",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
+        "Node name for S&R": "BlenderOutputSaveImage"
+      },
+      "widgets_values": [
+        "blender"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 12,
+      "type": "BlenderInputSeed",
+      "pos": [
+        2180,
+        2210
+      ],
+      "size": [
+        210,
+        180
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            24
+          ]
+        }
+      ],
+      "title": "Seed",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputSeed"
+      },
+      "widgets_values": [
+        0,
+        1,
+        0,
+        0,
+        2147483647,
+        1
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 14,
+      "type": "BlenderInputGroup",
+      "pos": [
+        1880,
+        1520
+      ],
+      "size": [
+        270,
+        106
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "group",
+          "type": "GROUP",
+          "links": [
+            15,
+            18
+          ]
+        }
+      ],
+      "title": "ControlNet",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
+        "Node name for S&R": "BlenderInputGroup"
+      },
+      "widgets_values": [
+        4,
+        true,
+        false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 13,
+      "type": "MarkdownNote",
+      "pos": [
+        1475.416259765625,
+        876.527587890625
+      ],
+      "size": [
+        340,
+        310
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 24,
+      "type": "VAELoader",
+      "pos": [
+        2720,
+        1340
+      ],
+      "size": [
+        210,
+        58
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            26,
+            39
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.52",
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "alibaba\\qwen_image_vae.safetensors"
+      ]
+    },
+    {
+      "id": 21,
+      "type": "BlenderInputStringMultiline",
+      "pos": [
+        1880,
+        1190
+      ],
+      "size": [
+        270,
+        250
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "title": "Prompt",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6",
+        "Node name for S&R": "BlenderInputStringMultiline"
+      },
+      "widgets_values": [
+        "A breathtaking anime-style illustration of an ancient, ornate loot crate resting on the ground of a mysterious cave. The treasure chest, crafted from weathered yet regal dark wood, is adorned with intricate gold filigree and glowing runes that pulse with mystical energy. The scene is vibrant, dynamic, and richly detailed, evoking the thrill of discovery and the allure of the unknown.",
+        2,
+        "A breathtaking anime-style illustration of an ancient, ornate loot crate resting on the ground of a mysterious cave. The treasure chest, crafted from weathered yet regal dark wood, is adorned with intricate gold filigree and glowing runes that pulse with mystical energy. The scene is vibrant, dynamic, and richly detailed, evoking the thrill of discovery and the allure of the unknown.",
+        false
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 18,
+      "type": "BlenderInputLoadImage",
+      "pos": [
+        2180,
+        1370
+      ],
+      "size": [
+        210,
+        350
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "group",
+          "shape": 7,
+          "type": "GROUP",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            35
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "Image",
+      "properties": {
+        "cnr_id": "comfyui-blender",
+        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01",
+        "Node name for S&R": "BlenderInputLoadImage"
+      },
+      "widgets_values": [
+        "blender_depth_map.png",
+        2,
+        "image"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 17,
+      "type": "UNETLoader",
+      "pos": [
+        1880,
+        880
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            28
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.52",
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "ray\\rayqwest-v1.0.safetensors",
+        "default"
+      ]
+    },
+    {
       "id": 19,
       "type": "LoraLoaderModelOnly",
       "pos": [
@@ -537,8 +883,8 @@
         82
       ],
       "flags": {},
-      "order": 9,
-      "mode": 0,
+      "order": 14,
+      "mode": 4,
       "inputs": [
         {
           "name": "model",
@@ -624,359 +970,13 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        563079312899009,
-        "randomize",
-        4,
-        1,
-        "res_multistep",
-        "simple",
+        664230346827740,
+        "fixed",
+        20,
+        2.5,
+        "euler",
+        "normal",
         1
-      ]
-    },
-    {
-      "id": 25,
-      "type": "ControlNetLoader",
-      "pos": [
-        2180,
-        1250
-      ],
-      "size": [
-        210,
-        58
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "CONTROL_NET",
-          "type": "CONTROL_NET",
-          "links": [
-            30
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.59",
-        "Node name for S&R": "ControlNetLoader"
-      },
-      "widgets_values": [
-        "instantx\\Qwen-Image-ControlNet-Union.safetensors"
-      ]
-    },
-    {
-      "id": 4,
-      "type": "ModelSamplingAuraFlow",
-      "pos": [
-        2420,
-        910
-      ],
-      "size": [
-        210,
-        58
-      ],
-      "flags": {},
-      "order": 15,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 8
-        }
-      ],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            20
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.52",
-        "Node name for S&R": "ModelSamplingAuraFlow"
-      },
-      "widgets_values": [
-        3.1
-      ]
-    },
-    {
-      "id": 6,
-      "type": "BlenderOutputSaveImage",
-      "pos": [
-        3120,
-        1020
-      ],
-      "size": [
-        220,
-        282
-      ],
-      "flags": {},
-      "order": 21,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 11
-        }
-      ],
-      "outputs": [],
-      "title": "Save Image",
-      "properties": {
-        "Node name for S&R": "BlenderOutputSaveImage",
-        "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
-      },
-      "widgets_values": [
-        "blender"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 21,
-      "type": "BlenderInputStringMultiline",
-      "pos": [
-        1880,
-        1190
-      ],
-      "size": [
-        270,
-        250
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            2
-          ]
-        }
-      ],
-      "title": "Prompt",
-      "properties": {
-        "Node name for S&R": "BlenderInputStringMultiline",
-        "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
-      },
-      "widgets_values": [
-        "Photograph of an ancient treasure chest on a black background. The chest is made of rich, vintage antique wood sculpted with floral patterns, with brass and iron fittings. The brass lock and hinges are tarnished with age, adding to its mysterious and timeless appeal. The lighting is dramatic, with soft shadows accentuating the texture of the wood and metal, creating a sense of depth and intrigue. Ultra HD, 4K, cinematic composition.",
-        2,
-        "",
-        false
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 18,
-      "type": "BlenderInputLoadImage",
-      "pos": [
-        2180,
-        1370
-      ],
-      "size": [
-        210,
-        350
-      ],
-      "flags": {},
-      "order": 14,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": 18
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            35
-          ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
-        }
-      ],
-      "title": "Image",
-      "properties": {
-        "Node name for S&R": "BlenderInputLoadImage",
-        "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
-      },
-      "widgets_values": [
-        "blender_depth_map0001.png",
-        2,
-        "image"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 12,
-      "type": "BlenderInputSeed",
-      "pos": [
-        2180,
-        2210
-      ],
-      "size": [
-        210,
-        180
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "group",
-          "shape": 7,
-          "type": "GROUP",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "INT",
-          "type": "INT",
-          "links": [
-            24
-          ]
-        }
-      ],
-      "title": "Seed",
-      "properties": {
-        "Node name for S&R": "BlenderInputSeed",
-        "cnr_id": "comfyui-blender",
-        "ver": "41e36147b41b6ef2d321220c3815ca99a9681ad6"
-      },
-      "widgets_values": [
-        0,
-        1,
-        0,
-        0,
-        2147483647,
-        1
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 14,
-      "type": "BlenderInputGroup",
-      "pos": [
-        1880,
-        1520
-      ],
-      "size": [
-        270,
-        106
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "group",
-          "type": "GROUP",
-          "links": [
-            15,
-            18
-          ]
-        }
-      ],
-      "title": "ControlNet",
-      "properties": {
-        "Node name for S&R": "BlenderInputGroup",
-        "cnr_id": "comfyui-blender",
-        "ver": "0b3fa1a4f6a90b1bc7913ba415144d4676e48f01"
-      },
-      "widgets_values": [
-        4,
-        true,
-        false
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 13,
-      "type": "MarkdownNote",
-      "pos": [
-        1475.416259765625,
-        876.527587890625
-      ],
-      "size": [
-        340,
-        310
-      ],
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "# ComfyUI-Blender\n\nThis is an example of workflow to showcase how to use the Blender input and output custom nodes. The custom nodes will be interpreted by the Blender add-on to display the corresponding properties in the add-on panel.\n\n(1) Add input or output nodes: right click > Add Node > blender > ...\n\n(2) Run the workflow to confirm it executes properly\n\n(3) Export the workflow: Top Left Menu > File > Export (API)\n\n(4) In the Blender add-on, clik on Import Workflow to import the workflow JSON file in API format\n\nMore info on: [https://github.com/alexisrolland/ComfyUI-Blender](https://github.com/alexisrolland/ComfyUI-Blender)"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 24,
-      "type": "VAELoader",
-      "pos": [
-        2720,
-        1340
-      ],
-      "size": [
-        210,
-        58
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [
-            26,
-            39
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.52",
-        "Node name for S&R": "VAELoader"
-      },
-      "widgets_values": [
-        "alibaba\\qwen_image_vae.safetensors"
       ]
     }
   ],
@@ -1186,10 +1186,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.46999880333955896,
+      "scale": 0.6255684072449531,
       "offset": [
-        -365.14973786403334,
-        -553.282185872396
+        -796.1177932799668,
+        -566.0801467465055
       ]
     },
     "frontendVersion": "1.33.10",
