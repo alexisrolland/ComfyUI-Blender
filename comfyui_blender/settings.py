@@ -400,6 +400,7 @@ class AddonPreferences(bpy.types.AddonPreferences):
         items=[("list", "List", "Display outputs in a list"), ("thumbnail", "Thumbnail", "Display outputs as thumbnails")],
     )
 
+
     def draw(self, context):
         """Draw the panel."""
 
