@@ -20,7 +20,7 @@ class BlenderInputSampler(KSamplerSelect):
         schema.inputs.append(io.Custom("GROUP").Input("group", optional=True))
         schema.inputs.append(io.Int.Input("order", default=0, min=MIN_INT, max=MAX_INT, control_after_generate=False, tooltip=TOOLTIP_ORDER))
         schema.inputs.append(io.String.Input("default", tooltip=TOOLTIP_DEFAULT))
-        schema.outputs = [io.AnyType.Output(display_name="SAMPLER"))]
+        schema.outputs = [io.AnyType.Output(display_name="SAMPLER")]
         return schema
 
     @classmethod
