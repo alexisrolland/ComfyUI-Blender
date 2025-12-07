@@ -57,7 +57,7 @@ from .connection import disconnect
 bl_info = {
     "name": "ComfyUI Blender",
     "author": "Alexis ROLLAND",
-    "version": (4, 1, 0),
+    "version": (4, 1, 1),
     "blender": (5, 0, 0),
     "location": "View3D > Sidebar > ComfyUI",
     "description": "Blender add-on to send requests to a ComfyUI server.",
