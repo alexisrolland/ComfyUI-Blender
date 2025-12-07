@@ -24,7 +24,7 @@ class BlenderInputFloat(Float):
         schema.category = "blender"
         schema.inputs.append(io.Custom("GROUP").Input("group", optional=True))
         schema.inputs.append(io.Int.Input("order", default=0, min=MIN_INT, max=MAX_INT, control_after_generate=False, tooltip=TOOLTIP_ORDER))
-        schema.inputs.append(io.Float.Input("default", default=0.0, tooltip=TOOLTIP_DEFAULT))
+        schema.inputs.append(io.Float.Input("default", default=0.0, min=MIN_FLOAT, max=MAX_FLOAT, step=0.01, tooltip=TOOLTIP_DEFAULT))
         schema.inputs.append(io.Float.Input("min", default=MIN_FLOAT, min=MIN_FLOAT, max=MAX_FLOAT, step=0.01, tooltip=TOOLTIP_MIN))
         schema.inputs.append(io.Float.Input("max", default=MAX_FLOAT, min=MIN_FLOAT, max=MAX_FLOAT, step=0.01, tooltip=TOOLTIP_MAX))
         # Step size is weird in Blender, value of 1 gives a step of 0.1, so I'm deactivating it for now
