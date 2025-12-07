@@ -51,6 +51,7 @@ def register():
     bpy.app.handlers.load_post.append(load_post_handler)
     bpy.app.handlers.save_post.append(save_post_handler)
 
+
 def unregister():
     """Unregister handlers."""
 
