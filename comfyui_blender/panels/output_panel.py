@@ -10,8 +10,6 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
     """Panel to display generated outputs."""
 
     bl_label = "Outputs"
-    bl_idname = "COMFY_PT_Output"
-    bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "ComfyUI"
 
@@ -317,12 +315,29 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                     bpy.app.timers.register(remove_output, first_interval=0.00)
 
 
+class ComfyBlenderPanelOutput3DViewer(ComfyBlenderPanelOutput, bpy.types.Panel):
+    """Class to display the panel in the 3D viewer."""
+
+    bl_idname = "COMFY_PT_Output_3DViewer"
+    bl_space_type = "VIEW_3D"
+
+
+class ComfyBlenderPanelOutputImageEditor(ComfyBlenderPanelOutput, bpy.types.Panel):
+    """Class to display the panel in the image editor."""
+
+    bl_idname = "COMFY_PT_Output_ImageEditor"
+    bl_space_type = "IMAGE_EDITOR"
+
+
 def register():
     """Register the panel."""
 
-    bpy.utils.register_class(ComfyBlenderPanelOutput)
+    bpy.utils.register_class(ComfyBlenderPanelOutput3DViewer)
+    bpy.utils.register_class(ComfyBlenderPanelOutputImageEditor)
+
 
 def unregister():
     """Unregister the panel."""
 
-    bpy.utils.unregister_class(ComfyBlenderPanelOutput)
+    bpy.utils.unregister_class(ComfyBlenderPanelOutput3DViewer)
+    bpy.utils.unregister_class(ComfyBlenderPanelOutputImageEditor)
