@@ -6,7 +6,7 @@ import bpy
 from ..utils import get_workflows_folder
 
 
-class ComfyBlenderPanelWorkflowBase(bpy.types.Panel):
+class ComfyBlenderPanelWorkflow(bpy.types.Panel):
     """Panel to display workflows options."""
 
     bl_label = "Workflow"
@@ -86,24 +86,26 @@ class ComfyBlenderPanelWorkflowBase(bpy.types.Panel):
         sub_row.operator("comfy.clear_queue", text="", icon="SEQ_SEQUENCER")
 
 
-class ComfyBlenderPanelWorkflow3DViewer(ComfyBlenderPanelWorkflowBase, bpy.types.Panel):
+class ComfyBlenderPanelWorkflow3DViewer(ComfyBlenderPanelWorkflow, bpy.types.Panel):
     """Class to display the panel in the 3D viewer."""
 
     bl_idname = "COMFY_PT_Workflow_3DViewer"
     bl_space_type = "VIEW_3D"
 
 
-class ComfyBlenderPanelWorkflowImageEditor(ComfyBlenderPanelWorkflowBase, bpy.types.Panel):
+class ComfyBlenderPanelWorkflowImageEditor(ComfyBlenderPanelWorkflow, bpy.types.Panel):
     """Class to display the panel in the image editor."""
 
     bl_idname = "COMFY_PT_Workflow_ImageEditor"
     bl_space_type = "IMAGE_EDITOR"
+
 
 def register():
     """Register the panel."""
 
     bpy.utils.register_class(ComfyBlenderPanelWorkflow3DViewer)
     bpy.utils.register_class(ComfyBlenderPanelWorkflowImageEditor)
+
 
 def unregister():
     """Unregister the panel."""

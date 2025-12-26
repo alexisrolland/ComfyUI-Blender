@@ -123,8 +123,8 @@ def register():
     file_browser_panel.register()
     workflow_panel.register()
     input_panel.register()
-    output_panel.register()
     paint_panel.register()
+    output_panel.register()
 
 
 def unregister():

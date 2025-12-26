@@ -12,8 +12,6 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
     """Panel to display a workflow inputs."""
 
     bl_label = "Inputs"
-    bl_idname = "COMFY_PT_Input"
-    bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "ComfyUI"
 
@@ -309,12 +307,28 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             layout.prop(current_workflow, property_name)
 
 
+class ComfyBlenderPanelInput3DViewer(ComfyBlenderPanelInput, bpy.types.Panel):
+    """Class to display the panel in the 3D viewer."""
+
+    bl_idname = "COMFY_PT_Input_3DViewer"
+    bl_space_type = "VIEW_3D"
+
+
+class ComfyBlenderPanelInputImageEditor(ComfyBlenderPanelInput, bpy.types.Panel):
+    """Class to display the panel in the image editor."""
+
+    bl_idname = "COMFY_PT_Input_ImageEditor"
+    bl_space_type = "IMAGE_EDITOR"
+
+
 def register():
     """Register the panel."""
 
-    bpy.utils.register_class(ComfyBlenderPanelInput)
+    bpy.utils.register_class(ComfyBlenderPanelInput3DViewer)
+    bpy.utils.register_class(ComfyBlenderPanelInputImageEditor)
 
 def unregister():
     """Unregister the panel."""
 
-    bpy.utils.unregister_class(ComfyBlenderPanelInput)
+    bpy.utils.unregister_class(ComfyBlenderPanelInput3DViewer)
+    bpy.utils.unregister_class(ComfyBlenderPanelInputImageEditor)
