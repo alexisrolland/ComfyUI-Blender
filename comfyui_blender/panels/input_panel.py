@@ -193,7 +193,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             image = getattr(current_workflow, property_name)
 
             # Display input image
-            if image:
+            if image and isinstance(image, bpy.types.Image):
                 row = box.row()
 
                 # Image preview
@@ -239,7 +239,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             image = getattr(current_workflow, property_name)
 
             # Display input image
-            if image:
+            if image and isinstance(image, bpy.types.Image):
                 row = box.row()
 
                 # Image preview

@@ -88,8 +88,8 @@ class ComfyBlenderOperatorSendToInput(bpy.types.Operator):
                         if getattr(current_workflow, input[0]) == previous_image:
                             is_used = True
                             break
-                if not is_used:
-                    bpy.data.images.remove(previous_image)
+                if not is_used and isinstance(previous_image, bpy.types.Image):
+                        bpy.data.images.remove(previous_image)
 
             # Build input file paths
             inputs_folder = get_inputs_folder()
@@ -157,7 +157,7 @@ class ComfyBlenderOperatorSendToInput(bpy.types.Operator):
                             if getattr(current_workflow, input[0]) == previous_text:
                                 is_used = True
                                 break
-                    if not is_used:
+                    if not is_used and isinstance(previous_text, bpy.types.Text):
                         bpy.data.texts.remove(previous_text)
 
                 # Build input file paths

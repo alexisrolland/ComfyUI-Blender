@@ -11,7 +11,6 @@ class BlenderInputLoadImage(LoadImage):
     """Node used by ComfyUI Blender add-on to input an image in a workflow."""
     CATEGORY = "blender"
     FUNCTION = "execute"
-    RETURN_TYPES = ("IMAGE",)
 
     @classmethod
     def INPUT_TYPES(s):
@@ -26,7 +25,6 @@ class BlenderInputLoadImage(LoadImage):
     
     def execute(self, image, order, **kwargs):
         result = super().load_image(image)
-        result = result[:-1]  # Remove the mask output from the tuple
         return result
 
     @classmethod
