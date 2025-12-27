@@ -25,6 +25,7 @@ from .operators import (
     prepare_glb_file,
     prepare_obj_file,
     project_material,
+    reload_outputs,
     rename_workflow,
     render_depth_map,
     render_lineart,
@@ -57,7 +58,7 @@ from .connection import disconnect
 bl_info = {
     "name": "ComfyUI Blender",
     "author": "Alexis ROLLAND",
-    "version": (4, 2, 2),
+    "version": (4, 3, 0),
     "blender": (5, 0, 0),
     "location": "View3D > Sidebar > ComfyUI",
     "description": "Blender add-on to send requests to a ComfyUI server.",
@@ -102,6 +103,7 @@ def register():
     prepare_glb_file.register()
     prepare_obj_file.register()
     project_material.register()
+    reload_outputs.register()
     rename_workflow.register()
     render_depth_map.register()
     render_lineart.register()
@@ -165,6 +167,7 @@ def unregister():
     prepare_glb_file.unregister()
     prepare_obj_file.unregister()
     project_material.unregister()
+    reload_outputs.unregister()
     rename_workflow.unregister()
     render_depth_map.unregister()
     render_lineart.unregister()

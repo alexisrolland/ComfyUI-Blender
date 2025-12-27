@@ -480,13 +480,13 @@ class AddonPreferences(bpy.types.AddonPreferences):
 
                 # Create box for subfolders
                 box = layout.box()
-                col = box.column(align=True)
+                parent_row = box.row()
+                split = parent_row.split(factor=0.80)
+                col = split.column(align=True)
 
                 # Inputs folder
                 row = col.row(align=True)
                 row.prop(self, "inputs_folder", text="Inputs")
-
-                # Button select and reset inputs folder
                 select_inputs_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
                 select_inputs_folder.target_property = "inputs_folder"
                 reset_inputs_folder = row.operator("comfy.reset_folder", text="", icon="FILE_REFRESH")
@@ -495,8 +495,6 @@ class AddonPreferences(bpy.types.AddonPreferences):
                 # Outputs folder
                 row = col.row(align=True)
                 row.prop(self, "outputs_folder", text="Outputs")
-
-                # Button select and reset outputs folder
                 select_outputs_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
                 select_outputs_folder.target_property = "outputs_folder"
                 reset_outputs_folder = row.operator("comfy.reset_folder", text="", icon="FILE_REFRESH")
@@ -505,12 +503,26 @@ class AddonPreferences(bpy.types.AddonPreferences):
                 # Workflows folder
                 row = col.row(align=True)
                 row.prop(self, "workflows_folder", text="Workflows")
-
-                # Button select and reset workflows folder
                 select_workflows_folder = row.operator("comfy.select_folder", text="", icon="FILE_FOLDER")
                 select_workflows_folder.target_property = "workflows_folder"
                 reset_workflows_folder = row.operator("comfy.reset_folder", text="", icon="FILE_REFRESH")
                 reset_workflows_folder.target_property = "workflows_folder"
+
+                # Right column
+                col = split.column(align=True)
+
+                # Button select and reset inputs folder
+                row = col.row(align=True)
+                row.label(text="")  # Empty label for alignment
+
+                # Button select and reset outputs folder
+                row = col.row(align=True)
+                row.operator("comfy.reload_outputs", text="Reload Outputs", icon="EXPORT")
+
+                # Button select and reset workflows folder
+                row = col.row(align=True)
+                row.label(text="")  # Empty label for alignment
+
         else:
             col = layout.column(align=True)
             col.label(text=f"This version of ComfyUI Blender requires Blender 5.0 or higher.")

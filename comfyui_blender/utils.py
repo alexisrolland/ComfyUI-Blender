@@ -79,7 +79,7 @@ def download_file(filename, subfolder, type="output"):
     # Save the file in the output folder
     outputs_folder = get_outputs_folder()
     folder = os.path.join(outputs_folder, subfolder)
-    filepath = os.path.join(folder, filename)
+    filename, filepath = get_filepath(filename, folder)
 
     # Create subfolder if it does not exist
     os.makedirs(folder, exist_ok=True)
@@ -88,6 +88,8 @@ def download_file(filename, subfolder, type="output"):
         for chunk in response.iter_content(chunk_size=8192):
             if chunk:  # Filter out keep-alive chunks
                 file.write(chunk)
+
+    return filename, filepath
 
 
 def get_filepath(filename, folder):
