@@ -76,16 +76,13 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
 
                         # Load image in the data block if it does not exist
                         if image is None and os.path.exists(full_path):
-                            image = bpy.data.images.load(full_path)
+                            image = bpy.data.images.load(full_path, check_existing=True)
+                            image.preview_ensure()
 
                         if image:
-                            # Display image
-                            image.preview_ensure()
-                            icon_id = image.preview.icon_id
-
                             # Output preview
                             row = card.row(align=True)
-                            row.template_icon(icon_value=icon_id, scale=5)
+                            row.template_icon(icon_value=image.preview.icon_id, scale=5)
 
                             # Image editor button
                             col = row.column(align=True)
@@ -226,7 +223,7 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
 
                         # Load image in the data block if it does not exist
                         if image is None and os.path.exists(full_path):
-                            image = bpy.data.images.load(full_path)
+                            image = bpy.data.images.load(full_path, check_existing=True)
 
                         if image:
                             # Output name with link
