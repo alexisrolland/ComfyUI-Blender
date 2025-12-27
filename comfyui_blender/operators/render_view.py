@@ -66,7 +66,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         output_file_node.directory = temp_folder
         output_file_node.file_name = ""  # Filename will be set by the file output item
         output_file_node.format.media_type = "IMAGE"
-        output_file_node.format.color_mode = "RGB"
+        output_file_node.format.color_mode = "RGBA"
         output_file_node.format.file_format = "PNG"
         output_file_node.format.compression = 0
         output_file_node.file_output_items.new("RGBA", self.temp_filename)  # Create input socket blender_render

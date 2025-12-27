@@ -68,7 +68,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         # Set up the scene for rendering
         scene.render.filepath = extra_filepath
         scene.render.image_settings.file_format = "PNG"
-        scene.render.image_settings.color_mode = "RGB"
+        scene.render.image_settings.color_mode = "RGBA"
         scene.render.image_settings.color_depth = "16"
         scene.render.image_settings.compression = 0
         scene.display_settings.display_device = "Display P3"
