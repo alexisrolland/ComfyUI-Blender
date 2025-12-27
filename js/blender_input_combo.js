@@ -25,9 +25,16 @@ app.registerExtension({
                     const info = await api.fetchApi(`/object_info/${targetClassName}`)
                     const json = await info.json()
                     const target = json[targetClassName].input.required[targetInputName]
-                    const values = Array.isArray(target[0]) ? target[0] : [target[0]]
+
+                    // Get values from the target input
+                    let values = []
+                    if (Array.isArray(target[0])) { values = target[0] }  // Handles cases where the target is a list of values (sampler, scheduler...)
+                    else if (target[0] == "COMBO") { values = target[1].options } // Handles cases where the target is a custom COMBO
+                    else { values = [target[0]] }
+
+                    // Assign values only if the list widget is empty
                     const listWidget = node.widgets.find(w => w.name === "list")
-                    listWidget.value = values.join("\n")
+                    listWidget.value = !listWidget.value ? values.join("\n") : listWidget.value
                 }
                 catch (e) {
                     console.error("BlenderInputCombo: " + e)
