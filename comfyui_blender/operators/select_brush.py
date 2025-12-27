@@ -37,8 +37,8 @@ class ComfyBlenderOperatorSelectBrush(bpy.types.Operator):
             brush = bpy.data.brushes[brush_name]
 
         # Configure brush
-        context.scene.tool_settings.unified_paint_settings.use_unified_size = False
-        context.scene.tool_settings.unified_paint_settings.use_unified_strength = False
+        context.scene.tool_settings.image_paint.unified_paint_settings.use_unified_size = False
+        context.scene.tool_settings.image_paint.unified_paint_settings.use_unified_strength = False
         brush.blend = self.blend_mode
         brush.size = 50
         brush.strength = 1.0
