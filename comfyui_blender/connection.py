@@ -160,14 +160,15 @@ def listen():
                         # Check class type to retrieve 3D outputs
                         if key in outputs and outputs[key]["class_type"] == "BlenderOutputDownload3D":
                             for output in data["output"]["3d"]:
-                                download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                                filename, filepath = download_file(output["filename"], output["subfolder"], output.get("type", "output"))
 
                                 # Schedule adding 3D model to outputs collection on main thread
-                                def add_3d_output(output=output):
+                                def add_3d_output(output=output, filename=filename):
                                     model = outputs_collection.add()
-                                    model.name = output["filename"]
-                                    model.filepath = os.path.join(output["subfolder"], output["filename"])
+                                    model.name = filename
+                                    model.filepath = os.path.join(output["subfolder"], filename)
                                     model.type = "3d"
+                                    return None
 
                                 # Call function to add output to collection
                                 bpy.app.timers.register(add_3d_output, first_interval=0.0)
@@ -181,14 +182,15 @@ def listen():
                         # Check class type to retrieve 3D outputs
                         elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveGlb":
                             for output in data["output"]["3d"]:
-                                download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                                filename, filepath = download_file(output["filename"], output["subfolder"], output.get("type", "output"))
 
                                 # Schedule adding 3D model to outputs collection on main thread
-                                def add_3d_output(output=output):
+                                def add_3d_output(output=output, filename=filename):
                                     model = outputs_collection.add()
-                                    model.name = output["filename"]
-                                    model.filepath = os.path.join(output["subfolder"], output["filename"])
+                                    model.name = filename
+                                    model.filepath = os.path.join(output["subfolder"], filename)
                                     model.type = "3d"
+                                    return None
 
                                 # Call function to add output to collection
                                 bpy.app.timers.register(add_3d_output, first_interval=0.0)
@@ -202,13 +204,18 @@ def listen():
                         # Check class type to retrieve image outputs
                         elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
                             for output in data["output"]["images"]:
-                                download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                                filename, filepath = download_file(output["filename"], output["subfolder"], output.get("type", "output"))
 
                                 # Schedule adding output to collection on main thread
-                                def add_image_output(output=output):
+                                def add_image_output(output=output, filename=filename, filepath=filepath):
+                                    # Load image into Blender file to get the name
+                                    image_object = bpy.data.images.load(filepath)
+                                    image_object.preview_ensure()
+
+                                    # Add image to outputs collection
                                     image = outputs_collection.add()
-                                    image.name = output["filename"]
-                                    image.filepath = os.path.join(output["subfolder"], output["filename"])
+                                    image.name = image_object.name
+                                    image.filepath = os.path.join(output["subfolder"], filename)
                                     image.type = "image"
                                     return None
 
@@ -232,9 +239,13 @@ def listen():
                                     file.write(output)
 
                                 # Schedule adding output to collection on main thread
-                                def add_text_output(filename=filename):
+                                def add_text_output(filename=filename, filepath=filepath):
+                                    # Load text into Blender file to get the name
+                                    text_object = bpy.data.texts.load(filepath)
+
+                                    # Add text to outputs collection
                                     text = outputs_collection.add()
-                                    text.name = filename
+                                    text.name = text_object.name
                                     text.filepath = filename  # Provide filename as relative path since there is no subfolder
                                     text.type = "text"
                                     return None
