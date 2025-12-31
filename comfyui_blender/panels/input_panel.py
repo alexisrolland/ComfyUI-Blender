@@ -181,6 +181,10 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             render_lineart = row.operator("comfy.render_lineart", text="", icon="SHADING_WIRE")
             render_lineart.workflow_property = property_name
 
+            # Custom compositors
+            custom_compositor = row.operator("comfy.show_custom_compositor_menu", text="", icon="DOWNARROW_HLT")
+            custom_compositor.workflow_property = property_name
+
             # File browser button
             file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
             file_browser.folder_path = inputs_folder

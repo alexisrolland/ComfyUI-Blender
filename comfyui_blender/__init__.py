@@ -1,6 +1,7 @@
 """ComfyUI Blender Add-on"""
 from .menus import (
     connection_menu,
+    custom_compositor_menu,
     file_browser_menu,
     output_menu
 )
@@ -27,6 +28,7 @@ from .operators import (
     project_material,
     reload_outputs,
     rename_workflow,
+    render_custom_compositor,
     render_depth_map,
     render_lineart,
     render_view,
@@ -37,6 +39,7 @@ from .operators import (
     send_to_input,
     set_camera_resolution,
     show_connection_menu,
+    show_custom_compositor_menu,
     show_error_popup,
     show_output_menu,
     stop_workflow,
@@ -78,6 +81,7 @@ def register():
     settings.register()
 
     # Menus
+    custom_compositor_menu.register()
     connection_menu.register()
     file_browser_menu.register()
     output_menu.register()
@@ -105,6 +109,7 @@ def register():
     project_material.register()
     reload_outputs.register()
     rename_workflow.register()
+    render_custom_compositor.register()
     render_depth_map.register()
     render_lineart.register()
     render_view.register()
@@ -114,6 +119,7 @@ def register():
     select_folder.register()
     send_to_input.register()
     set_camera_resolution.register()
+    show_custom_compositor_menu.register()
     show_connection_menu.register()
     show_error_popup.register()
     show_output_menu.register()
@@ -142,6 +148,7 @@ def unregister():
     settings.unregister()
 
     # Menus
+    custom_compositor_menu.unregister()
     connection_menu.unregister()
     file_browser_menu.unregister()
     output_menu.unregister()
@@ -169,6 +176,7 @@ def unregister():
     project_material.unregister()
     reload_outputs.unregister()
     rename_workflow.unregister()
+    render_custom_compositor.unregister()
     render_depth_map.unregister()
     render_lineart.unregister()
     render_view.unregister()
@@ -178,6 +186,7 @@ def unregister():
     select_folder.unregister()
     send_to_input.unregister()
     set_camera_resolution.unregister()
+    show_custom_compositor_menu.unregister()
     show_connection_menu.unregister()
     show_error_popup.unregister()
     show_output_menu.unregister()
