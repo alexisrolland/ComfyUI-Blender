@@ -46,7 +46,7 @@ class ComfyBlenderOutputMenu(bpy.types.Menu):
 
         # Send to input
         layout.separator(type="LINE")
-        layout.label(text="Send to Input", icon="INDIRECT_ONLY_OFF")
+        layout.label(text="Send to Input", icon="INDIRECT_ONLY_ON")
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
         if addon_prefs.connection_status:
             target_inputs = get_current_workflow_inputs(self, context, ("BlenderInputLoadImage", "BlenderInputLoadMask", "BlenderInputString", "BlenderInputStringMultiline"))
