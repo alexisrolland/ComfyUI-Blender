@@ -90,7 +90,10 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                             image_editor.name = image.name
 
                             # Delete output button
-                            delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
+                            if addon_prefs.confirm_delete_output:
+                                delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
+                            else:
+                                delete_output = col.operator("comfy.delete_output_ok", text="", icon="TRASH")
                             delete_output.name = output.name
                             delete_output.filepath = output.filepath
                             delete_output.type = output.type
@@ -127,7 +130,10 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         import_model.filepath = full_path
 
                         # Delete output button
-                        delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
+                        if addon_prefs.confirm_delete_output:
+                            delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
+                        else:
+                            delete_output = col.operator("comfy.delete_output_ok", text="", icon="TRASH")
                         delete_output.name = output.name
                         delete_output.filepath = output.filepath
                         delete_output.type = output.type
@@ -177,7 +183,10 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                             text_editor.workflow_property = ""  # Ensure this is empty to avoid setting inputs
 
                             # Delete output button
-                            delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
+                            if addon_prefs.confirm_delete_output:
+                                delete_output = col.operator("comfy.delete_output", text="", icon="TRASH")
+                            else:
+                                delete_output = col.operator("comfy.delete_output_ok", text="", icon="TRASH")
                             delete_output.name = output.name
                             delete_output.filepath = output.filepath
                             delete_output.type = output.type
@@ -235,7 +244,10 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                             image_editor.name = image.name
 
                             # Delete output button
-                            delete_output = row_right.operator("comfy.delete_output", text="", icon="TRASH")
+                            if addon_prefs.confirm_delete_output:
+                                delete_output = row_right.operator("comfy.delete_output", text="", icon="TRASH")
+                            else:
+                                delete_output = row_right.operator("comfy.delete_output_ok", text="", icon="TRASH")
                             delete_output.name = output.name
                             delete_output.filepath = output.filepath
                             delete_output.type = output.type
@@ -257,7 +269,10 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                         import_model.filepath = full_path
 
                         # Delete output button
-                        delete_output = row_right.operator("comfy.delete_output", text="", icon="TRASH")
+                        if addon_prefs.confirm_delete_output:
+                            delete_output = row_right.operator("comfy.delete_output", text="", icon="TRASH")
+                        else:
+                            delete_output = row_right.operator("comfy.delete_output_ok", text="", icon="TRASH")
                         delete_output.name = output.name
                         delete_output.filepath = output.filepath
                         delete_output.type = output.type
@@ -293,7 +308,10 @@ class ComfyBlenderPanelOutput(bpy.types.Panel):
                             output_name.workflow_property = ""  # Ensure this is empty to avoid setting inputs
 
                             # Delete output button
-                            delete_output = row_right.operator("comfy.delete_output", text="", icon="TRASH")
+                            if addon_prefs.confirm_delete_output:
+                                delete_output = row_right.operator("comfy.delete_output", text="", icon="TRASH")
+                            else:
+                                delete_output = row_right.operator("comfy.delete_output_ok", text="", icon="TRASH")
                             delete_output.name = output.name
                             delete_output.filepath = output.filepath
                             delete_output.type = output.type

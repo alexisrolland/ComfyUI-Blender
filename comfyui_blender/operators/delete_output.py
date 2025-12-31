@@ -79,6 +79,7 @@ class ComfyBlenderOperatorDeleteOutputOk(bpy.types.Operator):
                 if image.filepath == image_filepath:
                     bpy.data.images.remove(image)
                     self.report({'INFO'}, f"Removed image from Blender data: {self.name}")
+                    break
         
         elif self.type == "text":
             # Get the full path of the text object
@@ -90,14 +91,16 @@ class ComfyBlenderOperatorDeleteOutputOk(bpy.types.Operator):
                 if text.filepath == text_filepath:
                     bpy.data.texts.remove(text)
                     self.report({'INFO'}, f"Removed text object from Blender data: {self.name}")
+                    break
 
         # Find and delete the output from the collection
-        project_settings = bpy.context.scene.comfyui_project_settings
+        project_settings = context.scene.comfyui_project_settings
         outputs_collection = project_settings.outputs_collection
         for index, output in enumerate(outputs_collection):
             if output.name == self.name and output.filepath == self.filepath:
                 outputs_collection.remove(index)
                 self.report({'INFO'}, f"Removed output from collection: {self.name}")
+                break
         return {'FINISHED'}
 
 

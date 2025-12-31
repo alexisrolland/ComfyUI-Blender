@@ -401,6 +401,14 @@ class AddonPreferences(bpy.types.AddonPreferences):
     )
 
 
+    # Feature flags
+    # Confirm delete output
+    confirm_delete_output: BoolProperty(
+        name="Confirm Delete Output",
+        description="Show a confirmation dialog when deleting an output.",
+        default=True
+    )
+
     def draw(self, context):
         """Draw the panel."""
 
@@ -435,9 +443,6 @@ class AddonPreferences(bpy.types.AddonPreferences):
                 remove_header = sub_row.operator("comfy.remove_http_header", icon="TRASH", text="")
                 remove_header.index = index
 
-            # Debug mode
-            layout.prop(self, "debug_mode")
-
             # Folders
             layout.label(text="Folders:")
 
@@ -447,13 +452,13 @@ class AddonPreferences(bpy.types.AddonPreferences):
             use_blend_file_location = project_settings.use_blend_file_location
 
             if use_blend_file_location:
-                # Base folder
-                row = layout.row(align=True)
-                row.prop(project_settings, "base_folder", text="Base Folder", emboss=False)
-
-                # Create box for subfolders
+                # Create box for folders path settings
                 box = layout.box()
                 col = box.column(align=True)
+
+                # Base folder
+                row = col.row(align=True)
+                row.prop(project_settings, "base_folder", text="Base Folder", emboss=False)
 
                 # Inputs folder
                 row = col.row(align=True)
@@ -468,8 +473,14 @@ class AddonPreferences(bpy.types.AddonPreferences):
                 row.prop(project_settings, "workflows_folder", text="Workflows", emboss=False)
 
             else:
+                # Create box for folders path settings
+                box = layout.box()
+                parent_row = box.row()
+                split = parent_row.split(factor=0.80)
+                col = split.column(align=True)
+
                 # Base folder
-                row = layout.row(align=True)
+                row = col.row(align=True)
                 row.prop(self, "base_folder", text="Base Folder")
 
                 # Button select and reset base folder
@@ -477,12 +488,6 @@ class AddonPreferences(bpy.types.AddonPreferences):
                 select_base_folder.target_property = "base_folder"
                 reset_base_folder = row.operator("comfy.reset_folder", text="", icon="FILE_REFRESH")
                 reset_base_folder.target_property = "base_folder"
-
-                # Create box for subfolders
-                box = layout.box()
-                parent_row = box.row()
-                split = parent_row.split(factor=0.80)
-                col = split.column(align=True)
 
                 # Inputs folder
                 row = col.row(align=True)
@@ -511,17 +516,30 @@ class AddonPreferences(bpy.types.AddonPreferences):
                 # Right column
                 col = split.column(align=True)
 
-                # Button select and reset inputs folder
+                # Button placeholder base folder
                 row = col.row(align=True)
                 row.label(text="")  # Empty label for alignment
 
-                # Button select and reset outputs folder
+                # Button placeholder inputs folder
+                row = col.row(align=True)
+                row.label(text="")  # Empty label for alignment
+
+                # Button reload outputs from outputs folder
                 row = col.row(align=True)
                 row.operator("comfy.reload_outputs", text="Reload Outputs", icon="EXPORT")
 
-                # Button select and reset workflows folder
+                # Button placeholder workflows folder
                 row = col.row(align=True)
                 row.label(text="")  # Empty label for alignment
+
+            # Feature flags
+            layout.label(text="Feature Flags:")
+
+            # Confirm delete output
+            layout.prop(self, "confirm_delete_output")
+
+            # Debug mode
+            layout.prop(self, "debug_mode")
 
         else:
             col = layout.column(align=True)
