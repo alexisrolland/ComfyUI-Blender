@@ -40,7 +40,7 @@ class ComfyBlenderOperatorDeleteInput(bpy.types.Operator):
 
         # Message
         col = layout.column(align=True)
-        col.label(text="Are you sure you want to delete:")
+        col.label(text="Are you sure you want to delete the input:")
         col.label(text=f"{self.name}?")
 
         # Buttons
