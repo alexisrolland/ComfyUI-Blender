@@ -1,4 +1,4 @@
-"""Operator to render from the camera view."""
+"""Operator to render from the camera view using custom compositors."""
 import logging
 import os
 import shutil
@@ -11,14 +11,14 @@ log = logging.getLogger("comfyui_blender")
 
 
 class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
-    """Operator to render from the camera view."""
+    """Operator to render from the camera view using custom compositors."""
 
-    bl_idname = "comfy.render_view"
-    bl_label = "Render View"
-    bl_description = "Render from the camera and upload it to the ComfyUI server."
+    bl_idname = "comfy.render_custom_compositor"
+    bl_label = "Render Using Custom Compositor"
+    bl_description = "Render from the camera using custom compositors and upload the image to the ComfyUI server."
 
+    compositor_name: bpy.props.StringProperty(name="Compositor Name")
     workflow_property: bpy.props.StringProperty(name="Workflow Property")
-    temp_filename = "blender_render"
 
     def reset_scene(self, context, **kwargs):
         """Reset the scene to its initial state."""
@@ -55,32 +55,67 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         # Set up the scene for rendering
         scene.render.filepath = extra_filepath
 
-        # Create a new node tree for compositing
-        bpy.ops.node.new_compositing_node_group(name="CompositorRender")
-        tree = bpy.data.node_groups["CompositorRender"]
-        tree.nodes.clear()
+        # Get the file output node
+        tree = bpy.data.node_groups[self.compositor_name]
+        output_file_nodes = [node for node in tree.nodes if node.type == "OUTPUT_FILE"]
+        if output_file_nodes:
+            if len(output_file_nodes) > 1:
+                error_message = f"Compositor '{self.compositor_name}' has more than one File Output node. Modify the compositor to have only one File Output node."
+                log.error(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                return {'CANCELLED'}
 
-        # Create nodes
-        rlayers_node = tree.nodes.new(type="CompositorNodeRLayers")
-        output_file_node = tree.nodes.new(type="CompositorNodeOutputFile")
-        output_file_node.directory = temp_folder
-        output_file_node.file_name = ""  # Filename will be set by the file output item
-        output_file_node.format.media_type = "IMAGE"
-        output_file_node.format.color_mode = "RGBA"
-        output_file_node.format.file_format = "PNG"
-        output_file_node.format.compression = 0
-        output_file_node.file_output_items.new("RGBA", self.temp_filename)  # Create input socket blender_render
+            # Check the file output node property media type
+            output_file_node = output_file_nodes[0]
+            media_type = output_file_node.format.media_type
+            if media_type != "IMAGE":
+                error_message = f"The media type '{media_type}' of the File Output node is not supported. Modify the File Output node to set the media type to 'IMAGE'."
+                log.error(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                return {'CANCELLED'}
 
-        # Link nodes
-        tree.links.new(rlayers_node.outputs[0], output_file_node.inputs[self.temp_filename])  # From output socket Image to input socket blender_render
+            # Check the file output node property file format
+            file_format = output_file_node.format.file_format
+            if file_format == "PNG":
+                extension = ".png"
+            elif file_format == "JPEG":
+                extension = ".jpg"
+            elif file_format == "WEBP":
+                extension = ".webp"
+            else:
+                error_message = f"The file format '{file_format}' of the File Output node is not supported. Modify the File Output node to set the format to 'PNG', 'JPEG' or 'WEBP'."
+                log.error(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                return {'CANCELLED'}
+    
+            # Check the file output node property file output items
+            file_output_items = output_file_node.file_output_items
+            if file_output_items:
+                if len(file_output_items) > 1:
+                    outputs = ", ".join([item.name for item in file_output_items])
+                    error_message = f"The File Output node has more than one output: {outputs}. Modify the File Output node to set a single output."
+                    log.error(error_message)
+                    bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                    return {'CANCELLED'}
+            else:
+                error_message = f"The File Output node does not have an image output. Modify the File Output node to set a single output."
+                log.error(error_message)
+                bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                return {'CANCELLED'}
+
+        else:
+            error_message = f"Compositor '{self.compositor_name}' does not have a File Output node. Modify the compositor to add a File Output node."
+            log.error(error_message)
+            bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+            return {'CANCELLED'}
 
         # Render the scene
+        output_file_node.directory = temp_folder
         scene.compositing_node_group = tree
         bpy.ops.render.render(write_still=True)
-        bpy.data.node_groups.remove(tree)
 
-        # Get the rendered filename and path based on current frame
-        temp_filename = f"{self.temp_filename}.png"
+        # Get the rendered file path
+        temp_filename = output_file_node.file_name + file_output_items[0].name + extension
         temp_filepath = os.path.join(temp_folder, temp_filename)
         reset_params["temp_filepath"] = temp_filepath  # Add the temp filepath to the reset param to delete it later
 
@@ -89,7 +124,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
             response = upload_file(temp_filepath, type="image")
         except Exception as e:
             # Reset the scene to initial state
-            self.reset_scene(context, **reset_params)
+            # self.reset_scene(context, **reset_params)
             addon_prefs = context.preferences.addons["comfyui_blender"].preferences
             error_message = f"Failed to upload file to ComfyUI server: {addon_prefs.server_address}. {e}"
             log.exception(error_message)
@@ -98,7 +133,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
 
         if response.status_code != 200:
             # Reset the scene to initial state
-            self.reset_scene(context, **reset_params)
+            # self.reset_scene(context, **reset_params)
             error_message = f"Failed to upload file: {response.status_code} - {response.text}"
             log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
@@ -127,7 +162,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
             self.report({'INFO'}, f"Input file is already in the inputs folder: {input_filepath}")
         except Exception as e:
             # Reset the scene to initial state
-            self.reset_scene(context, **reset_params)
+            # self.reset_scene(context, **reset_params)
             error_message = f"Failed to copy input file: {e}"
             log.exception(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
@@ -140,7 +175,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         setattr(current_workflow, self.workflow_property, image)
 
         # Reset the scene to initial state
-        self.reset_scene(context, **reset_params)
+        # self.reset_scene(context, **reset_params)
         return {'FINISHED'}
 
 

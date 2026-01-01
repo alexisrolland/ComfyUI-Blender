@@ -152,7 +152,10 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
                 # Delete input button
                 sub_row = row.row(align=True)
-                delete_input = sub_row.operator("comfy.delete_input", text="", icon="TRASH")
+                if context.preferences.addons["comfyui_blender"].preferences.confirm_delete_input:
+                    delete_input = sub_row.operator("comfy.delete_input", text="", icon="TRASH")
+                else:
+                    delete_input = sub_row.operator("comfy.delete_input_ok", text="", icon="TRASH")
                 delete_input.name = input_name
                 delete_input.filepath = input_filepath
                 delete_input.workflow_property = property_name
@@ -180,6 +183,10 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             # Render lineart
             render_lineart = row.operator("comfy.render_lineart", text="", icon="SHADING_WIRE")
             render_lineart.workflow_property = property_name
+
+            # Custom compositors
+            custom_compositor = row.operator("comfy.show_custom_compositor_menu", text="", icon="DOWNARROW_HLT")
+            custom_compositor.workflow_property = property_name
 
             # File browser button
             file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
@@ -209,7 +216,10 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 open_image.name = image.name
                 
                 # Delete input button
-                delete_input = col.operator("comfy.delete_input", text="", icon="TRASH")
+                if context.preferences.addons["comfyui_blender"].preferences.confirm_delete_input:
+                    delete_input = col.operator("comfy.delete_input", text="", icon="TRASH")
+                else:
+                    delete_input = col.operator("comfy.delete_input_ok", text="", icon="TRASH")
                 delete_input.name = image.name
                 delete_input.filepath = image.filepath
                 delete_input.workflow_property = property_name
@@ -255,7 +265,10 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 open_image.name = image.name
                 
                 # Delete input button
-                delete_input = col.operator("comfy.delete_input", text="", icon="TRASH")
+                if context.preferences.addons["comfyui_blender"].preferences.confirm_delete_input:
+                    delete_input = col.operator("comfy.delete_input", text="", icon="TRASH")
+                else:
+                    delete_input = col.operator("comfy.delete_input_ok", text="", icon="TRASH")
                 delete_input.name = image.name
                 delete_input.filepath = image.filepath
                 delete_input.workflow_property = property_name
@@ -277,6 +290,7 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             else:
                 row.prop(addon_prefs, "lock_seed", text="", icon="UNLOCKED")
 
+        # Custom handling for text inputs
         elif node["class_type"] == "BlenderInputStringMultiline":
             row = layout.row(align=True)
             row.prop(current_workflow, property_name)
@@ -297,7 +311,10 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             # Delete input button
             row = row.row(align=True)
             row.enabled = True if text else False
-            delete_input = row.operator("comfy.delete_input", text="", icon="TRASH")
+            if context.preferences.addons["comfyui_blender"].preferences.confirm_delete_input:
+                delete_input = row.operator("comfy.delete_input", text="", icon="TRASH")
+            else:
+                delete_input = row.operator("comfy.delete_input_ok", text="", icon="TRASH")
             delete_input.name = text.name if text else ""
             delete_input.workflow_property = property_name
             delete_input.type = "text"

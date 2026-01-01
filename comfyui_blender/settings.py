@@ -401,6 +401,21 @@ class AddonPreferences(bpy.types.AddonPreferences):
     )
 
 
+    # Feature flags
+    # Confirm delete input
+    confirm_delete_input: BoolProperty(
+        name="Confirm Delete Input",
+        description="Show a confirmation dialog when deleting an input.",
+        default=True
+    )
+
+    # Confirm delete output
+    confirm_delete_output: BoolProperty(
+        name="Confirm Delete Output",
+        description="Show a confirmation dialog when deleting an output.",
+        default=True
+    )
+
     def draw(self, context):
         """Draw the panel."""
 
@@ -435,25 +450,29 @@ class AddonPreferences(bpy.types.AddonPreferences):
                 remove_header = sub_row.operator("comfy.remove_http_header", icon="TRASH", text="")
                 remove_header.index = index
 
-            # Debug mode
-            layout.prop(self, "debug_mode")
-
             # Folders
             layout.label(text="Folders:")
+            
+            # Folders menu
+            row = layout.row(align=True)
+            split = row.split(factor=0.85)
 
             # Use .blend file location
             project_settings = bpy.context.scene.comfyui_project_settings
-            layout.prop(project_settings, "use_blend_file_location")
+            split.prop(project_settings, "use_blend_file_location")
             use_blend_file_location = project_settings.use_blend_file_location
+
+            # Reload outputs from outputs folder
+            split.operator("comfy.reload_outputs", text="Reload Outputs", icon="EXPORT")
+            
+            # Create box for folders path settings
+            box = layout.box()
+            col = box.column(align=True)
 
             if use_blend_file_location:
                 # Base folder
-                row = layout.row(align=True)
+                row = col.row(align=True)
                 row.prop(project_settings, "base_folder", text="Base Folder", emboss=False)
-
-                # Create box for subfolders
-                box = layout.box()
-                col = box.column(align=True)
 
                 # Inputs folder
                 row = col.row(align=True)
@@ -469,7 +488,7 @@ class AddonPreferences(bpy.types.AddonPreferences):
 
             else:
                 # Base folder
-                row = layout.row(align=True)
+                row = col.row(align=True)
                 row.prop(self, "base_folder", text="Base Folder")
 
                 # Button select and reset base folder
@@ -477,12 +496,6 @@ class AddonPreferences(bpy.types.AddonPreferences):
                 select_base_folder.target_property = "base_folder"
                 reset_base_folder = row.operator("comfy.reset_folder", text="", icon="FILE_REFRESH")
                 reset_base_folder.target_property = "base_folder"
-
-                # Create box for subfolders
-                box = layout.box()
-                parent_row = box.row()
-                split = parent_row.split(factor=0.80)
-                col = split.column(align=True)
 
                 # Inputs folder
                 row = col.row(align=True)
@@ -508,20 +521,17 @@ class AddonPreferences(bpy.types.AddonPreferences):
                 reset_workflows_folder = row.operator("comfy.reset_folder", text="", icon="FILE_REFRESH")
                 reset_workflows_folder.target_property = "workflows_folder"
 
-                # Right column
-                col = split.column(align=True)
+            # Feature flags
+            layout.label(text="Feature Flags:")
 
-                # Button select and reset inputs folder
-                row = col.row(align=True)
-                row.label(text="")  # Empty label for alignment
+            # Confirm delete input
+            layout.prop(self, "confirm_delete_input")
 
-                # Button select and reset outputs folder
-                row = col.row(align=True)
-                row.operator("comfy.reload_outputs", text="Reload Outputs", icon="EXPORT")
+            # Confirm delete output
+            layout.prop(self, "confirm_delete_output")
 
-                # Button select and reset workflows folder
-                row = col.row(align=True)
-                row.label(text="")  # Empty label for alignment
+            # Debug mode
+            layout.prop(self, "debug_mode")
 
         else:
             col = layout.column(align=True)
