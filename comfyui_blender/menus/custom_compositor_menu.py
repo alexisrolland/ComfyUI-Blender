@@ -15,7 +15,7 @@ class ComfyBlenderCustomCompositorMenu(bpy.types.Menu):
         compositors = [compositor for compositor in bpy.data.node_groups if compositor.type == "COMPOSITING"]
 
         if not compositors:
-            layout.label(text="No custom compositors found", icon="NODE_COMPOSITING")
+            layout.label(text="No custom compositor found", icon="NODE_COMPOSITING")
         else:
             # Custom compositors
             layout.label(text="Custom Compositors", icon="NODE_COMPOSITING")
