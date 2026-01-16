@@ -42,6 +42,10 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                     # Get sorted inputs from the workflow
                     inputs = w.parse_workflow_for_inputs(workflow)
 
+                    # Add Update on Run toggle at the top
+                    row = layout.row()
+                    row.prop(addon_prefs, "update_on_run", text="Update on Run", icon="TIME")
+
                     # Display workflow input properties
                     for key, node in inputs.items():
                         property_name = f"node_{key}"
@@ -87,8 +91,9 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
     def display_input(self, context, current_workflow, layout, property_name, node, is_root=True):
         """Format the input for display in the panel."""
 
-        # Get inputs folder
+        # Get inputs folder and addon preferences
         inputs_folder = get_inputs_folder()
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
 
         # Custom handling for integer inputs
         if node["class_type"] == "BlenderInputInt":
@@ -172,20 +177,39 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             upload_input_image = row.operator("comfy.upload_input_image", text="", icon="EXPORT")
             upload_input_image.workflow_property = property_name
 
+            # Check if this input has a scheduled render
+            scheduled_render_type = None
+            for scheduled in addon_prefs.scheduled_renders:
+                if scheduled.workflow_property == property_name:
+                    scheduled_render_type = scheduled.render_type
+                    break
+
             # Render view
-            render_view = row.operator("comfy.render_view", text="", icon="OUTPUT")
+            if scheduled_render_type == "render_view":
+                render_view = row.operator("comfy.render_view", text="", icon="CHECKMARK", depress=True)
+            else:
+                render_view = row.operator("comfy.render_view", text="", icon="OUTPUT")
             render_view.workflow_property = property_name
 
             # Render viewport preview
-            render_viewport = row.operator("comfy.render_viewport_preview", text="", icon="RESTRICT_RENDER_OFF")
+            if scheduled_render_type == "render_viewport_preview":
+                render_viewport = row.operator("comfy.render_viewport_preview", text="", icon="CHECKMARK", depress=True)
+            else:
+                render_viewport = row.operator("comfy.render_viewport_preview", text="", icon="RESTRICT_RENDER_OFF")
             render_viewport.workflow_property = property_name
 
             # Render depth map
-            render_depth = row.operator("comfy.render_depth_map", text="", icon="MATERIAL")
+            if scheduled_render_type == "render_depth_map":
+                render_depth = row.operator("comfy.render_depth_map", text="", icon="CHECKMARK", depress=True)
+            else:
+                render_depth = row.operator("comfy.render_depth_map", text="", icon="MATERIAL")
             render_depth.workflow_property = property_name
 
             # Render lineart
-            render_lineart = row.operator("comfy.render_lineart", text="", icon="SHADING_WIRE")
+            if scheduled_render_type == "render_lineart":
+                render_lineart = row.operator("comfy.render_lineart", text="", icon="CHECKMARK", depress=True)
+            else:
+                render_lineart = row.operator("comfy.render_lineart", text="", icon="SHADING_WIRE")
             render_lineart.workflow_property = property_name
 
             # Custom compositors

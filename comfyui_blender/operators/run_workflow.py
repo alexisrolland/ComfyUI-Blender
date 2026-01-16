@@ -25,6 +25,48 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
         # Get add-on preferences and selected workflow
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+
+        # Execute scheduled renders if any
+        if addon_prefs.scheduled_renders:
+            log.info(f"Executing {len(addon_prefs.scheduled_renders)} scheduled render(s)...")
+
+            # Create a list of scheduled renders to process (copy to avoid modification during iteration)
+            scheduled_list = [(s.workflow_property, s.render_type) for s in addon_prefs.scheduled_renders]
+
+            # Temporarily disable update_on_run to force immediate execution
+            original_update_on_run = addon_prefs.update_on_run
+            addon_prefs.update_on_run = False
+
+            try:
+                # Execute each scheduled render
+                for workflow_property, render_type in scheduled_list:
+                    log.info(f"Executing {render_type} for {workflow_property}")
+
+                    # Call the appropriate render operator
+                    if render_type == "render_view":
+                        result = bpy.ops.comfy.render_view('EXEC_DEFAULT', workflow_property=workflow_property)
+                    elif render_type == "render_viewport_preview":
+                        result = bpy.ops.comfy.render_viewport_preview('EXEC_DEFAULT', workflow_property=workflow_property)
+                    elif render_type == "render_depth_map":
+                        result = bpy.ops.comfy.render_depth_map('EXEC_DEFAULT', workflow_property=workflow_property)
+                    elif render_type == "render_lineart":
+                        result = bpy.ops.comfy.render_lineart('EXEC_DEFAULT', workflow_property=workflow_property)
+
+                    # Check if render succeeded
+                    if result != {'FINISHED'}:
+                        error_message = f"Failed to execute scheduled render: {render_type} for {workflow_property}"
+                        log.error(error_message)
+                        bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                        return {'CANCELLED'}
+
+                # Clear scheduled renders after successful execution
+                addon_prefs.scheduled_renders.clear()
+                log.info("All scheduled renders completed successfully.")
+
+            finally:
+                # Restore original update_on_run setting
+                addon_prefs.update_on_run = original_update_on_run
+
         workflows_folder = get_workflows_folder()
         workflow_filename = str(addon_prefs.workflow)
         workflow_path = os.path.join(workflows_folder, workflow_filename)

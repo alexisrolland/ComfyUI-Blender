@@ -44,6 +44,36 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
         """Execute the operator."""
 
         scene = context.scene
+        addon_prefs = context.preferences.addons["comfyui_blender"].preferences
+
+        # Check if Update on Run mode is enabled
+        if addon_prefs.update_on_run:
+            # Schedule this render for later execution
+            # First, check if this workflow_property already has a scheduled render
+            existing_render = None
+            for scheduled in addon_prefs.scheduled_renders:
+                if scheduled.workflow_property == self.workflow_property:
+                    existing_render = scheduled
+                    break
+
+            # If found, update the render type; otherwise, add a new one
+            if existing_render:
+                existing_render.render_type = "render_depth_map"
+            else:
+                new_render = addon_prefs.scheduled_renders.add()
+                new_render.workflow_property = self.workflow_property
+                new_render.render_type = "render_depth_map"
+
+            self.report({'INFO'}, "Depth map render scheduled for workflow execution.")
+            return {'FINISHED'}
+
+        # Otherwise, execute immediately
+        return self._execute_render(context)
+
+    def _execute_render(self, context):
+        """Internal method to execute the render."""
+
+        scene = context.scene
         if not scene.camera:
             error_message = "No camera found"
             log.error(error_message)
