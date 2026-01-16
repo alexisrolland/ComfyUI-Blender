@@ -97,6 +97,10 @@ def update_server_address(self, context):
 def update_on_run_toggle(self, context):
     """Clear scheduled renders when Update on Run is disabled."""
 
+    # Don't clear if we're in the middle of executing scheduled renders
+    if hasattr(self, 'executing_scheduled_renders') and self.executing_scheduled_renders:
+        return
+
     if not self.update_on_run:
         # Clear all scheduled renders when toggling off
         self.scheduled_renders.clear()
@@ -415,6 +419,13 @@ class AddonPreferences(bpy.types.AddonPreferences):
         name="Scheduled Renders",
         description="Collection of render operations scheduled for execution.",
         type=ScheduledRenderPropertyGroup
+    )
+
+    # Flag to prevent clearing scheduled renders during execution
+    executing_scheduled_renders: BoolProperty(
+        name="Executing Scheduled Renders",
+        description="Internal flag indicating scheduled renders are being executed.",
+        default=False
     )
 
     # Prompts collection

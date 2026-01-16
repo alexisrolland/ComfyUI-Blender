@@ -33,6 +33,9 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
             # Create a list of scheduled renders to process (copy to avoid modification during iteration)
             scheduled_list = [(s.workflow_property, s.render_type) for s in addon_prefs.scheduled_renders]
 
+            # Set flag to prevent callback from clearing scheduled renders
+            addon_prefs.executing_scheduled_renders = True
+
             # Temporarily disable update_on_run to force immediate execution
             original_update_on_run = addon_prefs.update_on_run
             addon_prefs.update_on_run = False
@@ -63,8 +66,9 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                 log.info("All scheduled renders completed successfully.")
 
             finally:
-                # Restore original update_on_run setting
+                # Restore original update_on_run setting and clear execution flag
                 addon_prefs.update_on_run = original_update_on_run
+                addon_prefs.executing_scheduled_renders = False
 
         workflows_folder = get_workflows_folder()
         workflow_filename = str(addon_prefs.workflow)
