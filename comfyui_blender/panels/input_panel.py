@@ -176,6 +176,10 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             render_view = row.operator("comfy.render_view", text="", icon="OUTPUT")
             render_view.workflow_property = property_name
 
+            # Render viewport preview
+            render_viewport = row.operator("comfy.render_viewport_preview", text="", icon="RESTRICT_RENDER_OFF")
+            render_viewport.workflow_property = property_name
+
             # Render depth map
             render_depth = row.operator("comfy.render_depth_map", text="", icon="MATERIAL")
             render_depth.workflow_property = property_name
