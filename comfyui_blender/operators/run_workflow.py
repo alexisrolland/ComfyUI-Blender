@@ -59,8 +59,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                         bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                         return {'CANCELLED'}
 
-                # Clear scheduled renders after successful execution
-                addon_prefs.scheduled_renders.clear()
+                # Don't clear scheduled renders - they remain sticky until Update on Run is disabled
                 log.info("All scheduled renders completed successfully.")
 
             finally:
