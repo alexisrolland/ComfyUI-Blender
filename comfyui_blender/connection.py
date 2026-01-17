@@ -6,6 +6,7 @@ import os
 import threading
 
 import bpy
+import requests
 from ._vendor import websocket
 
 from .utils import (
@@ -13,6 +14,7 @@ from .utils import (
     download_file,
     get_filepath,
     get_outputs_folder,
+    get_server_url,
     get_websocket_url
 )
 
@@ -204,19 +206,70 @@ def listen():
                         # Check class type to retrieve image outputs
                         elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
                             for output in data["output"]["images"]:
-                                filename, filepath = download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                                # Check if this is a fixed filename (doesn't end with numbers before extension)
+                                # Fixed filenames like "Primary_fixed.png" should overwrite, not increment
+                                is_fixed_filename = not any(char.isdigit() for char in os.path.splitext(output["filename"])[0].split('_')[-1])
+
+                                if is_fixed_filename:
+                                    # For fixed filenames, download and overwrite existing file
+                                    outputs_folder = get_outputs_folder()
+                                    subfolder_path = os.path.join(outputs_folder, output["subfolder"]) if output["subfolder"] else outputs_folder
+                                    os.makedirs(subfolder_path, exist_ok=True)
+                                    filepath = os.path.join(subfolder_path, output["filename"])
+
+                                    # Download the file (overwriting if exists)
+                                    params = {"filename": output["filename"], "subfolder": output["subfolder"], "type": output.get("type", "output"), "rand": os.urandom(8).hex()}
+                                    url = get_server_url("/view", params=params)
+                                    headers = add_custom_headers({"Content-Type": "application/json"})
+
+                                    try:
+                                        response = requests.get(url, params=params, headers=headers, stream=True)
+                                        if response.status_code == 200:
+                                            with open(filepath, "wb") as file:
+                                                for chunk in response.iter_content(chunk_size=8192):
+                                                    file.write(chunk)
+                                            log.info(f"Fixed filename downloaded and overwritten: {filepath}")
+                                        else:
+                                            log.error(f"Failed to download fixed filename: {response.status_code}")
+                                            continue
+                                    except Exception as e:
+                                        log.error(f"Error downloading fixed filename: {e}")
+                                        continue
+
+                                    filename = output["filename"]
+                                else:
+                                    # For incrementing filenames, use normal download (which auto-increments)
+                                    filename, filepath = download_file(output["filename"], output["subfolder"], output.get("type", "output"))
 
                                 # Schedule adding output to collection on main thread
-                                def add_image_output(output=output, filename=filename, filepath=filepath):
-                                    # Load image into Blender file to get the name
-                                    image_object = bpy.data.images.load(filepath)
-                                    image_object.preview_ensure()
+                                def add_image_output(output=output, filename=filename, filepath=filepath, is_fixed=is_fixed_filename):
+                                    # Check if image already exists in Blender (for fixed filenames)
+                                    image_object = None
+                                    if is_fixed:
+                                        # For fixed filenames, reload existing image if it exists
+                                        base_name = os.path.splitext(filename)[0]
+                                        if base_name in bpy.data.images:
+                                            image_object = bpy.data.images[base_name]
+                                            image_object.reload()
+                                            log.info(f"Reloaded existing fixed filename image: {base_name}")
 
-                                    # Add image to outputs collection
-                                    image = outputs_collection.add()
-                                    image.name = image_object.name
-                                    image.filepath = os.path.join(output["subfolder"], filename)
-                                    image.type = "image"
+                                    # If not found or not fixed, load as new
+                                    if not image_object:
+                                        image_object = bpy.data.images.load(filepath, check_existing=True)
+                                        image_object.preview_ensure()
+
+                                    # Add image to outputs collection only if not already there
+                                    existing_output = None
+                                    for existing in outputs_collection:
+                                        if existing.name == image_object.name and existing.type == "image":
+                                            existing_output = existing
+                                            break
+
+                                    if not existing_output:
+                                        image = outputs_collection.add()
+                                        image.name = image_object.name
+                                        image.filepath = os.path.join(output["subfolder"], filename)
+                                        image.type = "image"
                                     return None
 
                                 # Call function to add output to collection
