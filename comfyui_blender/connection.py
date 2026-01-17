@@ -270,6 +270,19 @@ def listen():
                                         image.name = image_object.name
                                         image.filepath = os.path.join(output["subfolder"], filename)
                                         image.type = "image"
+
+                                    # Force refresh of image editor to update image list
+                                    for screen in bpy.data.screens:
+                                        for area in screen.areas:
+                                            if area.type == 'IMAGE_EDITOR':
+                                                # Tag for redraw
+                                                area.tag_redraw()
+                                                # Update space data to refresh image list
+                                                for space in area.spaces:
+                                                    if space.type == 'IMAGE_EDITOR':
+                                                        # Trigger update by touching the image property
+                                                        if space.image:
+                                                            space.image = space.image
                                     return None
 
                                 # Call function to add output to collection
