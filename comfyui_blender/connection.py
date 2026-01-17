@@ -251,13 +251,19 @@ def listen():
 
                                 # Schedule adding output to collection on main thread
                                 def add_image_output(output=output, filename=filename, filepath=filepath, is_fixed=is_fixed_filename):
+                                    log.info(f"add_image_output running: filename={filename}, is_fixed={is_fixed}, filepath={filepath}")
+
                                     # Check if image already exists in Blender (for fixed filenames)
                                     image_object = None
                                     if is_fixed:
                                         # For fixed filenames, reload existing image if it exists
                                         base_name = os.path.splitext(filename)[0]
+                                        log.info(f"Looking for existing image: {base_name}")
+                                        log.info(f"Available images in bpy.data.images: {list(bpy.data.images.keys())}")
+
                                         if base_name in bpy.data.images:
                                             image_object = bpy.data.images[base_name]
+                                            log.info(f"Found existing image, calling reload()")
                                             image_object.reload()
                                             log.info(f"Reloaded existing fixed filename image: {base_name}")
 
@@ -268,6 +274,8 @@ def listen():
                                                         for space in area.spaces:
                                                             if space.type == 'IMAGE_EDITOR':
                                                                 # If this image viewer is showing the reloaded image, force refresh
+                                                                current_image_name = space.image.name if space.image else "None"
+                                                                log.info(f"Image editor showing: {current_image_name}, looking for: {base_name}")
                                                                 if space.image and space.image.name == base_name:
                                                                     # Force the viewer to update by reassigning the image
                                                                     temp_img = space.image
@@ -275,11 +283,15 @@ def listen():
                                                                     space.image = temp_img
                                                                     area.tag_redraw()
                                                                     log.info(f"Forced image viewer refresh for {base_name}")
+                                        else:
+                                            log.info(f"Image {base_name} not found in bpy.data.images, will load fresh")
 
                                     # If not found or not fixed, load as new
                                     if not image_object:
+                                        log.info(f"Loading image from {filepath}")
                                         image_object = bpy.data.images.load(filepath, check_existing=True)
                                         image_object.preview_ensure()
+                                        log.info(f"Loaded image: {image_object.name}")
 
                                     # Add image to outputs collection only if not already there
                                     existing_output = None
@@ -293,6 +305,9 @@ def listen():
                                         image.name = image_object.name
                                         image.filepath = os.path.join(output["subfolder"], filename)
                                         image.type = "image"
+                                        log.info(f"Added {image_object.name} to outputs collection")
+                                    else:
+                                        log.info(f"{image_object.name} already in outputs collection")
 
                                     # Force refresh of image editor to update image list
                                     for screen in bpy.data.screens:
