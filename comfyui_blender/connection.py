@@ -3,6 +3,7 @@ import ast
 import json
 import logging
 import os
+import re
 import threading
 
 import bpy
@@ -206,9 +207,16 @@ def listen():
                         # Check class type to retrieve image outputs
                         elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
                             for output in data["output"]["images"]:
-                                # Check if this is a fixed filename (doesn't end with numbers before extension)
-                                # Fixed filenames like "Primary_fixed.png" should overwrite, not increment
-                                is_fixed_filename = not any(char.isdigit() for char in os.path.splitext(output["filename"])[0].split('_')[-1])
+                                # Check if this is a fixed filename
+                                # Fixed filenames: don't match the pattern prefix_NNNNN_.png
+                                # Incrementing filenames from SaveImage: match prefix_NNNNN_.png (digits followed by underscore)
+                                filename_no_ext = os.path.splitext(output["filename"])[0]
+
+                                # Check if filename ends with pattern like "00001_" (digits followed by underscore)
+                                is_incrementing = bool(re.search(r'_\d+_$', filename_no_ext))
+                                is_fixed_filename = not is_incrementing
+
+                                log.info(f"Processing output: {output['filename']}, is_fixed={is_fixed_filename}, is_incrementing={is_incrementing}")
 
                                 if is_fixed_filename:
                                     # For fixed filenames, download and overwrite existing file
