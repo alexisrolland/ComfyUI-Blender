@@ -61,6 +61,15 @@ class BlenderOutputSaveImage(SaveImage):
                     if os.path.exists(source_path):
                         shutil.copy2(source_path, fixed_path)
                         print(f"[BlenderOutputSaveImage] ✓ Successfully saved to fixed filename: {fixed_path}")
+
+                        # Add the fixed filename to the result so Blender will import it
+                        fixed_image_info = {
+                            "filename": safe_fixed_filename,
+                            "subfolder": source_subfolder,
+                            "type": "output"
+                        }
+                        result["ui"]["images"].append(fixed_image_info)
+                        print(f"[BlenderOutputSaveImage] ✓ Added fixed filename to result for Blender import: {fixed_image_info}")
                     else:
                         print(f"[BlenderOutputSaveImage] ✗ Source file does not exist: {source_path}")
                 else:
