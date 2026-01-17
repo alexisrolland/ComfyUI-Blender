@@ -19,26 +19,20 @@ class BlenderOutputSaveImage(SaveImage):
     def save_images(self, images, filename_prefix="blender", prompt=None, extra_pnginfo=None, fixed_filename=""):
         """Override save_images to additionally save to fixed filename if provided."""
 
-        print(f"[BlenderOutputSaveImage] save_images called with fixed_filename='{fixed_filename}'")
-
         # Call parent save_images to handle the normal incrementing save
         result = super().save_images(images, filename_prefix, prompt, extra_pnginfo)
-        print(f"[BlenderOutputSaveImage] Parent save_images completed, result keys: {result.keys() if result else 'None'}")
 
         # If fixed_filename is provided, also save to that location (without incrementing)
         if fixed_filename and fixed_filename.strip():
-            print(f"[BlenderOutputSaveImage] Processing fixed_filename: '{fixed_filename.strip()}'")
             try:
                 # Get the output directory from parent class
                 output_dir = self.output_dir
-                print(f"[BlenderOutputSaveImage] Output directory: {output_dir}")
 
                 # Get the last saved file from the result
                 if result and "ui" in result and "images" in result["ui"]:
                     last_saved = result["ui"]["images"][-1]
                     source_filename = last_saved["filename"]
                     source_subfolder = last_saved.get("subfolder", "")
-                    print(f"[BlenderOutputSaveImage] Source file: {source_filename}, subfolder: {source_subfolder}")
 
                     # Build source path
                     if source_subfolder:
@@ -55,12 +49,10 @@ class BlenderOutputSaveImage(SaveImage):
                         safe_fixed_filename += '.png'
 
                     fixed_path = os.path.join(output_dir, safe_fixed_filename)
-                    print(f"[BlenderOutputSaveImage] Copying from '{source_path}' to '{fixed_path}'")
 
                     # Copy the saved image to the fixed filename (overwriting if exists)
                     if os.path.exists(source_path):
                         shutil.copy2(source_path, fixed_path)
-                        print(f"[BlenderOutputSaveImage] ✓ Successfully saved to fixed filename: {fixed_path}")
 
                         # Add the fixed filename to the result so Blender will import it
                         fixed_image_info = {
@@ -69,16 +61,9 @@ class BlenderOutputSaveImage(SaveImage):
                             "type": "output"
                         }
                         result["ui"]["images"].append(fixed_image_info)
-                        print(f"[BlenderOutputSaveImage] ✓ Added fixed filename to result for Blender import: {fixed_image_info}")
-                    else:
-                        print(f"[BlenderOutputSaveImage] ✗ Source file does not exist: {source_path}")
-                else:
-                    print(f"[BlenderOutputSaveImage] ✗ Result structure unexpected. Result: {result}")
             except Exception as e:
                 import traceback
                 print(f"[BlenderOutputSaveImage] ✗ Error saving to fixed filename: {e}")
                 print(f"[BlenderOutputSaveImage] Traceback: {traceback.format_exc()}")
-        else:
-            print(f"[BlenderOutputSaveImage] Skipping fixed_filename (empty or None)")
 
         return result

@@ -216,8 +216,6 @@ def listen():
                                 is_incrementing = bool(re.search(r'_\d+_$', filename_no_ext))
                                 is_fixed_filename = not is_incrementing
 
-                                log.info(f"Processing output: {output['filename']}, is_fixed={is_fixed_filename}, is_incrementing={is_incrementing}")
-
                                 if is_fixed_filename:
                                     # For fixed filenames, download and overwrite existing file
                                     outputs_folder = get_outputs_folder()
@@ -236,7 +234,6 @@ def listen():
                                             with open(filepath, "wb") as file:
                                                 for chunk in response.iter_content(chunk_size=8192):
                                                     file.write(chunk)
-                                            log.info(f"Fixed filename downloaded and overwritten: {filepath}")
                                         else:
                                             log.error(f"Failed to download fixed filename: {response.status_code}")
                                             continue
@@ -251,21 +248,14 @@ def listen():
 
                                 # Schedule adding output to collection on main thread
                                 def add_image_output(output=output, filename=filename, filepath=filepath, is_fixed=is_fixed_filename):
-                                    log.info(f"add_image_output running: filename={filename}, is_fixed={is_fixed}, filepath={filepath}")
-
                                     # Check if image already exists in Blender (for fixed filenames)
                                     image_object = None
                                     if is_fixed:
                                         # For fixed filenames, reload existing image if it exists
                                         # Blender stores images with their filename including extension
-                                        log.info(f"Looking for existing image: {filename}")
-                                        log.info(f"Available images in bpy.data.images: {list(bpy.data.images.keys())}")
-
                                         if filename in bpy.data.images:
                                             image_object = bpy.data.images[filename]
-                                            log.info(f"Found existing image, calling reload()")
                                             image_object.reload()
-                                            log.info(f"Reloaded existing fixed filename image: {filename}")
 
                                             # Force update of any image editors displaying this image
                                             for screen in bpy.data.screens:
@@ -274,24 +264,17 @@ def listen():
                                                         for space in area.spaces:
                                                             if space.type == 'IMAGE_EDITOR':
                                                                 # If this image viewer is showing the reloaded image, force refresh
-                                                                current_image_name = space.image.name if space.image else "None"
-                                                                log.info(f"Image editor showing: {current_image_name}, looking for: {filename}")
                                                                 if space.image and space.image.name == filename:
                                                                     # Force the viewer to update by reassigning the image
                                                                     temp_img = space.image
                                                                     space.image = None
                                                                     space.image = temp_img
                                                                     area.tag_redraw()
-                                                                    log.info(f"Forced image viewer refresh for {filename}")
-                                        else:
-                                            log.info(f"Image {filename} not found in bpy.data.images, will load fresh")
 
                                     # If not found or not fixed, load as new
                                     if not image_object:
-                                        log.info(f"Loading image from {filepath}")
                                         image_object = bpy.data.images.load(filepath, check_existing=True)
                                         image_object.preview_ensure()
-                                        log.info(f"Loaded image: {image_object.name}")
 
                                     # Add image to outputs collection only if not already there
                                     existing_output = None
@@ -305,9 +288,6 @@ def listen():
                                         image.name = image_object.name
                                         image.filepath = os.path.join(output["subfolder"], filename)
                                         image.type = "image"
-                                        log.info(f"Added {image_object.name} to outputs collection")
-                                    else:
-                                        log.info(f"{image_object.name} already in outputs collection")
 
                                     # Force refresh of image editor to update image list
                                     for screen in bpy.data.screens:
