@@ -253,6 +253,21 @@ def listen():
                                             image_object.reload()
                                             log.info(f"Reloaded existing fixed filename image: {base_name}")
 
+                                            # Force update of any image editors displaying this image
+                                            for screen in bpy.data.screens:
+                                                for area in screen.areas:
+                                                    if area.type == 'IMAGE_EDITOR':
+                                                        for space in area.spaces:
+                                                            if space.type == 'IMAGE_EDITOR':
+                                                                # If this image viewer is showing the reloaded image, force refresh
+                                                                if space.image and space.image.name == base_name:
+                                                                    # Force the viewer to update by reassigning the image
+                                                                    temp_img = space.image
+                                                                    space.image = None
+                                                                    space.image = temp_img
+                                                                    area.tag_redraw()
+                                                                    log.info(f"Forced image viewer refresh for {base_name}")
+
                                     # If not found or not fixed, load as new
                                     if not image_object:
                                         image_object = bpy.data.images.load(filepath, check_existing=True)
