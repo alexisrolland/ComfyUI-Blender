@@ -257,15 +257,15 @@ def listen():
                                     image_object = None
                                     if is_fixed:
                                         # For fixed filenames, reload existing image if it exists
-                                        base_name = os.path.splitext(filename)[0]
-                                        log.info(f"Looking for existing image: {base_name}")
+                                        # Blender stores images with their filename including extension
+                                        log.info(f"Looking for existing image: {filename}")
                                         log.info(f"Available images in bpy.data.images: {list(bpy.data.images.keys())}")
 
-                                        if base_name in bpy.data.images:
-                                            image_object = bpy.data.images[base_name]
+                                        if filename in bpy.data.images:
+                                            image_object = bpy.data.images[filename]
                                             log.info(f"Found existing image, calling reload()")
                                             image_object.reload()
-                                            log.info(f"Reloaded existing fixed filename image: {base_name}")
+                                            log.info(f"Reloaded existing fixed filename image: {filename}")
 
                                             # Force update of any image editors displaying this image
                                             for screen in bpy.data.screens:
@@ -275,16 +275,16 @@ def listen():
                                                             if space.type == 'IMAGE_EDITOR':
                                                                 # If this image viewer is showing the reloaded image, force refresh
                                                                 current_image_name = space.image.name if space.image else "None"
-                                                                log.info(f"Image editor showing: {current_image_name}, looking for: {base_name}")
-                                                                if space.image and space.image.name == base_name:
+                                                                log.info(f"Image editor showing: {current_image_name}, looking for: {filename}")
+                                                                if space.image and space.image.name == filename:
                                                                     # Force the viewer to update by reassigning the image
                                                                     temp_img = space.image
                                                                     space.image = None
                                                                     space.image = temp_img
                                                                     area.tag_redraw()
-                                                                    log.info(f"Forced image viewer refresh for {base_name}")
+                                                                    log.info(f"Forced image viewer refresh for {filename}")
                                         else:
-                                            log.info(f"Image {base_name} not found in bpy.data.images, will load fresh")
+                                            log.info(f"Image {filename} not found in bpy.data.images, will load fresh")
 
                                     # If not found or not fixed, load as new
                                     if not image_object:
