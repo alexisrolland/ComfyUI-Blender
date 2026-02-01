@@ -212,11 +212,6 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             custom_compositor = row.operator("comfy.show_input_image_menu", text="", icon="DOWNARROW_HLT")
             custom_compositor.workflow_property = property_name
 
-            # File browser button
-            file_browser = row.operator("comfy.open_file_browser", text="", icon="FILE_FOLDER")
-            file_browser.folder_path = inputs_folder
-            file_browser.custom_label = "Open Inputs Folder"
-
             # Add box only if input is not in a group/box
             box = layout.box() if is_root else layout
 

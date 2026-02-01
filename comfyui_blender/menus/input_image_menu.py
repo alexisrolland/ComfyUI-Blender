@@ -1,6 +1,8 @@
 """Context menu to display additional options to set the input image."""
 import bpy
 
+from ..utils import get_inputs_folder
+
 
 class ComfyBlenderInputImageMenu(bpy.types.Menu):
     """Context menu to display additional options to set the input image."""
@@ -31,6 +33,12 @@ class ComfyBlenderInputImageMenu(bpy.types.Menu):
                 custom_render = row.operator("comfy.render_custom_compositor", text=compositor.name)
                 custom_render.compositor_name = compositor.name
                 custom_render.workflow_property = context.scene.comfyui_menu_workflow_property
+
+        # File browser button
+        layout.separator(type="LINE")
+        file_browser = layout.operator("comfy.open_file_browser", text="Open Inputs Folder", icon="FILE_FOLDER")
+        file_browser.folder_path = get_inputs_folder()
+        file_browser.custom_label = "Open Inputs Folder"
 
 
 def register():
