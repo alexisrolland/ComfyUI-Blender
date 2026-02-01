@@ -3,9 +3,11 @@ import ast
 import json
 import logging
 import os
+import re
 import threading
 
 import bpy
+import requests
 from ._vendor import websocket
 
 from .utils import (
@@ -13,6 +15,7 @@ from .utils import (
     download_file,
     get_filepath,
     get_outputs_folder,
+    get_server_url,
     get_websocket_url
 )
 
@@ -204,19 +207,100 @@ def listen():
                         # Check class type to retrieve image outputs
                         elif key in outputs and outputs[key]["class_type"] == "BlenderOutputSaveImage":
                             for output in data["output"]["images"]:
-                                filename, filepath = download_file(output["filename"], output["subfolder"], output.get("type", "output"))
+                                # Check if this is a fixed filename
+                                # Fixed filenames: don't match the pattern prefix_NNNNN_.png
+                                # Incrementing filenames from SaveImage: match prefix_NNNNN_.png (digits followed by underscore)
+                                filename_no_ext = os.path.splitext(output["filename"])[0]
+
+                                # Check if filename ends with pattern like "00001_" (digits followed by underscore)
+                                is_incrementing = bool(re.search(r'_\d+_$', filename_no_ext))
+                                is_fixed_filename = not is_incrementing
+
+                                if is_fixed_filename:
+                                    # For fixed filenames, download and overwrite existing file
+                                    outputs_folder = get_outputs_folder()
+                                    subfolder_path = os.path.join(outputs_folder, output["subfolder"]) if output["subfolder"] else outputs_folder
+                                    os.makedirs(subfolder_path, exist_ok=True)
+                                    filepath = os.path.join(subfolder_path, output["filename"])
+
+                                    # Download the file (overwriting if exists)
+                                    params = {"filename": output["filename"], "subfolder": output["subfolder"], "type": output.get("type", "output"), "rand": os.urandom(8).hex()}
+                                    url = get_server_url("/view", params=params)
+                                    headers = add_custom_headers({"Content-Type": "application/json"})
+
+                                    try:
+                                        response = requests.get(url, params=params, headers=headers, stream=True)
+                                        if response.status_code == 200:
+                                            with open(filepath, "wb") as file:
+                                                for chunk in response.iter_content(chunk_size=8192):
+                                                    file.write(chunk)
+                                        else:
+                                            log.error(f"Failed to download fixed filename: {response.status_code}")
+                                            continue
+                                    except Exception as e:
+                                        log.error(f"Error downloading fixed filename: {e}")
+                                        continue
+
+                                    filename = output["filename"]
+                                else:
+                                    # For incrementing filenames, use normal download (which auto-increments)
+                                    filename, filepath = download_file(output["filename"], output["subfolder"], output.get("type", "output"))
 
                                 # Schedule adding output to collection on main thread
-                                def add_image_output(output=output, filename=filename, filepath=filepath):
-                                    # Load image into Blender file to get the name
-                                    image_object = bpy.data.images.load(filepath)
-                                    image_object.preview_ensure()
+                                def add_image_output(output=output, filename=filename, filepath=filepath, is_fixed=is_fixed_filename):
+                                    # Check if image already exists in Blender (for fixed filenames)
+                                    image_object = None
+                                    if is_fixed:
+                                        # For fixed filenames, reload existing image if it exists
+                                        # Blender stores images with their filename including extension
+                                        if filename in bpy.data.images:
+                                            image_object = bpy.data.images[filename]
+                                            image_object.reload()
 
-                                    # Add image to outputs collection
-                                    image = outputs_collection.add()
-                                    image.name = image_object.name
-                                    image.filepath = os.path.join(output["subfolder"], filename)
-                                    image.type = "image"
+                                            # Force update of any image editors displaying this image
+                                            for screen in bpy.data.screens:
+                                                for area in screen.areas:
+                                                    if area.type == 'IMAGE_EDITOR':
+                                                        for space in area.spaces:
+                                                            if space.type == 'IMAGE_EDITOR':
+                                                                # If this image viewer is showing the reloaded image, force refresh
+                                                                if space.image and space.image.name == filename:
+                                                                    # Force the viewer to update by reassigning the image
+                                                                    temp_img = space.image
+                                                                    space.image = None
+                                                                    space.image = temp_img
+                                                                    area.tag_redraw()
+
+                                    # If not found or not fixed, load as new
+                                    if not image_object:
+                                        image_object = bpy.data.images.load(filepath, check_existing=True)
+                                        image_object.preview_ensure()
+
+                                    # Add image to outputs collection only if not already there
+                                    existing_output = None
+                                    for existing in outputs_collection:
+                                        if existing.name == image_object.name and existing.type == "image":
+                                            existing_output = existing
+                                            break
+
+                                    if not existing_output:
+                                        image = outputs_collection.add()
+                                        image.name = image_object.name
+                                        image.filepath = os.path.join(output["subfolder"], filename)
+                                        image.type = "image"
+
+                                    # Force refresh of image editor to update image list
+                                    for screen in bpy.data.screens:
+                                        for area in screen.areas:
+                                            if area.type == 'IMAGE_EDITOR':
+                                                # Tag for redraw
+                                                area.tag_redraw()
+                                                # Update space data to refresh image list
+                                                for space in area.spaces:
+                                                    if space.type == 'IMAGE_EDITOR':
+                                                        # Trigger update by touching the image property
+                                                        if space.image:
+                                                            space.image = space.image
                                     return None
 
                                 # Call function to add output to collection

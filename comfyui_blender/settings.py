@@ -94,6 +94,19 @@ def update_server_address(self, context):
         self.server_address = self.server_address.rstrip("/")
 
 
+def update_on_run_toggle(self, context):
+    """Clear scheduled renders when Update on Run is disabled."""
+
+    # Don't clear if we're in the middle of executing scheduled renders
+    if hasattr(self, 'executing_scheduled_renders') and self.executing_scheduled_renders:
+        return
+
+    if not self.update_on_run:
+        # Clear all scheduled renders when toggling off
+        self.scheduled_renders.clear()
+        log.info("Update on Run disabled - cleared all scheduled renders.")
+
+
 def update_use_blend_file_location(self, context):
     """Update project base folders according to the location of the .blend file."""
 
@@ -270,6 +283,25 @@ class PromptPropertyGroup(bpy.types.PropertyGroup):
     )
 
 
+class ScheduledRenderPropertyGroup(bpy.types.PropertyGroup):
+    """Property group for scheduled render operations."""
+
+    workflow_property: StringProperty(
+        name="Workflow Property",
+        description="The workflow property that this render targets."
+    )
+    render_type: EnumProperty(
+        name="Render Type",
+        description="Type of render operation to perform.",
+        items=[
+            ("render_view", "Render View", "Render from camera"),
+            ("render_viewport_preview", "Render Viewport Preview", "Render viewport preview"),
+            ("render_depth_map", "Render Depth Map", "Render depth map"),
+            ("render_lineart", "Render Lineart", "Render lineart")
+        ]
+    )
+
+
 class AddonPreferences(bpy.types.AddonPreferences):
     """Add-on Preferences"""
 
@@ -371,6 +403,28 @@ class AddonPreferences(bpy.types.AddonPreferences):
     lock_seed: BoolProperty(
         name="Lock Seed",
         description="Lock the seed value used to initialize generation.",
+        default=False
+    )
+
+    # Update on Run mode
+    update_on_run: BoolProperty(
+        name="Update on Run",
+        description="When enabled, render operations are deferred until workflow execution.",
+        default=False,
+        update=update_on_run_toggle
+    )
+
+    # Scheduled renders collection
+    scheduled_renders: CollectionProperty(
+        name="Scheduled Renders",
+        description="Collection of render operations scheduled for execution.",
+        type=ScheduledRenderPropertyGroup
+    )
+
+    # Flag to prevent clearing scheduled renders during execution
+    executing_scheduled_renders: BoolProperty(
+        name="Executing Scheduled Renders",
+        description="Internal flag indicating scheduled renders are being executed.",
         default=False
     )
 
@@ -550,6 +604,7 @@ def register():
     # Register add-on settings
     bpy.utils.register_class(HttpHeaderPropertyGroup)
     bpy.utils.register_class(PromptPropertyGroup)
+    bpy.utils.register_class(ScheduledRenderPropertyGroup)
     bpy.utils.register_class(AddonPreferences)
 
     # Register project settings
@@ -610,6 +665,7 @@ def unregister():
 
     # Unregister add-on settings
     bpy.utils.unregister_class(AddonPreferences)
+    bpy.utils.unregister_class(ScheduledRenderPropertyGroup)
     bpy.utils.unregister_class(PromptPropertyGroup)
     bpy.utils.unregister_class(HttpHeaderPropertyGroup)
 
