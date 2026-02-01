@@ -1,8 +1,8 @@
 """ComfyUI Blender Add-on"""
 from .menus import (
     connection_menu,
-    custom_compositor_menu,
     file_browser_menu,
+    input_image_menu,
     output_menu
 )
 from .operators import (
@@ -40,8 +40,8 @@ from .operators import (
     send_to_input,
     set_camera_resolution,
     show_connection_menu,
-    show_custom_compositor_menu,
     show_error_popup,
+    show_input_image_menu,
     show_output_menu,
     stop_workflow,
     switch_output_layout,
@@ -82,9 +82,9 @@ def register():
     settings.register()
 
     # Menus
-    custom_compositor_menu.register()
     connection_menu.register()
     file_browser_menu.register()
+    input_image_menu.register()
     output_menu.register()
 
     # Operators
@@ -121,9 +121,9 @@ def register():
     select_folder.register()
     send_to_input.register()
     set_camera_resolution.register()
-    show_custom_compositor_menu.register()
     show_connection_menu.register()
     show_error_popup.register()
+    show_input_image_menu.register()
     show_output_menu.register()
     stop_workflow.register()
     switch_output_layout.register()
@@ -150,9 +150,9 @@ def unregister():
     settings.unregister()
 
     # Menus
-    custom_compositor_menu.unregister()
     connection_menu.unregister()
     file_browser_menu.unregister()
+    input_image_menu.unregister()
     output_menu.unregister()
 
     # Operators
@@ -189,9 +189,9 @@ def unregister():
     select_folder.unregister()
     send_to_input.unregister()
     set_camera_resolution.unregister()
-    show_custom_compositor_menu.unregister()
     show_connection_menu.unregister()
     show_error_popup.unregister()
+    show_input_image_menu.unregister()
     show_output_menu.unregister()
     stop_workflow.unregister()
     switch_output_layout.unregister()

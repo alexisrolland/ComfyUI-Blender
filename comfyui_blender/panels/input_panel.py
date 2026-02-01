@@ -173,10 +173,6 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             name = current_workflow.bl_rna.properties[property_name].name  # Node title
             row.label(text=name + ":")
 
-            # Upload button
-            upload_input_image = row.operator("comfy.upload_input_image", text="", icon="EXPORT")
-            upload_input_image.workflow_property = property_name
-
             # Check if this input has a scheduled render
             scheduled_render_type = None
             for scheduled in addon_prefs.scheduled_renders:
@@ -212,8 +208,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 render_lineart = row.operator("comfy.render_lineart", text="", icon="SHADING_WIRE")
             render_lineart.workflow_property = property_name
 
-            # Custom compositors
-            custom_compositor = row.operator("comfy.show_custom_compositor_menu", text="", icon="DOWNARROW_HLT")
+            # Input image menu
+            custom_compositor = row.operator("comfy.show_input_image_menu", text="", icon="DOWNARROW_HLT")
             custom_compositor.workflow_property = property_name
 
             # File browser button
