@@ -294,10 +294,10 @@ class ScheduledRenderPropertyGroup(bpy.types.PropertyGroup):
         name="Render Type",
         description="Type of render operation to perform.",
         items=[
-            ("render_view", "Render View", "Render from camera"),
-            ("render_viewport_preview", "Render Viewport Preview", "Render viewport preview"),
             ("render_depth_map", "Render Depth Map", "Render depth map"),
-            ("render_lineart", "Render Lineart", "Render lineart")
+            ("render_lineart", "Render Lineart", "Render lineart"),
+            ("render_preview", "Render Preview", "Render preview from 3D viewport"),
+            ("render_view", "Render View", "Render from camera")
         ]
     )
 

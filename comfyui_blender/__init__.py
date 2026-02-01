@@ -31,8 +31,8 @@ from .operators import (
     render_custom_compositor,
     render_depth_map,
     render_lineart,
+    render_preview,
     render_view,
-    render_viewport_preview,
     reset_folder,
     run_workflow,
     select_brush,
@@ -114,7 +114,7 @@ def register():
     render_depth_map.register()
     render_lineart.register()
     render_view.register()
-    render_viewport_preview.register()
+    render_preview.register()
     reset_folder.register()
     run_workflow.register()
     select_brush.register()
@@ -182,7 +182,7 @@ def unregister():
     render_depth_map.unregister()
     render_lineart.unregister()
     render_view.unregister()
-    render_viewport_preview.unregister()
+    render_preview.unregister()
     reset_folder.unregister()
     run_workflow.unregister()
     select_brush.unregister()

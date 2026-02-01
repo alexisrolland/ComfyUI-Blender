@@ -1,4 +1,4 @@
-"""Operator to render viewport preview."""
+"""Operator to render a preview from the 3D viewport."""
 import logging
 import os
 import shutil
@@ -10,12 +10,12 @@ from ..utils import get_inputs_folder, get_temp_folder, upload_file
 log = logging.getLogger("comfyui_blender")
 
 
-class ComfyBlenderOperatorRenderViewportPreview(bpy.types.Operator):
-    """Operator to render viewport preview."""
+class ComfyBlenderOperatorRenderPreview(bpy.types.Operator):
+    """Operator to render a preview from the 3D viewport."""
 
-    bl_idname = "comfy.render_viewport_preview"
-    bl_label = "Render Viewport Preview"
-    bl_description = "Render the viewport preview and upload it to the ComfyUI server."
+    bl_idname = "comfy.render_preview"
+    bl_label = "Render Preview"
+    bl_description = "Render a preview from the 3D viewport and upload it to the ComfyUI server."
 
     workflow_property: bpy.props.StringProperty(name="Workflow Property")
     temp_filename = "blender_viewport_preview"
@@ -36,7 +36,6 @@ class ComfyBlenderOperatorRenderViewportPreview(bpy.types.Operator):
     def execute(self, context):
         """Execute the operator."""
 
-        scene = context.scene
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
 
         # Check if Update on Run mode is enabled
@@ -51,34 +50,32 @@ class ComfyBlenderOperatorRenderViewportPreview(bpy.types.Operator):
 
             # If found, update the render type; otherwise, add a new one
             if existing_render:
-                existing_render.render_type = "render_viewport_preview"
+                existing_render.render_type = "render_preview"
             else:
                 new_render = addon_prefs.scheduled_renders.add()
                 new_render.workflow_property = self.workflow_property
-                new_render.render_type = "render_viewport_preview"
+                new_render.render_type = "render_preview"
 
             self.report({'INFO'}, "Viewport preview render scheduled for workflow execution.")
             return {'FINISHED'}
 
         # Otherwise, execute immediately
-        return self._execute_render(context)
+        return self._render_scene(context)
 
-    def _execute_render(self, context):
-        """Internal method to execute the render."""
+    def _render_scene(self, context):
+        """Internal method to render the scene."""
 
         scene = context.scene
 
-        # Check if we're in a 3D viewport
-        area = None
+        # Check if we are in a 3D viewport
+        viewport_area = None
         for window in context.window_manager.windows:
-            for area_item in window.screen.areas:
-                if area_item.type == 'VIEW_3D':
-                    area = area_item
+            for area in window.screen.areas:
+                if area.type == "VIEW_3D":
+                    viewport_area = area
                     break
-            if area:
-                break
 
-        if not area:
+        if not viewport_area:
             error_message = "No 3D viewport found"
             log.error(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
@@ -103,8 +100,8 @@ class ComfyBlenderOperatorRenderViewportPreview(bpy.types.Operator):
 
         # Override context to render from the 3D viewport
         override = context.copy()
-        override['area'] = area
-        override['region'] = area.regions[-1]
+        override["area"] = viewport_area
+        override["region"] = viewport_area.regions[-1]
 
         # Render the viewport using OpenGL
         try:
@@ -113,7 +110,7 @@ class ComfyBlenderOperatorRenderViewportPreview(bpy.types.Operator):
         except Exception as e:
             # Reset the scene to initial state
             self.reset_scene(context, **reset_params)
-            error_message = f"Failed to render viewport: {e}"
+            error_message = f"Failed to render from 3D viewport: {e}"
             log.exception(error_message)
             bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
             return {'CANCELLED'}
@@ -181,10 +178,10 @@ class ComfyBlenderOperatorRenderViewportPreview(bpy.types.Operator):
 def register():
     """Register the operator."""
 
-    bpy.utils.register_class(ComfyBlenderOperatorRenderViewportPreview)
+    bpy.utils.register_class(ComfyBlenderOperatorRenderPreview)
 
 
 def unregister():
     """Unregister the operator."""
 
-    bpy.utils.unregister_class(ComfyBlenderOperatorRenderViewportPreview)
+    bpy.utils.unregister_class(ComfyBlenderOperatorRenderPreview)

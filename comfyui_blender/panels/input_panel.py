@@ -192,10 +192,10 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             render_view.workflow_property = property_name
 
             # Render viewport preview
-            if scheduled_render_type == "render_viewport_preview":
-                render_viewport = row.operator("comfy.render_viewport_preview", text="", icon="CHECKMARK", depress=True)
+            if scheduled_render_type == "render_preview":
+                render_viewport = row.operator("comfy.render_preview", text="", icon="CHECKMARK", depress=True)
             else:
-                render_viewport = row.operator("comfy.render_viewport_preview", text="", icon="RESTRICT_RENDER_OFF")
+                render_viewport = row.operator("comfy.render_preview", text="", icon="RESTRICT_RENDER_OFF")
             render_viewport.workflow_property = property_name
 
             # Render depth map

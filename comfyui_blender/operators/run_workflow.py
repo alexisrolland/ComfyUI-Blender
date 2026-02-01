@@ -48,8 +48,8 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                     # Call the appropriate render operator
                     if render_type == "render_view":
                         result = bpy.ops.comfy.render_view('EXEC_DEFAULT', workflow_property=workflow_property)
-                    elif render_type == "render_viewport_preview":
-                        result = bpy.ops.comfy.render_viewport_preview('EXEC_DEFAULT', workflow_property=workflow_property)
+                    elif render_type == "render_preview":
+                        result = bpy.ops.comfy.render_preview('EXEC_DEFAULT', workflow_property=workflow_property)
                     elif render_type == "render_depth_map":
                         result = bpy.ops.comfy.render_depth_map('EXEC_DEFAULT', workflow_property=workflow_property)
                     elif render_type == "render_lineart":

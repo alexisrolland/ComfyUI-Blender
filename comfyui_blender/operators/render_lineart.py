@@ -71,10 +71,10 @@ class ComfyBlenderOperatorRenderLineart(bpy.types.Operator):
             return {'FINISHED'}
 
         # Otherwise, execute immediately
-        return self._execute_render(context)
+        return self._render_scene(context)
 
-    def _execute_render(self, context):
-        """Internal method to execute the render."""
+    def _render_scene(self, context):
+        """Internal method to render the scene."""
 
         scene = context.scene
         if not context.scene.camera:
