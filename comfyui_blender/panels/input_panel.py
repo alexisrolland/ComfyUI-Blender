@@ -182,28 +182,28 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
 
             # Render view
             if scheduled_render_type == "render_view":
-                render_view = row.operator("comfy.render_view", text="", icon="CHECKMARK", depress=True)
+                render_view = row.operator("comfy.render_view", text="", icon="OUTPUT", depress=True)
             else:
                 render_view = row.operator("comfy.render_view", text="", icon="OUTPUT")
             render_view.workflow_property = property_name
 
             # Render viewport preview
             if scheduled_render_type == "render_preview":
-                render_viewport = row.operator("comfy.render_preview", text="", icon="CHECKMARK", depress=True)
+                render_viewport = row.operator("comfy.render_preview", text="", icon="RESTRICT_RENDER_OFF", depress=True)
             else:
                 render_viewport = row.operator("comfy.render_preview", text="", icon="RESTRICT_RENDER_OFF")
             render_viewport.workflow_property = property_name
 
             # Render depth map
             if scheduled_render_type == "render_depth_map":
-                render_depth = row.operator("comfy.render_depth_map", text="", icon="CHECKMARK", depress=True)
+                render_depth = row.operator("comfy.render_depth_map", text="", icon="MATERIAL", depress=True)
             else:
                 render_depth = row.operator("comfy.render_depth_map", text="", icon="MATERIAL")
             render_depth.workflow_property = property_name
 
             # Render lineart
             if scheduled_render_type == "render_lineart":
-                render_lineart = row.operator("comfy.render_lineart", text="", icon="CHECKMARK", depress=True)
+                render_lineart = row.operator("comfy.render_lineart", text="", icon="SHADING_WIRE", depress=True)
             else:
                 render_lineart = row.operator("comfy.render_lineart", text="", icon="SHADING_WIRE")
             render_lineart.workflow_property = property_name
