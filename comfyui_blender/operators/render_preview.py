@@ -38,8 +38,8 @@ class ComfyBlenderOperatorRenderPreview(bpy.types.Operator):
 
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
 
-        # Check if Update on Run mode is enabled
-        if addon_prefs.update_on_run:
+        # Check if render on run mode is enabled
+        if addon_prefs.render_on_run:
             # Schedule this render for later execution
             # First, check if this workflow_property already has a scheduled render
             existing_render = None

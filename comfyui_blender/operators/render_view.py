@@ -15,7 +15,7 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
 
     bl_idname = "comfy.render_view"
     bl_label = "Render View"
-    bl_description = "Render from the camera and upload it to the ComfyUI server."
+    bl_description = "Render view from the camera and upload it to the ComfyUI server."
 
     workflow_property: bpy.props.StringProperty(name="Workflow Property")
     temp_filename = "blender_render"
@@ -38,8 +38,8 @@ class ComfyBlenderOperatorRenderDepthMap(bpy.types.Operator):
 
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
 
-        # Check if Update on Run mode is enabled
-        if addon_prefs.update_on_run:
+        # Check if render on run mode is enabled
+        if addon_prefs.render_on_run:
             # Schedule this render for later execution
             # First, check if this workflow_property already has a scheduled render
             existing_render = None

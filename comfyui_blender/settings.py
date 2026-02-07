@@ -94,18 +94,18 @@ def update_server_address(self, context):
         self.server_address = self.server_address.rstrip("/")
 
 
-def update_on_run_toggle(self, context):
-    """Clear scheduled renders when Update on Run is disabled."""
+def toggle_render_on_run(self, context):
+    """Clear scheduled renders when render on run is disabled."""
 
-    # Don't clear if we're in the middle of executing scheduled renders
-    if hasattr(self, 'executing_scheduled_renders') and self.executing_scheduled_renders:
+    # Do not clear if a scheduled render is executing
+    if hasattr(self, "executing_scheduled_renders") and self.executing_scheduled_renders:
         return
 
-    if not self.update_on_run:
-        # Clear all scheduled renders when toggling off
+    # Clear all scheduled renders when toggling off
+    if not self.render_on_run:
         self.scheduled_renders.clear()
-        log.info("Update on Run disabled - cleared all scheduled renders.")
-
+        # Deactivating log message to reduce spam
+        # log.info("Render on run disabled, all scheduled renders have been cleared.")
 
 def update_use_blend_file_location(self, context):
     """Update project base folders according to the location of the .blend file."""
@@ -406,12 +406,12 @@ class AddonPreferences(bpy.types.AddonPreferences):
         default=False
     )
 
-    # Update on Run mode
-    update_on_run: BoolProperty(
-        name="Update on Run",
+    # Render on run mode
+    render_on_run: BoolProperty(
+        name="Render on Run",
         description="When enabled, render operations are deferred until workflow execution.",
         default=False,
-        update=update_on_run_toggle
+        update=toggle_render_on_run
     )
 
     # Scheduled renders collection

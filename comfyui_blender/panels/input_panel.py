@@ -5,6 +5,7 @@ import os
 import bpy
 
 from .. import workflow as w
+from ..settings import toggle_render_on_run
 from ..utils import get_inputs_folder, get_workflows_folder
 
 
@@ -42,9 +43,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                     # Get sorted inputs from the workflow
                     inputs = w.parse_workflow_for_inputs(workflow)
 
-                    # Add Update on Run toggle at the top
-                    row = layout.row()
-                    row.prop(addon_prefs, "update_on_run", text="Update on Run", icon="TIME")
+                    # This is used to enable / disable the render on run feature
+                    has_input_image = False
 
                     # Display workflow input properties
                     for key, node in inputs.items():
@@ -77,12 +77,22 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                         else:
                             # Skip input if it belongs to a group
                             if "group" not in node["inputs"]:
-                                self.display_input(context, current_workflow, layout, property_name, node)
+                                class_type = self.display_input(context, current_workflow, layout, property_name, node)
+                                if class_type == "BlenderInputLoadImage":
+                                    has_input_image = True
 
                     # Add run workflow button
                     col = layout.column()
-                    col.scale_y = 1.5
-                    col.operator("comfy.run_workflow", text="Run Workflow", icon="PLAY")
+                    row = layout.row(align=True)
+                    row.scale_y = 1.5
+                    row.operator("comfy.run_workflow", text="Run Workflow", icon="PLAY")
+
+                    # Add Update on Run toggle as an option to run the workflow
+                    sub_row = row.row(align=True)
+                    sub_row.prop(addon_prefs, "render_on_run", text="", icon="RENDER_STILL")
+                    sub_row.enabled = has_input_image
+                    if not has_input_image:
+                        toggle_render_on_run() # Disable update on run if no input image
         else:
             # Create a box with grid flow for all outputs
             box = layout.box()
@@ -119,6 +129,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 get_width = row.operator("comfy.get_camera_resolution", text="", icon="IMAGE_DATA")
                 get_width.property_name = property_name
                 get_width.axis = "Y"
+
+            return node["class_type"]
 
         # Custom handling for 3D model inputs
         elif node["class_type"] == "BlenderInputLoad3D":
@@ -165,9 +177,14 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 delete_input.filepath = input_filepath
                 delete_input.workflow_property = property_name
                 delete_input.type = "3d"
+        
+            return node["class_type"]
 
         # Custom handling for image inputs
         elif node["class_type"] == "BlenderInputLoadImage":
+            # Set has input image to True, this is used to enable / disable the render on run feature
+            self.has_input_image = True
+
             # Get the input name from the workflow properties
             row = layout.row(align=True)
             name = current_workflow.bl_rna.properties[property_name].name  # Node title
@@ -180,19 +197,19 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                     scheduled_render_type = scheduled.render_type
                     break
 
+            # Render preview from 3D viewport
+            if scheduled_render_type == "render_preview":
+                render_preview = row.operator("comfy.render_preview", text="", icon="RESTRICT_RENDER_OFF", depress=True)
+            else:
+                render_preview = row.operator("comfy.render_preview", text="", icon="RESTRICT_RENDER_OFF")
+            render_preview.workflow_property = property_name
+
             # Render view
             if scheduled_render_type == "render_view":
                 render_view = row.operator("comfy.render_view", text="", icon="OUTPUT", depress=True)
             else:
                 render_view = row.operator("comfy.render_view", text="", icon="OUTPUT")
             render_view.workflow_property = property_name
-
-            # Render viewport preview
-            if scheduled_render_type == "render_preview":
-                render_viewport = row.operator("comfy.render_preview", text="", icon="RESTRICT_RENDER_OFF", depress=True)
-            else:
-                render_viewport = row.operator("comfy.render_preview", text="", icon="RESTRICT_RENDER_OFF")
-            render_viewport.workflow_property = property_name
 
             # Render depth map
             if scheduled_render_type == "render_depth_map":
@@ -243,6 +260,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 delete_input.filepath = image.filepath
                 delete_input.workflow_property = property_name
                 delete_input.type = "image"
+            
+            return node["class_type"]
 
         # Custom handling for mask inputs
         # Mask inputs are images with alpha channel
@@ -292,6 +311,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 delete_input.filepath = image.filepath
                 delete_input.workflow_property = property_name
                 delete_input.type = "image"
+            
+            return node["class_type"]
 
         # Custom handling for seed inputs
         elif node["class_type"] == "BlenderInputSeed":
@@ -308,6 +329,8 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                 row.prop(addon_prefs, "lock_seed", text="", icon="LOCKED")
             else:
                 row.prop(addon_prefs, "lock_seed", text="", icon="UNLOCKED")
+            
+            return node["class_type"]
 
         # Custom handling for text inputs
         elif node["class_type"] == "BlenderInputStringMultiline":
@@ -338,9 +361,12 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
             delete_input.workflow_property = property_name
             delete_input.type = "text"
 
+            return node["class_type"]
+
         else:
             # Default display for other input types
             layout.prop(current_workflow, property_name)
+            return node["class_type"]
 
 
 class ComfyBlenderPanelInput3DViewer(ComfyBlenderPanelInput, bpy.types.Panel):
