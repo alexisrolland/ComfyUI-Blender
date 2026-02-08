@@ -27,18 +27,18 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
 
         # Execute scheduled renders if any
-        if addon_prefs.scheduled_renders:
+        if addon_prefs.render_on_run and addon_prefs.scheduled_renders:
             log.info(f"Executing {len(addon_prefs.scheduled_renders)} scheduled render(s)...")
 
             # Create a list of scheduled renders to process (copy to avoid modification during iteration)
             scheduled_list = [(s.workflow_property, s.render_type) for s in addon_prefs.scheduled_renders]
 
             # Set flag to prevent callback from clearing scheduled renders
-            addon_prefs.executing_scheduled_renders = True
+            addon_prefs.scheduled_renders_executing = True
 
-            # Temporarily disable update_on_run to force immediate execution
-            original_update_on_run = addon_prefs.update_on_run
-            addon_prefs.update_on_run = False
+            # Temporarily disable render on run to force immediate execution
+            original_render_on_run = addon_prefs.render_on_run
+            addon_prefs.render_on_run = False
 
             try:
                 # Execute each scheduled render
@@ -47,13 +47,13 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
 
                     # Call the appropriate render operator
                     if render_type == "render_view":
-                        result = bpy.ops.comfy.render_view('EXEC_DEFAULT', workflow_property=workflow_property)
-                    elif render_type == "render_viewport_preview":
-                        result = bpy.ops.comfy.render_viewport_preview('EXEC_DEFAULT', workflow_property=workflow_property)
+                        result = bpy.ops.comfy.render_view("EXEC_DEFAULT", workflow_property=workflow_property)
+                    elif render_type == "render_preview":
+                        result = bpy.ops.comfy.render_preview("EXEC_DEFAULT", workflow_property=workflow_property)
                     elif render_type == "render_depth_map":
-                        result = bpy.ops.comfy.render_depth_map('EXEC_DEFAULT', workflow_property=workflow_property)
+                        result = bpy.ops.comfy.render_depth_map("EXEC_DEFAULT", workflow_property=workflow_property)
                     elif render_type == "render_lineart":
-                        result = bpy.ops.comfy.render_lineart('EXEC_DEFAULT', workflow_property=workflow_property)
+                        result = bpy.ops.comfy.render_lineart("EXEC_DEFAULT", workflow_property=workflow_property)
 
                     # Check if render succeeded
                     if result != {'FINISHED'}:
@@ -62,13 +62,13 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                         bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                         return {'CANCELLED'}
 
-                # Don't clear scheduled renders - they remain sticky until Update on Run is disabled
+                # Don't clear scheduled renders, they remain sticky until render on run is disabled
                 log.info("All scheduled renders completed successfully.")
 
             finally:
-                # Restore original update_on_run setting and clear execution flag
-                addon_prefs.update_on_run = original_update_on_run
-                addon_prefs.executing_scheduled_renders = False
+                # Restore original render on run setting and clear execution flag
+                addon_prefs.render_on_run = original_render_on_run
+                addon_prefs.scheduled_renders_executing = False
 
         workflows_folder = get_workflows_folder()
         workflow_filename = str(addon_prefs.workflow)

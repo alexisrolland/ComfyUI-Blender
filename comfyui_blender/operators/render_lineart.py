@@ -49,8 +49,8 @@ class ComfyBlenderOperatorRenderLineart(bpy.types.Operator):
         scene = context.scene
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
 
-        # Check if Update on Run mode is enabled
-        if addon_prefs.update_on_run:
+        # Check if render on run mode is enabled
+        if addon_prefs.render_on_run:
             # Schedule this render for later execution
             # First, check if this workflow_property already has a scheduled render
             existing_render = None
@@ -71,10 +71,10 @@ class ComfyBlenderOperatorRenderLineart(bpy.types.Operator):
             return {'FINISHED'}
 
         # Otherwise, execute immediately
-        return self._execute_render(context)
+        return self._render_scene(context)
 
-    def _execute_render(self, context):
-        """Internal method to execute the render."""
+    def _render_scene(self, context):
+        """Internal method to render the scene."""
 
         scene = context.scene
         if not context.scene.camera:

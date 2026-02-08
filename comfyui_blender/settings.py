@@ -94,18 +94,18 @@ def update_server_address(self, context):
         self.server_address = self.server_address.rstrip("/")
 
 
-def update_on_run_toggle(self, context):
-    """Clear scheduled renders when Update on Run is disabled."""
+def toggle_render_on_run(self, context):
+    """Clear scheduled renders when render on run is disabled."""
 
-    # Don't clear if we're in the middle of executing scheduled renders
-    if hasattr(self, 'executing_scheduled_renders') and self.executing_scheduled_renders:
+    # Do not clear scheduled renders if they are executing
+    if hasattr(self, "scheduled_renders_executing") and self.scheduled_renders_executing:
         return
 
-    if not self.update_on_run:
-        # Clear all scheduled renders when toggling off
+    # Clear all scheduled renders when toggling off
+    if not self.render_on_run:
         self.scheduled_renders.clear()
-        log.info("Update on Run disabled - cleared all scheduled renders.")
-
+        # Deactivating log message to reduce spam
+        # log.info("Render on run disabled, all scheduled renders have been cleared.")
 
 def update_use_blend_file_location(self, context):
     """Update project base folders according to the location of the .blend file."""
@@ -294,10 +294,10 @@ class ScheduledRenderPropertyGroup(bpy.types.PropertyGroup):
         name="Render Type",
         description="Type of render operation to perform.",
         items=[
-            ("render_view", "Render View", "Render from camera"),
-            ("render_viewport_preview", "Render Viewport Preview", "Render viewport preview"),
             ("render_depth_map", "Render Depth Map", "Render depth map"),
-            ("render_lineart", "Render Lineart", "Render lineart")
+            ("render_lineart", "Render Lineart", "Render lineart"),
+            ("render_preview", "Render Preview", "Render preview from 3D viewport"),
+            ("render_view", "Render View", "Render from camera")
         ]
     )
 
@@ -406,12 +406,12 @@ class AddonPreferences(bpy.types.AddonPreferences):
         default=False
     )
 
-    # Update on Run mode
-    update_on_run: BoolProperty(
-        name="Update on Run",
+    # Render on run mode
+    render_on_run: BoolProperty(
+        name="Render on Run",
         description="When enabled, render operations are deferred until workflow execution.",
         default=False,
-        update=update_on_run_toggle
+        update=toggle_render_on_run
     )
 
     # Scheduled renders collection
@@ -422,8 +422,8 @@ class AddonPreferences(bpy.types.AddonPreferences):
     )
 
     # Flag to prevent clearing scheduled renders during execution
-    executing_scheduled_renders: BoolProperty(
-        name="Executing Scheduled Renders",
+    scheduled_renders_executing: BoolProperty(
+        name="Scheduled Renders Executing",
         description="Internal flag indicating scheduled renders are being executed.",
         default=False
     )
@@ -456,6 +456,13 @@ class AddonPreferences(bpy.types.AddonPreferences):
 
 
     # Feature flags
+    # Open last image automatically
+    open_last_image_automatically: BoolProperty(
+        name="Open Last Image Automatically",
+        description="Automatically open the last image output in the image editor.",
+        default=False
+    )
+
     # Confirm delete input
     confirm_delete_input: BoolProperty(
         name="Confirm Delete Input",
@@ -577,6 +584,9 @@ class AddonPreferences(bpy.types.AddonPreferences):
 
             # Feature flags
             layout.label(text="Feature Flags:")
+
+            # Open last image automatically
+            layout.prop(self, "open_last_image_automatically")
 
             # Confirm delete input
             layout.prop(self, "confirm_delete_input")
