@@ -456,6 +456,13 @@ class AddonPreferences(bpy.types.AddonPreferences):
 
 
     # Feature flags
+    # Open last image automatically
+    open_last_image_automatically: BoolProperty(
+        name="Open Last Image Automatically",
+        description="Automatically open the last image output in the image editor.",
+        default=False
+    )
+
     # Confirm delete input
     confirm_delete_input: BoolProperty(
         name="Confirm Delete Input",
@@ -577,6 +584,9 @@ class AddonPreferences(bpy.types.AddonPreferences):
 
             # Feature flags
             layout.label(text="Feature Flags:")
+
+            # Open last image automatically
+            layout.prop(self, "open_last_image_automatically")
 
             # Confirm delete input
             layout.prop(self, "confirm_delete_input")
