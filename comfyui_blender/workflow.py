@@ -188,7 +188,7 @@ def create_class_properties(inputs):
                     items=[(i, i, "") for i in items]
                 )
             else:
-                message = "Add-on not connect to the ComfyUI server."
+                message = "Add-on not connected to the ComfyUI server."
                 properties[property_name] = StringProperty(name=name, default=message)
 
         # Load diffusion model
@@ -234,7 +234,7 @@ def create_class_properties(inputs):
                     items=[(i, i, "") for i in items]
                 )
             else:
-                message = "Add-on not connect to the ComfyUI server."
+                message = "Add-on not connected to the ComfyUI server."
                 properties[property_name] = StringProperty(name=name, default=message)
 
         # Load image and load mask
@@ -284,24 +284,54 @@ def create_class_properties(inputs):
                     items=[(i, i, "") for i in items]
                 )
             else:
-                message = "Add-on not connect to the ComfyUI server."
+                message = "Add-on not connected to the ComfyUI server."
                 properties[property_name] = StringProperty(name=name, default=message)
 
         # Sampler
         elif node["class_type"] == "BlenderInputSampler":
-            # We should fetch the list dynamically from the ComfyUI server, pending on PR: https://github.com/comfyanonymous/ComfyUI/pull/10197
-            items = ["ddim", "ddpm", "deis", "dpm_2", "dpm_2_ancestral", "dpm_adaptive", "dpm_fast", "dpmpp_2m", "dpmpp_2m_cfg_pp", "dpmpp_2m_sde", "dpmpp_2m_sde_gpu", "dpmpp_2m_sde_heun", "dpmpp_2m_sde_heun_gpu", "dpmpp_2s_ancestral", "dpmpp_2s_ancestral_cfg_pp", "dpmpp_3m_sde", "dpmpp_3m_sde_gpu", "dpmpp_sde", "dpmpp_sde_gpu", "er_sde", "euler", "euler_ancestral", "euler_ancestral_cfg_pp", "euler_cfg_pp", "gradient_estimation", "gradient_estimation_cfg_pp", "heun", "heunpp2", "ipndm", "ipndm_v", "lcm", "lms", "res_multistep", "res_multistep_ancestral", "res_multistep_ancestral_cfg_pp", "res_multistep_cfg_pp", "sa_solver", "sa_solver_pece", "seeds_2", "seeds_3", "uni_pc", "uni_pc_bh2"]
+            if addon_prefs.connection_status:
+                # Get list of samplers from the ComfyUI server
+                url = get_server_url("/blender/samplers")
+                headers = {"Content-Type": "application/json"}
+                headers = add_custom_headers(headers)
+                try:
+                    response = requests.get(url, headers=headers, stream=True)
+                except Exception as e:
+                    error_message = f"Failed to get list of samplers from ComfyUI server: {url}. {e}"
+                    properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                    log.exception(error_message)
+                    # This crashes Blender upon starting if the ComfyUI server is not reachable
+                    # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                    continue
 
-            # If default value not in list, set to first item in the list
-            default = node["inputs"].get("default", "")
-            if default not in items:
-                default = items[0]
+                if response.status_code != 200:
+                    error_message = error_message = f"Failed to get list of samplers from ComfyUI server: {url}."
+                    properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                    log.error(error_message)
+                    # This crashes Blender upon starting if the ComfyUI server is not reachable
+                    # bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
+                    continue
 
-            properties[property_name] = EnumProperty(
-                name=name,
-                default=default,
-                items=[(i, i, "") for i in items]
-            )
+                items = response.json()
+                if not items:
+                    error_message = error_message = f"There is no sampler on the ComfyUI server: {url}."
+                    properties[property_name] = StringProperty(name=name, default=error_message)  # Create dummy property with error message
+                    log.error(error_message)
+                    continue
+
+                # If default value not in list, set to first item in the list
+                default = node["inputs"].get("default", "")
+                if default not in items:
+                    default = items[0]
+
+                properties[property_name] = EnumProperty(
+                    name=name,
+                    default=default,
+                    items=[(i, i, "") for i in items]
+                )
+            else:
+                message = "Add-on not connected to the ComfyUI server."
+                properties[property_name] = StringProperty(name=name, default=message)
 
         # Seed
         elif node["class_type"] == "BlenderInputSeed":

@@ -2,6 +2,7 @@ import json
 import urllib.parse
 from aiohttp import ClientSession, web
 
+from comfy.samplers import KSampler
 from server import PromptServer
 from .nodes import (
     BlenderInputBoolean,
@@ -25,6 +26,14 @@ from .nodes import (
     BlenderOutputString
 )
 from .workflow_converter import WorkflowConverter
+
+
+# Add endpoint to return the list of samplers
+@PromptServer.instance.routes.get("/blender/samplers")
+async def get_samplers_list(request):
+    """Endpoint to get the list of samplers from the ComfyUI server."""
+
+    return web.json_response(KSampler.SAMPLERS)
 
 
 # Add endpoint to return the list of workflows from the user folder
@@ -52,7 +61,7 @@ async def get_workflows_list(request):
         raise web.HTTPInternalServerError(text=f"Error retrieving file: {str(e)}")
 
 
-# Add endpoint to return the a workflow from the user folder in API format
+# Add endpoint to return a workflow from the user folder in API format
 @PromptServer.instance.routes.get("/blender/workflow")
 async def get_workflow_file(request):
     """
