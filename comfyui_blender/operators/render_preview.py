@@ -18,7 +18,7 @@ class ComfyBlenderOperatorRenderPreview(bpy.types.Operator):
     bl_description = "Render a preview from the 3D viewport and upload it to the ComfyUI server."
 
     workflow_property: bpy.props.StringProperty(name="Workflow Property")
-    temp_filename = "blender_viewport_preview"
+    temp_filename = "blender_preview"
 
     def reset_scene(self, context, **kwargs):
         """Reset the scene to its initial state."""
