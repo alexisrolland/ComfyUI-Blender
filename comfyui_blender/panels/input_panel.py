@@ -87,12 +87,13 @@ class ComfyBlenderPanelInput(bpy.types.Panel):
                     row.scale_y = 1.5
                     row.operator("comfy.run_workflow", text="Run Workflow", icon="PLAY")
 
-                    # Add Update on Run toggle as an option to run the workflow
+                    # Add render on run toggle as an option to run the workflow button
                     sub_row = row.row(align=True)
                     sub_row.prop(addon_prefs, "render_on_run", text="", icon="RENDER_STILL")
                     sub_row.enabled = has_input_image
                     if not has_input_image:
-                        toggle_render_on_run() # Disable update on run if no input image
+                        addon_prefs.render_on_run = False
+                        toggle_render_on_run(addon_prefs, context) # Disable render on run if no input image
         else:
             # Create a box with grid flow for all outputs
             box = layout.box()

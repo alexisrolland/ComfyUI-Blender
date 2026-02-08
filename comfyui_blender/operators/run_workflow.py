@@ -27,7 +27,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
         addon_prefs = context.preferences.addons["comfyui_blender"].preferences
 
         # Execute scheduled renders if any
-        if addon_prefs.scheduled_renders:
+        if addon_prefs.render_on_run and addon_prefs.scheduled_renders:
             log.info(f"Executing {len(addon_prefs.scheduled_renders)} scheduled render(s)...")
 
             # Create a list of scheduled renders to process (copy to avoid modification during iteration)
@@ -62,7 +62,7 @@ class ComfyBlenderOperatorRunWorkflow(bpy.types.Operator):
                         bpy.ops.comfy.show_error_popup("INVOKE_DEFAULT", error_message=error_message)
                         return {'CANCELLED'}
 
-                # Don't clear scheduled renders - they remain sticky until Update on Run is disabled
+                # Don't clear scheduled renders, they remain sticky until render on run is disabled
                 log.info("All scheduled renders completed successfully.")
 
             finally:
