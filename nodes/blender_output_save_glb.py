@@ -1,5 +1,5 @@
 from comfy_api.latest import io
-from comfy_extras.nodes_hunyuan3d import SaveGLB
+from comfy_extras.nodes_save_3d import SaveGLB
 
 
 class BlenderOutputSaveGlb(SaveGLB):
