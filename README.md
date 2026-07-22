@@ -40,12 +40,12 @@ If the ComfyUI server runs on a different machine than the Blender client, it mu
 
 ### Install Blender Add-on
 
+Download the add-on package `comfyui_blender_[...].zip` from the **[LATEST RELEASE](https://github.com/alexisrolland/ComfyUI-Blender/releases)**.
+
 **Make sure you have a recent version of Blender.**
 
 - The add-on has been updated to support Blender `v5.0` from version [`v4.0.0`](https://github.com/alexisrolland/ComfyUI-Blender/releases) onward.
 - The last version of the add-on to support Blender `v4.5` is [`v3.3.4`](https://github.com/alexisrolland/ComfyUI-Blender/releases/tag/v3.3.4).
-
-Download the add-on package `comfyui_blender_[...].zip` from the **[LATEST RELEASE](https://github.com/alexisrolland/ComfyUI-Blender/releases)**.
 
 In Blender, go to `Edit` > `Preferences` > `Add-ons` > `Install from Disk` > select the zip package.
 
