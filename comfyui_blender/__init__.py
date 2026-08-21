@@ -144,7 +144,7 @@ def unregister():
     disconnect()
 
     # Hooks
-    hooks.register()
+    hooks.unregister()
 
     # Preferences
     settings.unregister()
