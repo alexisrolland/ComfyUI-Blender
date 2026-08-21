@@ -55,7 +55,7 @@ def register():
 def unregister():
     """Unregister handlers."""
 
-    if disconnect in bpy.app.handlers.load_pre:
+    if load_pre_handler in bpy.app.handlers.load_pre:
         bpy.app.handlers.load_pre.remove(load_pre_handler)
 
     if load_post_handler in bpy.app.handlers.load_post:
